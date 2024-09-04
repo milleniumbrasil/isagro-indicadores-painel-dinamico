@@ -19,3 +19,8 @@ export interface IData {
   fonte: string;
   valor: number;
 }
+
+export interface IState {
+  uf: string;
+  estado: string;
+}

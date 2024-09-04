@@ -20,6 +20,9 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Slider from '@mui/material/Slider';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
 
 import { useISAgroContext } from "./ISAgroContext";
 
@@ -46,18 +49,33 @@ const ISAgro: React.FC = () => {
   const [ano, setAno] = React.useState('');
   const [estado, setEstado] = React.useState('');
   const [value, setValue] = React.useState<number[]>([20, 37]);
+  
+  const minDistance = 10;
 
+  
   // manipuladores de eventos de tela
   const handleChangePaises = (event: SelectChangeEvent) => {
     setPais(event.target.value as string);
   };
 
   const handleChangeEstados = (event: SelectChangeEvent) => {
-    setAno(event.target.value as string);
+    setEstado(event.target.value as string);
   };
 
-  const handleChange = (event: Event, newValue: number | number[]) => {
-    setValue(newValue as number[]);
+  const handleChange = (
+    event: Event,
+    newValue: number | number[],
+    activeThumb: number,
+  ) => {
+    if (!Array.isArray(newValue)) {
+      return;
+    }
+
+    if (activeThumb === 0) {
+      setValue([Math.min(newValue[0], value[1] - minDistance), value[1]]);
+    } else {
+      setValue([value[0], Math.max(newValue[1], value[0] + minDistance)]);
+    }
   };
 
   return (
@@ -139,73 +157,213 @@ const ISAgro: React.FC = () => {
           <DirectionsIcon />
         </IconButton>
       </Paper>
-      <h1>
-        Dados do ISAgro - Por (município), estado, país por nutriente - N P K
-      </h1>
-      <Stack direction="row" spacing={2}>
-        <RoundedPaper square={false}>
-          <h4>Por (município), estado, país</h4>
-          <span>{`
-                          Por entrada - em %
-                          Dejetos animais (suínos, galináceos)
-                          Deposição atmosférica
-                          Fertilizantes minerais (por UF - ANDA _ com dificuldades)
-                          Fertilizantes orgânico (vinhaça) (por UF)
-                          Fixação Biológica de N (leguminosas, milho - 10% e cana, pastagens - 15 kg/ha ano)
-                          Sementes
-                          Por saída - em %
-                          produção carne bovina (por UF)
-                          produção agrícola
-                          Pelo Balanço > por ha (área agropecuária - lavouras + pastagem (total) > balanço de nutrientes/área
-                          lavouras + pastagem
-                          Série Histórica - incluir curva de produção agrícola e
-                          carne bovina (rendimento)
-                          Incluir FBN x produção agrícola
-                          Distribuição Geográfica (BR, Estado, Regiões, Meso/
-                          microregião.)
-                          Comparação outros países`}
-          </span>
-          <h4>Por nutriente - N P K</h4>
-          <span>{`
-                          Por entrada - em %
-                          Dejetos animais (suínos, galináceos)
-                          Deposição atmosférica
-                          Fertilizantes minerais (por UF - ANDA _ com dificuldades)
-                          Fertilizantes orgânico (vinhaça) (por UF)
-                          Fixação Biológica de N (leguminosas, milho - 10% e cana, pastagens - 15 kg/ha ano)
-                          Sementes
-                          Por saída - em %
-                          produção carne bovina (por UF)
-                          produção agrícola
-                          Pelo Balanço > por ha (área agropecuária - lavouras + pastagem (total) > balanço de nutrientes/área
-                          lavouras + pastagem
-                          Série Histórica - incluir curva de produção agrícola e
-                          carne bovina (rendimento)
-                          Incluir FBN x produção agrícola
-                          Distribuição Geográfica (BR, Estado, Regiões, Meso/
-                          microregião.)
-                          Comparação outros países`}
-          </span>
-        </RoundedPaper>
-        <RoundedPaper square>square corners</RoundedPaper>
-      </Stack>
-      <Stack direction="column" spacing={2}>
-        <RoundedPaper square={false}>rounded corners</RoundedPaper>
-        <RoundedPaper square>square corners</RoundedPaper>
-      </Stack>
       
-      {Array.isArray(data) ? (
-        <ul>
-          {data.map((dataItem, index) => (
-            <li key={`${dataItem.geocodigo}-${index}`}>
-              {dataItem.fonte} em {new Date(dataItem.data).getFullYear()} valor:{" "}
-              {dataItem.valor}
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>Carregando...</p>
-      )}
+      <Box sx={{ alignItems: 'center', width: '100%' }}>
+        <h1>
+          Dados do ISAgro - Por (município), estado, país por nutriente - N P K
+        </h1>
+      </Box>
+      
+      <Stack spacing={2} sx={{ alignItems: 'center' }}> 
+        <Card variant="outlined" sx={{ maxWidth: '400px' }}>
+          <CardContent>  
+            <h3>Por (município), estado, país</h3>
+            <h5>Por entrada - em %</h5>
+            <ul>
+              <li>
+                <Typography variant="body2" gutterBottom>
+                  Dejetos animais (suínos, galináceos)
+                </Typography>
+              </li>
+              <li>
+                <Typography variant="body2" gutterBottom>
+                Deposição atmosférica
+                </Typography>
+              </li>
+              <li>
+                <Typography variant="body2" gutterBottom>
+                Fertilizantes minerais (por UF - ANDA _ com dificuldades)
+                </Typography>
+              </li>
+              <li>
+                <Typography variant="body2" gutterBottom>
+                  Dejetos animais (suínos, galináceos)
+                </Typography>
+              </li>
+              <li>
+                <Typography variant="body2" gutterBottom>
+                Fertilizantes orgânico (vinhaça) (por UF)
+                </Typography>
+              </li>
+              <li>
+                <Typography variant="body2" gutterBottom>
+                Fixação Biológica de N (leguminosas, milho - 10% e cana, pastagens - 15 kg/ha ano)
+                </Typography>
+              </li>
+              <li>
+                <Typography variant="body2" gutterBottom>
+                Sementes
+                </Typography>
+              </li>
+            </ul>
+          </CardContent>
+        </Card>
+        <Card variant="outlined" sx={{ maxWidth: '400px' }}>
+          <CardContent>  
+            <h4>Por (município), estado, país</h4>
+            <h5>Por saída - em %</h5>
+            <ul>
+              <li>
+                <Typography variant="body2" gutterBottom>
+                produção carne bovina (por UF)
+                </Typography>
+              </li>
+              <li>
+                <Typography variant="body2" gutterBottom>
+                produção agrícola
+                </Typography>
+              </li>
+              <li>
+                <Typography variant="body2" gutterBottom>
+                {`Pelo Balanço > por ha (área agropecuária - lavouras + pastagem (total) > balanço de nutrientes/área`}
+                </Typography>
+              </li>
+              <li>
+                <Typography variant="body2" gutterBottom>
+                lavouras + pastagem
+                </Typography>
+              </li>
+              <li>
+                <Typography variant="body2" gutterBottom>
+                {`Série Histórica - incluir curva de produção agrícola e carne bovina (rendimento)`}
+                </Typography>
+              </li>
+              <li>
+                <Typography variant="body2" gutterBottom>
+                Incluir FBN x produção agrícola
+                </Typography>
+              </li>
+              <li>
+                <Typography variant="body2" gutterBottom>
+                Distribuição Geográfica (BR, Estado, Regiões, Meso/ microregião.)
+                </Typography>
+              </li>
+              <li>
+                <Typography variant="body2" gutterBottom>
+                Comparação outros países
+                </Typography>
+              </li>
+            </ul>
+          </CardContent>
+        </Card>
+        <Card variant="outlined" sx={{ maxWidth: '400px' }}>
+          <CardContent>  
+            <h4>Por nutriente - N P K</h4>
+            <h5>Por entrada - em %</h5>
+            <ul>
+              <li>
+                <Typography variant="body2" gutterBottom>
+                  Dejetos animais (suínos, galináceos)
+                </Typography>
+              </li>
+              <li>
+                <Typography variant="body2" gutterBottom>
+                Deposição atmosférica
+                </Typography>
+              </li>
+              <li>
+                <Typography variant="body2" gutterBottom>
+                Fertilizantes minerais (por UF - ANDA _ com dificuldades)
+                </Typography>
+              </li>
+              <li>
+                <Typography variant="body2" gutterBottom>
+                  Dejetos animais (suínos, galináceos)
+                </Typography>
+              </li>
+              <li>
+                <Typography variant="body2" gutterBottom>
+                Fertilizantes orgânico (vinhaça) (por UF)
+                </Typography>
+              </li>
+              <li>
+                <Typography variant="body2" gutterBottom>
+                Fixação Biológica de N (leguminosas, milho - 10% e cana, pastagens - 15 kg/ha ano)
+                </Typography>
+              </li>
+              <li>
+                <Typography variant="body2" gutterBottom>
+                Sementes
+                </Typography>
+              </li>
+            </ul>
+          </CardContent>
+        </Card>
+        <Card variant="outlined" sx={{ maxWidth: '400px' }}>
+          <CardContent>  
+            <h4>Por nutriente - N P K</h4>
+            <h5>Por saída - em %</h5>
+            <ul>
+              <li>
+                <Typography variant="body2" gutterBottom>
+                produção carne bovina (por UF)
+                </Typography>
+              </li>
+              <li>
+                <Typography variant="body2" gutterBottom>
+                produção agrícola
+                </Typography>
+              </li>
+              <li>
+                <Typography variant="body2" gutterBottom>
+                {`Pelo Balanço > por ha (área agropecuária - lavouras + pastagem (total) > balanço de nutrientes/área`}
+                </Typography>
+              </li>
+              <li>
+                <Typography variant="body2" gutterBottom>
+                lavouras + pastagem
+                </Typography>
+              </li>
+              <li>
+                <Typography variant="body2" gutterBottom>
+                {`Série Histórica - incluir curva de produção agrícola e carne bovina (rendimento)`}
+                </Typography>
+              </li>
+              <li>
+                <Typography variant="body2" gutterBottom>
+                Incluir FBN x produção agrícola
+                </Typography>
+              </li>
+              <li>
+                <Typography variant="body2" gutterBottom>
+                Distribuição Geográfica (BR, Estado, Regiões, Meso/ microregião.)
+                </Typography>
+              </li>
+              <li>
+                <Typography variant="body2" gutterBottom>
+                Comparação outros países
+                </Typography>
+              </li>
+            </ul>
+          </CardContent>
+        </Card>
+        <Card variant="outlined" sx={{ maxWidth: '600px' }}>
+          <CardContent>  
+            {Array.isArray(data) ? (
+              <ul>
+                {data.map((dataItem, index) => (
+                  <li key={`${dataItem.geocodigo}-${index}`}>
+                    {dataItem.fonte} em {new Date(dataItem.data).getFullYear()} valor:{" "}
+                    {dataItem.valor}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>Carregando...</p>
+            )}
+          </CardContent>
+        </Card>
+      </Stack>
     </div>
   );
 };

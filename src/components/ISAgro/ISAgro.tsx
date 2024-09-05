@@ -40,15 +40,17 @@ const ISAgro: React.FC = () => {
   // dados do servidor armazenados no contexto
   const { data } = useISAgroContext();
   const { states } = useISAgroContext();
+  const { countries } = useISAgroContext();
 
-  console.log(`Dados do contexto: ${data}`);
-  console.log(`Anos do contexto: ${states}`);
+  console.log(`Dados do contexto: ${JSON.stringify(data)}`);
+  console.log(`Estados do contexto: ${JSON.stringify(states)}`);
+  console.log(`Paises do contexto: ${JSON.stringify(countries)}`);
 
   // dados selecionados em tela
   const [pais, setPais] = React.useState('');
-  const [ano, setAno] = React.useState('');
   const [estado, setEstado] = React.useState('');
-  const [value, setValue] = React.useState<number[]>([20, 37]);
+  const [ano, setAno] = React.useState('');
+  const [rangeAnos, setRangeAnos] = React.useState<number[]>([0, 0]);
   
   const minDistance = 10;
 
@@ -62,7 +64,7 @@ const ISAgro: React.FC = () => {
     setEstado(event.target.value as string);
   };
 
-  const handleChange = (
+  const handleChangeRangeAnos = (
     event: Event,
     newValue: number | number[],
     activeThumb: number,
@@ -72,9 +74,9 @@ const ISAgro: React.FC = () => {
     }
 
     if (activeThumb === 0) {
-      setValue([Math.min(newValue[0], value[1] - minDistance), value[1]]);
+      setRangeAnos([Math.min(newValue[0], rangeAnos[1] - minDistance), rangeAnos[1]]);
     } else {
-      setValue([value[0], Math.max(newValue[1], value[0] + minDistance)]);
+      setRangeAnos([rangeAnos[0], Math.max(newValue[1], rangeAnos[0] + minDistance)]);
     }
   };
 
@@ -113,9 +115,9 @@ const ISAgro: React.FC = () => {
                 borderRadius: '20px', 
               }}
             >
-              <MenuItem value={10}>Brasil</MenuItem>
-              <MenuItem value={20}>Bolivia</MenuItem>
-              <MenuItem value={30}>Peru</MenuItem>
+              {countries?.map((y, k) => {
+                return <MenuItem key={k} value={y.iso}>{y.pais}</MenuItem>;
+              })}
             </Select>
           </FormControl>
         </Box>
@@ -125,8 +127,8 @@ const ISAgro: React.FC = () => {
         <Box sx={{ minWidth: '250px', maxWidth: '300px', margin: '2px', padding: '2px' }}>
           <Slider
             getAriaLabel={() => 'Years range'}
-            value={value}
-            onChange={handleChange}
+            value={rangeAnos}
+            onChange={handleChangeRangeAnos}
             valueLabelDisplay="auto"
             sx={{ margin: '3px' }}
           />
@@ -147,8 +149,10 @@ const ISAgro: React.FC = () => {
                 borderRadius: '20px', 
               }}
             >
-              {states?.map((y) => {
-                return <MenuItem key={y.uf} value={y.uf}>{y.estado}</MenuItem>;
+              {states?.map((y, k) => {
+                const uf = Object.keys(y)[0];  // A sigla do estado
+                const estadoNome = y['uf'];      // O nome do estado
+                return <MenuItem key={k} value={uf}>{estadoNome}</MenuItem>;
               })}
             </Select>
           </FormControl>
@@ -163,7 +167,7 @@ const ISAgro: React.FC = () => {
           Dados do ISAgro - Por (município), estado, país por nutriente - N P K
         </h1>
       </Box>
-      
+
       <Stack spacing={2} sx={{ alignItems: 'center' }}> 
         <Card variant="outlined" sx={{ maxWidth: '400px' }}>
           <CardContent>  

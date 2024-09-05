@@ -11,8 +11,9 @@ import {
   FC,
 } from "react";
 import GetDataService from "../../services/GetDataService";
-import { IData, IState } from "./types";
+import { ICountry, IData, IState } from "./types";
 import GetStatesService from "../../services/GetStatesService";
+import GetCountriesService from "../../services/GetCountriesService";
 
 // Interface para o contexto
 interface ISAgroContextProps {
@@ -22,12 +23,15 @@ interface ISAgroContextProps {
   setYears: Dispatch<SetStateAction<string[] | null>>;
   states: IState[] | null;
   setStates: Dispatch<SetStateAction<IState[] | null>>;
+  countries: ICountry[] | null;
+  setCountries: Dispatch<SetStateAction<ICountry[] | null>>;
 }
 
 // Estado inicial
 const dataInitialState: IData[] | null = null;
 const yearsInitialState: string[] | null = null;
-const statesInitialState: string[] | null = null;
+const statesInitialState: IState[] | null = null;
+const countriesInitialState: ICountry[] | null = null;
 
 // Criação do contexto
 const ISAgroContext = createContext<ISAgroContextProps | undefined>(undefined);
@@ -37,9 +41,11 @@ export const ISAgroProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [data, setData] = useState<IData[] | null>(dataInitialState);
   const [years, setYears] = useState<string[] | null>(yearsInitialState);
   const [states, setStates] = useState<IState[] | null>(statesInitialState);
+  const [countries, setCountries] = useState<ICountry[] | null>(statesInitialState);
 
   const dataService = new GetDataService<IData[]>();
   const statesService = new GetStatesService<IState[]>();
+  const countriesService = new GetCountriesService<ICountry[]>();
   
   useEffect(() => {
     const fetchData = async () => {
@@ -53,6 +59,8 @@ export const ISAgroProvider: FC<{ children: ReactNode }> = ({ children }) => {
       }
       const statesData = await statesService.getData();
       setStates(statesData as IState[]);
+      const countriesData = await countriesService.getData();
+      setCountries(countriesData as ICountry[]);
     };
 
     fetchData();
@@ -67,6 +75,8 @@ export const ISAgroProvider: FC<{ children: ReactNode }> = ({ children }) => {
     setYears,
     states,
     setStates,
+    countries,
+    setCountries
   };
 
   return (

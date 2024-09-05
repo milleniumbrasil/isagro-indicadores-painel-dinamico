@@ -24,3 +24,8 @@ export interface IState {
   uf: string;
   estado: string;
 }
+
+export interface ICountry {
+  iso: string;
+  pais: string;
+}

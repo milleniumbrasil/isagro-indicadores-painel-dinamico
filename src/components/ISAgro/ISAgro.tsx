@@ -4,36 +4,22 @@ import React from "react";
 import Stack from "@mui/material/Stack";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
-import { alpha } from "@mui/material/styles";
-import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import InputBase from "@mui/material/InputBase";
-import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import Divider from "@mui/material/Divider";
-import DirectionsIcon from "@mui/icons-material/Directions";
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Slider from '@mui/material/Slider';
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 
 import { useISAgroContext } from "./ISAgroContext";
-
-const RoundedPaper = styled(Paper)(({ theme }) => ({
-  width: 180,
-  height: 120,
-  margin: "10px",
-  padding: theme.spacing(2),
-  ...theme.typography.body2,
-  textAlign: "center",
-}));
+import OrganicaAreaChart from "../OrganicaAreaChart";
 
 const ISAgro: React.FC = () => {
 
@@ -42,11 +28,13 @@ const ISAgro: React.FC = () => {
   const { states } = useISAgroContext();
   const { countries } = useISAgroContext();
   const { cities } = useISAgroContext();
+  const { organicas } = useISAgroContext();
 
   console.log(`Dados do contexto: ${JSON.stringify(data)}`);
   console.log(`Paises do contexto: ${JSON.stringify(countries)}`);
   console.log(`Estados do contexto: ${JSON.stringify(states)}`);
   console.log(`Cidades do contexto: ${JSON.stringify(countries)}`);
+  console.log(`Organicas do contexto: ${JSON.stringify(organicas)}`);
 
   // dados selecionados em tela
   const [pais, setPais] = React.useState('');
@@ -57,7 +45,6 @@ const ISAgro: React.FC = () => {
   
   const minDistance = 10;
 
-  
   // manipuladores de eventos de tela
   const handleChangePaises = (event: SelectChangeEvent) => {
     setPais(event.target.value as string);
@@ -199,10 +186,16 @@ const ISAgro: React.FC = () => {
       <Stack spacing={2} sx={{ alignItems: 'center' }}> 
         <Card variant="outlined" sx={{ maxWidth: '400px' }}>
           <CardContent>  
-            <h3>Por </h3>
+            <h3>Selecionados</h3>
             <h5>Estado: {estado}</h5>
             <h5>Cidade: {cidade}</h5>
             <h5>Pais: {pais}</h5>
+          </CardContent>
+        </Card>
+        <Card variant="outlined" sx={{ maxWidth: '400px' }}>
+          <CardContent>  
+            <h3>Organicas</h3>
+            <OrganicaAreaChart organicas={organicas} />
           </CardContent>
         </Card>
         <Card variant="outlined" sx={{ maxWidth: '400px' }}>

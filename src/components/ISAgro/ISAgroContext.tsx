@@ -11,10 +11,11 @@ import {
   FC,
 } from "react";
 import GetDataService from "../../services/GetDataService";
-import { ICity, ICountry, IData, IState } from "./types";
+import { ICity, ICountry, IData, IOrganica, IState } from "./types";
 import GetStatesService from "../../services/GetStatesService";
 import GetCountriesService from "../../services/GetCountriesService";
 import GetCitiesService from "../../services/GetCitiesService";
+import GetOrganicaService from "../../services/GetOrganicaService";
 
 // Interface para o contexto
 interface ISAgroContextProps {
@@ -22,12 +23,14 @@ interface ISAgroContextProps {
   setData: Dispatch<SetStateAction<IData[] | null>>;
   years: string[] | null;
   setYears: Dispatch<SetStateAction<string[] | null>>;
+  cities: ICity[] | null;
+  setCities: Dispatch<SetStateAction<ICity[] | null>>;
   states: IState[] | null;
   setStates: Dispatch<SetStateAction<IState[] | null>>;
   countries: ICountry[] | null;
   setCountries: Dispatch<SetStateAction<ICountry[] | null>>;
-  cities: ICity[] | null;
-  setCities: Dispatch<SetStateAction<ICity[] | null>>;
+  organicas: IOrganica[] | null;
+  setOrganicas: Dispatch<SetStateAction<IOrganica[] | null>>;
 }
 
 // Estado inicial
@@ -36,6 +39,7 @@ const yearsInitialState: string[] | null = null;
 const statesInitialState: IState[] | null = null;
 const countriesInitialState: ICountry[] | null = null;
 const citiesInitialState: ICity[] | null = null;
+const organicasInitialState: IOrganica[] | null = null;
 
 // Criação do contexto
 const ISAgroContext = createContext<ISAgroContextProps | undefined>(undefined);
@@ -47,11 +51,13 @@ export const ISAgroProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [states, setStates] = useState<IState[] | null>(statesInitialState);
   const [countries, setCountries] = useState<ICountry[] | null>(countriesInitialState);
   const [cities, setCities] = useState<ICity[] | null>(citiesInitialState);
+  const [organicas, setOrganicas] = useState<IOrganica[] | null>(organicasInitialState);
 
   const dataService = new GetDataService<IData[]>();
   const statesService = new GetStatesService<IState[]>();
   const countriesService = new GetCountriesService<ICountry[]>();
   const citiesService = new GetCitiesService<ICity[]>();
+  const organicasService = new GetOrganicaService<IOrganica[]>();
   
   useEffect(() => {
     const fetchData = async () => {
@@ -69,6 +75,8 @@ export const ISAgroProvider: FC<{ children: ReactNode }> = ({ children }) => {
       setCountries(countriesData as ICountry[]);
       const citiesData = await citiesService.getData();
       setCities(citiesData as ICity[]);
+      const organicasData = await organicasService.getData();
+      setOrganicas(organicasData as IOrganica[]);
     };
 
     fetchData();
@@ -87,6 +95,8 @@ export const ISAgroProvider: FC<{ children: ReactNode }> = ({ children }) => {
     setCountries,
     cities,
     setCities,
+    organicas,
+    setOrganicas,
   };
 
   return (

@@ -34,3 +34,9 @@ export interface ICountry {
   iso: string;
   pais: string;
 }
+
+export interface IOrganica {
+  data: Date;
+  area: number;
+  setor: string;
+}

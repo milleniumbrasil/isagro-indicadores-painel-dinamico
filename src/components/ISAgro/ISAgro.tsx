@@ -41,14 +41,17 @@ const ISAgro: React.FC = () => {
   const { data } = useISAgroContext();
   const { states } = useISAgroContext();
   const { countries } = useISAgroContext();
+  const { cities } = useISAgroContext();
 
   console.log(`Dados do contexto: ${JSON.stringify(data)}`);
-  console.log(`Estados do contexto: ${JSON.stringify(states)}`);
   console.log(`Paises do contexto: ${JSON.stringify(countries)}`);
+  console.log(`Estados do contexto: ${JSON.stringify(states)}`);
+  console.log(`Cidades do contexto: ${JSON.stringify(countries)}`);
 
   // dados selecionados em tela
   const [pais, setPais] = React.useState('');
   const [estado, setEstado] = React.useState('');
+  const [cidade, setCidade] = React.useState('');
   const [ano, setAno] = React.useState('');
   const [rangeAnos, setRangeAnos] = React.useState<number[]>([0, 0]);
   
@@ -62,6 +65,10 @@ const ISAgro: React.FC = () => {
 
   const handleChangeEstados = (event: SelectChangeEvent) => {
     setEstado(event.target.value as string);
+  };
+
+  const handleChangeCidades = (event: SelectChangeEvent) => {
+    setCidade(event.target.value as string);
   };
 
   const handleChangeRangeAnos = (
@@ -100,6 +107,18 @@ const ISAgro: React.FC = () => {
           </IconButton>
         </Box>
 
+        <Divider sx={{ height: 28, m: 0.5, margin: '3px' }} orientation="vertical" />
+
+        <Box sx={{ minWidth: '250px', maxWidth: '300px', margin: '2px', padding: '2px' }}>
+          <Slider
+            getAriaLabel={() => 'Years range'}
+            value={rangeAnos}
+            onChange={handleChangeRangeAnos}
+            valueLabelDisplay="auto"
+            sx={{ margin: '3px' }}
+          />
+        </Box>
+
         <Divider sx={{ height: 28, m: 0.5, margin: '2px' }} orientation="vertical" />
 
         <Box sx={{ minWidth: '250px', maxWidth: '300px', margin: '2px', padding: '2px' }}>
@@ -116,7 +135,7 @@ const ISAgro: React.FC = () => {
               }}
             >
               {countries?.map((y, k) => {
-                return <MenuItem key={k} value={y.iso}>{y.pais}</MenuItem>;
+                return <MenuItem key={k} value={y.pais}>{y.pais}</MenuItem>;
               })}
             </Select>
           </FormControl>
@@ -124,19 +143,7 @@ const ISAgro: React.FC = () => {
 
         <Divider sx={{ height: 28, m: 0.5, margin: '3px' }} orientation="vertical" />
 
-        <Box sx={{ minWidth: '250px', maxWidth: '300px', margin: '2px', padding: '2px' }}>
-          <Slider
-            getAriaLabel={() => 'Years range'}
-            value={rangeAnos}
-            onChange={handleChangeRangeAnos}
-            valueLabelDisplay="auto"
-            sx={{ margin: '3px' }}
-          />
-        </Box>
-
-        <Divider sx={{ height: 28, m: 0.5, margin: '3px' }} orientation="vertical" />
-
-        <Box sx={{ minWidth: '250px', maxWidth: '300px', margin: '2px', padding: '2px' }}>
+        <Box sx={{ minWidth: '100px', maxWidth: '300px', margin: '2px', padding: '2px' }}>
           <FormControl fullWidth size="small" sx={{ m: 1, mt: 3 }}>
             <InputLabel id="states-simple-select-label">Estado</InputLabel>
             <Select
@@ -150,16 +157,37 @@ const ISAgro: React.FC = () => {
               }}
             >
               {states?.map((y, k) => {
-                const uf = Object.keys(y)[0];  // A sigla do estado
-                const estadoNome = y['uf'];      // O nome do estado
-                return <MenuItem key={k} value={uf}>{estadoNome}</MenuItem>;
+                return <MenuItem key={k} value={y.estado}>{y.estado}</MenuItem>;
               })}
             </Select>
           </FormControl>
         </Box>
-        <IconButton color="primary" sx={{ p: "10px" }} aria-label="directions">
+
+        <Divider sx={{ height: 28, m: 0.5, margin: '3px' }} orientation="vertical" />
+
+        <Box sx={{ minWidth: '100px', maxWidth: '300px', margin: '2px', padding: '2px' }}>
+          <FormControl fullWidth size="small" sx={{ m: 1, mt: 3 }}>
+            <InputLabel id="cities-simple-select-label">Cidade</InputLabel>
+            <Select
+              labelId="cities-simple-select-label"
+              id="cities-simple-select"
+              value={cidade}
+              label="Cidade"
+              onChange={handleChangeCidades}
+              sx={{
+                borderRadius: '20px', 
+              }}
+            >
+              {cities?.map((y, k) => {
+                return <MenuItem key={k} value={y.cidade}>{y.cidade}</MenuItem>;
+              })}
+            </Select>
+          </FormControl>
+        </Box>
+        
+        {/* <IconButton color="primary" sx={{ p: "10px" }} aria-label="directions">
           <DirectionsIcon />
-        </IconButton>
+        </IconButton> */}
       </Paper>
       
       <Box sx={{ alignItems: 'center', width: '100%' }}>
@@ -169,6 +197,14 @@ const ISAgro: React.FC = () => {
       </Box>
 
       <Stack spacing={2} sx={{ alignItems: 'center' }}> 
+        <Card variant="outlined" sx={{ maxWidth: '400px' }}>
+          <CardContent>  
+            <h3>Por </h3>
+            <h5>Estado: {estado}</h5>
+            <h5>Cidade: {cidade}</h5>
+            <h5>Pais: {pais}</h5>
+          </CardContent>
+        </Card>
         <Card variant="outlined" sx={{ maxWidth: '400px' }}>
           <CardContent>  
             <h3>Por (município), estado, país</h3>

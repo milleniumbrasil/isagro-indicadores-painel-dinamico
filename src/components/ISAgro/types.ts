@@ -36,7 +36,7 @@ export interface ICountry {
 }
 
 export interface IOrganica {
-  data: Date;
+  year: number;
   area: number;
   setor: string;
 

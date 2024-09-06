@@ -36,7 +36,7 @@ export default class OrganicasPercentualAreaChart extends PureComponent<Organica
       }}
     >
       <CartesianGrid strokeDasharray="4 4" />
-      <XAxis dataKey="data" />
+      <XAxis dataKey="year" />
       {/* <YAxis tickFormatter={toPercent} /> */}
       {/* <Tooltip content={renderTooltipContent} /> */}
         <Area type="monotone" dataKey="hortalicas" stackId="1" stroke="#8884d8" fill="#8884d8" />

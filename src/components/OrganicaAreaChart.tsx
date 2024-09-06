@@ -37,7 +37,7 @@ export default class OrganicaAreaChart extends PureComponent<OrganicaAreaChartPr
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="data" />
+          <XAxis dataKey="year" />
           <YAxis />
           <Tooltip />
           <Area type="monotone" dataKey="area" stroke="#8884d8" fill="#8884d8" />

@@ -11,7 +11,7 @@ import {
   FC,
 } from "react";
 import GetDataService from "../../services/GetDataService";
-import { ICity, ICountry, IData, IOrganica, IState } from "./types";
+import { ICity, ICountry, IData, IOrganica, IOrganicaPercentual, IState } from "./types";
 import GetStatesService from "../../services/GetStatesService";
 import GetCountriesService from "../../services/GetCountriesService";
 import GetCitiesService from "../../services/GetCitiesService";
@@ -31,6 +31,8 @@ interface ISAgroContextProps {
   setCountries: Dispatch<SetStateAction<ICountry[] | null>>;
   organicas: IOrganica[] | null;
   setOrganicas: Dispatch<SetStateAction<IOrganica[] | null>>;
+  organicasPercentual: IOrganicaPercentual[] | null;
+  setOrganicasPercentual: Dispatch<SetStateAction<IOrganicaPercentual[] | null>>;
 }
 
 // Estado inicial
@@ -40,6 +42,7 @@ const statesInitialState: IState[] | null = null;
 const countriesInitialState: ICountry[] | null = null;
 const citiesInitialState: ICity[] | null = null;
 const organicasInitialState: IOrganica[] | null = null;
+const organicasPercentualInitialState: IOrganicaPercentual[] | null = null;
 
 // Criação do contexto
 const ISAgroContext = createContext<ISAgroContextProps | undefined>(undefined);
@@ -52,6 +55,7 @@ export const ISAgroProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [countries, setCountries] = useState<ICountry[] | null>(countriesInitialState);
   const [cities, setCities] = useState<ICity[] | null>(citiesInitialState);
   const [organicas, setOrganicas] = useState<IOrganica[] | null>(organicasInitialState);
+  const [organicasPercentual, setOrganicasPercentual] = useState<IOrganicaPercentual[] | null>(organicasPercentualInitialState);
 
   const dataService = new GetDataService<IData[]>();
   const statesService = new GetStatesService<IState[]>();
@@ -77,6 +81,12 @@ export const ISAgroProvider: FC<{ children: ReactNode }> = ({ children }) => {
       setCities(citiesData as ICity[]);
       const organicasData = await organicasService.getData();
       setOrganicas(organicasData as IOrganica[]);
+      if (Array.isArray(organicasData)) {
+        const organicasPercentualData = await organicasService.getGroupedbySetorAsPercentual(organicasData);
+        setOrganicasPercentual(organicasPercentualData as IOrganicaPercentual[]);
+      } else {
+        console.error("Error: organicasData is not of type IOrganica[]");
+      }
     };
 
     fetchData();
@@ -97,6 +107,8 @@ export const ISAgroProvider: FC<{ children: ReactNode }> = ({ children }) => {
     setCities,
     organicas,
     setOrganicas,
+    organicasPercentual,
+    setOrganicasPercentual,
   };
 
   return (

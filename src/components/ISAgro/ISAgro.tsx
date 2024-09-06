@@ -20,8 +20,6 @@ import CardContent from '@mui/material/CardContent';
 import { useISAgroContext } from "./ISAgroContext";
 import OrganicaAreaChart from "../OrganicaAreaChart";
 import OrganicasPercentualAreaChart from "../OrganicasPercentualAreaChart";
-import GetOrganicaService from "../../services/GetOrganicaService";
-import { IOrganica } from "./types";
 
 const ISAgro: React.FC = () => {
 
@@ -31,10 +29,7 @@ const ISAgro: React.FC = () => {
   const { countries } = useISAgroContext();
   const { cities } = useISAgroContext();
   const { organicas } = useISAgroContext();
-
-
-  const organicasService = new GetOrganicaService<IOrganica[]>();
-  const organicasGroupedBySetor = organicas ? organicasService.getGroupedbySetorAsPercentual(organicas) : [];
+  const { organicasPercentual } = useISAgroContext();
 
   // dados selecionados em tela
   const [pais, setPais] = React.useState('');
@@ -195,11 +190,7 @@ const ISAgro: React.FC = () => {
         <Card variant="outlined" sx={{ width: '90%' }}>
           <CardContent>  
             <h3>Organicas</h3>
-            {Array.isArray(organicasGroupedBySetor) ? (
-              <OrganicasPercentualAreaChart width={1200} height={400} organicas={organicasGroupedBySetor} />
-            ) : (
-              <p>Loading...</p>
-            )}
+              <OrganicasPercentualAreaChart width={1200} height={400} organicas={organicasPercentual} />
           </CardContent>
         </Card>
         <Card variant="outlined" sx={{ width: '90%' }}>

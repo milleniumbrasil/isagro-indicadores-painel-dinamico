@@ -22,7 +22,6 @@ import CardContent from '@mui/material/CardContent';
 import { useISAgroContext } from "./ISAgroContext";
 import OrganicaAreaChart from "../OrganicaAreaChart";
 import OrganicasPercentualAreaChart from "../OrganicasPercentualAreaChart";
-import OrganicaAreaChartTest from "../OrganicaAreaChartTest";
 
 const ISAgro: React.FC = () => {
 

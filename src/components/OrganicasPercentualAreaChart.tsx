@@ -8,6 +8,7 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
+  ResponsiveContainer,
 } from "recharts";
 import { IOrganicaPercentual } from './ISAgro/types';
 
@@ -46,50 +47,54 @@ export default class OrganicasPercentualAreaChart extends PureComponent<Organica
     const width = this.props.width;
     const height = this.props.height;
     return (
-        <AreaChart
-          width={width}
-          height={height}
-          data={organicas}
-          margin={{
-            top: 10,
-            right: 50,
-            left: 10,
-            bottom: 10,
-          }}
-          style={{ fontSize: 8 }}
-        >
-          <CartesianGrid strokeDasharray="4 4" />
-          <XAxis dataKey="year" />
-          <YAxis tickFormatter={(decimal: number = 0, fixed: number = 1) => `${(decimal).toFixed(fixed)}%`} />
-          <Tooltip content={this.renderTooltipContent} /><Area
-            type="monotone"
-            dataKey="hortalicas"
-            stackId="1"
-            stroke="#32CD32" // LimeGreen
-            fill="#32CD32"
-          />
-          <Area
-            type="monotone"
-            dataKey="fruticultura"
-            stackId="1"
-            stroke="#228B22" // ForestGreen
-            fill="#228B22"
-          />
-          <Area
-            type="monotone"
-            dataKey="pastagem"
-            stackId="1"
-            stroke="#66CDAA" // MediumAquamarine
-            fill="#66CDAA"
-          />
-          <Area
-            type="monotone"
-            dataKey="grao"
-            stackId="1"
-            stroke="#006400" // DarkGreen
-            fill="#006400"
-          />
-        </AreaChart>
+        <div style={{ width: '100%', height: height }}>
+          <ResponsiveContainer>
+            <AreaChart
+              width={width}
+              height={height}
+              data={organicas}
+              margin={{
+                top: 10,
+                right: 50,
+                left: 10,
+                bottom: 10,
+              }}
+              style={{ fontSize: 8 }}
+            >
+              <CartesianGrid strokeDasharray="4 4" />
+              <XAxis dataKey="year" />
+              <YAxis tickFormatter={(decimal: number = 0, fixed: number = 1) => `${(decimal).toFixed(fixed)}%`} />
+              <Tooltip content={this.renderTooltipContent} /><Area
+                type="monotone"
+                dataKey="hortalicas"
+                stackId="1"
+                stroke="#32CD32" // LimeGreen
+                fill="#32CD32"
+              />
+              <Area
+                type="monotone"
+                dataKey="fruticultura"
+                stackId="1"
+                stroke="#228B22" // ForestGreen
+                fill="#228B22"
+              />
+              <Area
+                type="monotone"
+                dataKey="pastagem"
+                stackId="1"
+                stroke="#66CDAA" // MediumAquamarine
+                fill="#66CDAA"
+              />
+              <Area
+                type="monotone"
+                dataKey="grao"
+                stackId="1"
+                stroke="#006400" // DarkGreen
+                fill="#006400"
+              />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
     );
   }
 }

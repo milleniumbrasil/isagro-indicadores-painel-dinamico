@@ -2,24 +2,32 @@
 // src/components/OrganicaAreaChart.tsx
 
 import { PureComponent } from 'react';
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import {
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+} from "recharts";
 import { IOrganica } from './ISAgro/types';
 
 interface OrganicaAreaChartProps {
-  organicas: IOrganica[] | null;  
+  organicas: IOrganica[] | null;
+  width: number;
+  height: number;
 }
 
 export default class OrganicaAreaChart extends PureComponent<OrganicaAreaChartProps> {
 
   render() {
-  
     const organicas = this.props.organicas ?? [];
-
+    const width = this.props.width ?? 500;
+    const height = this.props.height ?? 400;
     return (
-      <ResponsiveContainer width="100%" height="100%">
         <AreaChart
-          width={500}
-          height={400}
+          width={width}
+          height={height}
           data={organicas}
           margin={{
             top: 10,
@@ -29,12 +37,11 @@ export default class OrganicaAreaChart extends PureComponent<OrganicaAreaChartPr
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="dt" />
+          <XAxis dataKey="data" />
           <YAxis />
           <Tooltip />
           <Area type="monotone" dataKey="area" stroke="#8884d8" fill="#8884d8" />
         </AreaChart>
-      </ResponsiveContainer>
     );
   }
 }

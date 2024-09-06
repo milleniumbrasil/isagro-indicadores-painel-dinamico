@@ -1,7 +1,7 @@
 
 // src/services/GetOrganicaService.ts
 
-import { IOrganica } from "../components/ISAgro/types";
+import { IOrganica, IOrganicaPercentual } from "../components/ISAgro/types";
 
 interface IOrganicaService<T> {
   getData(): Promise<T | { error: string }>;
@@ -22,37 +22,95 @@ class GetOrganicaService<T> implements IOrganicaService<T> {
 
   public async getData(): Promise<T | { error: string }> {
     return [
-      { data: new Date(1990, 0, 1), area: 500, setor: "grão" },
-      { data: new Date(1991, 0, 1), area: 520, setor: "hortaliças" },
-      { data: new Date(1992, 0, 1), area: 540, setor: "fruticultura" },
-      { data: new Date(1993, 0, 1), area: 560, setor: "pastagem" },
-      { data: new Date(1994, 0, 1), area: 580, setor: "grão" },
-      { data: new Date(1995, 0, 1), area: 600, setor: "hortaliças" },
-      { data: new Date(1996, 0, 1), area: 620, setor: "fruticultura" },
-      { data: new Date(1997, 0, 1), area: 640, setor: "pastagem" },
-      { data: new Date(1998, 0, 1), area: 660, setor: "grão" },
-      { data: new Date(1999, 0, 1), area: 680, setor: "hortaliças" },
-      { data: new Date(2000, 0, 1), area: 700, setor: "fruticultura" },
-      { data: new Date(2001, 0, 1), area: 720, setor: "pastagem" },
-      { data: new Date(2002, 0, 1), area: 740, setor: "grão" },
-      { data: new Date(2003, 0, 1), area: 760, setor: "hortaliças" },
-      { data: new Date(2004, 0, 1), area: 780, setor: "fruticultura" },
-      { data: new Date(2005, 0, 1), area: 800, setor: "pastagem" },
-      { data: new Date(2006, 0, 1), area: 820, setor: "grão" },
-      { data: new Date(2007, 0, 1), area: 840, setor: "hortaliças" },
-      { data: new Date(2008, 0, 1), area: 860, setor: "fruticultura" },
-      { data: new Date(2009, 0, 1), area: 880, setor: "pastagem" },
-      { data: new Date(2010, 0, 1), area: 900, setor: "grão" },
-      { data: new Date(2011, 0, 1), area: 920, setor: "hortaliças" },
-      { data: new Date(2012, 0, 1), area: 940, setor: "fruticultura" },
-      { data: new Date(2013, 0, 1), area: 960, setor: "pastagem" },
-      { data: new Date(2014, 0, 1), area: 980, setor: "grão" },
-      { data: new Date(2015, 0, 1), area: 1000, setor: "hortaliças" },
-      { data: new Date(2016, 0, 1), area: 1020, setor: "fruticultura" },
-      { data: new Date(2017, 0, 1), area: 1040, setor: "pastagem" },
-      { data: new Date(2018, 0, 1), area: 1060, setor: "grão" },
-      { data: new Date(2019, 0, 1), area: 1080, setor: "hortaliças" },
+      { data: 1990, area: 500, setor: "grão" },
+      { data: 1991, area: 520, setor: "hortaliças" },
+      { data: 1992, area: 540, setor: "fruticultura" },
+      { data: 1993, area: 560, setor: "pastagem" },
+      { data: 1994, area: 580, setor: "grão" },
+      { data: 1995, area: 600, setor: "hortaliças" },
+      { data: 1996, area: 620, setor: "fruticultura" },
+      { data: 1997, area: 640, setor: "pastagem" },
+      { data: 1998, area: 660, setor: "grão" },
+      { data: 1999, area: 680, setor: "hortaliças" },
+      { data: 2000, area: 700, setor: "fruticultura" },
+      { data: 2001, area: 720, setor: "pastagem" },
+      { data: 2002, area: 740, setor: "grão" },
+      { data: 2003, area: 760, setor: "hortaliças" },
+      { data: 2004, area: 780, setor: "fruticultura" },
+      { data: 2005, area: 800, setor: "pastagem" },
+      { data: 2006, area: 820, setor: "grão" },
+      { data: 2007, area: 840, setor: "hortaliças" },
+      { data: 2008, area: 860, setor: "fruticultura" },
+      { data: 2009, area: 880, setor: "pastagem" },
+      { data: 2010, area: 900, setor: "grão" },
+      { data: 2011, area: 920, setor: "hortaliças" },
+      { data: 2012, area: 940, setor: "fruticultura" },
+      { data: 2013, area: 960, setor: "pastagem" },
+      { data: 2014, area: 980, setor: "grão" },
+      { data: 2015, area: 1000, setor: "hortaliças" },
+      { data: 2016, area: 1020, setor: "fruticultura" },
+      { data: 2017, area: 1040, setor: "pastagem" },
+      { data: 2018, area: 1060, setor: "grão" },
+      { data: 2019, area: 1080, setor: "hortaliças" },
     ] as T;
+  }
+  public async getGroupedbySetorAsPercentual(items: IOrganica[]): Promise<IOrganicaPercentual[] | { error: string }> {  
+    console.log(`getGroupedbySetorAsPercentual [items]: ${JSON.stringify(items)}`);
+    
+    if (Array.isArray(items)) {
+      // Agrupar os itens por ano
+      const groupedByYear = items.reduce((acc, item) => {
+        const year = new Date(item.data).getFullYear();
+        
+        // Inicializar o ano se ele não existir ainda no agrupamento
+        if (!acc[year]) {
+          acc[year] = {
+            hortalicas: 0,
+            fruticultura: 0,
+            pastagem: 0,
+            grao: 0,
+            totalArea: 0,
+          };
+        }
+  
+        // Atualizar a área total do ano
+        acc[year].totalArea += item.area;
+  
+        // Adicionar a área ao setor correspondente
+        if (item.setor === "hortaliças") {
+          acc[year].hortalicas += item.area;
+        } else if (item.setor === "fruticultura") {
+          acc[year].fruticultura += item.area;
+        } else if (item.setor === "pastagem") {
+          acc[year].pastagem += item.area;
+        } else if (item.setor === "grão") {
+          acc[year].grao += item.area;
+        }
+  
+        return acc;
+      }, {} as { [year: number]: { hortalicas: number, fruticultura: number, pastagem: number, grao: number, totalArea: number } });
+      
+      console.log(`getGroupedbySetorAsPercentual [grouped]: ${JSON.stringify(groupedByYear)}`);
+      
+      // Calcular o percentual de cada setor por ano
+      const result: IOrganicaPercentual[] = Object.keys(groupedByYear).map(year => {
+        const yearData = groupedByYear[Number(year)];
+        const { hortalicas, fruticultura, pastagem, grao, totalArea } = yearData;
+  
+        return {
+          year: Number(year),
+          hortalicas: (hortalicas / totalArea) * 100 || 0, // Calcular percentual
+          fruticultura: (fruticultura / totalArea) * 100 || 0,
+          pastagem: (pastagem / totalArea) * 100 || 0,
+          grao: (grao / totalArea) * 100 || 0,
+        };
+      });
+  
+      console.log(`getGroupedbySetorAsPercentual [percentual result]: ${JSON.stringify(result)}`);
+      return result;
+    } else {
+      return { error: "Data not available" };
+    }
   }
 
   public async getByGrao(): Promise<IOrganica[] | { error: string }> {

@@ -3,7 +3,6 @@
 import React from "react";
 import Stack from "@mui/material/Stack";
 import Paper from "@mui/material/Paper";
-import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
@@ -20,6 +19,9 @@ import CardContent from '@mui/material/CardContent';
 
 import { useISAgroContext } from "./ISAgroContext";
 import OrganicaAreaChart from "../OrganicaAreaChart";
+import OrganicasPercentualAreaChart from "../OrganicasPercentualAreaChart";
+import GetOrganicaService from "../../services/GetOrganicaService";
+import { IOrganica } from "./types";
 
 const ISAgro: React.FC = () => {
 
@@ -30,11 +32,9 @@ const ISAgro: React.FC = () => {
   const { cities } = useISAgroContext();
   const { organicas } = useISAgroContext();
 
-  console.log(`Dados do contexto: ${JSON.stringify(data)}`);
-  console.log(`Paises do contexto: ${JSON.stringify(countries)}`);
-  console.log(`Estados do contexto: ${JSON.stringify(states)}`);
-  console.log(`Cidades do contexto: ${JSON.stringify(countries)}`);
-  console.log(`Organicas do contexto: ${JSON.stringify(organicas)}`);
+
+  const organicasService = new GetOrganicaService<IOrganica[]>();
+  const organicasGroupedBySetor = organicas ? organicasService.getGroupedbySetorAsPercentual(organicas) : [];
 
   // dados selecionados em tela
   const [pais, setPais] = React.useState('');
@@ -192,10 +192,20 @@ const ISAgro: React.FC = () => {
             <h5>Pais: {pais}</h5>
           </CardContent>
         </Card>
-        <Card variant="outlined" sx={{ maxWidth: '400px' }}>
+        <Card variant="outlined" sx={{ width: '90%' }}>
           <CardContent>  
             <h3>Organicas</h3>
-            <OrganicaAreaChart organicas={organicas} />
+            {Array.isArray(organicasGroupedBySetor) ? (
+              <OrganicasPercentualAreaChart width={1200} height={400} organicas={organicasGroupedBySetor} />
+            ) : (
+              <p>Loading...</p>
+            )}
+          </CardContent>
+        </Card>
+        <Card variant="outlined" sx={{ width: '90%' }}>
+          <CardContent>  
+            <h3>Organicas</h3>
+            <OrganicaAreaChart width={1200} height={400} organicas={organicas} />
           </CardContent>
         </Card>
         <Card variant="outlined" sx={{ maxWidth: '400px' }}>

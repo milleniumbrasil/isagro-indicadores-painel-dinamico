@@ -22,35 +22,35 @@ class GetOrganicaService<T> implements IOrganicaService<T> {
 
   public async getData(): Promise<T | { error: string }> {
     return [
-      { "year": 1990, "area": 500, "setor": "grão" },
-      { "year": 1990, "area": 520, "setor": "hortaliças" },
-      { "year": 1990, "area": 540, "setor": "fruticultura" },
-      { "year": 1990, "area": 560, "setor": "pastagem" },
+      { "year": 1990, "area": 100, "setor": "grão" },
+      { "year": 1990, "area": 150, "setor": "hortaliças" },
+      { "year": 1990, "area": 50, "setor": "fruticultura" },
+      { "year": 1990, "area": 10, "setor": "pastagem" },
       
-      { "year": 1991, "area": 600, "setor": "grão" },
-      { "year": 1991, "area": 620, "setor": "hortaliças" },
-      { "year": 1991, "area": 640, "setor": "fruticultura" },
-      { "year": 1991, "area": 660, "setor": "pastagem" },
+      { "year": 1991, "area": 250, "setor": "grão" },
+      { "year": 1991, "area": 350, "setor": "hortaliças" },
+      { "year": 1991, "area": 200, "setor": "fruticultura" },
+      { "year": 1991, "area": 100, "setor": "pastagem" },
       
-      { "year": 1992, "area": 700, "setor": "grão" },
-      { "year": 1992, "area": 720, "setor": "hortaliças" },
-      { "year": 1992, "area": 740, "setor": "fruticultura" },
-      { "year": 1992, "area": 760, "setor": "pastagem" },
+      { "year": 1992, "area": 400, "setor": "grão" },
+      { "year": 1992, "area": 500, "setor": "hortaliças" },
+      { "year": 1992, "area": 450, "setor": "fruticultura" },
+      { "year": 1992, "area": 250, "setor": "pastagem" },
     
       { "year": 1993, "area": 800, "setor": "grão" },
-      { "year": 1993, "area": 820, "setor": "hortaliças" },
-      { "year": 1993, "area": 840, "setor": "fruticultura" },
-      { "year": 1993, "area": 860, "setor": "pastagem" },
+      { "year": 1993, "area": 750, "setor": "hortaliças" },
+      { "year": 1993, "area": 800, "setor": "fruticultura" },
+      { "year": 1993, "area": 450, "setor": "pastagem" },
     
       { "year": 1994, "area": 900, "setor": "grão" },
-      { "year": 1994, "area": 920, "setor": "hortaliças" },
-      { "year": 1994, "area": 940, "setor": "fruticultura" },
-      { "year": 1994, "area": 960, "setor": "pastagem" },
+      { "year": 1994, "area": 900, "setor": "hortaliças" },
+      { "year": 1994, "area": 1100, "setor": "fruticultura" },
+      { "year": 1994, "area": 900, "setor": "pastagem" },
       
-      { "year": 1995, "area": 1000, "setor": "grão" },
-      { "year": 1995, "area": 1020, "setor": "hortaliças" },
-      { "year": 1995, "area": 1040, "setor": "fruticultura" },
-      { "year": 1995, "area": 1060, "setor": "pastagem" }
+      { "year": 1995, "area": 1200, "setor": "grão" },
+      { "year": 1995, "area": 1300, "setor": "hortaliças" },
+      { "year": 1995, "area": 1450, "setor": "fruticultura" },
+      { "year": 1995, "area": 9000, "setor": "pastagem" }
     ] as T;
   }
   
@@ -94,15 +94,14 @@ class GetOrganicaService<T> implements IOrganicaService<T> {
       
       // Calcular o percentual de cada setor por ano
       const result: IOrganicaPercentual[] = Object.keys(groupedByYear).map(year => {
-        const yearData = groupedByYear[Number(year)];
-        const { hortalicas, fruticultura, pastagem, grao, totalArea } = yearData;
-  
+        const totalArea = groupedByYear[Number(year)].totalArea;
+        
         return {
           year: Number(year),
-          hortalicas: (hortalicas / totalArea) * 100 || 0, // Calcular percentual
-          fruticultura: (fruticultura / totalArea) * 100 || 0,
-          pastagem: (pastagem / totalArea) * 100 || 0,
-          grao: (grao / totalArea) * 100 || 0,
+          hortalicas: Number((groupedByYear[Number(year)].hortalicas / totalArea).toFixed(2)), // Arredondando para 2 casas decimais
+          fruticultura: Number((groupedByYear[Number(year)].fruticultura / totalArea).toFixed(2)),
+          pastagem: Number((groupedByYear[Number(year)].pastagem / totalArea).toFixed(2)),
+          grao: Number((groupedByYear[Number(year)].grao / totalArea).toFixed(2)),
         };
       });
   

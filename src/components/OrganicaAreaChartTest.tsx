@@ -1,4 +1,7 @@
-import { PureComponent } from "react";
+
+// src/components/OrganicaAreaChartTest.tsx
+
+import { PureComponent } from 'react';
 import {
   AreaChart,
   Area,
@@ -7,25 +10,15 @@ import {
   CartesianGrid,
   Tooltip,
 } from "recharts";
+import { IOrganicaPercentual } from './ISAgro/types';
 
-import { IOrganicaPercentual } from "./ISAgro/types";
-
-interface OrganicasPercentualAreaChartProps {
+interface OrganicaAreaChartTestProps {
   organicas: IOrganicaPercentual[] | null;
   width: number;
   height: number;
 }
 
-export default class OrganicasPercentualAreaChart extends PureComponent<OrganicasPercentualAreaChartProps> {
-  
-  toPercent(decimal: number, fixed: number = 0) {
-    return `${(decimal * 100).toFixed(fixed)}%`;
-  }
-
-  getPercent = (value: number, total: number) => {
-    const ratio = total > 0 ? value / total : 0;
-    return this.toPercent(ratio, 2);
-  };
+export default class OrganicaAreaChartTest extends PureComponent<OrganicaAreaChartTestProps> {
 
   renderTooltipContent(o: any) {
     const { payload = [], label } = o;
@@ -39,10 +32,7 @@ export default class OrganicasPercentualAreaChart extends PureComponent<Organica
         <ul className="list">
           {payload.map((entry: any, index: number) => (
             <li key={`item-${index}`} style={{ color: entry.color }}>
-              {`${entry.name}: ${entry.value}(${this.getPercent(
-                entry.value,
-                total
-              )})`}
+              {`${entry.name}: ${entry.value} `}
             </li>
           ))}
         </ul>
@@ -52,28 +42,25 @@ export default class OrganicasPercentualAreaChart extends PureComponent<Organica
 
   render() {
     const organicas = this.props.organicas ?? [];
-    console.log(
-      `getGroupedbySetor: [grouped organicas] ${JSON.stringify(organicas, null, 2)}`
-    );
-    const width = this.props.width ?? 500;
-    const height = this.props.height ?? 400;
+    const width = this.props.width;
+    const height = this.props.height;
     return (
-      <AreaChart
-        width={width}
-        height={height}
-        data={organicas}
-        stackOffset="expand"
-        margin={{
-          top: 10,
-          right: 30,
-          left: 0,
-          bottom: 0,
-        }}
-      >
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="year" />
-        {/* <YAxis tickFormatter={this.toPercent} />
-        <Tooltip content={this.renderTooltipContent} /> */}
+        <AreaChart
+          width={width}
+          height={height}
+          data={organicas}
+          margin={{
+            top: 10,
+            right: 50,
+            left: 10,
+            bottom: 10,
+          }}
+          style={{ fontSize: 8 }}
+        >
+          <CartesianGrid strokeDasharray="4 4" />
+          <XAxis dataKey="year" />
+          <YAxis tickFormatter={(decimal: number = 0, fixed: number = 1) => `${(decimal).toFixed(fixed)}%`} />
+          <Tooltip content={this.renderTooltipContent} />
         <Area
           type="monotone"
           dataKey="hortalicas"
@@ -99,10 +86,10 @@ export default class OrganicasPercentualAreaChart extends PureComponent<Organica
           type="monotone"
           dataKey="grao"
           stackId="1"
-          stroke="#f4f600"
-          fill="#f4f600"
+          stroke="blue"
+          fill="blue"
         />
-      </AreaChart>
+        </AreaChart>
     );
   }
 }

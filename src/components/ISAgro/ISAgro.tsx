@@ -1,5 +1,7 @@
 // src/components/ISAgro/ISAgro.tsx
 
+import "./ISAgro.css";
+
 import React from "react";
 import Stack from "@mui/material/Stack";
 import Paper from "@mui/material/Paper";

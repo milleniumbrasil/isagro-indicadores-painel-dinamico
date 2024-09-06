@@ -20,6 +20,26 @@ interface OrganicaAreaChartProps {
 
 export default class OrganicaAreaChart extends PureComponent<OrganicaAreaChartProps> {
 
+  renderTooltipContent(o: any) {
+    const { payload = [], label } = o;
+    const total = payload.reduce(
+      (result: number, entry: any) => result + entry.value,
+      0
+    );
+    return (
+      <div className="customized-tooltip-content">
+        <p className="total">{`${label} (Total: ${total})`}</p>
+        <ul className="list">
+          {payload.map((entry: any, index: number) => (
+            <li key={`item-${index}`} style={{ color: entry.color }}>
+              {`${entry.name}: ${entry.value} `}
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
+  }
+
   render() {
     const organicas = this.props.organicas ?? [];
     const width = this.props.width ?? 500;

@@ -55,7 +55,7 @@ class GetOrganicaService<T> implements IOrganicaService<T> {
     ] as T;
   }
   public async getGroupedbySetorAsPercentual(items: IOrganica[]): Promise<IOrganicaPercentual[] | { error: string }> {  
-    console.log(`getGroupedbySetorAsPercentual [items]: ${JSON.stringify(items)}`);
+    console.log(`getGroupedbySetorAsPercentual [items]: ${JSON.stringify(items, null, 2)}`);
     
     if (Array.isArray(items)) {
       // Agrupar os itens por ano
@@ -90,7 +90,7 @@ class GetOrganicaService<T> implements IOrganicaService<T> {
         return acc;
       }, {} as { [year: number]: { hortalicas: number, fruticultura: number, pastagem: number, grao: number, totalArea: number } });
       
-      console.log(`getGroupedbySetorAsPercentual [grouped]: ${JSON.stringify(groupedByYear)}`);
+      console.log(`getGroupedbySetorAsPercentual [grouped]: ${JSON.stringify(groupedByYear, null, 2)}`);
       
       // Calcular o percentual de cada setor por ano
       const result: IOrganicaPercentual[] = Object.keys(groupedByYear).map(year => {
@@ -106,7 +106,7 @@ class GetOrganicaService<T> implements IOrganicaService<T> {
         };
       });
   
-      console.log(`getGroupedbySetorAsPercentual [percentual result]: ${JSON.stringify(result)}`);
+      console.log(`getGroupedbySetorAsPercentual [percentual result]: ${JSON.stringify(result, null, 2)}`);
       return result;
     } else {
       return { error: "Data not available" };

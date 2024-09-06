@@ -21,20 +21,22 @@ interface OrganicaAreaChartTestProps {
 export default class OrganicaAreaChartTest extends PureComponent<OrganicaAreaChartTestProps> {
 
   renderTooltipContent(o: any) {
-    const { payload = [], label } = o;
-    const total = payload.reduce(
-      (result: number, entry: any) => result + entry.value,
-      0
-    );
+    const { payload = [], label } = o;  
     return (
-      <div className="customized-tooltip-content">
-        <p className="total">{`${label} (Total: ${total})`}</p>
-        <ul className="list">
-          {payload.map((entry: any, index: number) => (
-            <li key={`item-${index}`} style={{ color: entry.color }}>
-              {`${entry.name}: ${entry.value} `}
-            </li>
-          ))}
+      <div
+        className="customized-tooltip-content"
+        style={{ backgroundColor: 'rgba(0, 0, 0, 0.1)', padding: '10px', borderRadius: '5px', fontFamily: 'Arial, sans-serif' }} 
+      >
+        <ul className="list" style={{ listStyleType: 'none', padding: 0, fontSize: '12px' }}>
+          {payload.map((entry: any, index: number) => {
+            const fontColor = 'black'; 
+  
+            return (
+              <li key={`item-${index}`} style={{ color: fontColor }}>
+                {`${entry.name}: ${entry.value} `}
+              </li>
+            );
+          })}
         </ul>
       </div>
     );
@@ -60,35 +62,34 @@ export default class OrganicaAreaChartTest extends PureComponent<OrganicaAreaCha
           <CartesianGrid strokeDasharray="4 4" />
           <XAxis dataKey="year" />
           <YAxis tickFormatter={(decimal: number = 0, fixed: number = 1) => `${(decimal).toFixed(fixed)}%`} />
-          <Tooltip content={this.renderTooltipContent} />
-        <Area
-          type="monotone"
-          dataKey="hortalicas"
-          stackId="1"
-          stroke="#8884d8"
-          fill="#8884d8"
-        />
-        <Area
-          type="monotone"
-          dataKey="fruticultura"
-          stackId="1"
-          stroke="#82ca9d"
-          fill="#82ca9d"
-        />
-        <Area
-          type="monotone"
-          dataKey="pastagem"
-          stackId="1"
-          stroke="#ffc658"
-          fill="#ffc658"
-        />
-        <Area
-          type="monotone"
-          dataKey="grao"
-          stackId="1"
-          stroke="blue"
-          fill="blue"
-        />
+          <Tooltip content={this.renderTooltipContent} /><Area
+            type="monotone"
+            dataKey="hortalicas"
+            stackId="1"
+            stroke="#32CD32" // LimeGreen
+            fill="#32CD32"
+          />
+          <Area
+            type="monotone"
+            dataKey="fruticultura"
+            stackId="1"
+            stroke="#228B22" // ForestGreen
+            fill="#228B22"
+          />
+          <Area
+            type="monotone"
+            dataKey="pastagem"
+            stackId="1"
+            stroke="#66CDAA" // MediumAquamarine
+            fill="#66CDAA"
+          />
+          <Area
+            type="monotone"
+            dataKey="grao"
+            stackId="1"
+            stroke="#006400" // DarkGreen
+            fill="#006400"
+          />
         </AreaChart>
     );
   }

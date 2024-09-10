@@ -65,7 +65,7 @@ export default class PercentualAreaChart extends PureComponent<PercentualAreaCha
             if (entry.name !== this.dataKey && this.attributeNames.includes(entry.name) && typeof entry.value === 'number') {
               return ( 
                   <li key={`item-${index}`} style={{ color: fontColor }}>
-                    ${entry.value}
+                    {entry.value}
                   </li>        
               );
             } 

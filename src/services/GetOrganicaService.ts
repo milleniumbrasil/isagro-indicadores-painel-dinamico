@@ -50,35 +50,6 @@ class GetOrganicaService {
       { period: '1995', area: 9000, setor: "pastagem" }
     ] as Object[];
   }
-
-  public async getPercentualData(): Promise<IPercentualAreaChart[]> {
-    return [
-      { period: '1990', area: 100 },
-      { period: '1990', area: 150 },
-      { period: '1990', area: 50 },
-      { period: '1990', area: 10 },
-      { period: '1991', area: 250 },
-      { period: '1991', area: 350 },
-      { period: '1991', area: 200 },
-      { period: '1991', area: 100 },
-      { period: '1992', area: 400 },
-      { period: '1992', area: 500 },
-      { period: '1992', area: 450 },
-      { period: '1992', area: 250 },
-      { period: '1993', area: 800 },
-      { period: '1993', area: 750 },
-      { period: '1993', area: 800 },
-      { period: '1993', area: 450 },
-      { period: '1994', area: 900 },
-      { period: '1994', area: 900 },
-      { period: '1994', area: 1100 },
-      { period: '1994', area: 900 },
-      { period: '1995', area: 1200 },
-      { period: '1995', area: 1300 },
-      { period: '1995', area: 1450 },
-      { period: '1995', area: 900},
-    ] as IPercentualAreaChart[];
-  }
   
   public async getOrganicasAsPercentual(): Promise<IPercentualAreaChart[] | { error: string }> {
     try {
@@ -97,48 +68,6 @@ class GetOrganicaService {
       return { error: "Erro ao realizar a requisição" };
     }
   }
-
-  public async getGroupedbySetor(): Promise<IOrganicaBySetor[] | { error: string }> {
-    const items: IPercentualAreaChart[] = await this.getPercentualData();
-    if (Array.isArray(items)) {
-      // Agrupar os itens por ano
-      const groupedByYear = items.reduce((acc, item) => {
-        const year = item.period;
-        
-        // Inicializar o ano se ele não existir ainda no agrupamento
-        if (!acc[year]) {
-          acc[year] = {
-            hortalicas: 0,
-            fruticultura: 0,
-            pastagem: 0,
-            grao: 0,
-            totalArea: 0,
-          };
-        }
-  
-        // Atualizar a área total do ano
-        acc[year].totalArea += item.area;
-  
-        return acc;
-      }, {} as { [year: string]: { hortalicas: number, fruticultura: number, pastagem: number, grao: number, totalArea: number } });
-      
-      // Retornar os valores absolutos de cada setor por ano
-      const result: IOrganicaBySetor[] = Object.keys(groupedByYear).map(year => {
-        return {
-          period: year,
-          hortalicas: groupedByYear[Number(year)].hortalicas,
-          fruticultura: groupedByYear[Number(year)].fruticultura,
-          pastagem: groupedByYear[Number(year)].pastagem,
-          grao: groupedByYear[Number(year)].grao,
-        };
-      });
-  
-      return result;
-    } else {
-      return { error: "Invalid data" };
-    }
-  }
-
 }
 
 export default GetOrganicaService;

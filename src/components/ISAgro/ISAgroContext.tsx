@@ -79,7 +79,7 @@ export const ISAgroProvider: FC<{ children: ReactNode }> = ({ children }) => {
       setCountries(countriesData as ICountry[]);
       const citiesData = await citiesService.getData();
       setCities(citiesData as ICity[]);
-      const organicasData = await organicasService.getGroupedbySetor();
+      const organicasData = await organicasService.getData();
       setOrganicas(organicasData as IOrganicaBySetor[]);
       if (Array.isArray(organicasData)) {
         const organicasPercentualData = await organicasService.getOrganicasAsPercentual();

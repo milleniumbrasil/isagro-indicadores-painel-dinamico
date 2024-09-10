@@ -39,13 +39,13 @@ export interface IOrganica {
   year: number;
   area: number;
   setor: string;
-
 }
 
-export interface IOrganicaPercentual {
+export interface IOrganicaBySetor {
   year: number;
-  hortalicas: number,
-  fruticultura: number,
-  pastagem: number,
-  grao: number,
+  hortalicas: number;
+  fruticultura: number;
+  pastagem: number;
+  grao: number;
 }
+

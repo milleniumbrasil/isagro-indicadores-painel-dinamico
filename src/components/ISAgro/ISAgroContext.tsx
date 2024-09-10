@@ -11,7 +11,7 @@ import {
   FC,
 } from "react";
 import GetDataService from "../../services/GetDataService";
-import { ICity, ICountry, IData, IPercentualAreaChart, IOrganicaBySetor, IState } from "./types";
+import { ICity, ICountry, IData, IPercentualAreaChart, IStackedAreaChart, IState } from "./types";
 import GetStatesService from "../../services/GetStatesService";
 import GetCountriesService from "../../services/GetCountriesService";
 import GetCitiesService from "../../services/GetCitiesService";
@@ -29,8 +29,8 @@ interface ISAgroContextProps {
   setStates: Dispatch<SetStateAction<IState[] | null>>;
   countries: ICountry[] | null;
   setCountries: Dispatch<SetStateAction<ICountry[] | null>>;
-  organicas: IOrganicaBySetor[] | null;
-  setOrganicas: Dispatch<SetStateAction<IOrganicaBySetor[] | null>>;
+  organicas: IStackedAreaChart[] | null;
+  setOrganicas: Dispatch<SetStateAction<IStackedAreaChart[] | null>>;
   organicasPercentual: IPercentualAreaChart[] | null;
   setOrganicasPercentual: Dispatch<SetStateAction<IPercentualAreaChart[] | null>>;
 }
@@ -54,7 +54,7 @@ export const ISAgroProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [states, setStates] = useState<IState[] | null>(statesInitialState);
   const [countries, setCountries] = useState<ICountry[] | null>(countriesInitialState);
   const [cities, setCities] = useState<ICity[] | null>(citiesInitialState);
-  const [organicas, setOrganicas] = useState<IOrganicaBySetor[] | null>(organicasInitialState);
+  const [organicas, setOrganicas] = useState<IStackedAreaChart[] | null>(organicasInitialState);
   const [organicasPercentual, setOrganicasPercentual] = useState<IPercentualAreaChart[] | null>(organicasPercentualInitialState);
 
   const dataService = new GetDataService<IData[]>();
@@ -80,7 +80,7 @@ export const ISAgroProvider: FC<{ children: ReactNode }> = ({ children }) => {
       const citiesData = await citiesService.getData();
       setCities(citiesData as ICity[]);
       const organicasData = await organicasService.getData();
-      setOrganicas(organicasData as IOrganicaBySetor[]);
+      setOrganicas(organicasData as IStackedAreaChart[]);
       if (Array.isArray(organicasData)) {
         const organicasPercentualData = await organicasService.getOrganicasAsPercentual();
         setOrganicasPercentual(organicasPercentualData as IPercentualAreaChart[]);

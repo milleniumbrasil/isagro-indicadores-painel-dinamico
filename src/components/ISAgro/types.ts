@@ -37,14 +37,11 @@ export interface ICountry {
 
 export interface IPercentualAreaChart {
   period: string;
-  area: number;
+  value: number;
 }
 
-export interface IOrganicaBySetor {
+export interface IStackedAreaChart {
   period: string;
-  hortalicas: number;
-  fruticultura: number;
-  pastagem: number;
-  grao: number;
+  entry: [label: string, value: number];
 }
 

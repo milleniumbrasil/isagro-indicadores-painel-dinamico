@@ -1,8 +1,8 @@
-// src/components/PercentualAreaChart.tsx
+// src/components/AreaChart.tsx
 
 import { PureComponent } from 'react';
 import {
-  AreaChart,
+  AreaChart as RechatsAreaChart,
   Area,
   XAxis,
   YAxis,
@@ -11,28 +11,27 @@ import {
   ResponsiveContainer,
   Legend,
 } from "recharts";
-import { IPercentualAreaChart } from './ISAgro/types';
+import { IStackedAreaChart } from './ISAgro/types';
 
 interface PercentualAreaChartProps {
-  data: IPercentualAreaChart[] | null;
+  data: IStackedAreaChart[] | null;
   dataKey?: string;
-  valueLabel?: string;
   width?: number;
   height?: number;
   strokeColor?: string;
   fillColor?: string;
 }
 
-export default class PercentualAreaChart extends PureComponent<PercentualAreaChartProps> {
+export default class AreaChart extends PureComponent<PercentualAreaChartProps> {
   
   private attributeNames:string[] = [''];
   private width: number = 0;
   private height: number = 0;
   private dataKey: string = '';
-  private valueLabel: string = 'Valor';
   private data: Object[] = [];
   private strokeColor: string = "#228B22";
   private fillColor: string = "#228B22";
+  private dynamicTicks: number[] = [0];
   
   constructor(props: PercentualAreaChartProps) {
     super(props);
@@ -40,20 +39,11 @@ export default class PercentualAreaChart extends PureComponent<PercentualAreaCha
     this.width = this.props.width ?? 800;
     this.height = this.props.height ?? 1200;
     this.dataKey = this.props.dataKey ?? 'period';
-    this.valueLabel = this.props.valueLabel ?? 'Valor';
     this.data = this.props.data ?? [];
   }
   
   tickFormatter(decimal: number = 0, fixed: number = 1): string {
-    return `${Math.round(decimal)}%`;
-  }
-
-  normalizeData(data: IPercentualAreaChart[]): IPercentualAreaChart[] {
-    const maxArea = Math.max(...data.map(item => item.value)); // Identifica o valor máximo
-    return data.map(item => ({
-      ...item,
-      area: (item.value / maxArea) * 100 // Normaliza os valores de 'area' para percentuais
-    }));
+    return `${Math.round(decimal)}`;
   }
 
   renderTooltipContent(o: any) {
@@ -70,7 +60,7 @@ export default class PercentualAreaChart extends PureComponent<PercentualAreaCha
             if (entry.name !== this.dataKey && this.attributeNames.includes(entry.name) && typeof entry.value === 'number') {
               return ( 
                   <li key={`item-${index}`} style={{ color: fontColor }}>
-                    {this.valueLabel} {entry.value}
+                    {entry.value}
                   </li>        
               );
             } 
@@ -79,6 +69,50 @@ export default class PercentualAreaChart extends PureComponent<PercentualAreaCha
         </ul>
       </div>
     );
+  }
+
+  normalizeData(entries: IStackedAreaChart[]): { [key: string]: any }[] {
+    console.log(`Entries: ${JSON.stringify(entries)}`);
+  
+    // Agrupa os dados por 'period' e calcula o valor total internamente
+    const groupedData = entries.reduce((acc, entry) => {
+      const { period, entry: dataEntry } = entry;
+  
+      // Verifica se 'dataEntry' tem um valor válido e é um array
+      if (!dataEntry || !Array.isArray(dataEntry) || dataEntry.length !== 2) {
+        console.error(`Invalid entry found for period ${period}:`, dataEntry);
+        return acc; // Pula este item se 'dataEntry' for inválido
+      }
+  
+      const [label, value] = dataEntry; // Desestruturação do label e value
+  
+      // Verifica se o período já existe no acumulador
+      if (!acc[period]) {
+        acc[period] = { period }; // Inicializa um objeto com a chave do período, sem o 'total'
+      }
+  
+      // Adiciona o valor correspondente ao 'label'
+      acc[period][label] = value;
+  
+      return acc;
+    }, {} as { [key: string]: { [label: string]: any } });
+  
+    // Converte o resultado agrupado em um array
+    const result = Object.values(groupedData);
+
+    // Calcula o valor máximo sem adicionar o campo 'total'
+    const maxTotal = Math.max(...result.map(d => 
+      Object.values(d).reduce((sum, value) => 
+        typeof value === 'number' ? sum + value : sum, 0)
+    ));
+
+    // Divide o valor máximo em 4 partes
+    const step = Math.ceil(maxTotal / 4);
+    this.dynamicTicks = [0, step, step * 2, step * 3, step * 4]; // Definindo os ticks dinâmicos
+
+    console.log(`Normalized: ${JSON.stringify(result)}`);
+    console.log(`Dynamic Ticks: ${this.dynamicTicks}`);
+    return result;
   }
   
   render() {
@@ -89,11 +123,11 @@ export default class PercentualAreaChart extends PureComponent<PercentualAreaCha
     this.dataKey = this.props.dataKey ?? 'period';
     this.data = this.normalizeData(this.props.data ?? []);
     this.attributeNames = Array.from(new Set(this.data.flatMap(Object.keys))).filter(key => key !== this.dataKey);
-    
+    console.log(`Data: ${JSON.stringify(this.data)}`);
     return (
         <div style={{ width: '100%', height: this.height }}>
           <ResponsiveContainer>
-            <AreaChart
+            <RechatsAreaChart
               width={this.width}
               height={this.height}
               data={this.data}
@@ -107,7 +141,7 @@ export default class PercentualAreaChart extends PureComponent<PercentualAreaCha
             >
               <CartesianGrid strokeDasharray="0" />
               <XAxis dataKey={this.dataKey} />
-              <YAxis tickFormatter={this.tickFormatter} ticks={[0, 25, 50, 75, 100]}/>
+              <YAxis tickFormatter={this.tickFormatter} ticks={this.dynamicTicks}/>
               <Legend />
               <Tooltip content={this.renderTooltipContent} />
               {this.attributeNames.map((item, index) => (
@@ -120,7 +154,7 @@ export default class PercentualAreaChart extends PureComponent<PercentualAreaCha
                   fill={this.fillColor}
                 />
               ))}
-            </AreaChart>
+            </RechatsAreaChart>
           </ResponsiveContainer>
         </div>
     );

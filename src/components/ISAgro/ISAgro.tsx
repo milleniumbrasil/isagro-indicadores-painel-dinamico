@@ -20,7 +20,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 
 import { useISAgroContext } from "./ISAgroContext";
-import OrganicaAreaChart from "../OrganicaAreaChart";
+import AreaChart from "../AreaChart";
 import PercentualAreaChart from "../PercentualAreaChart";
 
 const ISAgro: React.FC = () => {
@@ -190,7 +190,7 @@ const ISAgro: React.FC = () => {
         <Card variant="outlined" sx={{ width: '90%' }}>
           <CardContent>  
             <h3>Organicas</h3>
-            <OrganicaAreaChart width={800} height={400} organicas={organicasPercentual} />
+            <AreaChart width={800} height={400} data={organicas} />
           </CardContent>
         </Card>
         <Card variant="outlined" sx={{ maxWidth: '400px' }}>

@@ -2,7 +2,7 @@
 // src/services/GetOrganicaService.ts
 
 import axios, { AxiosResponse } from "axios";
-import { IPercentualAreaChart, IOrganicaBySetor } from "../components/ISAgro/types";
+import { IPercentualAreaChart, IStackedAreaChart } from "../components/ISAgro/types";
 
 interface RequestHeaders {
   [key: string]: string;
@@ -17,38 +17,38 @@ class GetOrganicaService {
     this.headers = headers;
   }
 
-  public async getData(): Promise<Object[]> {
+  public async getData(): Promise<IStackedAreaChart[]> {
     return [
-      { period: '1990', area: 100, setor: "grão" },
-      { period: '1990', area: 150, setor: "hortaliças" },
-      { period: '1990', area: 50, setor: "fruticultura" },
-      { period: '1990', area: 10, setor: "pastagem" },
+      { period: '1990', entry: ["grão", 100] },
+      { period: '1990', entry: ["hortaliças", 150] },
+      { period: '1990', entry: ["fruticultura", 50] },
+      { period: '1990', entry: ["pastagem", 10] },
       
-      { period: '1991', area: 250, setor: "grão" },
-      { period: '1991', area: 350, setor: "hortaliças" },
-      { period: '1991', area: 200, setor: "fruticultura" },
-      { period: '1991', area: 100, setor: "pastagem" },
+      { period: '1991', entry: ["grão", 250] },
+      { period: '1991', entry: ["hortaliças", 350] },
+      { period: '1991', entry: ["fruticultura", 200] },
+      { period: '1991', entry: ["pastagem", 100] },
       
-      { period: '1992', area: 400, setor: "grão" },
-      { period: '1992', area: 500, setor: "hortaliças" },
-      { period: '1992', area: 450, setor: "fruticultura" },
-      { period: '1992', area: 250, setor: "pastagem" },
+      { period: '1992', entry: ["grão", 400] },
+      { period: '1992', entry: ["hortaliças", 500] },
+      { period: '1992', entry: ["fruticultura", 450] },
+      { period: '1992', entry: ["pastagem", 250] },
     
-      { period: '1993', area: 800, setor: "grão" },
-      { period: '1993', area: 750, setor: "hortaliças" },
-      { period: '1993', area: 800, setor: "fruticultura" },
-      { period: '1993', area: 450, setor: "pastagem" },
+      { period: '1993', entry: ["grão", 800] },
+      { period: '1993', entry: ["hortaliças", 750] },
+      { period: '1993', entry: ["fruticultura", 800] },
+      { period: '1993', entry: ["pastagem", 450] },
     
-      { period: '1994', area: 900, setor: "grão" },
-      { period: '1994', area: 900, setor: "hortaliças" },
-      { period: '1994', area: 1100, setor: "fruticultura" },
-      { period: '1994', area: 900, setor: "pastagem" },
+      { period: '1994', entry: ["grão", 900] },
+      { period: '1994', entry: ["hortaliças", 900] },
+      { period: '1994', entry: ["fruticultura", 1100] },
+      { period: '1994', entry: ["pastagem", 900] },
       
-      { period: '1995', area: 1200, setor: "grão" },
-      { period: '1995', area: 1300, setor: "hortaliças" },
-      { period: '1995', area: 1450, setor: "fruticultura" },
-      { period: '1995', area: 9000, setor: "pastagem" }
-    ] as Object[];
+      { period: '1995', entry: ["grão", 1200] },
+      { period: '1995', entry: ["hortaliças", 1300] },
+      { period: '1995', entry: ["fruticultura", 1450] },
+      { period: '1995', entry: ["pastagem", 9000] }
+    ] as IStackedAreaChart[];
   }
   
   public async getOrganicasAsPercentual(): Promise<IPercentualAreaChart[] | { error: string }> {

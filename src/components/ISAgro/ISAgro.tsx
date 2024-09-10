@@ -189,8 +189,8 @@ const ISAgro: React.FC = () => {
         </Card>
         <Card variant="outlined" sx={{ width: '90%' }}>
           <CardContent>  
-            <h3>Organicas</h3>
-            <AreaChart width={800} height={400} data={organicas} />
+            <h3>Organicas</h3>    
+            <AreaChart width={1200} height={400} data={organicas} />
           </CardContent>
         </Card>
         <Card variant="outlined" sx={{ maxWidth: '400px' }}>

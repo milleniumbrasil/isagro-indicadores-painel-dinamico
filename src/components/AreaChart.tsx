@@ -41,6 +41,7 @@ export default class AreaChart extends PureComponent<PercentualAreaChartProps> {
   constructor(props: PercentualAreaChartProps) {
     super(props);
     this.renderTooltipContent = this.renderTooltipContent.bind(this); 
+    this.legendFormatter = this.legendFormatter.bind(this);
     this.width = this.props.width ?? 800;
     this.height = this.props.height ?? 1200;
     this.dataKey = this.props.dataKey ?? 'period';
@@ -52,10 +53,14 @@ export default class AreaChart extends PureComponent<PercentualAreaChartProps> {
     return `${Math.round(decimal)}`;
   }
 
-  legendFormatter(value: any, entry: any, index: any): string {
+  firstLetter2UpperCase(value: any): string {
     return `${value.charAt(0).toUpperCase()}${value.slice(1)}`;
   }
 
+  legendFormatter(value: any, entry: any, index: any): string {
+    return this.firstLetter2UpperCase(value);
+  }
+  
   renderTooltipContent(o: any) {
     const { payload = [] } = o;  
     
@@ -70,7 +75,7 @@ export default class AreaChart extends PureComponent<PercentualAreaChartProps> {
             if (entry.name !== this.dataKey && this.attributeNames.includes(entry.name) && typeof entry.value === 'number') {
               return ( 
                   <li key={`item-${index}`} style={{ color: fontColor }}>
-                    {this.valueLabel} {entry.value}
+                    {this.firstLetter2UpperCase(entry.name)} {entry.value}
                   </li>        
               );
             } 

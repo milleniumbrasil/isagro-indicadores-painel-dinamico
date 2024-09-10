@@ -81,37 +81,31 @@ class GetOrganicaService {
   
   public async getGroupedbySetorAsPercentual(): Promise<IPercentualAreaChart[] | { error: string }> {
     const items: IPercentualAreaChart[] = await this.getPercentualData();
+    
     if (Array.isArray(items)) {
       const groupedByYear = items.reduce((acc, item: IPercentualAreaChart) => {
         const year: string = item.period;
-        
+  
         if (!acc[year]) {
-          acc[year] = {
-            hortalicas: 0,
-            fruticultura: 0,
-            pastagem: 0,
-            grao: 0,
-            totalArea: 0,
-          };
+          acc[year] = 0; // Inicializa o total de área como 0 para o ano
         }
-
-        acc[year].totalArea += item.area;
-
+  
+        acc[year] += item.area; // Soma a área para o ano correspondente
+  
         return acc;
-      }, {} as { [year: string]: { hortalicas: number, fruticultura: number, pastagem: number, grao: number, totalArea: number } });
+      }, {} as { [year: string]: number }); // O acumulador contém apenas o total de área por ano
       
+      // Mapeia para o formato da interface IPercentualAreaChart
       const result: IPercentualAreaChart[] = Object.keys(groupedByYear).map(year => {
-        const totalArea = groupedByYear[Number(year)].totalArea;
-        
         return {
-          period: year,
-          area: totalArea, // Isso é o total da área
+          period: year, // 'period' corresponde ao ano como string
+          area: groupedByYear[year], // 'area' é o total acumulado de áreas
         };
       });
-
-      return result;
+  
+      return result; // Retorna um array de objetos que seguem a interface IPercentualAreaChart
     } else {
-     return { error: "Invalid data" };
+      return { error: "Invalid data" };
     }
   }
 

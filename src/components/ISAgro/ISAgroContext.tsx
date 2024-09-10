@@ -85,7 +85,7 @@ export const ISAgroProvider: FC<{ children: ReactNode }> = ({ children }) => {
         const organicasPercentualData = await organicasService.getGroupedbySetorAsPercentual();
         setOrganicasPercentual(organicasPercentualData as IPercentualAreaChart[]);
       } else {
-        console.error("Error: organicasData is not of type IOrganica[]");
+        console.error("Error: organicasPercentualData is not of type IPercentualAreaChart[]");
       }
     };
 

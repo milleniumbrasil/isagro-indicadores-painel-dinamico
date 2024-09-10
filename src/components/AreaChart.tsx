@@ -18,19 +18,22 @@ interface PercentualAreaChartProps {
   dataKey?: string;
   width?: number;
   height?: number;
-  strokeColor?: string;
-  fillColor?: string;
+  strokeColor?: string[];
+  fillColor?: string[];
 }
 
 export default class AreaChart extends PureComponent<PercentualAreaChartProps> {
   
+  // Paleta reorganizada do mais claro para o mais escuro
+  public static palete = ["#a4de6c", "#66CDAA", "#32CD32", "#228B22", "#006400"];
+
   private attributeNames:string[] = [''];
   private width: number = 0;
   private height: number = 0;
   private dataKey: string = '';
   private data: Object[] = [];
-  private strokeColor: string = "#228B22";
-  private fillColor: string = "#228B22";
+  private strokeColor: string[] = AreaChart.palete;
+  private fillColor: string[] = AreaChart.palete;
   private dynamicTicks: number[] = [0];
   
   constructor(props: PercentualAreaChartProps) {
@@ -118,8 +121,8 @@ export default class AreaChart extends PureComponent<PercentualAreaChartProps> {
   render() {
     this.width = this.props.width ?? 800;
     this.height = this.props.height ?? 1200;
-    this.strokeColor = this.props.strokeColor ?? "#228B22";
-    this.fillColor = this.props.fillColor ?? "#228B22";
+    this.strokeColor = this.props.strokeColor ?? AreaChart.palete;
+    this.fillColor = this.props.fillColor ?? AreaChart.palete;
     this.dataKey = this.props.dataKey ?? 'period';
     this.data = this.normalizeData(this.props.data ?? []);
     this.attributeNames = Array.from(new Set(this.data.flatMap(Object.keys))).filter(key => key !== this.dataKey);
@@ -150,8 +153,9 @@ export default class AreaChart extends PureComponent<PercentualAreaChartProps> {
                   type="monotone"
                   dataKey={item}
                   stackId="1"
-                  stroke={this.strokeColor}
-                  fill={this.fillColor}
+                  stroke={this.strokeColor[index % this.strokeColor.length]}
+                  fill={this.fillColor[index % this.fillColor.length]}
+               
                 />
               ))}
             </RechatsAreaChart>

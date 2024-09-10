@@ -44,6 +44,10 @@ export default class PercentualAreaChart extends PureComponent<PercentualAreaCha
     this.data = this.props.data ?? [];
   }
   
+  legendFormatter(value: any, entry: any, index: any): string {
+    return `${value.charAt(0).toUpperCase()}${value.slice(1)}`;
+  }
+
   tickFormatter(decimal: number = 0, fixed: number = 1): string {
     return `${Math.round(decimal)}%`;
   }
@@ -114,7 +118,7 @@ export default class PercentualAreaChart extends PureComponent<PercentualAreaCha
               <CartesianGrid strokeDasharray="0" />
               <XAxis dataKey={this.dataKey} />
               <YAxis tickFormatter={this.tickFormatter} ticks={[0, 25, 50, 75, 100]}/>
-              <Legend />
+              <Legend formatter={this.legendFormatter} />
               <Tooltip content={this.renderTooltipContent} />
               {this.attributeNames.map((item, index) => (
                 <Area

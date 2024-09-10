@@ -52,6 +52,10 @@ export default class AreaChart extends PureComponent<PercentualAreaChartProps> {
     return `${Math.round(decimal)}`;
   }
 
+  legendFormatter(value: any, entry: any, index: any): string {
+    return `${value.charAt(0).toUpperCase()}${value.slice(1)}`;
+  }
+
   renderTooltipContent(o: any) {
     const { payload = [] } = o;  
     
@@ -146,7 +150,7 @@ export default class AreaChart extends PureComponent<PercentualAreaChartProps> {
               <CartesianGrid strokeDasharray="0" />
               <XAxis dataKey={this.dataKey} />
               <YAxis tickFormatter={this.tickFormatter} ticks={this.dynamicTicks}/>
-              <Legend />
+              <Legend formatter={this.legendFormatter} />
               <Tooltip content={this.renderTooltipContent} />
               {this.attributeNames.map((item, index) => (
                 <Area

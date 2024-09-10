@@ -16,6 +16,7 @@ import { IStackedAreaChart } from './ISAgro/types';
 interface PercentualAreaChartProps {
   data: IStackedAreaChart[] | null;
   dataKey?: string;
+  valueLabel?: string;
   width?: number;
   height?: number;
   strokeColor?: string[];
@@ -31,6 +32,7 @@ export default class AreaChart extends PureComponent<PercentualAreaChartProps> {
   private width: number = 0;
   private height: number = 0;
   private dataKey: string = '';
+  private valueLabel: string = 'Valor';
   private data: Object[] = [];
   private strokeColor: string[] = AreaChart.palete;
   private fillColor: string[] = AreaChart.palete;
@@ -42,6 +44,7 @@ export default class AreaChart extends PureComponent<PercentualAreaChartProps> {
     this.width = this.props.width ?? 800;
     this.height = this.props.height ?? 1200;
     this.dataKey = this.props.dataKey ?? 'period';
+    this.valueLabel = this.props.valueLabel ?? 'Valor';
     this.data = this.props.data ?? [];
   }
   
@@ -63,7 +66,7 @@ export default class AreaChart extends PureComponent<PercentualAreaChartProps> {
             if (entry.name !== this.dataKey && this.attributeNames.includes(entry.name) && typeof entry.value === 'number') {
               return ( 
                   <li key={`item-${index}`} style={{ color: fontColor }}>
-                    {entry.value}
+                    {this.valueLabel} {entry.value}
                   </li>        
               );
             } 
@@ -122,6 +125,7 @@ export default class AreaChart extends PureComponent<PercentualAreaChartProps> {
     this.fillColor = this.props.fillColor ?? AreaChart.palete;
     this.dataKey = this.props.dataKey ?? 'period';
     this.data = this.normalizeData(this.props.data ?? []);
+    this.valueLabel = this.props.valueLabel ?? 'Valor';
     this.attributeNames = Array.from(new Set(this.data.flatMap(Object.keys))).filter(key => key !== this.dataKey);
     console.log(`Data: ${JSON.stringify(this.data)}`);
     return (

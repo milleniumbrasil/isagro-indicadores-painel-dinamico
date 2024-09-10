@@ -184,7 +184,7 @@ const ISAgro: React.FC = () => {
         <Card variant="outlined" sx={{ width: '90%' }}>
           <CardContent>  
             <h3>Organicas por percentual</h3>
-              <PercentualAreaChart width={1200} height={400} data={organicasPercentual} dataKey="period"/>
+              <PercentualAreaChart width={1200} height={400} data={organicasPercentual} />
           </CardContent>
         </Card>
         <Card variant="outlined" sx={{ width: '90%' }}>

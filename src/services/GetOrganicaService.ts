@@ -1,6 +1,7 @@
 
 // src/services/GetOrganicaService.ts
 
+import axios, { AxiosResponse } from "axios";
 import { IPercentualAreaChart, IOrganicaBySetor } from "../components/ISAgro/types";
 
 interface RequestHeaders {
@@ -79,33 +80,21 @@ class GetOrganicaService {
     ] as IPercentualAreaChart[];
   }
   
-  public async getGroupedbySetorAsPercentual(): Promise<IPercentualAreaChart[] | { error: string }> {
-    const items: IPercentualAreaChart[] = await this.getPercentualData();
-    
-    if (Array.isArray(items)) {
-      const groupedByYear = items.reduce((acc, item: IPercentualAreaChart) => {
-        const year: string = item.period;
-  
-        if (!acc[year]) {
-          acc[year] = 0; // Inicializa o total de área como 0 para o ano
-        }
-  
-        acc[year] += item.area; // Soma a área para o ano correspondente
-  
-        return acc;
-      }, {} as { [year: string]: number }); // O acumulador contém apenas o total de área por ano
-      
-      // Mapeia para o formato da interface IPercentualAreaChart
-      const result: IPercentualAreaChart[] = Object.keys(groupedByYear).map(year => {
-        return {
-          period: year, // 'period' corresponde ao ano como string
-          area: groupedByYear[year], // 'area' é o total acumulado de áreas
-        };
-      });
-  
-      return result; // Retorna um array de objetos que seguem a interface IPercentualAreaChart
-    } else {
-      return { error: "Invalid data" };
+  public async getOrganicasAsPercentual(): Promise<IPercentualAreaChart[] | { error: string }> {
+    try {
+      console.log("this.baseURL", this.baseURL);
+      console.log("process.env.REACT_APP_API_BASE_URL", process.env.REACT_APP_API_BASE_URL);
+      const response: AxiosResponse<IPercentualAreaChart> = await axios.get<IPercentualAreaChart>(`${this.baseURL}/data/organicas/percentual`, {
+      headers: this.headers
+    });
+      if (Array.isArray(response.data)) {
+        return response.data;
+      } else {
+        throw new Error(`A resposta não é um array. ${JSON.stringify(response.data)}`);
+      }
+    } catch (error) {
+      console.error("Erro ao realizar a requisição:", error);
+      return { error: "Erro ao realizar a requisição" };
     }
   }
 

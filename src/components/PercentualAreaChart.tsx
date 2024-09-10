@@ -49,11 +49,16 @@ export default class PercentualAreaChart extends PureComponent<PercentualAreaCha
   }
 
   normalizeData(data: IPercentualAreaChart[]): IPercentualAreaChart[] {
+
+    console.log(`Entries: ${JSON.stringify(data)}`);
     const maxArea = Math.max(...data.map(item => item.value)); // Identifica o valor máximo
-    return data.map(item => ({
+    const result = data.map(item => ({
       ...item,
-      area: (item.value / maxArea) * 100 // Normaliza os valores de 'area' para percentuais
+      value: (item.value / maxArea) * 100 // Normaliza os valores de 'area' para percentuais
     }));
+    console.log(`Normalized: ${JSON.stringify(result)}`);
+    
+    return result;
   }
 
   renderTooltipContent(o: any) {
@@ -88,6 +93,7 @@ export default class PercentualAreaChart extends PureComponent<PercentualAreaCha
     this.fillColor = this.props.fillColor ?? "#228B22";
     this.dataKey = this.props.dataKey ?? 'period';
     this.data = this.normalizeData(this.props.data ?? []);
+    this.valueLabel = this.props.valueLabel ?? 'Valor';
     this.attributeNames = Array.from(new Set(this.data.flatMap(Object.keys))).filter(key => key !== this.dataKey);
     
     return (

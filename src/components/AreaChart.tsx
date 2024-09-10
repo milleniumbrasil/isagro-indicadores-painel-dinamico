@@ -75,7 +75,6 @@ export default class AreaChart extends PureComponent<PercentualAreaChartProps> {
   }
 
   normalizeData(entries: IStackedAreaChart[]): { [key: string]: any }[] {
-    console.log(`Entries: ${JSON.stringify(entries)}`);
   
     // Agrupa os dados por 'period' e calcula o valor total internamente
     const groupedData = entries.reduce((acc, entry) => {
@@ -113,8 +112,6 @@ export default class AreaChart extends PureComponent<PercentualAreaChartProps> {
     const step = Math.ceil(maxTotal / 4);
     this.dynamicTicks = [0, step, step * 2, step * 3, step * 4]; // Definindo os ticks dinâmicos
 
-    console.log(`Normalized: ${JSON.stringify(result)}`);
-    console.log(`Dynamic Ticks: ${this.dynamicTicks}`);
     return result;
   }
   

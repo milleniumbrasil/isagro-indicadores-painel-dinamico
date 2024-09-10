@@ -21,7 +21,8 @@ import CardContent from '@mui/material/CardContent';
 
 import { useISAgroContext } from "./ISAgroContext";
 import OrganicaAreaChart from "../OrganicaAreaChart";
-import OrganicasPercentualAreaChart from "../OrganicasPercentualAreaChart";
+import OrganicasPercentualAreaChart from "../PercentualAreaChart";
+import PercentualAreaChart from "../PercentualAreaChart";
 
 const ISAgro: React.FC = () => {
 
@@ -181,24 +182,24 @@ const ISAgro: React.FC = () => {
       </Box>
 
       <Stack spacing={2} sx={{ alignItems: 'center' }}> 
-        <Card variant="outlined" sx={{ maxWidth: '400px' }}>
-          <CardContent>  
-            <h3>Selecionados</h3>
-            <h5>Estado: {estado}</h5>
-            <h5>Cidade: {cidade}</h5>
-            <h5>Pais: {pais}</h5>
-          </CardContent>
-        </Card>
         <Card variant="outlined" sx={{ width: '90%' }}>
           <CardContent>  
             <h3>Organicas por percentual</h3>
-              <OrganicasPercentualAreaChart width={1200} height={400} organicas={organicasPercentual} dataKey="year"/>
+              <PercentualAreaChart width={1200} height={400} data={organicasPercentual} dataKey="year"/>
           </CardContent>
         </Card>
         <Card variant="outlined" sx={{ width: '90%' }}>
           <CardContent>  
             <h3>Organicas</h3>
             <OrganicaAreaChart width={800} height={400} organicas={organicasPercentual} />
+          </CardContent>
+        </Card>
+        <Card variant="outlined" sx={{ maxWidth: '400px' }}>
+          <CardContent>  
+            <h3>Selecionados</h3>
+            <h5>Estado: {estado}</h5>
+            <h5>Cidade: {cidade}</h5>
+            <h5>Pais: {pais}</h5>
           </CardContent>
         </Card>
         <Card variant="outlined" sx={{ maxWidth: '400px' }}>

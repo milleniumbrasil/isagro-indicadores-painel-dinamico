@@ -10,10 +10,10 @@ import {
   CartesianGrid,
   Tooltip,
 } from "recharts";
-import { IOrganica } from './ISAgro/types';
+import { IPercentualAreaChart } from './ISAgro/types';
 
 interface OrganicaAreaChartProps {
-  organicas: IOrganica[] | null;
+  organicas: IPercentualAreaChart[] | null;
   width: number;
   height: number;
 }

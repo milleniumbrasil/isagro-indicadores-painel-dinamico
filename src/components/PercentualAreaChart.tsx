@@ -1,4 +1,4 @@
-// src/components/OrganicasPercentualAreaChart.tsx
+// src/components/PercentualAreaChart.tsx
 
 import { PureComponent } from 'react';
 import {
@@ -11,16 +11,16 @@ import {
   ResponsiveContainer,
   Legend,
 } from "recharts";
-import { IOrganica } from './ISAgro/types';
+import { IPercentualAreaChart } from './ISAgro/types';
 
-interface OrganicasPercentualAreaChartProps {
-  organicas: IOrganica[] | null;
+interface PercentualAreaChartProps {
+  data: IPercentualAreaChart[] | null;
   dataKey: string;
   width: number;
   height: number;
 }
 
-export default class OrganicasPercentualAreaChart extends PureComponent<OrganicasPercentualAreaChartProps> {
+export default class PercentualAreaChart extends PureComponent<PercentualAreaChartProps> {
   
   private static COLORS = ["#32CD32", "#228B22", "#66CDAA", "#006400", "#a4de6c"];
 
@@ -28,17 +28,29 @@ export default class OrganicasPercentualAreaChart extends PureComponent<Organica
   private width: number = 0;
   private height: number = 0;
   private dataKey: string = '';
-  private organicas: Object[] = [];
+  private data: Object[] = [];
   
-  constructor(props: OrganicasPercentualAreaChartProps) {
+  constructor(props: PercentualAreaChartProps) {
     super(props);
     this.renderTooltipContent = this.renderTooltipContent.bind(this); 
     this.width = this.props.width;
     this.height = this.props.height;
     this.dataKey = this.props.dataKey;
-    this.organicas = this.props.organicas ?? [];
+    this.data = this.props.data ?? [];
   }
   
+  tickFormatter(decimal: number = 0, fixed: number = 1): string {
+    return `${(decimal).toFixed(fixed)}%`;
+  }
+
+  normalizeData(data: IPercentualAreaChart[]): IPercentualAreaChart[] {
+    const maxArea = Math.max(...data.map(item => item.area)); // Identifica o valor máximo
+    return data.map(item => ({
+      ...item,
+      area: (item.area / maxArea) * 100 // Normaliza os valores de 'area' para percentuais
+    }));
+  }
+
   renderTooltipContent(o: any) {
     const { payload = [] } = o;  
     
@@ -53,7 +65,7 @@ export default class OrganicasPercentualAreaChart extends PureComponent<Organica
             if (entry.name !== this.dataKey && this.attributeNames.includes(entry.name) && typeof entry.value === 'number') {
               return ( 
                   <li key={`item-${index}`} style={{ color: fontColor }}>
-                    {`${entry.name}: ${entry.value} `}
+                    ${entry.value}
                   </li>        
               );
             } 
@@ -68,18 +80,16 @@ export default class OrganicasPercentualAreaChart extends PureComponent<Organica
     this.width = this.props.width;
     this.height = this.props.height;
     this.dataKey = this.props.dataKey;
-    this.organicas = this.props.organicas ?? [];
-    this.attributeNames = Array.from(new Set(this.organicas.flatMap(Object.keys))).filter(key => key !== this.dataKey);
-
-    console.log(`Attribute names: ${this.attributeNames}`);
-
+    this.data = this.normalizeData(this.props.data ?? []);
+    this.attributeNames = Array.from(new Set(this.data.flatMap(Object.keys))).filter(key => key !== this.dataKey);
+    console.log(`Data: ${JSON.stringify(this.data)}`);
     return (
         <div style={{ width: '100%', height: this.height }}>
           <ResponsiveContainer>
             <AreaChart
               width={this.width}
               height={this.height}
-              data={this.organicas}
+              data={this.data}
               margin={{
                 top: 10,
                 right: 50,
@@ -88,9 +98,9 @@ export default class OrganicasPercentualAreaChart extends PureComponent<Organica
               }}
               style={{ fontSize: 8 }}
             >
-              <CartesianGrid strokeDasharray="1 1" />
+              <CartesianGrid strokeDasharray="0" />
               <XAxis dataKey={this.dataKey} />
-              <YAxis tickFormatter={(decimal: number = 0, fixed: number = 1) => `${(decimal).toFixed(fixed)}%`} />
+              <YAxis tickFormatter={this.tickFormatter} ticks={[0, 25, 50, 100]}/>
               <Legend />
               <Tooltip content={this.renderTooltipContent} />
               {this.attributeNames.map((key, index) => (
@@ -99,8 +109,8 @@ export default class OrganicasPercentualAreaChart extends PureComponent<Organica
                   type="monotone"
                   dataKey={key}
                   stackId="1"
-                  stroke={OrganicasPercentualAreaChart.COLORS[index % OrganicasPercentualAreaChart.COLORS.length]}
-                  fill={OrganicasPercentualAreaChart.COLORS[index % OrganicasPercentualAreaChart.COLORS.length]}
+                  stroke={PercentualAreaChart.COLORS[index % PercentualAreaChart.COLORS.length]}
+                  fill={PercentualAreaChart.COLORS[index % PercentualAreaChart.COLORS.length]}
                 />
               ))}
             </AreaChart>

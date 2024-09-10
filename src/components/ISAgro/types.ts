@@ -35,14 +35,13 @@ export interface ICountry {
   pais: string;
 }
 
-export interface IOrganica {
-  year: number;
+export interface IPercentualAreaChart {
+  period: string;
   area: number;
-  setor: string;
 }
 
 export interface IOrganicaBySetor {
-  year: number;
+  period: string;
   hortalicas: number;
   fruticultura: number;
   pastagem: number;

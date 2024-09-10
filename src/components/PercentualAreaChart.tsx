@@ -104,7 +104,7 @@ export default class PercentualAreaChart extends PureComponent<PercentualAreaCha
             >
               <CartesianGrid strokeDasharray="0" />
               <XAxis dataKey={this.dataKey} />
-              <YAxis tickFormatter={this.tickFormatter} ticks={[0, 25, 50, 100]}/>
+              <YAxis tickFormatter={this.tickFormatter} ticks={[0, 25, 50, 75, 100]}/>
               <Legend />
               <Tooltip content={this.renderTooltipContent} />
               {this.attributeNames.map((item, index) => (

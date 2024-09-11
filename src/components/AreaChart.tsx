@@ -86,35 +86,34 @@ export default class AreaChart extends PureComponent<PercentualAreaChartProps> {
     );
   }
 
-  // Função para desnormalizar os dados
+  // Função para normalizar os dados
   normalizeData(entries: IStackedAreaChart[]): { [key: string]: any }[] {
-    console.log(`Stacked data: ${JSON.stringify(entries)}`);
 
-    const desnormalizedData: any[] = [];
+    const normalizedDataSet: any[] = [];
     
     entries.forEach((entry) => {
       const { period, entry: dataEntry } = entry;
       const [label, value] = dataEntry;
 
       // buscar a última entry para o periodo e o label 
-      let latestEntry;
-      latestEntry = desnormalizedData.find((item) => 
+      let normalized;
+      normalized = normalizedDataSet.find((item) => 
         item.period === period && 
         !Object.keys(item).find((labelTarget) => labelTarget === label)
       );  
       
       // se já existe uma entry para o periodo e label
-      if (latestEntry) {
-        latestEntry[label] = value;
+      if (normalized) {
+        normalized[label] = value;
       } else {  
-        const newEntry: { [key: string]: any } = { "period": period };
-        newEntry[label] = value;
-        desnormalizedData.push(newEntry);
+        const newNormalized: { [key: string]: any } = { "period": period };
+        newNormalized[label] = value;
+        normalizedDataSet.push(newNormalized);
       }
     });
 
-    console.log(`desnormalizedData: ${JSON.stringify(desnormalizedData)}`);
-    return desnormalizedData;
+    console.log(`NormalizedData: ${JSON.stringify(normalizedDataSet)}`);
+    return normalizedDataSet;
   }
 
   // Função para calcular os steps

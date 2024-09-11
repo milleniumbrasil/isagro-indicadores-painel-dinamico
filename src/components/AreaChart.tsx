@@ -86,8 +86,8 @@ export default class AreaChart extends PureComponent<PercentualAreaChartProps> {
     );
   }
 
+  // Função para desnormalizar os dados
   normalizeData(entries: IStackedAreaChart[]): { [key: string]: any }[] {
-  
     console.log(`Stacked data: ${JSON.stringify(entries)}`);
 
     const desnormalizedData: any[] = [];
@@ -95,44 +95,48 @@ export default class AreaChart extends PureComponent<PercentualAreaChartProps> {
     entries.forEach((entry) => {
       const { period, entry: dataEntry } = entry;
       const [label, value] = dataEntry;
-      // buscar a ultima entry para o periodo e o label 
+
+      // buscar a última entry para o periodo e o label 
       let latestEntry;
       latestEntry = desnormalizedData.find((item) => 
         item.period === period && 
-          !Object.keys(item).find((labelTarget) => labelTarget === label)
-        );  
+        !Object.keys(item).find((labelTarget) => labelTarget === label)
+      );  
+      
       // se já existe uma entry para o periodo e label
       if (latestEntry) {
-        // adicionar novo atributo com o nome do label e valor
         latestEntry[label] = value;
       } else {  
-        // criar novo objeto entry
         const newEntry: { [key: string]: any } = { "period": period };
-        // adicionar novo atributo com o nome do label e valor
         newEntry[label] = value;
-        // incluir o novo objeto entry no array de dados desnormalizados
         desnormalizedData.push(newEntry);
       }
     });
 
     console.log(`desnormalizedData: ${JSON.stringify(desnormalizedData)}`);
+    return desnormalizedData;
+  }
 
-    // Calcula o valor máximo sem adicionar o campo 'total'
-    const maxTotal = Math.max(...desnormalizedData.map((d: any) => {
-      const total  = Object.values(d).reduce((sum, value) => {
+  // Função para calcular os steps
+  calculateSteps(data: { [key: string]: any }[]): number[] {
+    // Verifica se o array não está vazio
+    if (data.length === 0) return [0, 0, 0, 0, 0];
+
+    const maxTotal = Math.max(...data.map((d: { [key: string]: any }) => {
+      const total = Object.values(d).reduce((sum: number, value: any) => {
         if (typeof value === 'number')  
-          return (sum as number) + value;
+          return sum + value;
         else 
           return sum;
       }, 0);
-      return total? total : 0;
+      return total;
     }));
 
-    // Divide o valor máximo em 4 partes
-    const step = Math.ceil(maxTotal / 4);
-    this.dynamicTicks = [0, step, step * 2, step * 3, step * 4]; // Definindo os ticks dinâmicos
+    // Se maxTotal for 0, retorna steps com valores iniciais
+    if (maxTotal === 0) return [0, 0, 0, 0, 0];
 
-    return desnormalizedData;
+    const step = Math.ceil(maxTotal / 4);
+    return [0, step, step * 2, step * 3, step * 4]; // Ticks dinâmicos
   }
   
   render() {

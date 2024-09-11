@@ -39,7 +39,8 @@ const ISAgro: React.FC = () => {
   const [cidade, setCidade] = React.useState('');
   const [ano, setAno] = React.useState('');
   const [rangeAnos, setRangeAnos] = React.useState<number[]>([0, 0]);
-  
+  const [subsequenceRange, setSubsequenceRange] = React.useState<number>(1);
+
   const minDistance = 10;
 
   // manipuladores de eventos de tela
@@ -191,6 +192,27 @@ const ISAgro: React.FC = () => {
           <CardContent>  
             <h3>Organicas</h3>    
             <AreaChart width={1200} height={400} data={organicas} />
+          </CardContent>
+        </Card>
+        <Card variant="outlined" sx={{ width: '90%' }}>
+          <CardContent>  
+            <div>
+              <h1>Normalized Stacked Area Chart</h1>
+              <div>
+                <label>
+                  Subsequências (anos):
+                  <select value={subsequenceRange} onChange={(e) => setSubsequenceRange(Number(e.target.value))}>
+                    <option value={1}>1</option>
+                    <option value={2}>2</option>
+                    <option value={3}>3</option>
+                    <option value={4}>4</option>
+                    <option value={5}>5</option>
+                  </select>
+                </label>
+                
+              </div>
+              <AreaChart width={1200} height={400} data={organicas} />
+            </div>
           </CardContent>
         </Card>
         <Card variant="outlined" sx={{ maxWidth: '400px' }}>

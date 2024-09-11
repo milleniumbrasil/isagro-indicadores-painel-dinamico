@@ -50,7 +50,7 @@ export default class AreaChart extends PureComponent<PercentualAreaChartProps> {
   }
   
   tickFormatter(decimal: number = 0, fixed: number = 1): string {
-    return `${Math.round(decimal)}`;
+    return `${Math.round(decimal as number)}`;
   }
 
   firstLetter2UpperCase(value: any): string {
@@ -88,43 +88,51 @@ export default class AreaChart extends PureComponent<PercentualAreaChartProps> {
 
   normalizeData(entries: IStackedAreaChart[]): { [key: string]: any }[] {
   
-    // Agrupa os dados por 'period' e calcula o valor total internamente
-    const groupedData = entries.reduce((acc, entry) => {
+    console.log(`Stacked data: ${JSON.stringify(entries)}`);
+
+    const desnormalizedData: any[] = [];
+    
+    entries.forEach((entry) => {
       const { period, entry: dataEntry } = entry;
-  
-      // Verifica se 'dataEntry' tem um valor válido e é um array
-      if (!dataEntry || !Array.isArray(dataEntry) || dataEntry.length !== 2) {
-        console.error(`Invalid entry found for period ${period}:`, dataEntry);
-        return acc; // Pula este item se 'dataEntry' for inválido
+      const [label, value] = dataEntry;
+      // buscar a ultima entry para o periodo e o label 
+      let latestEntry;
+      latestEntry = desnormalizedData.find((item) => 
+        item.period === period && 
+          !Object.keys(item).find((labelTarget) => labelTarget === label)
+        );  
+      // se já existe uma entry para o periodo e label
+      if (latestEntry) {
+        // adicionar novo atributo com o nome do label e valor
+        latestEntry[label] = value;
+      } else {  
+        // criar novo objeto entry
+        const newEntry: { [key: string]: any } = { "period": period };
+        // adicionar novo atributo com o nome do label e valor
+        newEntry[label] = value;
+        // incluir o novo objeto entry no array de dados desnormalizados
+        desnormalizedData.push(newEntry);
       }
-  
-      const [label, value] = dataEntry; // Desestruturação do label e value
-  
-      // Verifica se o período já existe no acumulador
-      if (!acc[period]) {
-        acc[period] = { period }; // Inicializa um objeto com a chave do período, sem o 'total'
-      }
-  
-      // Adiciona o valor correspondente ao 'label'
-      acc[period][label] = value;
-  
-      return acc;
-    }, {} as { [key: string]: { [label: string]: any } });
-  
-    // Converte o resultado agrupado em um array
-    const result = Object.values(groupedData);
+    });
+
+    console.log(`desnormalizedData: ${JSON.stringify(desnormalizedData)}`);
 
     // Calcula o valor máximo sem adicionar o campo 'total'
-    const maxTotal = Math.max(...result.map(d => 
-      Object.values(d).reduce((sum, value) => 
-        typeof value === 'number' ? sum + value : sum, 0)
-    ));
+    const maxTotal = Math.max(...desnormalizedData.map((d: any) => {
+      const total  = Object.values(d).reduce((sum, value) => {
+        if (typeof value === 'number')  
+          return (sum as number) + value;
+        else 
+          return sum;
+      }, 0);
+      return total? total : 0;
+    }));
 
     // Divide o valor máximo em 4 partes
     const step = Math.ceil(maxTotal / 4);
     this.dynamicTicks = [0, step, step * 2, step * 3, step * 4]; // Definindo os ticks dinâmicos
 
-    return result;
+    return desnormalizedData;
   }
   
   render() {
@@ -136,7 +144,6 @@ export default class AreaChart extends PureComponent<PercentualAreaChartProps> {
     this.data = this.normalizeData(this.props.data ?? []);
     this.valueLabel = this.props.valueLabel ?? 'Valor';
     this.attributeNames = Array.from(new Set(this.data.flatMap(Object.keys))).filter(key => key !== this.dataKey);
-    console.log(`Data: ${JSON.stringify(this.data)}`);
     return (
         <div style={{ width: '100%', height: this.height }}>
           <ResponsiveContainer>

@@ -54,13 +54,11 @@ export default class PercentualAreaChart extends PureComponent<PercentualAreaCha
 
   normalizeData(data: IPercentualAreaChart[]): IPercentualAreaChart[] {
 
-    console.log(`Entries: ${JSON.stringify(data)}`);
     const maxArea = Math.max(...data.map(item => item.value)); // Identifica o valor máximo
     const result = data.map(item => ({
       ...item,
       value: (item.value / maxArea) * 100 // Normaliza os valores de 'area' para percentuais
     }));
-    console.log(`Normalized: ${JSON.stringify(result)}`);
     
     return result;
   }

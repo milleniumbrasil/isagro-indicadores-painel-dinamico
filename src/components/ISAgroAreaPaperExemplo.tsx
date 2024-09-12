@@ -13,7 +13,6 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 
 import { DateRangePicker, Stack as StackRSuite} from 'rsuite';
-import { FaCalendar, FaClock } from 'react-icons/fa';
 import { BsCalendar2MonthFill } from 'react-icons/bs';
 
 import { useISAgroContext } from "./ISAgroContext";
@@ -59,11 +58,15 @@ const ISAgroAreaPaperExemplo: React.FC = () => {
         }}
       >
 
-        <Stack spacing={2} sx={{ alignItems: "center" }}>
+        <Stack spacing={2} sx={{ alignItems: "center", width: '100%' }}>
 
-          <Stack direction="row" spacing={2} sx={{ alignItems: "center" }}>
+          <Stack direction="row" spacing={2} sx={{ alignItems: "center", width: '100%' }}>
+              
+              <StackRSuite spacing={10} direction="column" alignItems="flex-start" style={{ padding: '2px', margin: '2px'}}>
+                <DateRangePicker format="MMM yyyy" caretAs={BsCalendar2MonthFill} />
+              </StackRSuite>
 
-              <FormControl size="small" sx={{ m: 1, mt: 3, minWidth: "100px", margin: "2px", padding: "2px"}}>
+              <FormControl size="small" sx={{ m: 1, mt: 3, minWidth: "100px", maxWidth: '200px', margin: "2px", padding: "2px"}}>
                 <InputLabel id="paises-simple-select-label">País</InputLabel>
                 <Select
                   labelId="paises-simple-select-label"
@@ -85,7 +88,7 @@ const ISAgroAreaPaperExemplo: React.FC = () => {
                 </Select>
               </FormControl>
 
-              <FormControl fullWidth size="small" sx={{ m: 1, mt: 3, minWidth: "100px", margin: "2px", padding: "2px" }}>
+              <FormControl fullWidth size="small" sx={{ m: 1, mt: 3, minWidth: "100px", maxWidth: '200px', margin: "2px", padding: "2px" }}>
                 <InputLabel id="states-simple-select-label">Estado</InputLabel>
                 <Select
                   labelId="states-simple-select-label"
@@ -107,7 +110,7 @@ const ISAgroAreaPaperExemplo: React.FC = () => {
                 </Select>
               </FormControl>
 
-              <FormControl fullWidth size="small" sx={{ m: 1, mt: 3, minWidth: "100px", margin: "2px", padding: "2px" }}>
+              <FormControl fullWidth size="small" sx={{ m: 1, mt: 3, minWidth: "100px", maxWidth: '200px', margin: "2px", padding: "2px" }}>
                 <InputLabel id="cities-simple-select-label">Cidade</InputLabel>
                 <Select
                   labelId="cities-simple-select-label"
@@ -130,10 +133,6 @@ const ISAgroAreaPaperExemplo: React.FC = () => {
               </FormControl>
               
           </Stack>
-          
-          <StackRSuite spacing={10} direction="column" alignItems="flex-start" style={{ padding: '2px', margin: '2px'}}>
-            <DateRangePicker format="MMM yyyy" caretAs={BsCalendar2MonthFill} />
-          </StackRSuite>
 
           <Card variant="outlined" sx={{ width: "90%" }}>
             <CardContent>

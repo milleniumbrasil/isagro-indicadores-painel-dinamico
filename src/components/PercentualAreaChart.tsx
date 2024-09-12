@@ -11,7 +11,7 @@ import {
   ResponsiveContainer,
   Legend,
 } from "recharts";
-import { IPercentualAreaChart } from './ISAgro/types';
+import { IPercentualAreaChart } from '../types';
 
 interface PercentualAreaChartProps {
   data: IPercentualAreaChart[] | null;

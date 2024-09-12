@@ -10,12 +10,12 @@ import {
   ReactNode,
   FC,
 } from "react";
-import GetDataService from "../../services/GetDataService";
-import { ICity, ICountry, IData, IPercentualAreaChart, IStackedAreaChart, IState } from "./types";
-import GetStatesService from "../../services/GetStatesService";
-import GetCountriesService from "../../services/GetCountriesService";
-import GetCitiesService from "../../services/GetCitiesService";
-import GetOrganicaService from "../../services/GetOrganicaService";
+import GetDataService from "../services/GetDataService";
+import { ICity, ICountry, IData, IPercentualAreaChart, IStackedAreaChart, IState } from "../types";
+import GetStatesService from "../services/GetStatesService";
+import GetCountriesService from "../services/GetCountriesService";
+import GetCitiesService from "../services/GetCitiesService";
+import GetOrganicaService from "../services/GetOrganicaService";
 
 // Interface para o contexto
 interface ISAgroContextProps {

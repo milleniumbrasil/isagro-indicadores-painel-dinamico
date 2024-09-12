@@ -1,16 +1,12 @@
 // src/components/ISAgro/ISAgro.tsx
 
-import "./ISAgro.css";
+import "./Page.css";
 
 import React from "react";
 import Stack from "@mui/material/Stack";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
-import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import InputBase from "@mui/material/InputBase";
-import SearchIcon from "@mui/icons-material/Search";
-import Divider from "@mui/material/Divider";
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -18,10 +14,9 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Slider from '@mui/material/Slider';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-
-import { useISAgroContext } from "./ISAgroContext";
-import AreaChart from "../AreaChart";
-import PercentualAreaChart from "../PercentualAreaChart";
+import { useISAgroContext } from "../components/ISAgroContext";
+import AreaChart from "../components/AreaChart";
+import ISAgroAreaPaperExemplo from "../components/ISAgroAreaPaperExemplo";
 
 const ISAgro: React.FC = () => {
 
@@ -38,7 +33,7 @@ const ISAgro: React.FC = () => {
   const [estado, setEstado] = React.useState('');
   const [cidade, setCidade] = React.useState('');
   const [ano, setAno] = React.useState('');
-  const [rangeAnos, setRangeAnos] = React.useState<number[]>([0, 0]);
+  const [rangeAnos, setRangeAnos] = React.useState<number[]>([1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999]);
   const [subsequenceRange, setSubsequenceRange] = React.useState<number>(1);
 
   const minDistance = 10;
@@ -71,30 +66,25 @@ const ISAgro: React.FC = () => {
       setRangeAnos([rangeAnos[0], Math.max(newValue[1], rangeAnos[0] + minDistance)]);
     }
   };
+  const years = [
+    { ano: 1990, valor: 10 },
+    { ano: 1991, valor: 15 },
+    { ano: 1992, valor: 20 },
+    { ano: 1993, valor: 25 },
+    { ano: 1994, valor: 30 },
+    // Outros anos...
+  ];
+  
+  const filteredData = years.filter((item) => item.ano >= rangeAnos[0] && item.ano <= rangeAnos[1]);
 
   return (
     <div>
       <Paper
         component="form"
-        sx={{ p: "2px 4px", display: "flex", alignItems: "center", width: '100%' }}
+        sx={{ display: "flex", alignItems: "center", width: '96%', padding: '10px', margin: '10px' }}
       >
-        <IconButton sx={{ p: "10px" }} aria-label="menu">
-          {/* <MenuIcon /> */}
-        </IconButton>
-        <Box sx={{ minWidth: '250px', maxWidth: '300px', margin: '2px' }}>
-          <InputBase
-            sx={{ ml: 1, flex: 1 }}
-            placeholder="Search by typing"
-            inputProps={{ "aria-label": "search by typing" }}
-          />
-          <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
-            <SearchIcon />
-          </IconButton>
-        </Box>
 
-        <Divider sx={{ height: 28, m: 0.5, margin: '3px' }} orientation="vertical" />
-
-        <Box sx={{ minWidth: '250px', maxWidth: '300px', margin: '2px', padding: '2px' }}>
+      <Box sx={{ minWidth: '250px', maxWidth: '300px', margin: '2px', padding: '2px' }}>
           <Slider
             getAriaLabel={() => 'Years range'}
             value={rangeAnos}
@@ -103,8 +93,6 @@ const ISAgro: React.FC = () => {
             sx={{ margin: '3px' }}
           />
         </Box>
-
-        <Divider sx={{ height: 28, m: 0.5, margin: '2px' }} orientation="vertical" />
 
         <Box sx={{ minWidth: '250px', maxWidth: '300px', margin: '2px', padding: '2px' }}>
           <FormControl size="small" sx={{ m: 1, mt: 3, minWidth: '250px' }}>
@@ -126,8 +114,6 @@ const ISAgro: React.FC = () => {
           </FormControl>
         </Box>
 
-        <Divider sx={{ height: 28, m: 0.5, margin: '3px' }} orientation="vertical" />
-
         <Box sx={{ minWidth: '100px', maxWidth: '300px', margin: '2px', padding: '2px' }}>
           <FormControl fullWidth size="small" sx={{ m: 1, mt: 3 }}>
             <InputLabel id="states-simple-select-label">Estado</InputLabel>
@@ -147,8 +133,6 @@ const ISAgro: React.FC = () => {
             </Select>
           </FormControl>
         </Box>
-
-        <Divider sx={{ height: 28, m: 0.5, margin: '3px' }} orientation="vertical" />
 
         <Box sx={{ minWidth: '100px', maxWidth: '300px', margin: '2px', padding: '2px' }}>
           <FormControl fullWidth size="small" sx={{ m: 1, mt: 3 }}>
@@ -170,34 +154,26 @@ const ISAgro: React.FC = () => {
           </FormControl>
         </Box>
         
-        {/* <IconButton color="primary" sx={{ p: "10px" }} aria-label="directions">
-          <DirectionsIcon />
-        </IconButton> */}
       </Paper>
-      
-      <Box sx={{ alignItems: 'center', width: '100%' }}>
-        <h1>
-          Dados do ISAgro - Por (município), estado, país por nutriente - N P K
-        </h1>
-      </Box>
 
       <Stack spacing={2} sx={{ alignItems: 'center' }}> 
         <Card variant="outlined" sx={{ width: '90%' }}>
           <CardContent>  
-            <h3>Organicas por percentual</h3>
-              <PercentualAreaChart width={1200} height={400} data={organicasPercentual} />
           </CardContent>
         </Card>
+        <ISAgroAreaPaperExemplo />
         <Card variant="outlined" sx={{ width: '90%' }}>
           <CardContent>  
-            <h3>Organicas</h3>    
+            <h3>Áreas Organicas por período</h3>
+            <h5>Números absolutos, consolidando dados de uso da terra por período, considerando Grãos, Hortaliças, Fruticulturas e Pastagens</h5>
             <AreaChart width={1200} height={400} data={organicas} />
           </CardContent>
         </Card>
         <Card variant="outlined" sx={{ width: '90%' }}>
           <CardContent>  
             <div>
-              <h1>Normalized Stacked Area Chart</h1>
+              <h1>Áreas Organicas</h1>
+              <h5>Empilhados por Grão, Hortaliças, Fruticultura, Pastagens</h5>
               <div>
                 <label>
                   Subsequências (anos):

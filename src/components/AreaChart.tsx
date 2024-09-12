@@ -11,7 +11,7 @@ import {
   ResponsiveContainer,
   Legend,
 } from "recharts";
-import { IStackedAreaChart } from './ISAgro/types';
+import { IStackedAreaChart } from '../types';
 
 interface PercentualAreaChartProps {
   data: IStackedAreaChart[] | null;

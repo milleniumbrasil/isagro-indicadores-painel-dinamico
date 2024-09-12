@@ -2,7 +2,7 @@
 // src/services/GetOrganicaService.ts
 
 import axios, { AxiosResponse } from "axios";
-import { IPercentualAreaChart, IStackedAreaChart } from "../components/ISAgro/types";
+import { IPercentualAreaChart, IStackedAreaChart } from "../types";
 
 interface RequestHeaders {
   [key: string]: string;
@@ -21,7 +21,7 @@ class GetOrganicaService {
     try {
       console.log("this.baseURL", this.baseURL);
       console.log("process.env.REACT_APP_API_BASE_URL", process.env.REACT_APP_API_BASE_URL);
-      const response: AxiosResponse<IStackedAreaChart> = await axios.get<IStackedAreaChart>(`${this.baseURL}/data/organicas/stacked`, {
+      const response: AxiosResponse<IStackedAreaChart> = await axios.get<IStackedAreaChart>(`${this.baseURL}/organicas/stacked`, {
       headers: this.headers
     });
       if (Array.isArray(response.data)) {
@@ -39,7 +39,7 @@ class GetOrganicaService {
     try {
       console.log("this.baseURL", this.baseURL);
       console.log("process.env.REACT_APP_API_BASE_URL", process.env.REACT_APP_API_BASE_URL);
-      const response: AxiosResponse<IPercentualAreaChart> = await axios.get<IPercentualAreaChart>(`${this.baseURL}/data/organicas/percentual`, {
+      const response: AxiosResponse<IPercentualAreaChart> = await axios.get<IPercentualAreaChart>(`${this.baseURL}/organicas/percentual`, {
       headers: this.headers
     });
       if (Array.isArray(response.data)) {

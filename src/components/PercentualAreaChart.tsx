@@ -32,8 +32,21 @@ const PercentualAreaChart: React.FC<PercentualAreaChartProps> = ({
   strokeColor = '#228B22',
   fillColor = '#228B22',
 }) => {
+
+  const normalizeData = (_data: IPercentualAreaChart[]|undefined): IPercentualAreaChart[] => {
+    if (!_data) {
+      throw new Error('Data is undefined for rendering the chart');
+    };
+    const maxArea = Math.max(..._data.map(i => i.value)); // Identifica o valor máximo
+    const result = _data.map(e => ({
+      ...e,
+      value: (e.value / maxArea) * 100 // Normaliza os valores de 'area' para percentuais
+    }));
+    return result;
+  }
+
   const [internalValueLabel, setInternalInternalValueLabel] = useState<string>(valueLabel);
-  const [internalData, setInternalData ] = useState<IPercentualAreaChart[] | undefined>(data);
+  const [internalData, setInternalData ] = useState<IPercentualAreaChart[] | undefined>(normalizeData(data));
   const [internalDataKey, setInternalDataKey ] = useState< string>(dataKey);
   const [internalWidth, setInternalWidth ] = useState< number>(width);
   const [internalHeight, setInternalHeight ] = useState< number>(height);
@@ -50,16 +63,6 @@ const PercentualAreaChart: React.FC<PercentualAreaChartProps> = ({
     return `${Math.round(decimal)}%`;
   }
 
-  const normalizeData = (_data: IPercentualAreaChart[]): IPercentualAreaChart[] => {
-
-    const maxArea = Math.max(..._data.map(i => i.value)); // Identifica o valor máximo
-    const result = _data.map(e => ({
-      ...e,
-      value: (e.value / maxArea) * 100 // Normaliza os valores de 'area' para percentuais
-    }));
-
-    return result;
-  }
 
   const renderTooltipContent = (o: any) => {
     const { payload = [] } = o;

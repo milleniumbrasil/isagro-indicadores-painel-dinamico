@@ -24,11 +24,6 @@ class GetDataService<T> implements IDataService<T> {
 
 	public async getData(): Promise<T | { error: string }> {
 		try {
-			console.log("this.baseURL", this.baseURL)
-			console.log(
-				"process.env.REACT_APP_API_BASE_URL",
-				process.env.REACT_APP_API_BASE_URL,
-			)
 			const response: AxiosResponse<T> = await axios.get<T>(
 				`${this.baseURL}/data`,
 				{

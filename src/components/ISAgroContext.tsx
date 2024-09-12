@@ -80,13 +80,17 @@ export const ISAgroProvider: FC<{ children: ReactNode }> = ({ children }) => {
       const citiesData = await citiesService.getData();
       setCities(citiesData as ICity[]);
       const organicasData = await organicasService.getData();
-      setOrganicas(organicasData as IStackedAreaChart[]);
-      if (Array.isArray(organicasData)) {
-        const organicasPercentualData = await organicasService.getOrganicasAsPercentual();
-        setOrganicasPercentual(organicasPercentualData as IPercentualAreaChart[]);
-      } else {
-        console.error("Error: organicasPercentualData is not of type IPercentualAreaChart[]");
+      if (!organicasData) {
+        throw new Error('[ISAgroContext] Erro ao buscar os dados de orgânicas stacked');
       }
+      console.log('[ISAgroContext] organicasData', organicasData);
+      setOrganicas(organicasData as IStackedAreaChart[]);
+      const organicasPercentualData = await organicasService.getOrganicasAsPercentual();
+      if (!organicasPercentualData) {
+        throw new Error('[ISAgroContext] Erro ao buscar os dados de orgânicas/percentual');
+      }
+      console.log('[ISAgroContext] organicasPercentualData', organicasPercentualData);
+      setOrganicasPercentual(organicasPercentualData as IPercentualAreaChart[]);
     };
 
     fetchData();

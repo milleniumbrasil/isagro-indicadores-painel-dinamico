@@ -111,8 +111,6 @@ export default class AreaChart extends PureComponent<PercentualAreaChartProps> {
         normalizedDataSet.push(newNormalized);
       }
     });
-
-    console.log(`NormalizedData: ${JSON.stringify(normalizedDataSet)}`);
     return normalizedDataSet;
   }
 

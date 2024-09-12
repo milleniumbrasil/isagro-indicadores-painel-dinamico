@@ -17,6 +17,7 @@ import { BsCalendar2MonthFill } from 'react-icons/bs';
 
 import { useISAgroContext } from "./ISAgroContext";
 import PercentualAreaChart from "./PercentualAreaChart";
+import { DateRange } from 'rsuite/esm/DateRangePicker';
 
 const ISAgroAreaPaperExemplo: React.FC = () => {
   // dados do servidor armazenados no contexto
@@ -24,6 +25,7 @@ const ISAgroAreaPaperExemplo: React.FC = () => {
   const { countries } = useISAgroContext();
   const { cities } = useISAgroContext();
   const { organicasPercentual } = useISAgroContext();
+  console.log('[ISAgroAreaPaperExemplo] organicasPercentual', JSON.stringify(organicasPercentual));
 
   // dados selecionados em tela
   const [pais, setPais] = React.useState("");
@@ -45,6 +47,19 @@ const ISAgroAreaPaperExemplo: React.FC = () => {
     setCidade(event.target.value as string);
   };
 
+  const handleChangeRangeDates = (rangeDates: DateRange | null, event: React.SyntheticEvent<Element, Event>) => {
+    // preciso atribuir os valores de data para as variaveis startDate e endDate
+    if (rangeDates) {
+      rangeDates.map((date, index) => {
+        if (index === 0) {
+          setStartDate(date);
+        } else {
+          setEndDate(date);
+        }
+      });
+    }
+  };
+
   return (
     <div>
       <Paper
@@ -61,9 +76,12 @@ const ISAgroAreaPaperExemplo: React.FC = () => {
         <Stack spacing={2} sx={{ alignItems: "center", width: '100%' }}>
 
           <Stack direction="row" spacing={2} sx={{ alignItems: "center", width: '100%' }}>
-              
+
               <StackRSuite spacing={10} direction="column" alignItems="flex-start" style={{ padding: '2px', margin: '2px'}}>
-                <DateRangePicker format="MMM yyyy" caretAs={BsCalendar2MonthFill} />
+                <DateRangePicker format="MMM yyyy" caretAs={BsCalendar2MonthFill}
+                limitEndYear={1900}
+                limitStartYear={new Date().getFullYear()}
+                onChange={handleChangeRangeDates} />
               </StackRSuite>
 
               <FormControl size="small" sx={{ m: 1, mt: 3, minWidth: "100px", maxWidth: '200px', margin: "2px", padding: "2px"}}>
@@ -131,7 +149,7 @@ const ISAgroAreaPaperExemplo: React.FC = () => {
                   })}
                 </Select>
               </FormControl>
-              
+
           </Stack>
 
           <Card variant="outlined" sx={{ width: "90%" }}>
@@ -141,7 +159,7 @@ const ISAgroAreaPaperExemplo: React.FC = () => {
                 Percentual consolidado de uso da terra por período, considerando
                 dados para Grãos, Hortaliças, Fruticulturas e Pastagens
               </h5>
-              
+              <p>{`${startDate.getFullYear()} - ${endDate.getFullYear()}`}</p>
               <PercentualAreaChart
                 width={1200}
                 height={400}

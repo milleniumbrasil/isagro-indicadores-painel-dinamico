@@ -21,11 +21,6 @@ class GetOrganicaService {
 
 	public async getData(): Promise<IStackedAreaChart[] | { error: string }> {
 		try {
-			console.log("this.baseURL", this.baseURL)
-			console.log(
-				"process.env.REACT_APP_API_BASE_URL",
-				process.env.REACT_APP_API_BASE_URL,
-			)
 			const response: AxiosResponse<IStackedAreaChart> =
 				await axios.get<IStackedAreaChart>(
 					`${this.baseURL}/organicas/stacked`,
@@ -50,11 +45,6 @@ class GetOrganicaService {
 		IPercentualAreaChart[] | { error: string }
 	> {
 		try {
-			console.log("this.baseURL", this.baseURL)
-			console.log(
-				"process.env.REACT_APP_API_BASE_URL",
-				process.env.REACT_APP_API_BASE_URL,
-			)
 			const response: AxiosResponse<IPercentualAreaChart> =
 				await axios.get<IPercentualAreaChart>(
 					`${this.baseURL}/organicas/percentual`,

@@ -45,7 +45,8 @@ export default class PercentualAreaChart extends PureComponent<PercentualAreaCha
   }
   
   legendFormatter(value: any, entry: any, index: any): string {
-    return `${value.charAt(0).toUpperCase()}${value.slice(1)}`;
+    const legend = this.valueLabel? this.valueLabel : value;
+    return `${legend.charAt(0).toUpperCase()}${legend.slice(1)}`;
   }
 
   tickFormatter(decimal: number = 0, fixed: number = 1): string {

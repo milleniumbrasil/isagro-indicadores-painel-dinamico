@@ -146,6 +146,7 @@ const ISAgroAreaPaperExemplo: React.FC = () => {
                 width={1200}
                 height={400}
                 data={organicasPercentual}
+                valueLabel='Área'
               />
             </CardContent>
           </Card>

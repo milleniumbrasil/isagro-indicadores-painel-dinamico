@@ -19,50 +19,50 @@ import GetOrganicaService from "../services/GetOrganicaService";
 
 // Interface para o contexto
 interface ISAgroContextProps {
-  data: IData[] | null;
-  setData: Dispatch<SetStateAction<IData[] | null>>;
-  years: string[] | null;
-  setYears: Dispatch<SetStateAction<string[] | null>>;
-  cities: ICity[] | null;
-  setCities: Dispatch<SetStateAction<ICity[] | null>>;
-  states: IState[] | null;
-  setStates: Dispatch<SetStateAction<IState[] | null>>;
-  countries: ICountry[] | null;
-  setCountries: Dispatch<SetStateAction<ICountry[] | null>>;
-  organicas: IStackedAreaChart[] | null;
-  setOrganicas: Dispatch<SetStateAction<IStackedAreaChart[] | null>>;
-  organicasPercentual: IPercentualAreaChart[] | null;
-  setOrganicasPercentual: Dispatch<SetStateAction<IPercentualAreaChart[] | null>>;
+  data: IData[] | undefined;
+  setData: Dispatch<SetStateAction<IData[] | undefined>>;
+  years: string[] | undefined;
+  setYears: Dispatch<SetStateAction<string[] | undefined>>;
+  cities: ICity[] | undefined;
+  setCities: Dispatch<SetStateAction<ICity[] | undefined>>;
+  states: IState[] | undefined;
+  setStates: Dispatch<SetStateAction<IState[] | undefined>>;
+  countries: ICountry[] | undefined;
+  setCountries: Dispatch<SetStateAction<ICountry[] | undefined>>;
+  organicas: IStackedAreaChart[] | undefined;
+  setOrganicas: Dispatch<SetStateAction<IStackedAreaChart[] | undefined>>;
+  organicasPercentual: IPercentualAreaChart[] | undefined;
+  setOrganicasPercentual: Dispatch<SetStateAction<IPercentualAreaChart[] | undefined>>;
 }
 
 // Estado inicial
-const dataInitialState: IData[] | null = null;
-const yearsInitialState: string[] | null = null;
-const statesInitialState: IState[] | null = null;
-const countriesInitialState: ICountry[] | null = null;
-const citiesInitialState: ICity[] | null = null;
-const organicasInitialState: IPercentualAreaChart[] | null = null;
-const organicasPercentualInitialState: IPercentualAreaChart[] | null = null;
+const dataInitialState: IData[] | undefined = undefined;
+const yearsInitialState: string[] | undefined = undefined;
+const statesInitialState: IState[] | undefined = undefined;
+const countriesInitialState: ICountry[] | undefined = undefined;
+const citiesInitialState: ICity[] | undefined = undefined;
+const organicasInitialState: IPercentualAreaChart[] | undefined = undefined;
+const organicasPercentualInitialState: IPercentualAreaChart[] | undefined = undefined;
 
 // Criação do contexto
 const ISAgroContext = createContext<ISAgroContextProps | undefined>(undefined);
 
 // Provider do contexto
 export const ISAgroProvider: FC<{ children: ReactNode }> = ({ children }) => {
-  const [data, setData] = useState<IData[] | null>(dataInitialState);
-  const [years, setYears] = useState<string[] | null>(yearsInitialState);
-  const [states, setStates] = useState<IState[] | null>(statesInitialState);
-  const [countries, setCountries] = useState<ICountry[] | null>(countriesInitialState);
-  const [cities, setCities] = useState<ICity[] | null>(citiesInitialState);
-  const [organicas, setOrganicas] = useState<IStackedAreaChart[] | null>(organicasInitialState);
-  const [organicasPercentual, setOrganicasPercentual] = useState<IPercentualAreaChart[] | null>(organicasPercentualInitialState);
+  const [data, setData] = useState<IData[] | undefined>(dataInitialState);
+  const [years, setYears] = useState<string[] | undefined>(yearsInitialState);
+  const [states, setStates] = useState<IState[] | undefined>(statesInitialState);
+  const [countries, setCountries] = useState<ICountry[] | undefined>(countriesInitialState);
+  const [cities, setCities] = useState<ICity[] | undefined>(citiesInitialState);
+  const [organicas, setOrganicas] = useState<IStackedAreaChart[] | undefined>(organicasInitialState);
+  const [organicasPercentual, setOrganicasPercentual] = useState<IPercentualAreaChart[] | undefined>(organicasPercentualInitialState);
 
   const dataService = new GetDataService<IData[]>();
   const statesService = new GetStatesService<IState[]>();
   const countriesService = new GetCountriesService<ICountry[]>();
   const citiesService = new GetCitiesService<ICity[]>();
   const organicasService = new GetOrganicaService();
-  
+
   useEffect(() => {
     const fetchData = async () => {
       const result = await dataService.getData();

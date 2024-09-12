@@ -14,7 +14,7 @@ import {
 import { IStackedAreaChart } from '../types';
 
 interface PercentualAreaChartProps {
-  data: IStackedAreaChart[] | null;
+  data: IStackedAreaChart[] | undefined;
   dataKey?: string;
   valueLabel?: string;
   width?: number;
@@ -24,7 +24,7 @@ interface PercentualAreaChartProps {
 }
 
 export default class AreaChart extends PureComponent<PercentualAreaChartProps> {
-  
+
   // Paleta reorganizada do mais claro para o mais escuro
   public static palete = ["#a4de6c", "#66CDAA", "#32CD32", "#228B22", "#006400"];
 
@@ -37,10 +37,10 @@ export default class AreaChart extends PureComponent<PercentualAreaChartProps> {
   private strokeColor: string[] = AreaChart.palete;
   private fillColor: string[] = AreaChart.palete;
   private dynamicTicks: number[] = [0];
-  
+
   constructor(props: PercentualAreaChartProps) {
     super(props);
-    this.renderTooltipContent = this.renderTooltipContent.bind(this); 
+    this.renderTooltipContent = this.renderTooltipContent.bind(this);
     this.legendFormatter = this.legendFormatter.bind(this);
     this.width = this.props.width ?? 800;
     this.height = this.props.height ?? 1200;
@@ -48,7 +48,7 @@ export default class AreaChart extends PureComponent<PercentualAreaChartProps> {
     this.valueLabel = this.props.valueLabel ?? 'Valor';
     this.data = this.props.data ?? [];
   }
-  
+
   tickFormatter(decimal: number = 0, fixed: number = 1): string {
     return `${Math.round(decimal as number)}`;
   }
@@ -60,25 +60,25 @@ export default class AreaChart extends PureComponent<PercentualAreaChartProps> {
   legendFormatter(value: any, entry: any, index: any): string {
     return this.firstLetter2UpperCase(value);
   }
-  
+
   renderTooltipContent(o: any) {
-    const { payload = [] } = o;  
-    
+    const { payload = [] } = o;
+
     return (
       <div
       className="customized-tooltip-content"
-      style={{ backgroundColor: 'rgba(0, 0, 0, 0.1)', padding: '10px', borderRadius: '5px', fontFamily: 'Arial, sans-serif' }} 
+      style={{ backgroundColor: 'rgba(0, 0, 0, 0.1)', padding: '10px', borderRadius: '5px', fontFamily: 'Arial, sans-serif' }}
       >
         <ul className="list" style={{ listStyleType: 'none', padding: 0, fontSize: '12px' }}>
           {payload.map((entry: any, index: number) => {
-            const fontColor = 'black'; 
+            const fontColor = 'black';
             if (entry.name !== this.dataKey && this.attributeNames.includes(entry.name) && typeof entry.value === 'number') {
-              return ( 
+              return (
                   <li key={`item-${index}`} style={{ color: fontColor }}>
                     {this.firstLetter2UpperCase(entry.name)} {entry.value}
-                  </li>        
+                  </li>
               );
-            } 
+            }
             return null;
           })}
         </ul>
@@ -90,22 +90,22 @@ export default class AreaChart extends PureComponent<PercentualAreaChartProps> {
   normalizeData(entries: IStackedAreaChart[]): { [key: string]: any }[] {
 
     const normalizedDataSet: any[] = [];
-    
+
     entries.forEach((entry) => {
       const { period, entry: dataEntry } = entry;
       const [label, value] = dataEntry;
 
-      // buscar a última entry para o periodo e o label 
+      // buscar a última entry para o periodo e o label
       let normalized;
-      normalized = normalizedDataSet.find((item) => 
-        item.period === period && 
+      normalized = normalizedDataSet.find((item) =>
+        item.period === period &&
         !Object.keys(item).find((labelTarget) => labelTarget === label)
-      );  
-      
+      );
+
       // se já existe uma entry para o periodo e label
       if (normalized) {
         normalized[label] = value;
-      } else {  
+      } else {
         const newNormalized: { [key: string]: any } = { "period": period };
         newNormalized[label] = value;
         normalizedDataSet.push(newNormalized);
@@ -123,9 +123,9 @@ export default class AreaChart extends PureComponent<PercentualAreaChartProps> {
 
     const maxTotal = Math.max(...data.map((d: { [key: string]: any }) => {
       const total = Object.values(d).reduce((sum: number, value: any) => {
-        if (typeof value === 'number')  
+        if (typeof value === 'number')
           return sum + value;
-        else 
+        else
           return sum;
       }, 0);
       return total;
@@ -137,7 +137,7 @@ export default class AreaChart extends PureComponent<PercentualAreaChartProps> {
     const step = Math.ceil(maxTotal / 4);
     return [0, step, step * 2, step * 3, step * 4]; // Ticks dinâmicos
   }
-  
+
   render() {
     this.width = this.props.width ?? 800;
     this.height = this.props.height ?? 1200;
@@ -175,7 +175,7 @@ export default class AreaChart extends PureComponent<PercentualAreaChartProps> {
                   stackId="1"
                   stroke={this.strokeColor[index % this.strokeColor.length]}
                   fill={this.fillColor[index % this.fillColor.length]}
-               
+
                 />
               ))}
             </RechatsAreaChart>

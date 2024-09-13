@@ -1,5 +1,14 @@
 {
-    "semi": false,
+    "semi": true,
+    "printWidth": 140,
+    "tabWidth": 4,
+    "useTabs": false,
+    "singleQuote": true,
+    "trailingComma": "all",
+    "bracketSpacing": true,
+    "arrowParens": "always",
+    "proseWrap": "never",
+    "endOfLine": "lf", 
     "overrides": [
       {
         "files": "*.test.js",

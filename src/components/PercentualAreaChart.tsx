@@ -1,6 +1,6 @@
 // src/components/PercentualAreaChart.tsx
 
-import { PureComponent, useEffect, useState, Suspense } from "react"
+import { useEffect, useState } from "react"
 import {
   AreaChart,
   Area,
@@ -8,8 +8,8 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  ResponsiveContainer,
   Legend,
+  ResponsiveContainer
 } from "recharts"
 import { IPercentualAreaChart } from "../types"
 
@@ -30,15 +30,15 @@ export function Loading() {
 const PercentualAreaChart: React.FC<PercentualAreaChartProps> = (props) => {
 
   const [internalValueLabel, setInternalInternalValueLabel] =
-    useState<string>("Valor")
-  const [internalData, setInternalData] = useState<IPercentualAreaChart[]>()
-  const [internalDataKey, setInternalDataKey] = useState<string>("period")
-  const [internalWidth, setInternalWidth] = useState<number>(800)
-  const [internalHeight, setInternalHeight] = useState<number>(1200)
+    useState<string>("Valor");
+  const [internalData, setInternalData] = useState<IPercentualAreaChart[] | null>(null);
+  const [internalDataKey, setInternalDataKey] = useState<string>("period");
+  const [internalWidth, setInternalWidth] = useState<number>(800);
+  const [internalHeight, setInternalHeight] = useState<number>(1200);
   const [internalStrokeColor, setInternalStrockeColor] =
-    useState<string>("#228B22")
-  const [internalFillColor, setInternalFillColor] = useState<string>("#228B22")
-  const [attributeNames, setAttributeNames] = useState<string[]>([])
+    useState<string>("#228B22");
+  const [internalFillColor, setInternalFillColor] = useState<string>("#228B22");
+  const [attributeNames, setAttributeNames] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
 
   const normalizeData = (
@@ -71,9 +71,11 @@ const PercentualAreaChart: React.FC<PercentualAreaChartProps> = (props) => {
       try {
           console.log(`[PercentualAreaChart] data: ${JSON.stringify(props.data)}`)
           if (!props.data || props.data.length === 0){
-            throw new Error(
+            console.warn(
               "[PercentualAreaChart]: data is required at first useEffect stage! It should be loaded from props.data."
-            )
+            );
+            setLoading(false);
+            return;
           } else {
             const normalizedData = normalizeData(props.data)
             setInternalData(normalizedData)
@@ -90,6 +92,7 @@ const PercentualAreaChart: React.FC<PercentualAreaChartProps> = (props) => {
                 )
               )
             }
+            console.log("[PercentualAreaChart] Attribute names:", attributeNames);
           }
       } catch (error) {
         console.error(error);
@@ -148,8 +151,9 @@ const PercentualAreaChart: React.FC<PercentualAreaChartProps> = (props) => {
   return (
     <div style={{ width: "100%", height: internalHeight }}>
 
-      <Suspense fallback={<Loading />}>
-        {internalData && internalData.length > 0 ? (
+      {loading ? ( // Se ainda estiver carregando, exibe o fallback
+        <Loading />
+      ) : internalData && internalData.length > 0 ? ( // Se os dados estiverem prontos
           <ResponsiveContainer>
             <AreaChart
               width={internalWidth}
@@ -164,7 +168,7 @@ const PercentualAreaChart: React.FC<PercentualAreaChartProps> = (props) => {
               style={{ fontSize: 8 }}
             >
               <CartesianGrid strokeDasharray="0" />
-              <XAxis dataKey={internalDataKey} />
+              <XAxis dataKey={"value"} />
               <YAxis tickFormatter={tickFormatter} ticks={[0, 25, 50, 75, 100]} />
               <Legend formatter={legendFormatter} />
               <Tooltip content={renderTooltipContent} />
@@ -180,10 +184,9 @@ const PercentualAreaChart: React.FC<PercentualAreaChartProps> = (props) => {
               ))}
             </AreaChart>
           </ResponsiveContainer>
-        ) : (
-          <Loading />
-        )}
-      </Suspense>
+      ) : (
+        <Loading /> // Caso os dados estejam vazios, exibe um fallback de "Loading"
+      )}
     </div>
   )
 }

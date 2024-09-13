@@ -14,7 +14,7 @@ import {
 import { IPercentualAreaChart } from '../types';
 
 interface PercentualAreaChartProps {
-  data: IPercentualAreaChart[] | undefined;
+  data: IPercentualAreaChart[];
   dataKey?: string;
   valueLabel?: string;
   width?: number;
@@ -25,7 +25,7 @@ interface PercentualAreaChartProps {
 
 const PercentualAreaChart: React.FC<PercentualAreaChartProps> = (props) => {
 
-  const normalizeData = (_data: IPercentualAreaChart[]|undefined): IPercentualAreaChart[] => {
+  const normalizeData = (_data: IPercentualAreaChart[]): IPercentualAreaChart[] => {
     if (!_data) {
       throw new Error('Data is undefined for rendering the chart');
     };
@@ -38,7 +38,7 @@ const PercentualAreaChart: React.FC<PercentualAreaChartProps> = (props) => {
   }
 
   const [internalValueLabel, setInternalInternalValueLabel] = useState<string>(props.valueLabel ?? 'Valor');
-  const [internalData, setInternalData ] = useState<IPercentualAreaChart[] | undefined>(normalizeData(props.data));
+  const [internalData, setInternalData ] = useState<IPercentualAreaChart[]>(normalizeData(props.data));
   const [internalDataKey, setInternalDataKey ] = useState< string>(props.dataKey ?? 'period');
   const [internalWidth, setInternalWidth ] = useState< number>(props.width ?? 800);
   const [internalHeight, setInternalHeight ] = useState< number>(props.height ?? 1200);

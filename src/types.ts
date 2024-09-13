@@ -47,16 +47,3 @@ export interface IStackedAreaChart {
 	entry: [label: string, value: number]
 }
 
-// Interface para o contexto
-export interface ISAgroContextProps {
-	geeStackedData: IStackedAreaChart[];
-	nh3StackedData: IStackedAreaChart[];
-	npkStackedData: IStackedAreaChart[];
-	organicasStackedData: IStackedAreaChart[];
-	organicasPercentual: IPercentualAreaChart[];
-	poluicaoStackedData: IStackedAreaChart[];
-	erosaoStackedData: IStackedAreaChart[];
-	cities: ICity[];
-	states: IState[];
-	countries: ICountry[];
-  }

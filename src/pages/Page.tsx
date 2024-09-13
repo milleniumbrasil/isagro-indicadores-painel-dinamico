@@ -2,7 +2,7 @@
 
 import "./Page.css";
 
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import Stack from "@mui/material/Stack";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
@@ -24,13 +24,19 @@ const Page: FC = () => {
   const { countries } = useISAgroContext();
   const { cities } = useISAgroContext();
   const { organicasStackedData } = useISAgroContext();
-  const { organicasPercentual } = useISAgroContext();
+  const { organicasPercentual: contextOrganicasPercentual } = useISAgroContext();
+
+  const [internalOrganicasPercentual, setInternalOrganicasPercentual] = useState<IPercentualAreaChart[]>([]);
+
+  useEffect(() => {
+    if (!contextOrganicasPercentual) {
+      throw new Error("Page: organicasPercentual is required");
+    }
+    console.debug(`[Page] organicasPercentual loaded from context: ${contextOrganicasPercentual.length}`);
+    setInternalOrganicasPercentual(contextOrganicasPercentual);
+  }, []);
 
   // dados selecionados em tela
-  const [internalOrganicasPercentual, setInternalOrganicasPercentual] = useState<IPercentualAreaChart[]|undefined>(organicasPercentual);
-
-  console.log(`[Page] organicasPercentual: ${JSON.stringify(organicasPercentual)}`);
-
   const [pais, setPais] = useState('');
   const [estado, setEstado] = useState('');
   const [cidade, setCidade] = useState('');
@@ -127,7 +133,7 @@ const Page: FC = () => {
           </CardContent>
         </Card>
 
-        <ISAgroAreaPaperExemplo data={organicasPercentual as IPercentualAreaChart[]} countries={countries} states={states} cities={cities} />
+        <ISAgroAreaPaperExemplo data={internalOrganicasPercentual} countries={countries} states={states} cities={cities} />
 
         <Card variant="outlined" sx={{ width: '90%' }}>
           <CardContent>

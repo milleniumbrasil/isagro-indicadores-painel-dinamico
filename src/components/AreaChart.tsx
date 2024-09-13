@@ -14,7 +14,7 @@ import {
 import { IStackedAreaChart } from '../types';
 
 interface PercentualAreaChartProps {
-  data: IStackedAreaChart[] | undefined;
+  data: IStackedAreaChart[];
   dataKey?: string;
   valueLabel?: string;
   width?: number;

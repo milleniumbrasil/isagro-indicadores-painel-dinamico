@@ -1,10 +1,35 @@
-// src/components/ISAgro/ISAgroContext.tsx
+// src/components/ISAgroContext.tsx
 
 import { createContext, useContext } from "react";
-import { ISAgroContextProps } from "../types";
+import { IStackedAreaChart, IPercentualAreaChart, ICity, IState, ICountry } from "../types";
+
+// Interface para o contexto
+export interface ISAgroContextProps {
+	geeStackedData: IStackedAreaChart[];
+	nh3StackedData: IStackedAreaChart[];
+	npkStackedData: IStackedAreaChart[];
+	organicasStackedData: IStackedAreaChart[];
+	organicasPercentual: IPercentualAreaChart[];
+	poluicaoStackedData: IStackedAreaChart[];
+	erosaoStackedData: IStackedAreaChart[];
+	cities: ICity[];
+	states: IState[];
+	countries: ICountry[];
+}
 
 // Criação do contexto
-export const ISAgroContext = createContext<ISAgroContextProps | undefined>(undefined);
+export const ISAgroContext = createContext<ISAgroContextProps>({
+  geeStackedData: [],
+  nh3StackedData: [],
+  npkStackedData: [],
+  organicasStackedData: [],
+  organicasPercentual: [],
+  poluicaoStackedData: [],
+  erosaoStackedData: [],
+  cities: [],
+  states: [],
+  countries: [],
+});
 
 // Hook para utilizar o contexto
 export const useISAgroContext = () => {

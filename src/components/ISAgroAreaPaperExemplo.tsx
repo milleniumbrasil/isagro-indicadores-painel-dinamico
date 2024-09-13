@@ -2,7 +2,7 @@
 
 import 'rsuite/dist/rsuite.min.css';
 
-import React, { useState } from "react";
+import { FC, useState, useEffect, SyntheticEvent } from "react";
 import Stack from "@mui/material/Stack";
 import Paper from "@mui/material/Paper";
 import InputLabel from "@mui/material/InputLabel";
@@ -18,48 +18,88 @@ import { BsCalendar2MonthFill } from 'react-icons/bs';
 import { useISAgroContext } from "./ISAgroContext";
 import PercentualAreaChart from "./PercentualAreaChart";
 import { DateRange } from 'rsuite/esm/DateRangePicker';
-import { IPercentualAreaChart } from '../types';
+import { ICity, ICountry, IPercentualAreaChart, IState } from '../types';
 
 
 interface ISAgroAreaPaperExemploProps {
+  countries: ICountry[];
+  states: IState[];
+  cities: ICity[];
   data: IPercentualAreaChart[];
 }
 
-const ISAgroAreaPaperExemplo: React.FC<ISAgroAreaPaperExemploProps> = (props) => {
+const ISAgroAreaPaperExemplo: FC<ISAgroAreaPaperExemploProps> = (props) => {
   // dados do servidor armazenados no contexto
-  const { states } = useISAgroContext();
-  const { countries } = useISAgroContext();
-  const { cities } = useISAgroContext();
-  const [organicasPercentual, setOrganicasPercentual] = useState<IPercentualAreaChart[]>(props.data);
+  const { countries: contextCountries } = useISAgroContext();
+  const { states: contextStates } = useISAgroContext();
+  const { cities: contextCities } = useISAgroContext();
+
+  // dados internos do componente
+  const [ internalCountries, setInternalCountries ] = useState<ICountry[]>([]);
+  const [ internalStates, setInternalStates ] = useState<IState[]>([]);
+  const [ internalCities, setInternalCities ] = useState<ICity[]>([]);
+  const [ internalOrganicasPercentual, setInternalOrganicasPercentual] = useState<IPercentualAreaChart[]>([]);
+
+  useEffect(() => {
+    if (!props.data)
+      throw new Error("ISAgroAreaPaperExemplo: data is required");
+
+    setInternalOrganicasPercentual(props.data);
+    console.debug(`[ISAgroAreaPaperExemplo] organicasPercentual: ${JSON.stringify(internalOrganicasPercentual)}`);
+
+    if (!props.countries) {
+      setInternalCountries(props.countries);
+      console.debug(`[ISAgroAreaPaperExemplo] countries loaded from props: ${internalCountries.length}`);
+    } else {
+      setInternalCountries(contextCountries);
+      console.debug(`[ISAgroAreaPaperExemplo] countries loaded from context: ${internalCountries.length}`);
+    }
+
+    if (!props.states) {
+      setInternalStates(props.states);
+      console.debug(`[ISAgroAreaPaperExemplo] states loaded from props: ${internalStates.length}`);
+    } else {
+      setInternalStates(contextStates);
+      console.debug(`[ISAgroAreaPaperExemplo] states loaded from context: ${internalStates.length}`);
+    }
+
+    if (!props.cities) {
+      setInternalCities(props.cities);
+      console.debug(`[ISAgroAreaPaperExemplo] cities loaded from props: ${internalCities.length}`);
+    } else {
+      setInternalCities(contextCities);
+      console.debug(`[ISAgroAreaPaperExemplo] cities loaded from context: ${internalCities.length}`);
+    }
+  }, []);
 
   // dados selecionados em tela
-  const [pais, setPais] = React.useState("");
-  const [estado, setEstado] = React.useState("");
-  const [cidade, setCidade] = React.useState("");
-  const [startDate, setStartDate] = React.useState<Date>(new Date());
-  const [endDate, setEndDate] = React.useState<Date>(new Date());
+  const [selectedCountry, setSelectedCountry] = useState("");
+  const [selectedState, setSelectedState] = useState("");
+  const [selectedCity, setSelectedCity] = useState("");
+  const [selectedStartDate, setSelectedStartDate] = useState<Date>(new Date());
+  const [selectedEndDate, setSelectedEndDate] = useState<Date>(new Date());
 
   // manipuladores de eventos de tela
-  const handleChangePaises = (event: SelectChangeEvent) => {
-    setPais(event.target.value as string);
+  const handleChangeCountry = (event: SelectChangeEvent) => {
+    setSelectedCountry(event.target.value as string);
   };
 
-  const handleChangeEstados = (event: SelectChangeEvent) => {
-    setEstado(event.target.value as string);
+  const handleChangeState = (event: SelectChangeEvent) => {
+    setSelectedState(event.target.value as string);
   };
 
-  const handleChangeCidades = (event: SelectChangeEvent) => {
-    setCidade(event.target.value as string);
+  const handleChangeCity = (event: SelectChangeEvent) => {
+    setSelectedCity(event.target.value as string);
   };
 
-  const handleChangeRangeDates = (rangeDates: DateRange | null, event: React.SyntheticEvent<Element, Event>) => {
+  const handleChangeRangeDates = (rangeDates: DateRange | null, event: SyntheticEvent<Element, Event>) => {
     // preciso atribuir os valores de data para as variaveis startDate e endDate
     if (rangeDates) {
       rangeDates.map((date, index) => {
         if (index === 0) {
-          setStartDate(date);
+          setSelectedStartDate(date);
         } else {
-          setEndDate(date);
+          setSelectedEndDate(date);
         }
       });
     }
@@ -94,14 +134,14 @@ const ISAgroAreaPaperExemplo: React.FC<ISAgroAreaPaperExemploProps> = (props) =>
                 <Select
                   labelId="paises-simple-select-label"
                   id="paises-simple-select"
-                  value={pais}
+                  value={selectedCountry}
                   label="País"
-                  onChange={handleChangePaises}
+                  onChange={handleChangeCountry}
                   sx={{
                     borderRadius: "20px",
                   }}
                 >
-                  {countries?.map((y, k) => {
+                  {internalCountries?.map((y, k) => {
                     return (
                       <MenuItem key={k} value={y.pais}>
                         {y.pais}
@@ -116,14 +156,14 @@ const ISAgroAreaPaperExemplo: React.FC<ISAgroAreaPaperExemploProps> = (props) =>
                 <Select
                   labelId="states-simple-select-label"
                   id="states-simple-select"
-                  value={estado}
+                  value={selectedState}
                   label="Estado"
-                  onChange={handleChangeEstados}
+                  onChange={handleChangeState}
                   sx={{
                     borderRadius: "20px",
                   }}
                 >
-                  {states?.map((y, k) => {
+                  {internalStates?.map((y, k) => {
                     return (
                       <MenuItem key={k} value={y.estado}>
                         {y.estado}
@@ -138,14 +178,14 @@ const ISAgroAreaPaperExemplo: React.FC<ISAgroAreaPaperExemploProps> = (props) =>
                 <Select
                   labelId="cities-simple-select-label"
                   id="cities-simple-select"
-                  value={cidade}
+                  value={selectedCity}
                   label="Cidade"
-                  onChange={handleChangeCidades}
+                  onChange={handleChangeCity}
                   sx={{
                     borderRadius: "20px",
                   }}
                 >
-                  {cities?.map((y, k) => {
+                  {internalCities?.map((y, k) => {
                     return (
                       <MenuItem key={k} value={y.cidade}>
                         {y.cidade}
@@ -164,11 +204,11 @@ const ISAgroAreaPaperExemplo: React.FC<ISAgroAreaPaperExemploProps> = (props) =>
                 Percentual consolidado de uso da terra por período, considerando
                 dados para Grãos, Hortaliças, Fruticulturas e Pastagens
               </h5>
-              <p>{`${startDate.getFullYear()} - ${endDate.getFullYear()}`}</p>
+              <p>{`${selectedStartDate.getFullYear()} - ${selectedEndDate.getFullYear()}`}</p>
               <PercentualAreaChart
                 width={1200}
                 height={400}
-                data={organicasPercentual}
+                data={internalOrganicasPercentual}
                 valueLabel='Área'
               />
             </CardContent>

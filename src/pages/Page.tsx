@@ -2,7 +2,7 @@
 
 import "./Page.css";
 
-import React from "react";
+import { FC, useState } from "react";
 import Stack from "@mui/material/Stack";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
@@ -17,7 +17,7 @@ import AreaChart from "../components/AreaChart";
 import ISAgroAreaPaperExemplo from "../components/ISAgroAreaPaperExemplo";
 import { IPercentualAreaChart } from "../types";
 
-const Page: React.FC = () => {
+const Page: FC = () => {
 
   // dados do servidor armazenados no contexto
   const { states } = useISAgroContext();
@@ -27,14 +27,14 @@ const Page: React.FC = () => {
   const { organicasPercentual } = useISAgroContext();
 
   // dados selecionados em tela
-  const [internalOrganicasPercentual, setInternalOrganicasPercentual] = React.useState<IPercentualAreaChart[]|undefined>(organicasPercentual);
+  const [internalOrganicasPercentual, setInternalOrganicasPercentual] = useState<IPercentualAreaChart[]|undefined>(organicasPercentual);
 
   console.log(`[Page] organicasPercentual: ${JSON.stringify(organicasPercentual)}`);
 
-  const [pais, setPais] = React.useState('');
-  const [estado, setEstado] = React.useState('');
-  const [cidade, setCidade] = React.useState('');
-  const [subsequenceRange, setSubsequenceRange] = React.useState<number>(1);
+  const [pais, setPais] = useState('');
+  const [estado, setEstado] = useState('');
+  const [cidade, setCidade] = useState('');
+  const [subsequenceRange, setSubsequenceRange] = useState<number>(1);
 
   const minDistance = 10;
 
@@ -127,7 +127,7 @@ const Page: React.FC = () => {
           </CardContent>
         </Card>
 
-        <ISAgroAreaPaperExemplo data={organicasPercentual as IPercentualAreaChart[]}/>
+        <ISAgroAreaPaperExemplo data={organicasPercentual as IPercentualAreaChart[]} countries={countries} states={states} cities={cities} />
 
         <Card variant="outlined" sx={{ width: '90%' }}>
           <CardContent>

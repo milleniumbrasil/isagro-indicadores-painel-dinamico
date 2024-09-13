@@ -21,7 +21,7 @@ export const ISAgroProvider: FC<{ children: ReactNode }> = ({ children }) => {
 
   const [erosaoStackedData, setErosaoStackedData] = useState<IStackedAreaChart[]>([]);
   const [geeStackedData, setGeeStackedData] = useState<IStackedAreaChart[]>([]);
-  const [nk3StackedData, setNh3StackedData] = useState<IStackedAreaChart[]>([]);
+  const [nh3StackedData, setNh3StackedData] = useState<IStackedAreaChart[]>([]);
   const [npkStackedData, setNpkStackedData] = useState<IStackedAreaChart[]>([]);
   const [organicasStackedData, setOrganicasStackedData] = useState<IStackedAreaChart[]>([]);
   const [poluicaoStackedData, setPoluicaoStackedData] = useState<IStackedAreaChart[]>([]);
@@ -76,16 +76,16 @@ export const ISAgroProvider: FC<{ children: ReactNode }> = ({ children }) => {
   }, []);
 
   const value = {
-    states,
-    setStates,
-    countries,
-    setCountries,
-    cities,
-    setCities,
-    organicas: organicasStackedData,
-    setOrganicas: setOrganicasStackedData,
+    geeStackedData,
+    nh3StackedData,
+    npkStackedData,
+    organicasStackedData,
     organicasPercentual,
-    setOrganicasPercentual,
+    poluicaoStackedData,
+    erosaoStackedData,
+    cities,
+    states,
+    countries,
   };
 
   return (

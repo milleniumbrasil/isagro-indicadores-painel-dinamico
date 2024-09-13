@@ -49,14 +49,14 @@ export interface IStackedAreaChart {
 
 // Interface para o contexto
 export interface ISAgroContextProps {
-	cities: ICity[];
-	setCities: Dispatch<SetStateAction<ICity[]>>;
-	states: IState[];
-	setStates: Dispatch<SetStateAction<IState[]>>;
-	countries: ICountry[];
-	setCountries: Dispatch<SetStateAction<ICountry[]>>;
-	organicas: IStackedAreaChart[];
-	setOrganicas: Dispatch<SetStateAction<IStackedAreaChart[]>>;
+	geeStackedData: IStackedAreaChart[];
+	nh3StackedData: IStackedAreaChart[];
+	npkStackedData: IStackedAreaChart[];
+	organicasStackedData: IStackedAreaChart[];
 	organicasPercentual: IPercentualAreaChart[];
-	setOrganicasPercentual: Dispatch<SetStateAction<IPercentualAreaChart[]>>;
+	poluicaoStackedData: IStackedAreaChart[];
+	erosaoStackedData: IStackedAreaChart[];
+	cities: ICity[];
+	states: IState[];
+	countries: ICountry[];
   }

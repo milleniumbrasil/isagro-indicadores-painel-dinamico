@@ -23,7 +23,7 @@ const Page: FC = () => {
   const { states } = useISAgroContext();
   const { countries } = useISAgroContext();
   const { cities } = useISAgroContext();
-  const { organicas } = useISAgroContext();
+  const { organicasStackedData } = useISAgroContext();
   const { organicasPercentual } = useISAgroContext();
 
   // dados selecionados em tela
@@ -133,7 +133,7 @@ const Page: FC = () => {
           <CardContent>
             <h3>Áreas Organicas por período</h3>
             <h5>Números absolutos, consolidando dados de uso da terra por período, considerando Grãos, Hortaliças, Fruticulturas e Pastagens</h5>
-            <AreaChart width={1200} height={400} data={organicas} />
+            <AreaChart width={1200} height={400} data={organicasStackedData} />
           </CardContent>
         </Card>
         <Card variant="outlined" sx={{ width: '90%' }}>
@@ -154,7 +154,7 @@ const Page: FC = () => {
                 </label>
 
               </div>
-              <AreaChart width={1200} height={400} data={organicas} />
+              <AreaChart width={1200} height={400} data={organicasStackedData} />
             </div>
           </CardContent>
         </Card>

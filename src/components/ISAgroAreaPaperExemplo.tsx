@@ -32,8 +32,6 @@ const ISAgroAreaPaperExemplo: React.FC<ISAgroAreaPaperExemploProps> = (props) =>
   const { cities } = useISAgroContext();
   const [organicasPercentual, setOrganicasPercentual] = useState<IPercentualAreaChart[]>(props.data);
 
-  console.log('[ISAgroAreaPaperExemplo] organicasPercentual', JSON.stringify(organicasPercentual));
-
   // dados selecionados em tela
   const [pais, setPais] = React.useState("");
   const [estado, setEstado] = React.useState("");

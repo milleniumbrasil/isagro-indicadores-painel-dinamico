@@ -5,35 +5,16 @@ import {
   useContext,
   useState,
   useEffect,
-  Dispatch,
-  SetStateAction,
   ReactNode,
   FC,
 } from "react";
+
 import GetDataService from "../services/GetDataService";
-import { ICity, ICountry, IData, IPercentualAreaChart, IStackedAreaChart, IState } from "../types";
+import { ICity, ICountry, IData, IPercentualAreaChart, IStackedAreaChart, IState, ISAgroContextProps } from "../types";
 import GetStatesService from "../services/GetStatesService";
 import GetCountriesService from "../services/GetCountriesService";
 import GetCitiesService from "../services/GetCitiesService";
 import GetOrganicaService from "../services/GetOrganicaService";
-
-// Interface para o contexto
-interface ISAgroContextProps {
-  data: IData[] | undefined;
-  setData: Dispatch<SetStateAction<IData[] | undefined>>;
-  years: string[] | undefined;
-  setYears: Dispatch<SetStateAction<string[] | undefined>>;
-  cities: ICity[] | undefined;
-  setCities: Dispatch<SetStateAction<ICity[] | undefined>>;
-  states: IState[] | undefined;
-  setStates: Dispatch<SetStateAction<IState[] | undefined>>;
-  countries: ICountry[] | undefined;
-  setCountries: Dispatch<SetStateAction<ICountry[] | undefined>>;
-  organicas: IStackedAreaChart[] | undefined;
-  setOrganicas: Dispatch<SetStateAction<IStackedAreaChart[] | undefined>>;
-  organicasPercentual: IPercentualAreaChart[] | undefined;
-  setOrganicasPercentual: Dispatch<SetStateAction<IPercentualAreaChart[] | undefined>>;
-}
 
 // Estado inicial
 const dataInitialState: IData[] | undefined = undefined;

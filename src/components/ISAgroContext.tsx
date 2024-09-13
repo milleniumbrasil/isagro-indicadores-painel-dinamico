@@ -9,7 +9,7 @@ import {
   FC,
 } from "react";
 
-import GetDataService from "../services/GetDataService";
+import GetNPKDataService from "../services/GetNPKDataService";
 import { ICity, ICountry, IData, IPercentualAreaChart, IStackedAreaChart, IState, ISAgroContextProps } from "../types";
 import GetStatesService from "../services/GetStatesService";
 import GetCountriesService from "../services/GetCountriesService";
@@ -38,7 +38,7 @@ export const ISAgroProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [organicas, setOrganicas] = useState<IStackedAreaChart[] | undefined>(organicasInitialState);
   const [organicasPercentual, setOrganicasPercentual] = useState<IPercentualAreaChart[] | undefined>(organicasPercentualInitialState);
 
-  const dataService = new GetDataService<IData[]>();
+  const getNPKdataService = new GetNPKDataService<IData[]>();
   const statesService = new GetStatesService<IState[]>();
   const countriesService = new GetCountriesService<ICountry[]>();
   const citiesService = new GetCitiesService<ICity[]>();

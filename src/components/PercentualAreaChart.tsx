@@ -25,9 +25,18 @@ interface PercentualAreaChartProps {
 
 const PercentualAreaChart: React.FC<PercentualAreaChartProps> = (props) => {
 
+  const [internalValueLabel, setInternalInternalValueLabel] = useState<string>('Valor');
+  const [internalData, setInternalData ] = useState<IPercentualAreaChart[]>([]);
+  const [internalDataKey, setInternalDataKey ] = useState< string>('period');
+  const [internalWidth, setInternalWidth ] = useState< number>(800);
+  const [internalHeight, setInternalHeight ] = useState< number>(1200);
+  const [internalStrokeColor, setInternalStrockeColor ] = useState< string>('#228B22');
+  const [internalFillColor, setInternalFillColor ] = useState< string>('#228B22');
+  const [attributeNames, setAttributeNames] = useState<string[]>([]);
+
   const normalizeData = (_data: IPercentualAreaChart[]): IPercentualAreaChart[] => {
-    if (!_data) {
-      throw new Error('Data is undefined for rendering the chart');
+    if (!_data || _data.length === 0) {
+      throw new Error('[PercentualAreaChart] Data is undefined for rendering the chart');
     };
     const maxArea = Math.max(..._data.map(i => i.value)); // Identifica o valor máximo
     const result = _data.map(e => ({
@@ -37,15 +46,6 @@ const PercentualAreaChart: React.FC<PercentualAreaChartProps> = (props) => {
     return result;
   }
 
-  const [internalValueLabel, setInternalInternalValueLabel] = useState<string>(props.valueLabel ?? 'Valor');
-  const [internalData, setInternalData ] = useState<IPercentualAreaChart[]>(normalizeData(props.data));
-  const [internalDataKey, setInternalDataKey ] = useState< string>(props.dataKey ?? 'period');
-  const [internalWidth, setInternalWidth ] = useState< number>(props.width ?? 800);
-  const [internalHeight, setInternalHeight ] = useState< number>(props.height ?? 1200);
-  const [internalStrokeColor, setInternalStrockeColor ] = useState< string>(props.strokeColor ?? '#228B22');
-  const [internalFillColor, setInternalFillColor ] = useState< string>(props.fillColor ?? '#228B22');
-  const [attributeNames, setAttributeNames] = useState<string[]>(Array.from(new Set(internalData?.flatMap(Object.keys))).filter(key => key !== internalDataKey) ?? []);
-
   const legendFormatter = (value: any, entry: any, index: any): string => {
     const legend = internalValueLabel? internalValueLabel : value;
     return `${legend.charAt(0).toUpperCase()}${legend.slice(1)}`;
@@ -54,6 +54,27 @@ const PercentualAreaChart: React.FC<PercentualAreaChartProps> = (props) => {
   const tickFormatter = (decimal: number = 0, fixed: number = 1): string => {
     return `${Math.round(decimal)}%`;
   }
+
+  useEffect(() => {
+    if (!props.data || props.data.length === 0)
+      throw new Error("[PercentualAreaChart]: data is required at first useEffect stage!");
+    const normalizedData = normalizeData(props.data);
+    setInternalData(normalizedData);
+    if (props.valueLabel)
+    setInternalInternalValueLabel(props.valueLabel);
+    if(props.dataKey)
+    setInternalDataKey(props.dataKey);
+    if(props.width)
+    setInternalWidth(props.width);
+    if(props.height)
+    setInternalHeight(props.height);
+    if(props.strokeColor)
+    setInternalStrockeColor(props.strokeColor);
+    if(props.fillColor)
+    setInternalFillColor(props.fillColor);
+    if(internalData)
+    setAttributeNames(Array.from(new Set(internalData?.flatMap(Object.keys))).filter(key => key !== internalDataKey));
+  }, []);
 
   const renderTooltipContent = (o: any) => {
     const { payload = [] } = o;
@@ -79,7 +100,6 @@ const PercentualAreaChart: React.FC<PercentualAreaChartProps> = (props) => {
       </div>
     );
   }
-
 
     return (
         <div style={{ width: '100%', height: internalHeight }}>

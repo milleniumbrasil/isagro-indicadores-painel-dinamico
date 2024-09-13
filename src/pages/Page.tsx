@@ -4,16 +4,9 @@ import "./Page.css";
 
 import { FC, useEffect, useState, Suspense } from "react";
 import Stack from "@mui/material/Stack";
-import Paper from "@mui/material/Paper";
-import Box from "@mui/material/Box";
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { useISAgroContext } from "../components/ISAgroContext";
-import AreaChart from "../components/AreaChart";
 import PaperOrganicas from "../components/PaperOrganicas";
 import { IPercentualAreaChart, IStackedAreaChart } from "../types";
 
@@ -61,100 +54,13 @@ useEffect(() => {
   fetchData();
 }, [contextOrganicasPercentual, contextOrganicasStackedData]);
 
-  // dados selecionados em tela
-  const [pais, setPais] = useState('');
-  const [estado, setEstado] = useState('');
-  const [cidade, setCidade] = useState('');
-  const [subsequenceRange, setSubsequenceRange] = useState<number>(1);
-
-  const minDistance = 10;
-
-  // manipuladores de eventos de tela
-  const handleChangePaises = (event: SelectChangeEvent) => {
-    setPais(event.target.value as string);
-  };
-
-  const handleChangeEstados = (event: SelectChangeEvent) => {
-    setEstado(event.target.value as string);
-  };
-
-  const handleChangeCidades = (event: SelectChangeEvent) => {
-    setCidade(event.target.value as string);
-  };
-
   return (
     <div>
-      <Paper
-        component="form"
-        sx={{ display: "flex", alignItems: "center", width: '96%', padding: '10px', margin: '10px' }}
-      >
-
-        <Box sx={{ minWidth: '250px', maxWidth: '300px', margin: '2px', padding: '2px' }}>
-          <FormControl size="small" sx={{ m: 1, mt: 3, minWidth: '250px' }}>
-            <InputLabel id="paises-simple-select-label">País</InputLabel>
-            <Select
-              labelId="paises-simple-select-label"
-              id="paises-simple-select"
-              value={pais}
-              label="País"
-              onChange={handleChangePaises}
-              sx={{
-                borderRadius: '20px',
-              }}
-            >
-              {countries?.map((y, k) => {
-                return <MenuItem key={k} value={y.pais}>{y.pais}</MenuItem>;
-              })}
-            </Select>
-          </FormControl>
-        </Box>
-
-        <Box sx={{ minWidth: '100px', maxWidth: '300px', margin: '2px', padding: '2px' }}>
-          <FormControl fullWidth size="small" sx={{ m: 1, mt: 3 }}>
-            <InputLabel id="states-simple-select-label">Estado</InputLabel>
-            <Select
-              labelId="states-simple-select-label"
-              id="states-simple-select"
-              value={estado}
-              label="Estado"
-              onChange={handleChangeEstados}
-              sx={{
-                borderRadius: '20px',
-              }}
-            >
-              {states?.map((y, k) => {
-                return <MenuItem key={k} value={y.estado}>{y.estado}</MenuItem>;
-              })}
-            </Select>
-          </FormControl>
-        </Box>
-
-        <Box sx={{ minWidth: '100px', maxWidth: '300px', margin: '2px', padding: '2px' }}>
-          <FormControl fullWidth size="small" sx={{ m: 1, mt: 3 }}>
-            <InputLabel id="cities-simple-select-label">Cidade</InputLabel>
-            <Select
-              labelId="cities-simple-select-label"
-              id="cities-simple-select"
-              value={cidade}
-              label="Cidade"
-              onChange={handleChangeCidades}
-              sx={{
-                borderRadius: '20px',
-              }}
-            >
-              {cities?.map((y, k) => {
-                return <MenuItem key={k} value={y.cidade}>{y.cidade}</MenuItem>;
-              })}
-            </Select>
-          </FormControl>
-        </Box>
-
-      </Paper>
 
       <Stack spacing={2} sx={{ alignItems: 'center' }}>
         <Card variant="outlined" sx={{ width: '90%' }}>
           <CardContent>
-            <h3>Áreas Organicas</h3>
+            <h3>Componentes</h3>
           </CardContent>
         </Card>
 

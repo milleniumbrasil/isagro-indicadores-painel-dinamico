@@ -20,7 +20,7 @@ class Service {
   }
 
   // Método genérico para requisições GET
-  protected async get<T>(endpoint: string): Promise<T | { error: string }> {
+  protected async get<T>(endpoint: string): Promise<T> {
     const targetURL = `${this.baseURL}${endpoint}`;
     try {
       const response: AxiosResponse<T> = await axios.get<T>(targetURL, {
@@ -34,8 +34,7 @@ class Service {
         );
       }
     } catch (error) {
-      console.error(`Erro ao realizar a requisição para ${endpoint}:`, error);
-      return { error: "Erro ao realizar a requisição" };
+      throw new Error(`Erro ao realizar a requisição para ${endpoint}: ${error}`);
     }
   }
 }

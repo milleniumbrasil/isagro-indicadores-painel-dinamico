@@ -20,7 +20,7 @@ class GetStatesService<T> implements IStatesService<T> {
 		this.headers = headers
 	}
 
-	public async getData(): Promise<T | { error: string }> {
+	public async getData(): Promise<T> {
 		return [
 			{ uf: "AC", estado: "Acre" },
 			{ uf: "AL", estado: "Alagoas" },

@@ -20,7 +20,7 @@ class GetCitiesService<T> implements ICitiesService<T> {
 		this.headers = headers
 	}
 
-	public async getData(): Promise<T | { error: string }> {
+	public async getData(): Promise<T> {
 		return [
 			{ uf: "RJ", cidade: "Rio de Janeiro" },
 			{ uf: "RJ", cidade: "Niterói" },

@@ -5,11 +5,11 @@ import { IPercentualAreaChart, IStackedAreaChart } from "../types";
 
 class GetOrganicaService extends Service {
 
-  public async getStackedOragicasData(): Promise<IStackedAreaChart[] | { error: string }> {
+  public async getStackedData(): Promise<IStackedAreaChart[]> {
     return this.get<IStackedAreaChart[]>("/organicas/stacked");
   }
 
-  public async getOrganicasAsPercentual(): Promise<IPercentualAreaChart[] | { error: string }> {
+  public async getOrganicasAsPercentual(): Promise<IPercentualAreaChart[]> {
     return this.get<IPercentualAreaChart[]>("/organicas/percentual");
   }
 }

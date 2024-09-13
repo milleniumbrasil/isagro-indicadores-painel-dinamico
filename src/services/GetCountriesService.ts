@@ -20,7 +20,7 @@ class GetCountriesService<T> implements ICountriesService<T> {
 		this.headers = headers
 	}
 
-	public async getData(): Promise<T | { error: string }> {
+	public async getData(): Promise<T> {
 		return [
 			{ iso: "AF", pais: "Afghanistan" },
 			{ iso: "AL", pais: "Albania" },

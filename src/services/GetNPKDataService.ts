@@ -1,17 +1,13 @@
-// src/services/GetDataService.ts
+// src/services/GetNPKDataService.ts
 
+import { IStackedAreaChart } from "../types";
 import Service from "./Service";
 
-interface IDataService<T> {
-  getData(): Promise<T | { error: string }>;
-}
+class GetNPKDataService extends Service {
 
-class GetNPKDataService<T> extends Service implements IDataService<T> {
-
-  public async getData(): Promise<T | { error: string }> {
-    // Usa o método `get` da classe BaseService, passando o endpoint necessário
-    return this.get<T>("/data");
-  }
+	public async getStackedData(): Promise<IStackedAreaChart[]> {
+		return this.get<IStackedAreaChart[]>("/npk/stacked");
+	  }
 }
 
 export default GetNPKDataService;

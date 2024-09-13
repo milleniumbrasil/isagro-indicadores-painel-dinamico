@@ -6,7 +6,6 @@ import React from "react";
 import Stack from "@mui/material/Stack";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -21,7 +20,6 @@ import { IPercentualAreaChart } from "../types";
 const Page: React.FC = () => {
 
   // dados do servidor armazenados no contexto
-  const { data } = useISAgroContext();
   const { states } = useISAgroContext();
   const { countries } = useISAgroContext();
   const { cities } = useISAgroContext();

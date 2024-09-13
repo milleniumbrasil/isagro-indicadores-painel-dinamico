@@ -49,18 +49,14 @@ export interface IStackedAreaChart {
 
 // Interface para o contexto
 export interface ISAgroContextProps {
-	data: IData[] | undefined;
-	setData: Dispatch<SetStateAction<IData[] | undefined>>;
-	years: string[] | undefined;
-	setYears: Dispatch<SetStateAction<string[] | undefined>>;
-	cities: ICity[] | undefined;
-	setCities: Dispatch<SetStateAction<ICity[] | undefined>>;
-	states: IState[] | undefined;
-	setStates: Dispatch<SetStateAction<IState[] | undefined>>;
-	countries: ICountry[] | undefined;
-	setCountries: Dispatch<SetStateAction<ICountry[] | undefined>>;
-	organicas: IStackedAreaChart[] | undefined;
-	setOrganicas: Dispatch<SetStateAction<IStackedAreaChart[] | undefined>>;
-	organicasPercentual: IPercentualAreaChart[] | undefined;
-	setOrganicasPercentual: Dispatch<SetStateAction<IPercentualAreaChart[] | undefined>>;
+	cities: ICity[];
+	setCities: Dispatch<SetStateAction<ICity[]>>;
+	states: IState[];
+	setStates: Dispatch<SetStateAction<IState[]>>;
+	countries: ICountry[];
+	setCountries: Dispatch<SetStateAction<ICountry[]>>;
+	organicas: IStackedAreaChart[];
+	setOrganicas: Dispatch<SetStateAction<IStackedAreaChart[]>>;
+	organicasPercentual: IPercentualAreaChart[];
+	setOrganicasPercentual: Dispatch<SetStateAction<IPercentualAreaChart[]>>;
   }

@@ -15,6 +15,8 @@ import { ISAgroContext } from "./ISAgroContext";
 
 export const ISAgroProvider: FC<{ children: ReactNode }> = ({ children }) => {
 
+  const [loading, setLoading] = useState(true);
+
   const [states, setStates] = useState<IState[]>([]);
   const [countries, setCountries] = useState<ICountry[]>([]);
   const [cities, setCities] = useState<ICity[]>([]);
@@ -41,6 +43,7 @@ export const ISAgroProvider: FC<{ children: ReactNode }> = ({ children }) => {
 
   useEffect(() => {
     const fetchData = async () => {
+      try {
       const tmpCountriesData = await getCountriesService.getData();
       setCountries(tmpCountriesData);
 
@@ -70,10 +73,19 @@ export const ISAgroProvider: FC<{ children: ReactNode }> = ({ children }) => {
 
       const tmpPoluicaoStackedData = await getPoluicaoDataService.getStackedData();
       setPoluicaoStackedData(tmpPoluicaoStackedData);
+    } catch (error) {
+      console.error("[ISAgroProvider]: Erro ao buscar dados:", error);
+    } finally {
+      setLoading(false);
+    }
     };
 
     fetchData();
   }, []);
+
+  if (loading) {
+    return <div>Providers carregando...</div>;  // Um estado de carregamento enquanto os dados são obtidos
+  }
 
   const value = {
     geeStackedData,

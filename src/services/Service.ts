@@ -26,15 +26,13 @@ class Service {
       const response: AxiosResponse<T> = await axios.get<T>(targetURL, {
         headers: this.headers,
       });
-      if (Array.isArray(response.data)) {
-        return response.data;
-      } else {
-        throw new Error(
-          `A resposta de ${targetURL} não é um array. ${JSON.stringify(response.data)}`
-        );
-      }
+      if (!Array.isArray(response.data))
+		  throw new Error(`[Service]: o corpo da resposta não é um array. ${JSON.stringify(response.data)}`);
+	  if (response.data === null || response.data === undefined || response.data.length === 0)
+		  throw new Error(`[Service]: data is required.`);
+	  return response.data;
     } catch (error) {
-      throw new Error(`Erro ao realizar a requisição para ${endpoint}: ${error}`);
+      throw new Error(`[Service]: Resposta de ${endpoint}: ${error}`);
     }
   }
 }

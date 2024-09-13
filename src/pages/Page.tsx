@@ -29,11 +29,11 @@ const Page: FC = () => {
   const [internalOrganicasPercentual, setInternalOrganicasPercentual] = useState<IPercentualAreaChart[]>([]);
 
   useEffect(() => {
-    if (!contextOrganicasPercentual) {
-      throw new Error("Page: organicasPercentual is required");
+    if (!contextOrganicasPercentual || contextOrganicasPercentual.length === 0) {
+      throw new Error("Page: contextOrganicasPercentual is required");
     }
-    console.debug(`[Page] organicasPercentual loaded from context: ${contextOrganicasPercentual.length}`);
     setInternalOrganicasPercentual(contextOrganicasPercentual);
+    console.log(`[Page] internalOrganicasPercentual loaded from context: ${contextOrganicasPercentual.length}`);
   }, []);
 
   // dados selecionados em tela
@@ -133,7 +133,16 @@ const Page: FC = () => {
           </CardContent>
         </Card>
 
-        <ISAgroAreaPaperExemplo data={internalOrganicasPercentual} countries={countries} states={states} cities={cities} />
+        {internalOrganicasPercentual.length > 0 && countries.length > 0 && states.length > 0 && cities.length > 0 ? (
+              <ISAgroAreaPaperExemplo
+                data={internalOrganicasPercentual}
+                countries={countries}
+                states={states}
+                cities={cities}
+              />
+            ) : (
+              <div>Carregando dados...</div>
+            )}
 
         <Card variant="outlined" sx={{ width: '90%' }}>
           <CardContent>

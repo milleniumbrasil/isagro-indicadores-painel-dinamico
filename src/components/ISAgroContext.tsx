@@ -5,13 +5,13 @@ import { IStackedAreaChart, IPercentualAreaChart, ICity, IState, ICountry } from
 
 // Interface para o contexto
 export interface ISAgroContextProps {
-	geeStackedData: IStackedAreaChart[];
-	nh3StackedData: IStackedAreaChart[];
-	npkStackedData: IStackedAreaChart[];
+	geeStackedData?: IStackedAreaChart[];
+	nh3StackedData?: IStackedAreaChart[];
+	npkStackedData?: IStackedAreaChart[];
 	organicasStackedData: IStackedAreaChart[];
-	organicasPercentual: IPercentualAreaChart[];
-	poluicaoStackedData: IStackedAreaChart[];
-	erosaoStackedData: IStackedAreaChart[];
+	organicasPercentual?: IPercentualAreaChart[];
+	poluicaoStackedData?: IStackedAreaChart[];
+	erosaoStackedData?: IStackedAreaChart[];
 	cities: ICity[];
 	states: IState[];
 	countries: ICountry[];
@@ -37,31 +37,31 @@ export const useISAgroContext = () => {
   if (!context) {
     throw new Error("useISAgroContext deve ser usado dentro de um ISAgroProvider");
   }
-  if (!context.countries) {
+  if (!context.countries || context.countries.length === 0) {
     throw new Error("useISAgroContext: countries is required");
   }
-  if (!context.states) {
+  if (!context.states || context.states.length === 0) {
     throw new Error("useISAgroContext: states is required");
   }
-  if (!context.cities) {
+  if (!context.cities || context.cities.length === 0) {
     throw new Error("useISAgroContext: cities is required");
   }
-  if (!context.erosaoStackedData) {
+  if (!context.erosaoStackedData || context.erosaoStackedData.length === 0) {
     throw new Error("useISAgroContext: erosaoStackedData is required");
   }
-  if (!context.geeStackedData) {
+  if (!context.geeStackedData || context.geeStackedData.length === 0) {
     throw new Error("useISAgroContext: geeStackedData is required");
   }
-  if (!context.nh3StackedData) {
+  if (!context.nh3StackedData || context.nh3StackedData.length === 0) {
     throw new Error("useISAgroContext: nh3StackedData is required");
   }
-  if (!context.npkStackedData) {
+  if (!context.npkStackedData || context.npkStackedData.length === 0) {
     throw new Error("useISAgroContext: npkStackedData is required");
   }
-  if (!context.organicasStackedData) {
+  if (!context.organicasStackedData || context.organicasStackedData.length === 0) {
     throw new Error("useISAgroContext: organicasStackedData is required");
   }
-  if (!context.poluicaoStackedData) {
+  if (!context.poluicaoStackedData || context.poluicaoStackedData.length === 0) {
     throw new Error("useISAgroContext: poluicaoStackedData is required");
   }
   return context;

@@ -41,34 +41,34 @@ const ISAgroAreaPaperExemplo: FC<ISAgroAreaPaperExemploProps> = (props) => {
   const [ internalOrganicasPercentual, setInternalOrganicasPercentual] = useState<IPercentualAreaChart[]>([]);
 
   useEffect(() => {
-    if (!props.data)
+    if (!props.data || props.data.length === 0)
       throw new Error("ISAgroAreaPaperExemplo: data is required");
 
     setInternalOrganicasPercentual(props.data);
-    console.debug(`[ISAgroAreaPaperExemplo] organicasPercentual: ${JSON.stringify(internalOrganicasPercentual)}`);
+    console.log(`[ISAgroAreaPaperExemplo] organicasPercentual: ${JSON.stringify(internalOrganicasPercentual)}`);
 
     if (!props.countries) {
       setInternalCountries(props.countries);
-      console.debug(`[ISAgroAreaPaperExemplo] countries loaded from props: ${internalCountries.length}`);
+      console.log(`[ISAgroAreaPaperExemplo] countries loaded from props: ${internalCountries.length}`);
     } else {
       setInternalCountries(contextCountries);
-      console.debug(`[ISAgroAreaPaperExemplo] countries loaded from context: ${internalCountries.length}`);
+      console.log(`[ISAgroAreaPaperExemplo] countries loaded from context: ${internalCountries.length}`);
     }
 
     if (!props.states) {
       setInternalStates(props.states);
-      console.debug(`[ISAgroAreaPaperExemplo] states loaded from props: ${internalStates.length}`);
+      console.log(`[ISAgroAreaPaperExemplo] states loaded from props: ${internalStates.length}`);
     } else {
       setInternalStates(contextStates);
-      console.debug(`[ISAgroAreaPaperExemplo] states loaded from context: ${internalStates.length}`);
+      console.log(`[ISAgroAreaPaperExemplo] states loaded from context: ${internalStates.length}`);
     }
 
     if (!props.cities) {
       setInternalCities(props.cities);
-      console.debug(`[ISAgroAreaPaperExemplo] cities loaded from props: ${internalCities.length}`);
+      console.log(`[ISAgroAreaPaperExemplo] cities loaded from props: ${internalCities.length}`);
     } else {
       setInternalCities(contextCities);
-      console.debug(`[ISAgroAreaPaperExemplo] cities loaded from context: ${internalCities.length}`);
+      console.log(`[ISAgroAreaPaperExemplo] cities loaded from context: ${internalCities.length}`);
     }
   }, []);
 

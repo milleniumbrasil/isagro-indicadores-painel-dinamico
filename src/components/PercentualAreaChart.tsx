@@ -15,7 +15,6 @@ import { IPercentualAreaChart } from "../types"
 
 interface PercentualAreaChartProps {
   data: IPercentualAreaChart[]
-  dataKey?: string
   valueLabel?: string
   width?: number
   height?: number
@@ -32,7 +31,6 @@ const PercentualAreaChart: React.FC<PercentualAreaChartProps> = (props) => {
   const [internalValueLabel, setInternalInternalValueLabel] =
     useState<string>("Valor");
   const [internalData, setInternalData] = useState<IPercentualAreaChart[] | null>(null);
-  const [internalDataKey, setInternalDataKey] = useState<string>("period");
   const [internalWidth, setInternalWidth] = useState<number>(800);
   const [internalHeight, setInternalHeight] = useState<number>(1200);
   const [internalStrokeColor, setInternalStrockeColor] =
@@ -80,7 +78,6 @@ const PercentualAreaChart: React.FC<PercentualAreaChartProps> = (props) => {
             const normalizedData = normalizeData(props.data)
             setInternalData(normalizedData)
             if (props.valueLabel) setInternalInternalValueLabel(props.valueLabel)
-            if (props.dataKey) setInternalDataKey(props.dataKey)
             if (props.width) setInternalWidth(props.width)
             if (props.height) setInternalHeight(props.height)
             if (props.strokeColor) setInternalStrockeColor(props.strokeColor)
@@ -88,7 +85,7 @@ const PercentualAreaChart: React.FC<PercentualAreaChartProps> = (props) => {
             if (internalData) {
               setAttributeNames(
                 Array.from(new Set(internalData?.flatMap(Object.keys))).filter(
-                  (key) => key !== internalDataKey
+                  (key) => key !== 'period'
                 )
               )
             }
@@ -103,7 +100,6 @@ const PercentualAreaChart: React.FC<PercentualAreaChartProps> = (props) => {
     fetchData()
   }, [
     props.data,
-    props.dataKey,
     props.valueLabel,
     props.width,
     props.height,
@@ -131,7 +127,7 @@ const PercentualAreaChart: React.FC<PercentualAreaChartProps> = (props) => {
           {payload.map((entry: any, index: number) => {
             const fontColor = "black"
             if (
-              entry.name !== internalDataKey &&
+              entry.name !== 'period' &&
               attributeNames.includes(entry.name) &&
               typeof entry.value === "number"
             ) {
@@ -168,7 +164,7 @@ const PercentualAreaChart: React.FC<PercentualAreaChartProps> = (props) => {
               style={{ fontSize: 8 }}
             >
               <CartesianGrid strokeDasharray="0" />
-              <XAxis dataKey={"value"} />
+              <XAxis dataKey={"period"} />
               <YAxis tickFormatter={tickFormatter} ticks={[0, 25, 50, 75, 100]} />
               <Legend formatter={legendFormatter} />
               <Tooltip content={renderTooltipContent} />

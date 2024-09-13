@@ -14,8 +14,8 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { useISAgroContext } from "../components/ISAgroContext";
 import AreaChart from "../components/AreaChart";
-import ISAgroAreaPaperExemplo from "../components/ISAgroAreaPaperExemplo";
-import { IPercentualAreaChart } from "../types";
+import PaperOrganicas from "../components/PaperOrganicas";
+import { IPercentualAreaChart, IStackedAreaChart } from "../types";
 
 export function Loading() {
   return <p><i>Loading...</i></p>;
@@ -27,9 +27,10 @@ const Page: FC = () => {
   const { states } = useISAgroContext();
   const { countries } = useISAgroContext();
   const { cities } = useISAgroContext();
-  const { organicasStackedData } = useISAgroContext();
+  const { organicasStackedData: contextOrganicasStackedData } = useISAgroContext();
   const { organicasPercentual: contextOrganicasPercentual } = useISAgroContext();
 
+  const [internalOrganicasStacked, setInternalOrganicasStacked] = useState<IStackedAreaChart[]>([]);
   const [internalOrganicasPercentual, setInternalOrganicasPercentual] = useState<IPercentualAreaChart[]>([]);
 
   const [loading, setLoading] = useState(true);
@@ -43,6 +44,13 @@ useEffect(() => {
       } else {
         throw new Error("Page: contextOrganicasPercentual is required");
       }
+      
+      if (contextOrganicasStackedData && contextOrganicasStackedData.length > 0) {
+        setInternalOrganicasStacked(contextOrganicasStackedData);
+        console.log(`[Page] internalOrganicasStacked loaded from context: ${internalOrganicasStacked.length}`);
+      } else {
+        throw new Error("Page: contextOrganicasStackedData is required");
+      }
     } catch (error) {
       console.error(error);
     } finally {
@@ -51,7 +59,7 @@ useEffect(() => {
   }
 
   fetchData();
-}, [contextOrganicasPercentual]);
+}, [contextOrganicasPercentual, contextOrganicasStackedData]);
 
   // dados selecionados em tela
   const [pais, setPais] = useState('');
@@ -152,8 +160,9 @@ useEffect(() => {
 
         <Suspense fallback={<Loading />}>
           {internalOrganicasPercentual.length > 0 ? (
-            <ISAgroAreaPaperExemplo
-              data={internalOrganicasPercentual}
+            <PaperOrganicas
+              stackedData={internalOrganicasStacked}
+              percentualData={internalOrganicasPercentual}
               countries={countries}
               states={states}
               cities={cities}
@@ -167,7 +176,7 @@ useEffect(() => {
           <CardContent>
             <h3>Áreas Organicas por período</h3>
             <h5>Números absolutos, consolidando dados de uso da terra por período, considerando Grãos, Hortaliças, Fruticulturas e Pastagens</h5>
-            <AreaChart width={1200} height={400} data={organicasStackedData} />
+            <AreaChart width={1200} height={400} data={internalOrganicasStacked} />
           </CardContent>
         </Card>
         <Card variant="outlined" sx={{ width: '90%' }}>
@@ -188,7 +197,7 @@ useEffect(() => {
                 </label>
 
               </div>
-              <AreaChart width={1200} height={400} data={organicasStackedData} />
+              <AreaChart width={1200} height={400} data={internalOrganicasStacked} />
             </div>
           </CardContent>
         </Card>

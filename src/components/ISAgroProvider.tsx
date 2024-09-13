@@ -41,45 +41,48 @@ export const ISAgroProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const getOrganicasService = new GetOrganicaService();
   const getPoluicaoDataService = new GetPoluicaoDataService();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-      const tmpCountriesData = await getCountriesService.getData();
-      setCountries(tmpCountriesData);
+  const fetchData = async (): Promise<Boolean> => {
+    let result: boolean = false;
+    try {
+          const tmpCountriesData = await getCountriesService.getData();
+          setCountries(tmpCountriesData);
 
-      const tmpStatesData = await getStatesService.getData();
-      setStates(tmpStatesData);
+          const tmpStatesData = await getStatesService.getData();
+          setStates(tmpStatesData);
 
-      const tmpCitiesData = await getCitiesService.getData();
-      setCities(tmpCitiesData);
+          const tmpCitiesData = await getCitiesService.getData();
+          setCities(tmpCitiesData);
 
-      const tmpErosaoStackedData = await getErosaoDataService.getStackedData();
-      setErosaoStackedData(tmpErosaoStackedData);
+          const tmpErosaoStackedData = await getErosaoDataService.getStackedData();
+          setErosaoStackedData(tmpErosaoStackedData);
 
-      const tmpGEEStackedData = await getGEEDataService.getStackedData();
-      setGeeStackedData(tmpGEEStackedData);
+          const tmpGEEStackedData = await getGEEDataService.getStackedData();
+          setGeeStackedData(tmpGEEStackedData);
 
-      const tmpNH3StackedData = await getNH3DataService.getStackedData();
-      setNh3StackedData(tmpNH3StackedData);
+          const tmpNH3StackedData = await getNH3DataService.getStackedData();
+          setNh3StackedData(tmpNH3StackedData);
 
-      const tmpNPKStackedData = await getNPKDataService.getStackedData();
-      setNpkStackedData(tmpNPKStackedData);
+          const tmpNPKStackedData = await getNPKDataService.getStackedData();
+          setNpkStackedData(tmpNPKStackedData);
 
-      const tmpOrganicasStackedData = await getOrganicasService.getStackedData();
-      setOrganicasStackedData(tmpOrganicasStackedData);
+          const tmpOrganicasStackedData = await getOrganicasService.getStackedData();
+          setOrganicasStackedData(tmpOrganicasStackedData);
 
-      const tmpOrganicasPercentualData = await getOrganicasService.getOrganicasAsPercentual();
-      setOrganicasPercentual(tmpOrganicasPercentualData);
+          const tmpOrganicasPercentualData = await getOrganicasService.getOrganicasAsPercentual();
+          setOrganicasPercentual(tmpOrganicasPercentualData);
 
-      const tmpPoluicaoStackedData = await getPoluicaoDataService.getStackedData();
-      setPoluicaoStackedData(tmpPoluicaoStackedData);
+          const tmpPoluicaoStackedData = await getPoluicaoDataService.getStackedData();
+          setPoluicaoStackedData(tmpPoluicaoStackedData);
+          result = true;
     } catch (error) {
       console.error("[ISAgroProvider]: Erro ao buscar dados:", error);
     } finally {
       setLoading(false);
     }
-    };
+    return result;
+  };
 
+  useEffect(() => {
     fetchData();
   }, []);
 
@@ -98,6 +101,7 @@ export const ISAgroProvider: FC<{ children: ReactNode }> = ({ children }) => {
     cities,
     states,
     countries,
+    fetchData,
   };
 
   return (

@@ -18,20 +18,22 @@ import { BsCalendar2MonthFill } from "react-icons/bs"
 import { useISAgroContext } from "./ISAgroContext"
 import PercentualAreaChart from "./PercentualAreaChart"
 import { DateRange } from "rsuite/esm/DateRangePicker"
-import { ICity, ICountry, IPercentualAreaChart, IState } from "../types"
+import { ICity, ICountry, IPercentualAreaChart, IStackedAreaChart, IState } from "../types"
+import AreaChart from "./AreaChart"
 
-interface ISAgroAreaPaperExemploProps {
+interface PaperOrganicasProps {
   countries: ICountry[]
   states: IState[]
   cities: ICity[]
-  data: IPercentualAreaChart[]
+  percentualData: IPercentualAreaChart[]
+  stackedData: IStackedAreaChart[]
 }
 
 export function Loading() {
   return <p><i>Loading...</i></p>;
 }
 
-const ISAgroAreaPaperExemplo: FC<ISAgroAreaPaperExemploProps> = (props) => {
+const PaperOrganicas: FC<PaperOrganicasProps> = (props) => {
 
   // dados do servidor armazenados no contexto
   const { countries: contextCountries } = useISAgroContext()
@@ -42,8 +44,8 @@ const ISAgroAreaPaperExemplo: FC<ISAgroAreaPaperExemploProps> = (props) => {
   const [internalCountries, setInternalCountries] = useState<ICountry[]>([])
   const [internalStates, setInternalStates] = useState<IState[]>([])
   const [internalCities, setInternalCities] = useState<ICity[]>([])
-  const [internalOrganicasPercentual, setInternalOrganicasPercentual] =
-    useState<IPercentualAreaChart[]>([])
+  const [internalPercentualData, setInternalPercentualData] = useState<IPercentualAreaChart[]>([])
+  const [internalStackedData, setInternalStackedData] = useState<IStackedAreaChart[]>([])
 
   // dados selecionados em tela
   const [selectedCountry, setSelectedCountry] = useState("")
@@ -57,50 +59,36 @@ const ISAgroAreaPaperExemplo: FC<ISAgroAreaPaperExemploProps> = (props) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (!props.data || props.data.length === 0)
-          throw new Error("ISAgroAreaPaperExemplo: data is required")
+        if (!props.percentualData || props.percentualData.length === 0) throw new Error("[PaperOrganicas]: percentualData is required");
+        setInternalPercentualData(props.percentualData);
+        console.log(`[PaperOrganicas] organicasPercentual: ${JSON.stringify(internalPercentualData)}`);
 
-        setInternalOrganicasPercentual(props.data)
-        console.log(
-          `[ISAgroAreaPaperExemplo] organicasPercentual: ${JSON.stringify(
-            internalOrganicasPercentual
-          )}`
-        )
+        if (!props.stackedData || props.stackedData.length === 0) throw new Error("[PaperOrganicas]: stackedData is required");
+        setInternalStackedData(props.stackedData);
+        console.log(`[PaperOrganicas] organicasStacked: ${JSON.stringify(internalStackedData)}`);
 
         if (!props.countries) {
-          setInternalCountries(props.countries)
-          console.log(
-            `[ISAgroAreaPaperExemplo] countries loaded from props: ${internalCountries.length}`
-          )
+          setInternalCountries(props.countries);
+          console.log(`[PaperOrganicas] countries loaded from props: ${internalCountries.length}`);
         } else {
-          setInternalCountries(contextCountries)
-          console.log(
-            `[ISAgroAreaPaperExemplo] countries loaded from context: ${internalCountries.length}`
-          )
+          setInternalCountries(contextCountries);
+          console.log(`[PaperOrganicas] countries loaded from context: ${internalCountries.length}`);
         }
 
         if (!props.states) {
-          setInternalStates(props.states)
-          console.log(
-            `[ISAgroAreaPaperExemplo] states loaded from props: ${internalStates.length}`
-          )
+          setInternalStates(props.states);
+          console.log(`[PaperOrganicas] states loaded from props: ${internalStates.length}`);
         } else {
-          setInternalStates(contextStates)
-          console.log(
-            `[ISAgroAreaPaperExemplo] states loaded from context: ${internalStates.length}`
-          )
+          setInternalStates(contextStates);
+          console.log(`[PaperOrganicas] states loaded from context: ${internalStates.length}`);
         }
 
         if (!props.cities) {
-          setInternalCities(props.cities)
-          console.log(
-            `[ISAgroAreaPaperExemplo] cities loaded from props: ${internalCities.length}`
-          )
+          setInternalCities(props.cities);
+          console.log(`[PaperOrganicas] cities loaded from props: ${internalCities.length}`);
         } else {
-          setInternalCities(contextCities)
-          console.log(
-            `[ISAgroAreaPaperExemplo] cities loaded from context: ${internalCities.length}`
-          )
+          setInternalCities(contextCities);
+          console.log(`[PaperOrganicas] cities loaded from context: ${internalCities.length}`);
         }
       } catch (error) {
         console.error(error);
@@ -111,7 +99,8 @@ const ISAgroAreaPaperExemplo: FC<ISAgroAreaPaperExemploProps> = (props) => {
 
   fetchData()
   }, [
-    props.data,
+    props.percentualData,
+    props.stackedData,
     props.countries,
     props.states,
     props.cities,
@@ -290,13 +279,27 @@ const ISAgroAreaPaperExemplo: FC<ISAgroAreaPaperExemploProps> = (props) => {
               </h5>
               <p>{`${selectedStartDate.getFullYear()} - ${selectedEndDate.getFullYear()}`}</p>
               <Suspense fallback={<Loading />}>
-                {internalOrganicasPercentual.length > 0 ? (
+                {internalPercentualData.length > 0 ? (
                   <PercentualAreaChart
                     width={1200}
                     height={400}
-                    data={internalOrganicasPercentual}
+                    data={internalPercentualData}
                     valueLabel="Área"
                   />
+                ) : (
+                  <Loading />
+                )}
+              </Suspense>
+            </CardContent>
+          </Card>
+
+          <Card variant="outlined" sx={{ width: '90%' }}>
+            <CardContent>
+              <h3>Áreas Organicas por período</h3>
+              <h5>Números absolutos, consolidando dados de uso da terra por período, considerando Grãos, Hortaliças, Fruticulturas e Pastagens</h5>
+              <Suspense fallback={<Loading />}>
+                {internalStackedData.length > 0 ? (
+                  <AreaChart width={1200} height={400} data={internalStackedData} />
                 ) : (
                   <Loading />
                 )}
@@ -309,4 +312,4 @@ const ISAgroAreaPaperExemplo: FC<ISAgroAreaPaperExemploProps> = (props) => {
   )
 }
 
-export default ISAgroAreaPaperExemplo
+export default PaperOrganicas

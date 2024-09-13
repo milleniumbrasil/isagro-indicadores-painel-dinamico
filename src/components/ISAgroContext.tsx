@@ -15,6 +15,7 @@ export interface ISAgroContextProps {
 	cities: ICity[];
 	states: IState[];
 	countries: ICountry[];
+  fetchData: () => Promise<Boolean>;
 }
 
 // Criação do contexto
@@ -29,6 +30,7 @@ export const ISAgroContext = createContext<ISAgroContextProps>({
   cities: [],
   states: [],
   countries: [],
+  fetchData: () => Promise.resolve(false),
 });
 
 // Hook para utilizar o contexto

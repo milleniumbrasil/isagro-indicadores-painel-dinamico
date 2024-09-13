@@ -3,22 +3,23 @@
 import "rsuite/dist/rsuite.min.css";
 
 import { FC, useState, useEffect, SyntheticEvent, Suspense } from "react";
+
 import Stack from "@mui/material/Stack";
 import Paper from "@mui/material/Paper";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 
 import { DateRangePicker, Stack as StackRSuite } from "rsuite";
 import { BsCalendar2MonthFill } from "react-icons/bs";
 
+import { ICity, ICountry, IPercentualAreaChart, IStackedAreaChart, IState } from "../types";
 import { useISAgroContext } from "./ISAgroContext";
 import PercentualAreaChart from "./PercentualAreaChart";
 import { DateRange } from "rsuite/esm/DateRangePicker";
-import { ICity, ICountry, IPercentualAreaChart, IStackedAreaChart, IState } from "../types";
 import AreaChart from "./AreaChart";
 
 interface PaperOrganicasProps {

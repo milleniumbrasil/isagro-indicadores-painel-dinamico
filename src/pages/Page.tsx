@@ -2,7 +2,7 @@
 
 import "./Page.css";
 
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useState, Suspense } from "react";
 import Stack from "@mui/material/Stack";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
@@ -17,6 +17,10 @@ import AreaChart from "../components/AreaChart";
 import ISAgroAreaPaperExemplo from "../components/ISAgroAreaPaperExemplo";
 import { IPercentualAreaChart } from "../types";
 
+export function Loading() {
+  return <p><i>Loading...</i></p>;
+}
+
 const Page: FC = () => {
 
   // dados do servidor armazenados no contexto
@@ -28,13 +32,26 @@ const Page: FC = () => {
 
   const [internalOrganicasPercentual, setInternalOrganicasPercentual] = useState<IPercentualAreaChart[]>([]);
 
-  useEffect(() => {
-    if (!contextOrganicasPercentual || contextOrganicasPercentual.length === 0) {
-      throw new Error("Page: contextOrganicasPercentual is required");
+  const [loading, setLoading] = useState(true);
+
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      if (contextOrganicasPercentual && contextOrganicasPercentual.length > 0) {
+        setInternalOrganicasPercentual(contextOrganicasPercentual);
+        console.log(`[Page] internalOrganicasPercentual loaded from context: ${contextOrganicasPercentual.length}`);
+      } else {
+        throw new Error("Page: contextOrganicasPercentual is required");
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
     }
-    setInternalOrganicasPercentual(contextOrganicasPercentual);
-    console.log(`[Page] internalOrganicasPercentual loaded from context: ${contextOrganicasPercentual.length}`);
-  }, []);
+  }
+
+  fetchData();
+}, [contextOrganicasPercentual]);
 
   // dados selecionados em tela
   const [pais, setPais] = useState('');
@@ -133,16 +150,18 @@ const Page: FC = () => {
           </CardContent>
         </Card>
 
-        {internalOrganicasPercentual.length > 0 && countries.length > 0 && states.length > 0 && cities.length > 0 ? (
-              <ISAgroAreaPaperExemplo
-                data={internalOrganicasPercentual}
-                countries={countries}
-                states={states}
-                cities={cities}
-              />
-            ) : (
-              <div>Carregando dados...</div>
-            )}
+        <Suspense fallback={<Loading />}>
+          {internalOrganicasPercentual.length > 0 ? (
+            <ISAgroAreaPaperExemplo
+              data={internalOrganicasPercentual}
+              countries={countries}
+              states={states}
+              cities={cities}
+            />
+          ) : (
+            <Loading />
+          )}
+        </Suspense>
 
         <Card variant="outlined" sx={{ width: '90%' }}>
           <CardContent>

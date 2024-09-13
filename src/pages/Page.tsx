@@ -44,7 +44,7 @@ useEffect(() => {
       } else {
         throw new Error("Page: contextOrganicasPercentual is required");
       }
-      
+
       if (contextOrganicasStackedData && contextOrganicasStackedData.length > 0) {
         setInternalOrganicasStacked(contextOrganicasStackedData);
         console.log(`[Page] internalOrganicasStacked loaded from context: ${internalOrganicasStacked.length}`);
@@ -172,35 +172,6 @@ useEffect(() => {
           )}
         </Suspense>
 
-        <Card variant="outlined" sx={{ width: '90%' }}>
-          <CardContent>
-            <h3>Áreas Organicas por período</h3>
-            <h5>Números absolutos, consolidando dados de uso da terra por período, considerando Grãos, Hortaliças, Fruticulturas e Pastagens</h5>
-            <AreaChart width={1200} height={400} data={internalOrganicasStacked} />
-          </CardContent>
-        </Card>
-        <Card variant="outlined" sx={{ width: '90%' }}>
-          <CardContent>
-            <div>
-              <h1>Áreas Organicas</h1>
-              <h5>Empilhados por Grão, Hortaliças, Fruticultura, Pastagens</h5>
-              <div>
-                <label>
-                  Subsequências (anos):
-                  <select value={subsequenceRange} onChange={(e) => setSubsequenceRange(Number(e.target.value))}>
-                    <option value={1}>1</option>
-                    <option value={2}>2</option>
-                    <option value={3}>3</option>
-                    <option value={4}>4</option>
-                    <option value={5}>5</option>
-                  </select>
-                </label>
-
-              </div>
-              <AreaChart width={1200} height={400} data={internalOrganicasStacked} />
-            </div>
-          </CardContent>
-        </Card>
       </Stack>
     </div>
   );

@@ -1,32 +1,32 @@
-// src/components/ISAgro/ISAgro.tsx
+// src/components/PaperOrganicas.tsx
 
-import "rsuite/dist/rsuite.min.css"
+import "rsuite/dist/rsuite.min.css";
 
-import { FC, useState, useEffect, SyntheticEvent, Suspense } from "react"
-import Stack from "@mui/material/Stack"
-import Paper from "@mui/material/Paper"
-import InputLabel from "@mui/material/InputLabel"
-import MenuItem from "@mui/material/MenuItem"
-import FormControl from "@mui/material/FormControl"
-import Select, { SelectChangeEvent } from "@mui/material/Select"
-import Card from "@mui/material/Card"
-import CardContent from "@mui/material/CardContent"
+import { FC, useState, useEffect, SyntheticEvent, Suspense } from "react";
+import Stack from "@mui/material/Stack";
+import Paper from "@mui/material/Paper";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
 
-import { DateRangePicker, Stack as StackRSuite } from "rsuite"
-import { BsCalendar2MonthFill } from "react-icons/bs"
+import { DateRangePicker, Stack as StackRSuite } from "rsuite";
+import { BsCalendar2MonthFill } from "react-icons/bs";
 
-import { useISAgroContext } from "./ISAgroContext"
-import PercentualAreaChart from "./PercentualAreaChart"
-import { DateRange } from "rsuite/esm/DateRangePicker"
-import { ICity, ICountry, IPercentualAreaChart, IStackedAreaChart, IState } from "../types"
-import AreaChart from "./AreaChart"
+import { useISAgroContext } from "./ISAgroContext";
+import PercentualAreaChart from "./PercentualAreaChart";
+import { DateRange } from "rsuite/esm/DateRangePicker";
+import { ICity, ICountry, IPercentualAreaChart, IStackedAreaChart, IState } from "../types";
+import AreaChart from "./AreaChart";
 
 interface PaperOrganicasProps {
-  countries: ICountry[]
-  states: IState[]
-  cities: ICity[]
-  percentualData: IPercentualAreaChart[]
-  stackedData: IStackedAreaChart[]
+  countries: ICountry[];
+  states: IState[];
+  cities: ICity[];
+  percentualData: IPercentualAreaChart[];
+  stackedData: IStackedAreaChart[];
 }
 
 export function Loading() {
@@ -36,23 +36,25 @@ export function Loading() {
 const PaperOrganicas: FC<PaperOrganicasProps> = (props) => {
 
   // dados do servidor armazenados no contexto
-  const { countries: contextCountries } = useISAgroContext()
-  const { states: contextStates } = useISAgroContext()
-  const { cities: contextCities } = useISAgroContext()
+  const { countries: contextCountries } = useISAgroContext();
+  const { states: contextStates } = useISAgroContext();
+  const { cities: contextCities } = useISAgroContext();
 
   // dados internos do componente
-  const [internalCountries, setInternalCountries] = useState<ICountry[]>([])
-  const [internalStates, setInternalStates] = useState<IState[]>([])
-  const [internalCities, setInternalCities] = useState<ICity[]>([])
-  const [internalPercentualData, setInternalPercentualData] = useState<IPercentualAreaChart[]>([])
-  const [internalStackedData, setInternalStackedData] = useState<IStackedAreaChart[]>([])
+  const [internalCountries, setInternalCountries] = useState<ICountry[]>([]);
+  const [internalStates, setInternalStates] = useState<IState[]>([]);
+  const [internalCities, setInternalCities] = useState<ICity[]>([]);
+  const [internalPercentualData, setInternalPercentualData] = useState<IPercentualAreaChart[]>([]);
+  const [internalStackedData, setInternalStackedData] = useState<IStackedAreaChart[]>([]);
 
   // dados selecionados em tela
-  const [selectedCountry, setSelectedCountry] = useState("")
-  const [selectedState, setSelectedState] = useState("")
-  const [selectedCity, setSelectedCity] = useState("")
-  const [selectedStartDate, setSelectedStartDate] = useState<Date>(new Date())
-  const [selectedEndDate, setSelectedEndDate] = useState<Date>(new Date())
+  const [selectedCountry, setSelectedCountry] = useState("");
+  const [selectedState, setSelectedState] = useState("");
+  const [selectedCity, setSelectedCity] = useState("");
+  const [selectedStartDate, setSelectedStartDate] = useState<Date>(new Date());
+  const [selectedEndDate, setSelectedEndDate] = useState<Date>(new Date());
+
+  const [subsequenceRange, setSubsequenceRange] = useState<number>(1);
 
   const [loading, setLoading] = useState(true);
 
@@ -306,6 +308,37 @@ const PaperOrganicas: FC<PaperOrganicasProps> = (props) => {
               </Suspense>
             </CardContent>
           </Card>
+
+          <Card variant="outlined" sx={{ width: '90%' }}>
+            <CardContent>
+              <h3>Áreas Organicas por período</h3>
+              <h5>Números absolutos, consolidando dados de uso da terra por período, considerando Grãos, Hortaliças, Fruticulturas e Pastagens</h5>
+              <AreaChart width={1200} height={400} data={internalStackedData} />
+            </CardContent>
+          </Card>
+          <Card variant="outlined" sx={{ width: '90%' }}>
+            <CardContent>
+              <div>
+                <h1>Áreas Organicas</h1>
+                <h5>Empilhados por Grão, Hortaliças, Fruticultura, Pastagens</h5>
+                <div>
+                  <label>
+                    Subsequências (anos):
+                    <select value={subsequenceRange} onChange={(e) => setSubsequenceRange(Number(e.target.value))}>
+                      <option value={1}>1</option>
+                      <option value={2}>2</option>
+                      <option value={3}>3</option>
+                      <option value={4}>4</option>
+                      <option value={5}>5</option>
+                    </select>
+                  </label>
+
+                </div>
+                <AreaChart width={1200} height={400} data={internalStackedData} />
+              </div>
+            </CardContent>
+          </Card>
+
         </Stack>
       </Paper>
     </div>

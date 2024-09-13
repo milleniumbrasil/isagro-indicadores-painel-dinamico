@@ -10,7 +10,7 @@ import GetErosaoDataService from "../services/GetErosaoDataService";
 import GetGEEDataService from "../services/GetGEEDataService";
 import GetNH3DataService from "../services/GetNH3DataService";
 import GetPoluicaoDataService from "../services/GetPoluicaoDataService";
-import { ICity, ICountry, IState, IPercentualAreaChart, IStackedAreaChart, ISAgroContextProps } from "../types";
+import { ICity, ICountry, IState, IPercentualAreaChart, IStackedAreaChart } from "../types";
 import { ISAgroContext } from "./ISAgroContext";
 
 export const ISAgroProvider: FC<{ children: ReactNode }> = ({ children }) => {

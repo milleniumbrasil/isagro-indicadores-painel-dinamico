@@ -79,7 +79,7 @@ export const ISAgroProvider: FC<{ children: ReactNode }> = ({ children }) => {
       setCountries(countriesData as ICountry[]);
       const citiesData = await citiesService.getData();
       setCities(citiesData as ICity[]);
-      const organicasData = await organicasService.getData();
+      const organicasData = await organicasService.getStackedOragicasData();
       if (!organicasData) {
         throw new Error('[ISAgroContext] Erro ao buscar os dados de orgânicas stacked');
       }

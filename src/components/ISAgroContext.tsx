@@ -65,14 +65,14 @@ export const ISAgroProvider: FC<{ children: ReactNode }> = ({ children }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await dataService.getData();
-      if (result) {
-        setData(result as IData[]);
-        if (Array.isArray(result)) {
-          const uniqueYears = Array.from(new Set(result.map((dataItem) => new Date(dataItem.data).getFullYear().toString())));
-          setYears(uniqueYears);
-        }
-      }
+      // const result = await dataService.getData();
+      // if (result) {
+      //   setData(result as IData[]);
+      //   if (Array.isArray(result)) {
+      //     const uniqueYears = Array.from(new Set(result.map((dataItem) => new Date(dataItem.data).getFullYear().toString())));
+      //     setYears(uniqueYears);
+      //   }
+      // }
       const statesData = await statesService.getData();
       setStates(statesData as IState[]);
       const countriesData = await countriesService.getData();
@@ -83,13 +83,11 @@ export const ISAgroProvider: FC<{ children: ReactNode }> = ({ children }) => {
       if (!organicasData) {
         throw new Error('[ISAgroContext] Erro ao buscar os dados de orgânicas stacked');
       }
-      console.log('[ISAgroContext] organicasData', organicasData);
       setOrganicas(organicasData as IStackedAreaChart[]);
       const organicasPercentualData = await organicasService.getOrganicasAsPercentual();
       if (!organicasPercentualData) {
         throw new Error('[ISAgroContext] Erro ao buscar os dados de orgânicas/percentual');
       }
-      console.log('[ISAgroContext] organicasPercentualData', organicasPercentualData);
       setOrganicasPercentual(organicasPercentualData as IPercentualAreaChart[]);
     };
 

@@ -3,12 +3,12 @@
 
 import React from "react";
 import { ISAgroProvider } from "./components/ISAgroContext";
-import ISAgro from "./pages/Page";
+import Page from "./pages/Page";
 
 const App: React.FC = () => {
   return (
     <ISAgroProvider>
-      <ISAgro />
+      <Page />
       {/* Outros componentes que precisem acessar o contexto ISAgroContext */}
     </ISAgroProvider>
   );

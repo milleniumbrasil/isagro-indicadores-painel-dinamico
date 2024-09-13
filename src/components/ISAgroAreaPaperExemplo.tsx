@@ -2,7 +2,7 @@
 
 import 'rsuite/dist/rsuite.min.css';
 
-import React from "react";
+import React, { useState } from "react";
 import Stack from "@mui/material/Stack";
 import Paper from "@mui/material/Paper";
 import InputLabel from "@mui/material/InputLabel";
@@ -18,13 +18,20 @@ import { BsCalendar2MonthFill } from 'react-icons/bs';
 import { useISAgroContext } from "./ISAgroContext";
 import PercentualAreaChart from "./PercentualAreaChart";
 import { DateRange } from 'rsuite/esm/DateRangePicker';
+import { IPercentualAreaChart } from '../types';
 
-const ISAgroAreaPaperExemplo: React.FC = () => {
+
+interface ISAgroAreaPaperExemploProps {
+  data: IPercentualAreaChart[];
+}
+
+const ISAgroAreaPaperExemplo: React.FC<ISAgroAreaPaperExemploProps> = (props) => {
   // dados do servidor armazenados no contexto
   const { states } = useISAgroContext();
   const { countries } = useISAgroContext();
   const { cities } = useISAgroContext();
-  const { organicasPercentual } = useISAgroContext();
+  const [organicasPercentual, setOrganicasPercentual] = useState<IPercentualAreaChart[]>(props.data);
+
   console.log('[ISAgroAreaPaperExemplo] organicasPercentual', JSON.stringify(organicasPercentual));
 
   // dados selecionados em tela

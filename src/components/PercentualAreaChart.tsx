@@ -23,15 +23,7 @@ interface PercentualAreaChartProps {
   fillColor?: string;
 }
 
-const PercentualAreaChart: React.FC<PercentualAreaChartProps> = ({
-  data,
-  dataKey = 'period',
-  valueLabel = 'Valor',
-  width = 800,
-  height = 1200,
-  strokeColor = '#228B22',
-  fillColor = '#228B22',
-}) => {
+const PercentualAreaChart: React.FC<PercentualAreaChartProps> = (props) => {
 
   const normalizeData = (_data: IPercentualAreaChart[]|undefined): IPercentualAreaChart[] => {
     if (!_data) {
@@ -45,13 +37,13 @@ const PercentualAreaChart: React.FC<PercentualAreaChartProps> = ({
     return result;
   }
 
-  const [internalValueLabel, setInternalInternalValueLabel] = useState<string>(valueLabel);
-  const [internalData, setInternalData ] = useState<IPercentualAreaChart[] | undefined>(normalizeData(data));
-  const [internalDataKey, setInternalDataKey ] = useState< string>(dataKey);
-  const [internalWidth, setInternalWidth ] = useState< number>(width);
-  const [internalHeight, setInternalHeight ] = useState< number>(height);
-  const [internalStrokeColor, setInternalStrockeColor ] = useState< string>(strokeColor);
-  const [internalFillColor, setInternalFillColor ] = useState< string>(fillColor);
+  const [internalValueLabel, setInternalInternalValueLabel] = useState<string>(props.valueLabel ?? 'Valor');
+  const [internalData, setInternalData ] = useState<IPercentualAreaChart[] | undefined>(normalizeData(props.data));
+  const [internalDataKey, setInternalDataKey ] = useState< string>(props.dataKey ?? 'period');
+  const [internalWidth, setInternalWidth ] = useState< number>(props.width ?? 800);
+  const [internalHeight, setInternalHeight ] = useState< number>(props.height ?? 1200);
+  const [internalStrokeColor, setInternalStrockeColor ] = useState< string>(props.strokeColor ?? '#228B22');
+  const [internalFillColor, setInternalFillColor ] = useState< string>(props.fillColor ?? '#228B22');
   const [attributeNames, setAttributeNames] = useState<string[]>(Array.from(new Set(internalData?.flatMap(Object.keys))).filter(key => key !== internalDataKey) ?? []);
 
   const legendFormatter = (value: any, entry: any, index: any): string => {
@@ -62,7 +54,6 @@ const PercentualAreaChart: React.FC<PercentualAreaChartProps> = ({
   const tickFormatter = (decimal: number = 0, fixed: number = 1): string => {
     return `${Math.round(decimal)}%`;
   }
-
 
   const renderTooltipContent = (o: any) => {
     const { payload = [] } = o;
@@ -75,7 +66,7 @@ const PercentualAreaChart: React.FC<PercentualAreaChartProps> = ({
         <ul className="list" style={{ listStyleType: 'none', padding: 0, fontSize: '12px' }}>
           {payload.map((entry: any, index: number) => {
             const fontColor = 'black';
-            if (entry.name !== dataKey && attributeNames.includes(entry.name) && typeof entry.value === 'number') {
+            if (entry.name !== internalDataKey && attributeNames.includes(entry.name) && typeof entry.value === 'number') {
               return (
                   <li key={`item-${index}`} style={{ color: fontColor }}>
                     {internalValueLabel} {entry.value}
@@ -91,7 +82,7 @@ const PercentualAreaChart: React.FC<PercentualAreaChartProps> = ({
 
 
     return (
-        <div style={{ width: '100%', height: height }}>
+        <div style={{ width: '100%', height: internalHeight }}>
           <ResponsiveContainer>
             <AreaChart
               width={internalWidth}

@@ -21,9 +21,10 @@ class GetOrganicaService {
 
 	public async getData(): Promise<IStackedAreaChart[] | { error: string }> {
 		try {
+			const targetURL = `${this.baseURL}/organicas/stacked`;
 			const response: AxiosResponse<IStackedAreaChart> =
 				await axios.get<IStackedAreaChart>(
-					`${this.baseURL}/organicas/stacked`,
+					targetURL,
 					{
 						headers: this.headers,
 					},
@@ -32,7 +33,7 @@ class GetOrganicaService {
 				return response.data
 			} else {
 				throw new Error(
-					`A resposta não é um array. ${JSON.stringify(response.data)}`,
+					`A resposta de ${targetURL} não é um array. ${JSON.stringify(response.data)}`,
 				)
 			}
 		} catch (error) {
@@ -44,10 +45,11 @@ class GetOrganicaService {
 	public async getOrganicasAsPercentual(): Promise<
 		IPercentualAreaChart[] | { error: string }
 	> {
+		const targetURL = `${this.baseURL}/organicas/percentual`;
 		try {
 			const response: AxiosResponse<IPercentualAreaChart> =
 				await axios.get<IPercentualAreaChart>(
-					`${this.baseURL}/organicas/percentual`,
+					targetURL,
 					{
 						headers: this.headers,
 					},
@@ -56,7 +58,7 @@ class GetOrganicaService {
 				return response.data
 			} else {
 				throw new Error(
-					`A resposta não é um array. ${JSON.stringify(response.data)}`,
+					`A resposta de ${targetURL} não é um array. ${JSON.stringify(response.data)}`,
 				)
 			}
 		} catch (error) {

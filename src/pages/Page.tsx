@@ -11,14 +11,14 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import Slider from '@mui/material/Slider';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { useISAgroContext } from "../components/ISAgroContext";
 import AreaChart from "../components/AreaChart";
 import ISAgroAreaPaperExemplo from "../components/ISAgroAreaPaperExemplo";
+import { IPercentualAreaChart } from "../types";
 
-const ISAgro: React.FC = () => {
+const Page: React.FC = () => {
 
   // dados do servidor armazenados no contexto
   const { data } = useISAgroContext();
@@ -29,11 +29,13 @@ const ISAgro: React.FC = () => {
   const { organicasPercentual } = useISAgroContext();
 
   // dados selecionados em tela
+  const [internalOrganicasPercentual, setInternalOrganicasPercentual] = React.useState<IPercentualAreaChart[]|undefined>(organicasPercentual);
+
+  console.log(`[Page] organicasPercentual: ${JSON.stringify(organicasPercentual)}`);
+
   const [pais, setPais] = React.useState('');
   const [estado, setEstado] = React.useState('');
   const [cidade, setCidade] = React.useState('');
-  const [ano, setAno] = React.useState('');
-  const [rangeAnos, setRangeAnos] = React.useState<number[]>([1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999]);
   const [subsequenceRange, setSubsequenceRange] = React.useState<number>(1);
 
   const minDistance = 10;
@@ -51,48 +53,12 @@ const ISAgro: React.FC = () => {
     setCidade(event.target.value as string);
   };
 
-  const handleChangeRangeAnos = (
-    event: Event,
-    newValue: number | number[],
-    activeThumb: number,
-  ) => {
-    if (!Array.isArray(newValue)) {
-      return;
-    }
-
-    if (activeThumb === 0) {
-      setRangeAnos([Math.min(newValue[0], rangeAnos[1] - minDistance), rangeAnos[1]]);
-    } else {
-      setRangeAnos([rangeAnos[0], Math.max(newValue[1], rangeAnos[0] + minDistance)]);
-    }
-  };
-  const years = [
-    { ano: 1990, valor: 10 },
-    { ano: 1991, valor: 15 },
-    { ano: 1992, valor: 20 },
-    { ano: 1993, valor: 25 },
-    { ano: 1994, valor: 30 },
-    // Outros anos...
-  ];
-  
-  const filteredData = years.filter((item) => item.ano >= rangeAnos[0] && item.ano <= rangeAnos[1]);
-
   return (
     <div>
       <Paper
         component="form"
         sx={{ display: "flex", alignItems: "center", width: '96%', padding: '10px', margin: '10px' }}
       >
-
-      <Box sx={{ minWidth: '250px', maxWidth: '300px', margin: '2px', padding: '2px' }}>
-          <Slider
-            getAriaLabel={() => 'Years range'}
-            value={rangeAnos}
-            onChange={handleChangeRangeAnos}
-            valueLabelDisplay="auto"
-            sx={{ margin: '3px' }}
-          />
-        </Box>
 
         <Box sx={{ minWidth: '250px', maxWidth: '300px', margin: '2px', padding: '2px' }}>
           <FormControl size="small" sx={{ m: 1, mt: 3, minWidth: '250px' }}>
@@ -104,7 +70,7 @@ const ISAgro: React.FC = () => {
               label="País"
               onChange={handleChangePaises}
               sx={{
-                borderRadius: '20px', 
+                borderRadius: '20px',
               }}
             >
               {countries?.map((y, k) => {
@@ -124,7 +90,7 @@ const ISAgro: React.FC = () => {
               label="Estado"
               onChange={handleChangeEstados}
               sx={{
-                borderRadius: '20px', 
+                borderRadius: '20px',
               }}
             >
               {states?.map((y, k) => {
@@ -144,7 +110,7 @@ const ISAgro: React.FC = () => {
               label="Cidade"
               onChange={handleChangeCidades}
               sx={{
-                borderRadius: '20px', 
+                borderRadius: '20px',
               }}
             >
               {cities?.map((y, k) => {
@@ -153,24 +119,24 @@ const ISAgro: React.FC = () => {
             </Select>
           </FormControl>
         </Box>
-        
+
       </Paper>
 
-      <Stack spacing={2} sx={{ alignItems: 'center' }}> 
+      <Stack spacing={2} sx={{ alignItems: 'center' }}>
         <Card variant="outlined" sx={{ width: '90%' }}>
-          <CardContent>  
+          <CardContent>
           </CardContent>
         </Card>
-        <ISAgroAreaPaperExemplo />
+        <ISAgroAreaPaperExemplo data={organicasPercentual ?? []}/>
         <Card variant="outlined" sx={{ width: '90%' }}>
-          <CardContent>  
+          <CardContent>
             <h3>Áreas Organicas por período</h3>
             <h5>Números absolutos, consolidando dados de uso da terra por período, considerando Grãos, Hortaliças, Fruticulturas e Pastagens</h5>
             <AreaChart width={1200} height={400} data={organicas} />
           </CardContent>
         </Card>
         <Card variant="outlined" sx={{ width: '90%' }}>
-          <CardContent>  
+          <CardContent>
             <div>
               <h1>Áreas Organicas</h1>
               <h5>Empilhados por Grão, Hortaliças, Fruticultura, Pastagens</h5>
@@ -185,14 +151,14 @@ const ISAgro: React.FC = () => {
                     <option value={5}>5</option>
                   </select>
                 </label>
-                
+
               </div>
               <AreaChart width={1200} height={400} data={organicas} />
             </div>
           </CardContent>
         </Card>
         <Card variant="outlined" sx={{ maxWidth: '400px' }}>
-          <CardContent>  
+          <CardContent>
             <h3>Selecionados</h3>
             <h5>Estado: {estado}</h5>
             <h5>Cidade: {cidade}</h5>
@@ -200,7 +166,7 @@ const ISAgro: React.FC = () => {
           </CardContent>
         </Card>
         <Card variant="outlined" sx={{ maxWidth: '400px' }}>
-          <CardContent>  
+          <CardContent>
             <h3>Por (município), estado, país</h3>
             <h5>Por entrada - em %</h5>
             <ul>
@@ -243,7 +209,7 @@ const ISAgro: React.FC = () => {
           </CardContent>
         </Card>
         <Card variant="outlined" sx={{ maxWidth: '400px' }}>
-          <CardContent>  
+          <CardContent>
             <h4>Por (município), estado, país</h4>
             <h5>Por saída - em %</h5>
             <ul>
@@ -291,7 +257,7 @@ const ISAgro: React.FC = () => {
           </CardContent>
         </Card>
         <Card variant="outlined" sx={{ maxWidth: '400px' }}>
-          <CardContent>  
+          <CardContent>
             <h4>Por nutriente - N P K</h4>
             <h5>Por entrada - em %</h5>
             <ul>
@@ -334,7 +300,7 @@ const ISAgro: React.FC = () => {
           </CardContent>
         </Card>
         <Card variant="outlined" sx={{ maxWidth: '400px' }}>
-          <CardContent>  
+          <CardContent>
             <h4>Por nutriente - N P K</h4>
             <h5>Por saída - em %</h5>
             <ul>
@@ -382,7 +348,7 @@ const ISAgro: React.FC = () => {
           </CardContent>
         </Card>
         <Card variant="outlined" sx={{ maxWidth: '600px' }}>
-          <CardContent>  
+          <CardContent>
             {Array.isArray(data) ? (
               <ul>
                 {data.map((dataItem, index) => (
@@ -402,4 +368,4 @@ const ISAgro: React.FC = () => {
   );
 };
 
-export default ISAgro;
+export default Page;

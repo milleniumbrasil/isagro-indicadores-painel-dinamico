@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { IPercentualAreaChart } from '../types';
 
+import { greenPalette } from './constants';
+
 interface PercentualAreaChartProps {
     data: IPercentualAreaChart[];
     valueLabel?: string;
@@ -26,8 +28,8 @@ const PercentualAreaChart: React.FC<PercentualAreaChartProps> = (props) => {
     const [internalData, setInternalData] = useState<IPercentualAreaChart[] | null>(null);
     const [internalWidth, setInternalWidth] = useState<number>(800);
     const [internalHeight, setInternalHeight] = useState<number>(1200);
-    const [internalStrokeColor, setInternalStrockeColor] = useState<string>('#228B22');
-    const [internalFillColor, setInternalFillColor] = useState<string>('#228B22');
+    const [internalStrokeColor, setInternalStrockeColor] = useState<string>(greenPalette[5]);
+    const [internalFillColor, setInternalFillColor] = useState<string>(greenPalette[5]);
     const [attributeNames, setAttributeNames] = useState<string[]>([]);
     const [loading, setLoading] = useState(true);
 

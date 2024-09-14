@@ -22,7 +22,7 @@ import PercentualAreaChart from './PercentualAreaChart';
 import { DateRange } from 'rsuite/esm/DateRangePicker';
 import AreaChart from './AreaChart';
 
-import { greenBackgroundColor, greenPalette, redPalette, yellowPalette, bluePalette, grayPalette, purplePalette, brownPalette, brownBackgroundColor, redBackgroundColor, grayBackgroundColor } from './constants';
+import { greenBackgroundColor, yellowPalette, bluePalette, brownPalette, brownBackgroundColor, redBackgroundColor, grayBackgroundColor } from './constants';
 
 interface PaperOrganicasProps {
     countries: ICountry[];

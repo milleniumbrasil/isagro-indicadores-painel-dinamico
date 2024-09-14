@@ -1,5 +1,7 @@
 // src/components/constants.d.ts
 
+export const greenBackgroundColor = 'rgba(164, 222, 108, 0.1)';
+
 // Paleta de Verde do mais claro para o mais escuro
 export const greenPalette = {
     'lightGreen': '#a4de6c',

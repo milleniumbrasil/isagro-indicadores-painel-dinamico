@@ -15,9 +15,9 @@ interface PercentualAreaChartProps {
 }
 
 export default class AreaChart extends PureComponent<PercentualAreaChartProps> {
-    
+
     // Paleta reorganizada do mais claro para o mais escuro
-    public static palete = ['#a4de6c', '#66CDAA', '#32CD32', '#228B22', '#006400'];
+    public static greenPalete = ['#a4de6c', '#66CDAA', '#32CD32', '#228B22', '#006400'];
 
     // Paleta de Vermelho
     public static redPalette = ['#FFC1C1', '#FF8C8C', '#FF4D4D', '#FF0000', '#8B0000'];
@@ -43,8 +43,8 @@ export default class AreaChart extends PureComponent<PercentualAreaChartProps> {
     private dataKey: string = '';
     private valueLabel: string = 'Valor';
     private data: object[] = [];
-    private strokeColor: string[] = AreaChart.palete;
-    private fillColor: string[] = AreaChart.palete;
+    private strokeColor: string[] = AreaChart.greenPalete;
+    private fillColor: string[] = AreaChart.greenPalete;
     private dynamicTicks: number[] = [0];
 
     constructor(props: PercentualAreaChartProps) {
@@ -146,8 +146,8 @@ export default class AreaChart extends PureComponent<PercentualAreaChartProps> {
     render() {
         this.width = this.props.width ?? 800;
         this.height = this.props.height ?? 1200;
-        this.strokeColor = this.props.strokeColor ?? AreaChart.palete;
-        this.fillColor = this.props.fillColor ?? AreaChart.palete;
+        this.strokeColor = this.props.strokeColor ?? AreaChart.greenPalete;
+        this.fillColor = this.props.fillColor ?? AreaChart.greenPalete;
         this.dataKey = this.props.dataKey ?? 'period';
         this.data = this.normalizeData(this.props.data ?? []);
         this.valueLabel = this.props.valueLabel ?? 'Valor';

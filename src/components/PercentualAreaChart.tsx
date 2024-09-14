@@ -40,6 +40,7 @@ const PercentualAreaChart: React.FC<PercentualAreaChartProps> = (props) => {
             ...e,
             value: (e.value / maxArea) * 100, // Normaliza os valores de 'area' para percentuais
         }));
+        console.log(`[PercentualAreaChart] Normalized data: ${JSON.stringify(result)}`);
         return result;
     };
 
@@ -84,7 +85,7 @@ const PercentualAreaChart: React.FC<PercentualAreaChartProps> = (props) => {
 
     const renderTooltipContent = (o: any) => {
         const { payload = [] } = o;
-
+        console.log(`[PercentualAreaChart] Tooltip payload: ${JSON.stringify(payload)}`);
         return (
             <div
                 className="customized-tooltip-content"
@@ -97,10 +98,10 @@ const PercentualAreaChart: React.FC<PercentualAreaChartProps> = (props) => {
             >
                 <ul className="list" style={{ listStyleType: 'none', padding: 0, fontSize: '12px' }}>
                     {payload.map((entry: any, index: number) => {
-                        const fontColor = 'black';
-                        if (entry.name !== 'period' && attributeNames.includes(entry.name) && typeof entry.value === 'number') {
+                        if (entry.name !== 'payload') {
+                            console.log(`[PercentualAreaChart] Tooltip entry: ${JSON.stringify(entry)}`);
                             return (
-                                <li key={`item-${index}`} style={{ color: fontColor }}>
+                                <li key={`item-${index}`} style={{ color: 'black' }}>
                                     {internalValueLabel} {entry.value}
                                 </li>
                             );
@@ -135,16 +136,14 @@ const PercentualAreaChart: React.FC<PercentualAreaChartProps> = (props) => {
                         <YAxis tickFormatter={tickFormatter} ticks={[0, 25, 50, 75, 100]} />
                         <Legend formatter={legendFormatter} />
                         <Tooltip content={renderTooltipContent} />
-                        {attributeNames.map((attr) => (
-                            <Area
-                                key={attr}
-                                type="monotone"
-                                dataKey={attr}
-                                stackId="1"
-                                stroke={internalStrokeColor}
-                                fill={internalFillColor}
-                            />
-                        ))}
+                        <Area
+                            key={'value'}
+                            type="monotone"
+                            dataKey={'value'}
+                            stackId="1"
+                            stroke={internalStrokeColor}
+                            fill={internalFillColor}
+                        />
                     </AreaChart>
                 </ResponsiveContainer>
             ) : (

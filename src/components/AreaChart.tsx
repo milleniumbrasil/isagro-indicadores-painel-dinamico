@@ -23,7 +23,7 @@ export default class AreaChart extends PureComponent<PercentualAreaChartProps> {
     private height: number = 0;
     private dataKey: string = '';
     private valueLabel: string = 'Valor';
-    private data: Object[] = [];
+    private data: object[] = [];
     private strokeColor: string[] = AreaChart.palete;
     private fillColor: string[] = AreaChart.palete;
     private dynamicTicks: number[] = [0];

@@ -15,7 +15,7 @@ export interface ISAgroContextProps {
     cities: ICity[];
     states: IState[];
     countries: ICountry[];
-    fetchData: () => Promise<Boolean>;
+    fetchData: () => Promise<boolean>;
 }
 
 // Criação do contexto

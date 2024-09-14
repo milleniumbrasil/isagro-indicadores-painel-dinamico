@@ -40,7 +40,7 @@ export const ISAgroProvider: FC<{ children: ReactNode }> = ({ children }) => {
     const getOrganicasService = new GetOrganicaService();
     const getPoluicaoDataService = new GetPoluicaoDataService();
 
-    const fetchData = async (): Promise<Boolean> => {
+    const fetchData = async (): Promise<boolean> => {
         let result: boolean = false;
         try {
             const tmpCountriesData = await getCountriesService.getData();

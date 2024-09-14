@@ -71,7 +71,7 @@ const PercentualAreaChart: React.FC<PercentualAreaChartProps> = (props) => {
                     if (internalData) {
                         setAttributeNames(Array.from(new Set(internalData?.flatMap(Object.keys))).filter((key) => key !== 'period'));
                     }
-                    console.log('[PercentualAreaChart] Attribute names:', attributeNames);
+                    console.log('[PercentualAreaChart] Attribute names:', JSON.stringify(attributeNames));
                 }
             } catch (error) {
                 console.error(error);

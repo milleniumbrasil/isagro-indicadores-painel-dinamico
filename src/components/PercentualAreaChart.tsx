@@ -35,10 +35,11 @@ const PercentualAreaChart: React.FC<PercentualAreaChartProps> = (props) => {
         if (!_data || _data.length === 0) {
             throw new Error('[PercentualAreaChart] Data is undefined for normalizing data!');
         }
+        console.log(`[PercentualAreaChart] Data to normalize: ${JSON.stringify(_data)}`);
         const maxArea = Math.max(..._data.map((i) => i.value)); // Identifica o valor máximo
         const result = _data.map((e) => ({
             ...e,
-            value: (e.value / maxArea) * 100, // Normaliza os valores de 'area' para percentuais
+            value: Math.round((e.value / maxArea) * 100), // Normaliza os valores de 'area' para percentuais
         }));
         console.log(`[PercentualAreaChart] Normalized data: ${JSON.stringify(result)}`);
         return result;
@@ -102,7 +103,7 @@ const PercentualAreaChart: React.FC<PercentualAreaChartProps> = (props) => {
                             console.log(`[PercentualAreaChart] Tooltip entry: ${JSON.stringify(entry)}`);
                             return (
                                 <li key={`item-${index}`} style={{ color: 'black' }}>
-                                    {internalValueLabel} {entry.value}
+                                    {internalValueLabel} {entry.value}%
                                 </li>
                             );
                         }

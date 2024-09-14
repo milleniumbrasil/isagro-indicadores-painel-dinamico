@@ -3,7 +3,7 @@
 export const greenBackgroundColor = 'rgba(164, 222, 108, 0.1)';
 
 // Paleta de Verde do mais claro para o mais escuro
-export const greenPalette = {
+export const greenColors = {
     'lightGreen': '#a4de6c',
     'mediumAquamarine': '#66CDAA',
     'limeGreen': '#32CD32',
@@ -12,7 +12,7 @@ export const greenPalette = {
 };
 
 // Paleta de Vermelho do mais claro para o mais escuro
-export const redPalette = {
+export const redColors = {
     'lightCoral': '#FFC1C1',
     'salmon': '#FF8C8C',
     'fireBrick': '#FF4D4D',
@@ -21,7 +21,7 @@ export const redPalette = {
 };
 
 // Paleta de Amarelo do mais claro para o mais escuro
-export const yellowPalette = {
+export const yellowColors = {
     'lightYellow': '#FFFFE0',
     'lemonChiffon': '#FFFACD',
     'moccasin': '#FFE4B5',
@@ -30,7 +30,7 @@ export const yellowPalette = {
 };
 
 // Paleta de Azul do mais claro para o mais escuro
-export const bluePalette = {
+export const blueColors = {
     'lightBlue': '#ADD8E6',
     'skyBlue': '#87CEEB',
     'steelBlue': '#4682B4',
@@ -39,7 +39,7 @@ export const bluePalette = {
 };
 
 // Paleta de Cinza do mais claro para o mais escuro
-export const grayPalette = {
+export const grayColors = {
     'gainsboro': '#DCDCDC',
     'silver': '#C0C0C0',
     'darkGray': '#A9A9A9',
@@ -48,7 +48,7 @@ export const grayPalette = {
 };
 
 // Paleta de Roxo do mais claro para o mais escuro
-export const purplePalette = {
+export const purpleColors = {
     'lavender': '#E6E6FA',
     'thistle': '#D8BFD8',
     'mediumOrchid': '#BA55D3',
@@ -57,10 +57,74 @@ export const purplePalette = {
 };
 
 // Paleta de Marrom do mais claro para o mais escuro
-export const brownPalette = {
+export const brownColors = {
     'wheat': '#F5DEB3',
     'burlyWood': '#DEB887',
     'chocolate': '#D2691E',
     'saddleBrown': '#8B4513',
     'darkBrown': '#654321'
 };
+
+
+// Paleta de verde do mais claro para o mais escuro
+export const greenPalette = [
+	greenColors.lightGreen,
+	greenColors.mediumAquamarine,
+	greenColors.limeGreen,
+	greenColors.forestGreen,
+	greenColors.darkGreen
+];
+
+// Paleta de Vermelho do mais claro para o mais escuro
+export const redPalette = [
+	redColors.lightCoral,
+	redColors.salmon,
+	redColors.fireBrick,
+	redColors.red,
+	redColors.darkRed
+];
+
+// Paleta de Amarelo do mais claro para o mais escuro
+export const yellowPalette = [
+	yellowColors.lightYellow,
+	yellowColors.lemonChiffon,
+	yellowColors.moccasin,
+	yellowColors.gold,
+	yellowColors.darkGoldenrod
+];
+
+// Paleta de Azul do mais claro para o mais escuro
+export const bluePalette = [
+	blueColors.lightBlue,
+	blueColors.skyBlue,
+	blueColors.steelBlue,
+	blueColors.dodgerBlue,
+	blueColors.darkBlue
+];
+
+// Paleta de Cinza do mais claro para o mais escuro
+export const grayPalette = [
+	grayColors.gainsboro,
+	grayColors.silver,
+	grayColors.darkGray,
+	grayColors.dimGray,
+	grayColors.darkSlateGray,
+];
+
+// Paleta de Roxo do mais claro para o mais escuro
+export const purplePalette = [
+	purpleColors.lavender,
+	purpleColors.thistle,
+	purpleColors.mediumOrchid,
+	purpleColors.purple,
+	purpleColors.indigo,
+];
+
+// Paleta de Marrom do mais claro para o mais escuro
+export const brownPalette = [
+	brownColors.wheat,
+	brownColors.burlyWood,
+	brownColors.chocolate,
+	brownColors.saddleBrown,
+	brownColors.darkBrown,
+];

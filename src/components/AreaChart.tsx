@@ -2,7 +2,7 @@
 
 import { PureComponent } from 'react';
 import { AreaChart as RechatsAreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
-import { greenPalette, redPalette, yellowPalette, bluePalette, grayPalette, purplePalette, brownPalette } from './constants';
+import { greenPalette } from './constants';
 import { IStackedAreaChart } from '../types';
 
 interface PercentualAreaChartProps {
@@ -16,79 +16,16 @@ interface PercentualAreaChartProps {
 
 export default class AreaChart extends PureComponent<PercentualAreaChartProps> {
 
-    // Paleta de verde do mais claro para o mais escuro
-    public static greenPalete = [
-        greenPalette.lightGreen,
-        greenPalette.mediumAquamarine,
-        greenPalette.limeGreen,
-        greenPalette.forestGreen,
-        greenPalette.darkGreen
-    ];
-
-    // Paleta de Vermelho do mais claro para o mais escuro
-    public static redPalette = [
-        redPalette.lightCoral,
-        redPalette.salmon,
-        redPalette.fireBrick,
-        redPalette.red,
-        redPalette.darkRed
-    ];
-
-    // Paleta de Amarelo do mais claro para o mais escuro
-    public static yellowPalette = [
-        yellowPalette.lightYellow,
-        yellowPalette.lemonChiffon,
-        yellowPalette.moccasin,
-        yellowPalette.gold,
-        yellowPalette.darkGoldenrod
-    ];
-
-    // Paleta de Azul do mais claro para o mais escuro
-    public static bluePalette = [
-        bluePalette.lightBlue,
-        bluePalette.skyBlue,
-        bluePalette.steelBlue,
-        bluePalette.dodgerBlue,
-        bluePalette.darkBlue
-    ];
-
-    // Paleta de Cinza do mais claro para o mais escuro
-    public static grayPalette = [
-        grayPalette.gainsboro,
-        grayPalette.silver,
-        grayPalette.darkGray,
-        grayPalette.dimGray,
-        grayPalette.darkSlateGray
-    ];
-
-    // Paleta de Roxo do mais claro para o mais escuro
-    public static purplePalette = [
-        purplePalette.lavender,
-        purplePalette.thistle,
-        purplePalette.mediumOrchid,
-        purplePalette.purple,
-        purplePalette.indigo
-    ];
-
-    // Paleta de Marrom do mais claro para o mais escuro
-    public static brownPalette = [
-        brownPalette.wheat,
-        brownPalette.burlyWood,
-        brownPalette.chocolate,
-        brownPalette.saddleBrown,
-        brownPalette.darkBrown
-    ];
-
     private attributeNames: string[] = [''];
     private width: number = 0;
     private height: number = 0;
     private dataKey: string = '';
     private valueLabel: string = 'Valor';
     private data: object[] = [];
-    private strokeColor: string[] = AreaChart.greenPalete;
-    private fillColor: string[] = AreaChart.greenPalete;
+    private strokeColor: string[] = greenPalette;
+    private fillColor: string[] = greenPalette;
     private dynamicTicks: number[] = [0];
-    private defaultPalette: string[] = AreaChart.greenPalete;
+    private defaultPalette: string[] = greenPalette;
 
     constructor(props: PercentualAreaChartProps) {
         super(props);
@@ -99,7 +36,7 @@ export default class AreaChart extends PureComponent<PercentualAreaChartProps> {
         this.dataKey = this.props.dataKey ?? 'period';
         this.valueLabel = this.props.valueLabel ?? 'Valor';
         this.data = this.props.data ?? [];
-        this.defaultPalette = this.props.defaultPalette ?? AreaChart.greenPalete;
+        this.defaultPalette = this.props.defaultPalette ?? greenPalette;
     }
 
     tickFormatter(decimal: number = 0, fixed: number = 1): string {
@@ -190,8 +127,8 @@ export default class AreaChart extends PureComponent<PercentualAreaChartProps> {
     render() {
         this.width = this.props.width ?? 800;
         this.height = this.props.height ?? 1200;
-        this.strokeColor = this.props.defaultPalette ?? AreaChart.greenPalete;
-        this.fillColor = this.props.defaultPalette ?? AreaChart.greenPalete;
+        this.strokeColor = this.props.defaultPalette ?? greenPalette;
+        this.fillColor = this.props.defaultPalette ?? greenPalette;
         this.dataKey = this.props.dataKey ?? 'period';
         this.data = this.normalizeData(this.props.data ?? []);
         this.valueLabel = this.props.valueLabel ?? 'Valor';

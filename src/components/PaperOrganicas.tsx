@@ -313,7 +313,7 @@ const PaperOrganicas: FC<PaperOrganicasProps> = (props) => {
                     <Card variant="outlined" sx={{ width: '90%' }}>
                         <CardContent>
                             <div>
-                                <h1>Áreas Organicas</h1>
+                                <h3>Áreas Organicas</h3>
                                 <h5>Empilhados por Grão, Hortaliças, Fruticultura, Pastagens</h5>
                                 <div>
                                     <label>

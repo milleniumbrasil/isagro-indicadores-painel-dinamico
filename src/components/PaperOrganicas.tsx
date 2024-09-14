@@ -22,7 +22,7 @@ import PercentualAreaChart from './PercentualAreaChart';
 import { DateRange } from 'rsuite/esm/DateRangePicker';
 import AreaChart from './AreaChart';
 
-import { greenBackgroundColor, greenPalette, redPalette, yellowPalette, bluePalette, grayPalette, purplePalette, brownPalette } from './constants';
+import { greenBackgroundColor, greenPalette, redPalette, yellowPalette, bluePalette, grayPalette, purplePalette, brownPalette, brownBackgroundColor, redBackgroundColor, grayBackgroundColor } from './constants';
 
 interface PaperOrganicasProps {
     countries: ICountry[];
@@ -267,7 +267,7 @@ const PaperOrganicas: FC<PaperOrganicasProps> = (props) => {
                         </FormControl>
                     </Stack>
 
-                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: greenBackgroundColor }}>
+                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: brownBackgroundColor }}>
                         <CardContent>
                             <h3>Percentual de áreas Organicas por período</h3>
                             <h5>
@@ -302,7 +302,7 @@ const PaperOrganicas: FC<PaperOrganicasProps> = (props) => {
                         </CardContent>
                     </Card>
 
-                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: greenBackgroundColor }}>
+                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: redBackgroundColor }}>
                         <CardContent>
                             <h3>Áreas Organicas por período</h3>
                             <h5>
@@ -312,7 +312,7 @@ const PaperOrganicas: FC<PaperOrganicasProps> = (props) => {
                             <AreaChart width={1200} height={400} data={internalStackedData} defaultPalette={yellowPalette}/>
                         </CardContent>
                     </Card>
-                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: greenBackgroundColor }}>
+                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: grayBackgroundColor }}>
                         <CardContent>
                             <div>
                                 <h3>Áreas Organicas</h3>

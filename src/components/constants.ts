@@ -1,6 +1,12 @@
 // src/components/constants.d.ts
 
-export const greenBackgroundColor = 'rgba(164, 222, 108, 0.1)';
+export const greenBackgroundColor  = 'rgba(240, 255, 240, 0.6)'; // Verde muito claro com baixa opacidade
+export const blueBackgroundColor   = 'rgba(173, 216, 230, 0.6)';  // Azul claro (próximo a "lightblue")
+export const yellowBackgroundColor = 'rgba(255, 255, 224, 0.6)'; // Amarelo claro (próximo a "lightyellow")
+export const purpleBackgroundColor = 'rgba(230, 230, 250, 0.6)'; // Roxo claro (próximo a "lavender")
+export const grayBackgroundColor   = 'rgba(245, 245, 245, 0.6)';   // Cinza claro (próximo a "whitesmoke")
+export const redBackgroundColor    = 'rgba(255, 182, 193, 0.1)';   // Vermelho claro (próximo a "lightpink")
+export const brownBackgroundColor  = 'rgba(222, 184, 135, 0.1)'; // Marrom claro (próximo a "burlywood")
 
 // Paleta de Verde do mais claro para o mais escuro
 export const greenColors = {
@@ -68,7 +74,7 @@ export const brownColors = {
 
 // Paleta de verde do mais claro para o mais escuro
 export const greenPalette = [
-	greenColors.lightGreen,
+	// greenColors.lightGreen,
 	greenColors.mediumAquamarine,
 	greenColors.limeGreen,
 	greenColors.forestGreen,
@@ -77,7 +83,7 @@ export const greenPalette = [
 
 // Paleta de Vermelho do mais claro para o mais escuro
 export const redPalette = [
-	redColors.lightCoral,
+	// redColors.lightCoral,
 	redColors.salmon,
 	redColors.fireBrick,
 	redColors.red,
@@ -86,7 +92,7 @@ export const redPalette = [
 
 // Paleta de Amarelo do mais claro para o mais escuro
 export const yellowPalette = [
-	yellowColors.lightYellow,
+	// yellowColors.lightYellow,
 	yellowColors.lemonChiffon,
 	yellowColors.moccasin,
 	yellowColors.gold,
@@ -95,7 +101,7 @@ export const yellowPalette = [
 
 // Paleta de Azul do mais claro para o mais escuro
 export const bluePalette = [
-	blueColors.lightBlue,
+	// blueColors.lightBlue,
 	blueColors.skyBlue,
 	blueColors.steelBlue,
 	blueColors.dodgerBlue,
@@ -104,7 +110,7 @@ export const bluePalette = [
 
 // Paleta de Cinza do mais claro para o mais escuro
 export const grayPalette = [
-	grayColors.gainsboro,
+	// grayColors.gainsboro,
 	grayColors.silver,
 	grayColors.darkGray,
 	grayColors.dimGray,
@@ -113,7 +119,7 @@ export const grayPalette = [
 
 // Paleta de Roxo do mais claro para o mais escuro
 export const purplePalette = [
-	purpleColors.lavender,
+	// purpleColors.lavender,
 	purpleColors.thistle,
 	purpleColors.mediumOrchid,
 	purpleColors.purple,
@@ -122,7 +128,7 @@ export const purplePalette = [
 
 // Paleta de Marrom do mais claro para o mais escuro
 export const brownPalette = [
-	brownColors.wheat,
+	// brownColors.wheat,
 	brownColors.burlyWood,
 	brownColors.chocolate,
 	brownColors.saddleBrown,

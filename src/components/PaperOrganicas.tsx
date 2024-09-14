@@ -292,7 +292,7 @@ const PaperOrganicas: FC<PaperOrganicasProps> = (props) => {
                             </h5>
                             <Suspense fallback={<Loading />}>
                                 {internalStackedData.length > 0 ? (
-                                    <AreaChart width={1200} height={400} data={internalStackedData} />
+                                    <AreaChart width={1200} height={400} data={internalStackedData} defaultPalette={AreaChart.grayPalette}/>
                                 ) : (
                                     <Loading />
                                 )}

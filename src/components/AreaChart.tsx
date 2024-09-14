@@ -10,8 +10,7 @@ interface PercentualAreaChartProps {
     valueLabel?: string;
     width?: number;
     height?: number;
-    strokeColor?: string[];
-    fillColor?: string[];
+    defaultPalette?: string[];
 }
 
 export default class AreaChart extends PureComponent<PercentualAreaChartProps> {
@@ -46,6 +45,7 @@ export default class AreaChart extends PureComponent<PercentualAreaChartProps> {
     private strokeColor: string[] = AreaChart.greenPalete;
     private fillColor: string[] = AreaChart.greenPalete;
     private dynamicTicks: number[] = [0];
+    private defaultPalette: string[] = AreaChart.greenPalete;
 
     constructor(props: PercentualAreaChartProps) {
         super(props);
@@ -56,6 +56,7 @@ export default class AreaChart extends PureComponent<PercentualAreaChartProps> {
         this.dataKey = this.props.dataKey ?? 'period';
         this.valueLabel = this.props.valueLabel ?? 'Valor';
         this.data = this.props.data ?? [];
+        this.defaultPalette = this.props.defaultPalette ?? AreaChart.greenPalete;
     }
 
     tickFormatter(decimal: number = 0, fixed: number = 1): string {
@@ -146,8 +147,8 @@ export default class AreaChart extends PureComponent<PercentualAreaChartProps> {
     render() {
         this.width = this.props.width ?? 800;
         this.height = this.props.height ?? 1200;
-        this.strokeColor = this.props.strokeColor ?? AreaChart.greenPalete;
-        this.fillColor = this.props.fillColor ?? AreaChart.greenPalete;
+        this.strokeColor = this.props.defaultPalette ?? AreaChart.greenPalete;
+        this.fillColor = this.props.defaultPalette ?? AreaChart.greenPalete;
         this.dataKey = this.props.dataKey ?? 'period';
         this.data = this.normalizeData(this.props.data ?? []);
         this.valueLabel = this.props.valueLabel ?? 'Valor';

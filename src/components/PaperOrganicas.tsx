@@ -292,7 +292,7 @@ const PaperOrganicas: FC<PaperOrganicasProps> = (props) => {
                             </h5>
                             <Suspense fallback={<Loading />}>
                                 {internalStackedData.length > 0 ? (
-                                    <AreaChart width={1200} height={400} data={internalStackedData} defaultPalette={AreaChart.grayPalette}/>
+                                    <AreaChart width={1200} height={400} data={internalStackedData} defaultPalette={AreaChart.brownPalette}/>
                                 ) : (
                                     <Loading />
                                 )}
@@ -307,7 +307,7 @@ const PaperOrganicas: FC<PaperOrganicasProps> = (props) => {
                                 Números absolutos, consolidando dados de uso da terra por período, considerando Grãos, Hortaliças,
                                 Fruticulturas e Pastagens
                             </h5>
-                            <AreaChart width={1200} height={400} data={internalStackedData} />
+                            <AreaChart width={1200} height={400} data={internalStackedData} defaultPalette={AreaChart.yellowPalette}/>
                         </CardContent>
                     </Card>
                     <Card variant="outlined" sx={{ width: '90%' }}>
@@ -327,7 +327,7 @@ const PaperOrganicas: FC<PaperOrganicasProps> = (props) => {
                                         </select>
                                     </label>
                                 </div>
-                                <AreaChart width={1200} height={400} data={internalStackedData} />
+                                <AreaChart width={1200} height={400} data={internalStackedData} defaultPalette={AreaChart.bluePalette}/>
                             </div>
                         </CardContent>
                     </Card>

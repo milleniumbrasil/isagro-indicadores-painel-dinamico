@@ -214,7 +214,7 @@ export default class AreaChart extends PureComponent<PercentualAreaChartProps> {
                         <CartesianGrid strokeDasharray="0" />
                         <XAxis dataKey={this.dataKey} />
                         <YAxis tickFormatter={this.tickFormatter} ticks={this.dynamicTicks} />
-                        <Legend formatter={this.legendFormatter} iconType={'circle'} />
+                        <Legend formatter={this.legendFormatter} iconType={'triangle'} />
                         <Tooltip content={this.renderTooltipContent} />
                         {this.attributeNames.map((item, index) => (
                             <Area

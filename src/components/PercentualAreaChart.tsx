@@ -135,7 +135,7 @@ const PercentualAreaChart: React.FC<PercentualAreaChartProps> = (props) => {
                         <CartesianGrid strokeDasharray="0" />
                         <XAxis dataKey={'period'} />
                         <YAxis tickFormatter={tickFormatter} ticks={[0, 25, 50, 75, 100]} />
-                        <Legend formatter={legendFormatter} iconType={'circle'}/>
+                        <Legend formatter={legendFormatter} iconType={'triangle'}/>
                         <Tooltip content={renderTooltipContent} />
                         <Area
                             key={'value'}

@@ -15,8 +15,27 @@ interface PercentualAreaChartProps {
 }
 
 export default class AreaChart extends PureComponent<PercentualAreaChartProps> {
+    
     // Paleta reorganizada do mais claro para o mais escuro
     public static palete = ['#a4de6c', '#66CDAA', '#32CD32', '#228B22', '#006400'];
+
+    // Paleta de Vermelho
+    public static redPalette = ['#FFC1C1', '#FF8C8C', '#FF4D4D', '#FF0000', '#8B0000'];
+
+    // Paleta de Amarelo
+    public static yellowPalette = ['#FFFFE0', '#FFFACD', '#FFE4B5', '#FFD700', '#B8860B'];
+
+    // Paleta de Azul
+    public static bluePalette = ['#ADD8E6', '#87CEEB', '#4682B4', '#1E90FF', '#00008B'];
+
+    // Paleta de Cinza
+    public static grayPalette = ['#DCDCDC', '#C0C0C0', '#A9A9A9', '#696969', '#2F4F4F'];
+
+    // Paleta de Roxo
+    public static purplePalette = ['#E6E6FA', '#D8BFD8', '#BA55D3', '#800080', '#4B0082'];
+
+    // Paleta de Marrom
+    public static brownPalette = ['#F5DEB3', '#DEB887', '#D2691E', '#8B4513', '#654321'];
 
     private attributeNames: string[] = [''];
     private width: number = 0;

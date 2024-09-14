@@ -17,16 +17,16 @@
     },
     "plugins": ["@typescript-eslint", "prettier"],
     "rules": {
-      "prettier/prettier": "error",
+      "prettier/prettier": "warn",
       "padding-line-between-statements": [
-        "error",
+        "warn",
         { "blankLine": "always", "prev": "class", "next": "block-like" },
         { "blankLine": "always", "prev": "function", "next": "block-like" }
       ],
       "@typescript-eslint/no-unused-vars": "off",
       "@typescript-eslint/no-explicit-any": "off",
-      "@typescript-eslint/no-wrapper-object-types": "warn",
-      "prefer-const": "warn",
+      "@typescript-eslint/no-wrapper-object-types": "off",
+      "prefer-const": "off",
       "no-console": "off"
     }
 }

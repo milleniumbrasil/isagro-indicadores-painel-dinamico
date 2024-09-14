@@ -2,6 +2,7 @@
 
 import { PureComponent } from 'react';
 import { AreaChart as RechatsAreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { greenPalette, redPalette, yellowPalette, bluePalette, grayPalette, purplePalette, brownPalette } from './constants';
 import { IStackedAreaChart } from '../types';
 
 interface PercentualAreaChartProps {
@@ -16,25 +17,67 @@ interface PercentualAreaChartProps {
 export default class AreaChart extends PureComponent<PercentualAreaChartProps> {
 
     // Paleta de verde do mais claro para o mais escuro
-    public static greenPalete = ['#a4de6c', '#66CDAA', '#32CD32', '#228B22', '#006400'];
+    public static greenPalete = [
+        greenPalette.lightGreen,
+        greenPalette.mediumAquamarine,
+        greenPalette.limeGreen,
+        greenPalette.forestGreen,
+        greenPalette.darkGreen
+    ];
 
     // Paleta de Vermelho do mais claro para o mais escuro
-    public static redPalette = ['#FFC1C1', '#FF8C8C', '#FF4D4D', '#FF0000', '#8B0000'];
+    public static redPalette = [
+        redPalette.lightCoral,
+        redPalette.salmon,
+        redPalette.fireBrick,
+        redPalette.red,
+        redPalette.darkRed
+    ];
 
     // Paleta de Amarelo do mais claro para o mais escuro
-    public static yellowPalette = ['#FFFFE0', '#FFFACD', '#FFE4B5', '#FFD700', '#B8860B'];
+    public static yellowPalette = [
+        yellowPalette.lightYellow,
+        yellowPalette.lemonChiffon,
+        yellowPalette.moccasin,
+        yellowPalette.gold,
+        yellowPalette.darkGoldenrod
+    ];
 
     // Paleta de Azul do mais claro para o mais escuro
-    public static bluePalette = ['#ADD8E6', '#87CEEB', '#4682B4', '#1E90FF', '#00008B'];
+    public static bluePalette = [
+        bluePalette.lightBlue,
+        bluePalette.skyBlue,
+        bluePalette.steelBlue,
+        bluePalette.dodgerBlue,
+        bluePalette.darkBlue
+    ];
 
     // Paleta de Cinza do mais claro para o mais escuro
-    public static grayPalette = ['#DCDCDC', '#C0C0C0', '#A9A9A9', '#696969', '#2F4F4F'];
+    public static grayPalette = [
+        grayPalette.gainsboro,
+        grayPalette.silver,
+        grayPalette.darkGray,
+        grayPalette.dimGray,
+        grayPalette.darkSlateGray
+    ];
 
     // Paleta de Roxo do mais claro para o mais escuro
-    public static purplePalette = ['#E6E6FA', '#D8BFD8', '#BA55D3', '#800080', '#4B0082'];
+    public static purplePalette = [
+        purplePalette.lavender,
+        purplePalette.thistle,
+        purplePalette.mediumOrchid,
+        purplePalette.purple,
+        purplePalette.indigo
+    ];
 
     // Paleta de Marrom do mais claro para o mais escuro
-    public static brownPalette = ['#F5DEB3', '#DEB887', '#D2691E', '#8B4513', '#654321'];
+    public static brownPalette = [
+        brownPalette.wheat,
+        brownPalette.burlyWood,
+        brownPalette.chocolate,
+        brownPalette.saddleBrown,
+        brownPalette.darkBrown
+    ];
 
     private attributeNames: string[] = [''];
     private width: number = 0;

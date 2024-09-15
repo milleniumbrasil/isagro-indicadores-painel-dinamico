@@ -11,6 +11,12 @@ class GetErosaoDataService extends Service {
     public async getPercentualData(): Promise<IStackedAreaChart[]> {
         return this.get<IStackedAreaChart[]>('/erosao/percentual');
     }
+
+    // Adicionando método com parâmetro de label
+    public async getPercentualDataByLabel(label: string): Promise<IStackedAreaChart[]> {
+        const encodedLabel = encodeURIComponent(label); // Codifica o label para caracteres especiais
+        return this.get<IStackedAreaChart[]>(`/poluicao/percentual/${encodedLabel}`);
+    }
 }
 
 export default GetErosaoDataService;

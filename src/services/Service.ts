@@ -1,3 +1,5 @@
+// src/services/Service.ts
+
 import axios, { AxiosResponse } from 'axios';
 
 interface RequestHeaders {
@@ -7,10 +9,12 @@ interface RequestHeaders {
 class Service {
     protected baseURL: string;
     protected headers: RequestHeaders;
+	protected basePath: string;
 
-    constructor(baseURL: string = process.env.REACT_APP_API_BASE_URL || '', headers: RequestHeaders = { accept: '*/*' }) {
+    constructor(baseURL: string = process.env.REACT_APP_API_BASE_URL || '', basePath = '', headers: RequestHeaders = { accept: '*/*' }) {
         this.baseURL = baseURL;
         this.headers = headers;
+		this.basePath = basePath;
         if (!this.baseURL) {
             throw new Error('Base URL não pode ser vazia');
         }
@@ -18,7 +22,7 @@ class Service {
 
     // Método genérico para requisições GET
     protected async get<T>(endpoint: string): Promise<T> {
-        const targetURL = `${this.baseURL}${endpoint}`;
+        const targetURL = `${this.baseURL}${this.basePath}${endpoint}`;
         try {
             const response: AxiosResponse<T> = await axios.get<T>(targetURL, {
                 headers: this.headers,

@@ -1,4 +1,4 @@
-// src/services/GetPoluicaoDataService.ts
+// src/services/GetPesticidasDataService.ts
 
 import { IStackedAreaChart } from '../types';
 import Service from './Service';

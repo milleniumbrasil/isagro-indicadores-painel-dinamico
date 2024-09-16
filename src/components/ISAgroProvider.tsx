@@ -1,15 +1,15 @@
 // src/components/ISAgroProvider.tsx
 
-import React, { useState, useEffect, FC, ReactNode } from 'react';
-import GetNPKDataService from '../services/GetNPKDataService';
-import GetStatesService from '../services/GetStatesService';
-import GetCountriesService from '../services/GetCountriesService';
-import GetCitiesService from '../services/GetCitiesService';
-import GetOrganicaService from '../services/GetOrganicaService';
-import GetErosaoDataService from '../services/GetErosaoDataService';
-import GetGEEDataService from '../services/GetGEEDataService';
-import GetNH3DataService from '../services/GetNH3DataService';
-import GetPoluicaoDataService from '../services/GetPoluicaoDataService';
+import { useState, useEffect, FC, ReactNode } from 'react';
+import GetHttpClientNPK from '../http/GetHttpClientNPK';
+import GetHttpClientStates from '../http/GetHttpClientStates';
+import GetHttpClientCountries from '../http/GetCountriesService';
+import GetHttpClientCities from '../http/GetHttpClientCities';
+import GetHttpClientOrganicas from '../http/GetHttpClientOrganicas';
+import GetHttpClientErosoes from '../http/GetHttpClientErosoes';
+import GetHttpClientGEE from '../http/GetHttpClientGEE';
+import GetHttpClientNH3 from '../http/GetHttpClientNH3';
+import GetHttpClientPoluicao from '../http/GetHttpClientPoluicao';
 import { ICity, ICountry, IState, IPercentualAreaChart, IStackedAreaChart } from '../types';
 import { ISAgroContext } from './ISAgroContext';
 
@@ -29,16 +29,16 @@ export const ISAgroProvider: FC<{ children: ReactNode }> = ({ children }) => {
 
     const [organicasPercentual, setOrganicasPercentual] = useState<IPercentualAreaChart[]>([]);
 
-    const getCountriesService = new GetCountriesService<ICountry[]>();
-    const getStatesService = new GetStatesService<IState[]>();
-    const getCitiesService = new GetCitiesService<ICity[]>();
+    const getCountriesService = new GetHttpClientCountries<ICountry[]>();
+    const getStatesService = new GetHttpClientStates<IState[]>();
+    const getCitiesService = new GetHttpClientCities<ICity[]>();
 
-    const getErosaoDataService = new GetErosaoDataService();
-    const getGEEDataService = new GetGEEDataService();
-    const getNH3DataService = new GetNH3DataService();
-    const getNPKDataService = new GetNPKDataService();
-    const getOrganicasService = new GetOrganicaService();
-    const getPoluicaoDataService = new GetPoluicaoDataService();
+    const getErosaoDataService = new GetHttpClientErosoes();
+    const getGEEDataService = new GetHttpClientGEE();
+    const getNH3DataService = new GetHttpClientNH3();
+    const getNPKDataService = new GetHttpClientNPK();
+    const getOrganicasService = new GetHttpClientOrganicas();
+    const getPoluicaoDataService = new GetHttpClientPoluicao();
 
     const fetchData = async (): Promise<boolean> => {
         let result: boolean = false;

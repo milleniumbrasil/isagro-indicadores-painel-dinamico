@@ -1,12 +1,12 @@
-// src/services/GetNPKDataService.ts
+// src/services/GetHttpClientPoluicao.ts
 
 import { IStackedAreaChart } from '../types';
-import Service from './Service';
+import BaseGetHttpClient from './BaseGetHttpClient';
 
-class GetNPKDataService extends Service {
+class GetHttpClientPoluicao extends BaseGetHttpClient {
 
     constructor() {
-        super(process.env.REACT_APP_API_BASE_URL, '/npk');
+        super(process.env.REACT_APP_API_BASE_URL, '/poluicao');
     }
 
     public async getStackedData(): Promise<IStackedAreaChart[]> {
@@ -18,4 +18,4 @@ class GetNPKDataService extends Service {
     }
 }
 
-export default GetNPKDataService;
+export default GetHttpClientPoluicao;

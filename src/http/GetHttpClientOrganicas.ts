@@ -1,9 +1,9 @@
 // src/services/GetOrganicaService.ts
 
-import Service from './Service';
+import BaseGetHttpClient from './BaseGetHttpClient';
 import { IPercentualAreaChart, IStackedAreaChart } from '../types';
 
-class GetOrganicaService extends Service {
+class GetHttpClientOrganica extends BaseGetHttpClient {
 
     constructor() {
         super(process.env.REACT_APP_API_BASE_URL, '/organicas');
@@ -18,4 +18,4 @@ class GetOrganicaService extends Service {
     }
 }
 
-export default GetOrganicaService;
+export default GetHttpClientOrganica;

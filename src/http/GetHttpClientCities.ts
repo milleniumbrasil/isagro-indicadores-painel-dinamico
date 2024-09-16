@@ -1,6 +1,6 @@
-// src/services/GetCitiesService.ts
+// src/services/GetHttpClientCities.ts
 
-interface ICitiesService<T> {
+interface IGetHttpClientCities<T> {
     getData(): Promise<T | { error: string }>;
 }
 
@@ -8,7 +8,7 @@ interface RequestHeaders {
     [key: string]: string;
 }
 
-class GetCitiesService<T> implements ICitiesService<T> {
+class GetHttpClientCities<T> implements IGetHttpClientCities<T> {
     private baseURL: string;
     private headers: RequestHeaders;
 
@@ -44,4 +44,4 @@ class GetCitiesService<T> implements ICitiesService<T> {
     }
 }
 
-export default GetCitiesService;
+export default GetHttpClientCities;

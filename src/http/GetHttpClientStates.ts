@@ -1,6 +1,6 @@
-// src/services/GetStatesService.ts
+// src/services/GetHttpClientStates.ts
 
-interface IStatesService<T> {
+interface IGetHttpClientStates<T> {
     getData(): Promise<T | { error: string }>;
 }
 
@@ -8,7 +8,7 @@ interface RequestHeaders {
     [key: string]: string;
 }
 
-class GetStatesService<T> implements IStatesService<T> {
+class GetHttpClientStates<T> implements IGetHttpClientStates<T> {
     private baseURL: string;
     private headers: RequestHeaders;
 
@@ -50,4 +50,4 @@ class GetStatesService<T> implements IStatesService<T> {
     }
 }
 
-export default GetStatesService;
+export default GetHttpClientStates;

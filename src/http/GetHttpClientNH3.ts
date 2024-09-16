@@ -1,9 +1,9 @@
-// src/services/GetNH3DataService.ts
+// src/services/GetHttpClientNH3.ts
 
 import { IStackedAreaChart } from '../types';
-import Service from './Service';
+import BaseGetHttpClient from './BaseGetHttpClient';
 
-class GetNH3DataService extends Service {
+class GetHttpClientNH3 extends BaseGetHttpClient {
 
     constructor() {
         super(process.env.REACT_APP_API_BASE_URL, '/nh3');
@@ -18,4 +18,4 @@ class GetNH3DataService extends Service {
     }
 }
 
-export default GetNH3DataService;
+export default GetHttpClientNH3;

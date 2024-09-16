@@ -1,9 +1,9 @@
-// src/services/GetPesticidasDataService.ts
+// src/services/GetHttpClientPesticidas.ts
 
 import { IStackedAreaChart } from '../types';
-import Service from './Service';
+import BaseGetHttpClient from './BaseGetHttpClient';
 
-class GetPesticidasDataService extends Service {
+class GetHttpClientPesticidas extends BaseGetHttpClient {
 
     constructor() {
         super(process.env.REACT_APP_API_BASE_URL, '/pesticidas');
@@ -18,4 +18,4 @@ class GetPesticidasDataService extends Service {
     }
 }
 
-export default GetPesticidasDataService;
+export default GetHttpClientPesticidas;

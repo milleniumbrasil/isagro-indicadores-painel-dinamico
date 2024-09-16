@@ -1,6 +1,6 @@
 // src/services/GetCountriesService.ts
 
-interface ICountriesService<T> {
+interface IGetHttpClientCountries<T> {
     getData(): Promise<T | { error: string }>;
 }
 
@@ -8,7 +8,7 @@ interface RequestHeaders {
     [key: string]: string;
 }
 
-class GetCountriesService<T> implements ICountriesService<T> {
+class GetHttpClientCountries<T> implements IGetHttpClientCountries<T> {
     private baseURL: string;
     private headers: RequestHeaders;
 
@@ -225,4 +225,4 @@ class GetCountriesService<T> implements ICountriesService<T> {
     }
 }
 
-export default GetCountriesService;
+export default GetHttpClientCountries;

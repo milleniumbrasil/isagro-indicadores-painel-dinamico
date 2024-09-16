@@ -1,9 +1,9 @@
-// src/services/GetGEEDataService.ts
+// src/services/GetHttpClientGEE.ts
 
 import { IStackedAreaChart } from '../types';
-import Service from './Service';
+import BaseGetHttpClient from './BaseGetHttpClient';
 
-class GetGEEDataService extends Service {
+class GetHttpClientGEE extends BaseGetHttpClient {
 
     constructor() {
         super(process.env.REACT_APP_API_BASE_URL, '/gee');
@@ -18,4 +18,4 @@ class GetGEEDataService extends Service {
     }
 }
 
-export default GetGEEDataService;
+export default GetHttpClientGEE;

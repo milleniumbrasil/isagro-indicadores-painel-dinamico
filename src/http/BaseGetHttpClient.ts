@@ -1,4 +1,4 @@
-// src/services/Service.ts
+// src/services/BaseGetHttpClient.ts
 
 import axios, { AxiosResponse } from 'axios';
 
@@ -6,7 +6,7 @@ interface RequestHeaders {
     [key: string]: string;
 }
 
-class Service {
+export default class BaseGetHttpClient {
     protected baseURL: string;
     protected headers: RequestHeaders;
 	protected basePath: string;
@@ -38,4 +38,3 @@ class Service {
     }
 }
 
-export default Service;

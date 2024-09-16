@@ -1,9 +1,9 @@
-// src/services/GetErosaoDataService.ts
+// src/services/GetHttpClientErosao.ts
 
 import { IStackedAreaChart } from '../types';
-import Service from './Service';
+import BaseGetHttpClient from './BaseGetHttpClient';
 
-class GetErosaoDataService extends Service {
+class GetHttpClientErosoes extends BaseGetHttpClient {
 
     constructor() {
         super(process.env.REACT_APP_API_BASE_URL, '/erosao');
@@ -24,4 +24,4 @@ class GetErosaoDataService extends Service {
     }
 }
 
-export default GetErosaoDataService;
+export default GetHttpClientErosoes;

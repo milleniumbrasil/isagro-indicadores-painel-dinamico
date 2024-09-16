@@ -52,7 +52,7 @@ const PercentualAreaChart: React.FC<PercentualAreaChartProps> = (props) => {
         return `${legend.charAt(0).toUpperCase()}${legend.slice(1)}`;
     };
 
-    const tickFormatter = (decimal: number = 0, fixed: number = 1): string => {
+    const tickFormatter = (decimal = 0, fixed = 1): string => {
         return `${Math.round(decimal)}%`;
     };
 

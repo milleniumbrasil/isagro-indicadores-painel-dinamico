@@ -17,10 +17,10 @@ interface PercentualAreaChartProps {
 export default class AreaChart extends PureComponent<PercentualAreaChartProps> {
 
     private attributeNames: string[] = [''];
-    private width: number = 0;
-    private height: number = 0;
-    private dataKey: string = '';
-    private valueLabel: string = 'Valor';
+    private width = 0;
+    private height = 0;
+    private dataKey = '';
+    private valueLabel = 'Valor';
     private data: object[] = [];
     private strokeColor: string[] = greenPalette;
     private fillColor: string[] = greenPalette;
@@ -39,7 +39,7 @@ export default class AreaChart extends PureComponent<PercentualAreaChartProps> {
         this.defaultPalette = this.props.defaultPalette ?? greenPalette;
     }
 
-    tickFormatter(decimal: number = 0, fixed: number = 1): string {
+    tickFormatter(decimal = 0, fixed = 1): string {
         return `${Math.round(decimal as number)}`;
     }
 

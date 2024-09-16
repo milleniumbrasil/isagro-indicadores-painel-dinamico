@@ -41,7 +41,7 @@ export const ISAgroProvider: FC<{ children: ReactNode }> = ({ children }) => {
     const getPoluicaoDataService = new GetHttpClientPoluicao();
 
     const fetchData = async (): Promise<boolean> => {
-        let result: boolean = false;
+        let result = false;
         try {
             const tmpCountriesData = await getCountriesService.getData();
             setCountries(tmpCountriesData);

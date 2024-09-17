@@ -14,7 +14,7 @@ class GetHttpClientNPK extends BaseGetHttpClient {
     }
 
     public async getPercentualData(): Promise<IStackedAreaChart[]> {
-        return this.get<IStackedAreaChart[]>('/percentual');
+        return this.get<IStackedAreaChart[]>('/percentuals');
     }
 }
 

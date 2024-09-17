@@ -10,6 +10,7 @@ import { useISAgroContext } from '../components/ISAgroContext';
 import PaperOrganicas from '../components/PaperOrganicas';
 import { IPercentualAreaChart, IStackedAreaChart } from '../types';
 import PaperNPK from '../components/PaperNPK';
+import PaperNH3 from '../components/PaperNH3';
 
 export function Loading() {
     return (
@@ -86,8 +87,22 @@ const Page: FC = () => {
                 </Suspense>
 
                 <Suspense fallback={<Loading />}>
-                    {internalOrganicasPercentual.length > 0 ? (
+                    {internalNPKPercentual.length > 0 ? (
                         <PaperNPK
+                            stackedData={internalNPKStacked}
+                            percentualData={internalNPKPercentual}
+                            countries={countries}
+                            states={states}
+                            cities={cities}
+                        />
+                    ) : (
+                        <Loading />
+                    )}
+                </Suspense>
+
+                <Suspense fallback={<Loading />}>
+                    {internalOrganicasPercentual.length > 0 ? (
+                        <PaperNH3
                             stackedData={internalOrganicasStacked}
                             percentualData={internalOrganicasPercentual}
                             countries={countries}

@@ -14,7 +14,7 @@ class GetHttpClientOrganica extends BaseGetHttpClient {
     }
 
     public async getOrganicasAsPercentual(): Promise<IPercentualAreaChart[]> {
-        return this.get<IPercentualAreaChart[]>('/percentual');
+        return this.get<IPercentualAreaChart[]>('/percentuals');
     }
 }
 

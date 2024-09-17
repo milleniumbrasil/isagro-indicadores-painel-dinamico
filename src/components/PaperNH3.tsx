@@ -1,4 +1,4 @@
-// src/components/PaperNPK.tsx
+// src/components/PaperNH3.tsx
 
 import 'rsuite/dist/rsuite.min.css';
 
@@ -24,7 +24,7 @@ import AreaChart from './AreaChart';
 
 import { greenBackgroundColor, yellowPalette, bluePalette, brownPalette, brownBackgroundColor, redBackgroundColor, grayBackgroundColor } from './constants';
 
-interface PaperNPKProps {
+interface PaperNH3Props {
     countries: ICountry[];
     states: IState[];
     cities: ICity[];
@@ -40,7 +40,7 @@ export function Loading() {
     );
 }
 
-const PaperNPK: FC<PaperNPKProps> = (props) => {
+const PaperNH3: FC<PaperNH3Props> = (props) => {
     // dados do servidor armazenados no contexto
     const { countries: contextCountries } = useISAgroContext();
     const { states: contextStates } = useISAgroContext();
@@ -68,36 +68,36 @@ const PaperNPK: FC<PaperNPKProps> = (props) => {
         const fetchData = async () => {
             try {
                 if (!props.percentualData || props.percentualData.length === 0)
-                    throw new Error('[PaperNPK]: percentualData is required');
+                    throw new Error('[PaperNH3]: percentualData is required');
                 setInternalPercentualData(props.percentualData);
-                console.log(`[PaperNPK] npkPercentual: ${JSON.stringify(internalPercentualData)}`);
+                console.log(`[PaperNH3] nh3Percentual: ${JSON.stringify(internalPercentualData)}`);
 
-                if (!props.stackedData || props.stackedData.length === 0) throw new Error('[PaperNPK]: stackedData is required');
+                if (!props.stackedData || props.stackedData.length === 0) throw new Error('[PaperNH3]: stackedData is required');
                 setInternalStackedData(props.stackedData);
-                console.log(`[PaperNPK] npkStacked: ${JSON.stringify(internalStackedData)}`);
+                console.log(`[PaperNH3] nh3Stacked: ${JSON.stringify(internalStackedData)}`);
 
                 if (!props.countries) {
                     setInternalCountries(props.countries);
-                    console.log(`[PaperNPK] countries loaded from props: ${internalCountries.length}`);
+                    console.log(`[PaperNH3] countries loaded from props: ${internalCountries.length}`);
                 } else {
                     setInternalCountries(contextCountries);
-                    console.log(`[PaperNPK] countries loaded from context: ${internalCountries.length}`);
+                    console.log(`[PaperNH3] countries loaded from context: ${internalCountries.length}`);
                 }
 
                 if (!props.states) {
                     setInternalStates(props.states);
-                    console.log(`[PaperNPK] states loaded from props: ${internalStates.length}`);
+                    console.log(`[PaperNH3] states loaded from props: ${internalStates.length}`);
                 } else {
                     setInternalStates(contextStates);
-                    console.log(`[PaperNPK] states loaded from context: ${internalStates.length}`);
+                    console.log(`[PaperNH3] states loaded from context: ${internalStates.length}`);
                 }
 
                 if (!props.cities) {
                     setInternalCities(props.cities);
-                    console.log(`[PaperNPK] cities loaded from props: ${internalCities.length}`);
+                    console.log(`[PaperNH3] cities loaded from props: ${internalCities.length}`);
                 } else {
                     setInternalCities(contextCities);
-                    console.log(`[PaperNPK] cities loaded from context: ${internalCities.length}`);
+                    console.log(`[PaperNH3] cities loaded from context: ${internalCities.length}`);
                 }
             } catch (error) {
                 console.error(error);
@@ -269,9 +269,9 @@ const PaperNPK: FC<PaperNPKProps> = (props) => {
 
                     <Card variant="outlined" sx={{ width: '90%', backgroundColor: brownBackgroundColor }}>
                         <CardContent>
-                            <h3>Percentual de áreas NPK por período</h3>
+                            <h3>Percentual de áreas NH3 por período</h3>
                             <h5>
-                                Percentual consolidado de uso da terra por período, considerando dados para 'dejetos animais', 'deposição atmosférica', 'fertilizantes minerais', 'fertilizantes orgânicos', 'fixação biológica de nitrogênio', 'resíduos culturais', 'resíduos industriais', 'resíduos urbanos', 'produção carne bovina', 'produção agrícola', 'área agropecuária'
+                                Percentual consolidado de uso da terra por período, considerando dados para fertilizantes químicos, fertilizantes orgânicos, manejo de esterco, deposição de extretas, queimas de resíduos de culturas
                             </h5>
                             <p>{`${selectedStartDate.getFullYear()} - ${selectedEndDate.getFullYear()}`}</p>
                             <Suspense fallback={<Loading />}>
@@ -286,9 +286,9 @@ const PaperNPK: FC<PaperNPKProps> = (props) => {
 
                     <Card variant="outlined" sx={{ width: '90%', backgroundColor: greenBackgroundColor }}>
                         <CardContent>
-                            <h3>Áreas NPK por período</h3>
+                            <h3>Áreas NH3 por período</h3>
                             <h5>
-                                Números absolutos, consolidando dados de 'dejetos animais', 'deposição atmosférica', 'fertilizantes minerais', 'fertilizantes orgânicos', 'fixação biológica de nitrogênio', 'resíduos culturais', 'resíduos industriais', 'resíduos urbanos', 'produção carne bovina', 'produção agrícola', 'área agropecuária'
+                                Números absolutos, consolidando dados de fertilizantes químicos, fertilizantes orgânicos, manejo de esterco, deposição de extretas, queimas de resíduos de culturas
                             </h5>
                             <Suspense fallback={<Loading />}>
                                 {internalStackedData.length > 0 ? (
@@ -302,9 +302,9 @@ const PaperNPK: FC<PaperNPKProps> = (props) => {
 
                     <Card variant="outlined" sx={{ width: '90%', backgroundColor: redBackgroundColor }}>
                         <CardContent>
-                            <h3>Áreas NPK por período</h3>
+                            <h3>Áreas NH3 por período</h3>
                             <h5>
-                                Números absolutos, consolidando dados de 'dejetos animais', 'deposição atmosférica', 'fertilizantes minerais', 'fertilizantes orgânicos', 'fixação biológica de nitrogênio', 'resíduos culturais', 'resíduos industriais', 'resíduos urbanos', 'produção carne bovina', 'produção agrícola', 'área agropecuária'
+                                Números absolutos, consolidando dados de fertilizantes químicos, fertilizantes orgânicos, manejo de esterco, deposição de extretas, queimas de resíduos de culturas
                             </h5>
                             <AreaChart width={1200} height={400} data={internalStackedData} defaultPalette={yellowPalette}/>
                         </CardContent>
@@ -315,4 +315,4 @@ const PaperNPK: FC<PaperNPKProps> = (props) => {
     );
 };
 
-export default PaperNPK;
+export default PaperNH3;

@@ -24,6 +24,7 @@ export const ISAgroProvider: FC<{ children: ReactNode }> = ({ children }) => {
     const [geeStackedData, setGeeStackedData] = useState<IStackedAreaChart[]>([]);
     const [nh3StackedData, setNh3StackedData] = useState<IStackedAreaChart[]>([]);
     const [npkStackedData, setNpkStackedData] = useState<IStackedAreaChart[]>([]);
+    const [npkPercentual, setNpkPercentual] = useState<IPercentualAreaChart[]>([]);
     const [organicasStackedData, setOrganicasStackedData] = useState<IStackedAreaChart[]>([]);
     const [poluicaoStackedData, setPoluicaoStackedData] = useState<IStackedAreaChart[]>([]);
 
@@ -52,17 +53,20 @@ export const ISAgroProvider: FC<{ children: ReactNode }> = ({ children }) => {
             const tmpCitiesData = await getCitiesService.getData();
             setCities(tmpCitiesData);
 
-            const tmpErosaoStackedData = await getErosaoDataService.getStackedData();
-            setErosaoStackedData(tmpErosaoStackedData);
+            // const tmpErosaoStackedData = await getErosaoDataService.getStackedData();
+            // setErosaoStackedData(tmpErosaoStackedData);
 
-            const tmpGEEStackedData = await getGEEDataService.getStackedData();
-            setGeeStackedData(tmpGEEStackedData);
+            // const tmpGEEStackedData = await getGEEDataService.getStackedData();
+            // setGeeStackedData(tmpGEEStackedData);
 
-            const tmpNH3StackedData = await getNH3DataService.getStackedData();
-            setNh3StackedData(tmpNH3StackedData);
+            // const tmpNH3StackedData = await getNH3DataService.getStackedData();
+            // setNh3StackedData(tmpNH3StackedData);
 
             const tmpNPKStackedData = await getNPKDataService.getStackedData();
             setNpkStackedData(tmpNPKStackedData);
+
+            const tmpNpkPercentualData = await getNPKDataService.getPercentualData();
+            setNpkPercentual(tmpNpkPercentualData);
 
             const tmpOrganicasStackedData = await getOrganicasService.getStackedData();
             setOrganicasStackedData(tmpOrganicasStackedData);
@@ -70,8 +74,8 @@ export const ISAgroProvider: FC<{ children: ReactNode }> = ({ children }) => {
             const tmpOrganicasPercentualData = await getOrganicasService.getOrganicasAsPercentual();
             setOrganicasPercentual(tmpOrganicasPercentualData);
 
-            const tmpPoluicaoStackedData = await getPoluicaoDataService.getStackedData();
-            setPoluicaoStackedData(tmpPoluicaoStackedData);
+            // const tmpPoluicaoStackedData = await getPoluicaoDataService.getStackedData();
+            // setPoluicaoStackedData(tmpPoluicaoStackedData);
             result = true;
         } catch (error) {
             console.error('[ISAgroProvider]: Erro ao buscar dados:', error);
@@ -93,6 +97,7 @@ export const ISAgroProvider: FC<{ children: ReactNode }> = ({ children }) => {
         geeStackedData,
         nh3StackedData,
         npkStackedData,
+        npkPercentual,
         organicasStackedData,
         organicasPercentual,
         poluicaoStackedData,

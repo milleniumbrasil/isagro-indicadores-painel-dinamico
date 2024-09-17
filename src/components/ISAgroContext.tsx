@@ -8,6 +8,7 @@ export interface ISAgroContextProps {
     geeStackedData?: IStackedAreaChart[];
     nh3StackedData?: IStackedAreaChart[];
     npkStackedData?: IStackedAreaChart[];
+    npkPercentual?: IPercentualAreaChart[];
     organicasStackedData: IStackedAreaChart[];
     organicasPercentual?: IPercentualAreaChart[];
     poluicaoStackedData?: IStackedAreaChart[];
@@ -23,6 +24,7 @@ export const ISAgroContext = createContext<ISAgroContextProps>({
     geeStackedData: [],
     nh3StackedData: [],
     npkStackedData: [],
+    npkPercentual: [],
     organicasStackedData: [],
     organicasPercentual: [],
     poluicaoStackedData: [],
@@ -48,23 +50,11 @@ export const useISAgroContext = () => {
     if (!context.cities || context.cities.length === 0) {
         throw new Error('useISAgroContext: cities is required');
     }
-    if (!context.erosaoStackedData || context.erosaoStackedData.length === 0) {
-        throw new Error('useISAgroContext: erosaoStackedData is required');
-    }
-    if (!context.geeStackedData || context.geeStackedData.length === 0) {
-        throw new Error('useISAgroContext: geeStackedData is required');
-    }
-    if (!context.nh3StackedData || context.nh3StackedData.length === 0) {
-        throw new Error('useISAgroContext: nh3StackedData is required');
-    }
-    if (!context.npkStackedData || context.npkStackedData.length === 0) {
-        throw new Error('useISAgroContext: npkStackedData is required');
-    }
     if (!context.organicasStackedData || context.organicasStackedData.length === 0) {
         throw new Error('useISAgroContext: organicasStackedData is required');
     }
-    if (!context.poluicaoStackedData || context.poluicaoStackedData.length === 0) {
-        throw new Error('useISAgroContext: poluicaoStackedData is required');
+    if (!context.npkStackedData || context.npkStackedData.length === 0) {
+        throw new Error('useISAgroContext: npkStackedData is required');
     }
     return context;
 };

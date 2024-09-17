@@ -9,6 +9,7 @@ import CardContent from '@mui/material/CardContent';
 import { useISAgroContext } from '../components/ISAgroContext';
 import PaperOrganicas from '../components/PaperOrganicas';
 import { IPercentualAreaChart, IStackedAreaChart } from '../types';
+import PaperNPK from '../components/PaperNPK';
 
 export function Loading() {
     return (
@@ -25,7 +26,11 @@ const Page: FC = () => {
     const { cities } = useISAgroContext();
     const { organicasStackedData: contextOrganicasStackedData } = useISAgroContext();
     const { organicasPercentual: contextOrganicasPercentual } = useISAgroContext();
+    const { npkStackedData: contextNpkStackedData } = useISAgroContext();
+    const { npkPercentual: contextNpkPercentual } = useISAgroContext();
 
+    const [internalNPKStacked, setInternalNPKStacked] = useState<IStackedAreaChart[]>([]);
+    const [internalNPKPercentual, setInternalNPKPercentual] = useState<IPercentualAreaChart[]>([]);
     const [internalOrganicasStacked, setInternalOrganicasStacked] = useState<IStackedAreaChart[]>([]);
     const [internalOrganicasPercentual, setInternalOrganicasPercentual] = useState<IPercentualAreaChart[]>([]);
 
@@ -69,6 +74,20 @@ const Page: FC = () => {
                 <Suspense fallback={<Loading />}>
                     {internalOrganicasPercentual.length > 0 ? (
                         <PaperOrganicas
+                            stackedData={internalOrganicasStacked}
+                            percentualData={internalOrganicasPercentual}
+                            countries={countries}
+                            states={states}
+                            cities={cities}
+                        />
+                    ) : (
+                        <Loading />
+                    )}
+                </Suspense>
+
+                <Suspense fallback={<Loading />}>
+                    {internalOrganicasPercentual.length > 0 ? (
+                        <PaperNPK
                             stackedData={internalOrganicasStacked}
                             percentualData={internalOrganicasPercentual}
                             countries={countries}

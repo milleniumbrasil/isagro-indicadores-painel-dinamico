@@ -34,6 +34,7 @@ import { greenBackgroundColor,
 } from './constants';
 
 import { Box, Typography } from '@mui/material';
+import { Loader, Placeholder } from 'rsuite';
 
 interface PaperPesticidasProps {
     countries: ICountry[];
@@ -45,10 +46,11 @@ interface PaperPesticidasProps {
 
 export function Loading() {
     return (
-        <p>
-            <i>Loading...</i>
-        </p>
-    );
+            <div>
+                <Placeholder.Paragraph rows={8} />
+                <Loader center content="loading" />
+            </div>
+        );
 }
 
 const PaperPesticidas: FC<PaperPesticidasProps> = (props) => {

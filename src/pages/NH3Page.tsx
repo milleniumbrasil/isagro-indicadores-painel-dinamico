@@ -6,12 +6,13 @@ import { FC, useEffect, useState, Suspense } from 'react';
 import { useNH3Context } from '../components/NH3Context';
 import { IPercentualAreaChart, IStackedAreaChart } from '../types';
 import PaperNH3 from '../components/PaperNH3';
+import { Loader } from 'rsuite';
 
 export function Loading() {
     return (
-        <p>
-            <i>Loading...</i>
-        </p>
+        <div>
+            <Loader backdrop content="loading..." vertical />
+        </div>
     );
 }
 

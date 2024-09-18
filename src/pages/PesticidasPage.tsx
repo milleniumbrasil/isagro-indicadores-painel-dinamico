@@ -6,12 +6,13 @@ import { FC, useEffect, useState, Suspense } from 'react';
 import { usePesticidasContext } from '../components/PesticidasContext';
 import { IPercentualAreaChart, IStackedAreaChart } from '../types';
 import PaperPesticidas from '../components/PaperPesticidas';
+import { Loader } from 'rsuite';
 
 export function Loading() {
     return (
-        <p>
-            <i>Loading...</i>
-        </p>
+        <div>
+            <Loader backdrop content="loading..." vertical />
+        </div>
     );
 }
 

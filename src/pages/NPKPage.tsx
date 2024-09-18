@@ -6,12 +6,13 @@ import { FC, useEffect, useState, Suspense } from 'react';
 import { IPercentualAreaChart, IStackedAreaChart } from '../types';
 import { useNPKContext } from '../components/NPKContext';
 import PaperNPK from '../components/PaperNPK';
+import { Loader } from 'rsuite';
 
 export function Loading() {
     return (
-        <p>
-            <i>Loading...</i>
-        </p>
+        <div>
+            <Loader backdrop content="loading..." vertical />
+        </div>
     );
 }
 

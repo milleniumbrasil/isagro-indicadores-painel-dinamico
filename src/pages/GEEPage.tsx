@@ -6,12 +6,13 @@ import { FC, useEffect, useState, Suspense } from 'react';
 import { useGEEContext } from '../components/GEEContext';
 import { IPercentualAreaChart, IStackedAreaChart } from '../types';
 import PaperGEE from '../components/PaperGEE';
+import { Loader } from 'rsuite';
 
 export function Loading() {
     return (
-        <p>
-            <i>Loading...</i>
-        </p>
+        <div>
+            <Loader backdrop content="loading..." vertical />
+        </div>
     );
 }
 

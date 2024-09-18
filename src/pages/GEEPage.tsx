@@ -18,7 +18,7 @@ export function Loading() {
     );
 }
 
-const PageGEE: FC = () => {
+const GEEPage: FC = () => {
     // dados do servidor armazenados no contexto
     const { contextStates: contextStates } = useGEEContext();
     const { contextCountries: contextCountries } = useGEEContext();
@@ -36,15 +36,15 @@ const PageGEE: FC = () => {
             try {
                 if (contextGEEPercentual && contextGEEPercentual.length > 0) {
                     setInternalGEEPercentual(contextGEEPercentual);
-                    console.log(`[PageGEE] internalGEEPercentual loaded from context: ${contextGEEPercentual.length}`);
+                    console.log(`[GEEPage] internalGEEPercentual loaded from context: ${contextGEEPercentual.length}`);
                 } else {
-                    console.warn('[PageGEE] contextGEEPercentual is required');
+                    console.warn('[GEEPage] contextGEEPercentual is required');
                 }
                 if (contextGEEStackedData && contextGEEStackedData.length > 0) {
                     setInternalGEEStacked(contextGEEStackedData);
-                    console.log(`[PageGEE] internalGEEStacked loaded from context: ${internalGEEStacked.length}`);
+                    console.log(`[GEEPage] internalGEEStacked loaded from context: ${internalGEEStacked.length}`);
                 } else {
-                    console.warn('[PageGEE] contextGEEStackedData is required');
+                    console.warn('[GEEPage] contextGEEStackedData is required');
                 }
             } catch (error) {
                 console.error(error);
@@ -83,4 +83,4 @@ const PageGEE: FC = () => {
     );
 };
 
-export default PageGEE;
+export default GEEPage;

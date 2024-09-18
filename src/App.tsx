@@ -11,12 +11,18 @@ import { NH3Provider } from './components/NH3Provider';
 import NPKPage from './pages/NPKPage';
 import { NPKProvider } from './components/NPKProvider';
 
+import GEEPage from './pages/GEEPage';
+import { GEEProvider } from './components/GEEProvider';
+
 const App: React.FC = () => {
     return (
         <>
-        <OrganicasProvider>
+        <GEEProvider>
+            <GEEPage />
+        </GEEProvider>
+        {/* <OrganicasProvider>
             <OrganicasPage />
-        </OrganicasProvider>
+        </OrganicasProvider> */}
         {/* <NH3Provider>
             <NH3Page />
         </NH3Provider> */}

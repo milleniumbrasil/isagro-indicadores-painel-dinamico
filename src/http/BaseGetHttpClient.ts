@@ -29,6 +29,8 @@ export default class BaseGetHttpClient {
             });
             if (!Array.isArray(response.data))
                 console.warn(`[Service]: o corpo da resposta não é um array. ${JSON.stringify(response.data)}`);
+			else
+				console.log(`[Service]: Resposta de ${targetURL}: ${response.data.length} itens`);
             if (response.data === null || response.data === undefined)
                 console.warn(`[Service]: data is required.`);
             return response.data;

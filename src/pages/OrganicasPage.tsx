@@ -4,7 +4,8 @@ import './OrganicasPage.css';
 
 import { FC, useEffect, useState, Suspense } from 'react';
 
-import { IPercentualAreaChart, IStackedAreaChart } from '../types';
+import { IStackedAreaChart } from '../components/charts/types';
+import { IPercentualAreaChart } from '../components/charts/IPercentualAreaChart';
 import { useOrganicasContext } from '../components/organicas/OrganicasContext';
 import PaperOrganicas from '../components/organicas/PaperOrganicas';
 import { Loader } from 'rsuite';

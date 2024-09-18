@@ -2,7 +2,9 @@
 
 import { useState, useEffect, FC, ReactNode } from 'react';
 
-import { ICity, ICountry, IState, IPercentualAreaChart, IStackedAreaChart } from '../../types';
+import { ICity, IState, ICountry } from '../charts/types';
+import { IStackedAreaChart } from '../charts/types';
+import { IPercentualAreaChart } from '../charts/IPercentualAreaChart';
 import GetHttpClientNH3 from '../../http/GetHttpClientNH3';
 import GetHttpClientStates from '../../http/GetHttpClientStates';
 import GetHttpClientCountries from '../../http/GetCountriesService';

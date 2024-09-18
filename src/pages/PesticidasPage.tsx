@@ -4,7 +4,8 @@ import './PesticidasPage.css';
 
 import { FC, useEffect, useState, Suspense } from 'react';
 import { usePesticidasContext } from '../components/pesticidas/PesticidasContext';
-import { IPercentualAreaChart, IStackedAreaChart } from '../types';
+import { IStackedAreaChart } from '../components/charts/types';
+import { IPercentualAreaChart } from '../components/charts/IPercentualAreaChart';
 import PaperPesticidas from '../components/pesticidas/PaperPesticidas';
 import { Loader } from 'rsuite';
 

@@ -1,18 +1,5 @@
 // src/components/ISAgro/types.ts
 
-export interface IRequest {
-    method: string;
-    url: string;
-    headers: Record<string, string>;
-    body?: any;
-}
-
-export interface IResponse {
-    status: number;
-    headers: Record<string, string>;
-    data: any;
-}
-
 export interface IData {
     geocodigo: number;
     data: Date;
@@ -33,11 +20,6 @@ export interface IState {
 export interface ICountry {
     iso: string;
     pais: string;
-}
-
-export interface IPercentualAreaChart {
-    period: string;
-    value: number;
 }
 
 export interface IStackedAreaChart {

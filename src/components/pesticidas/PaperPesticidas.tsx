@@ -16,7 +16,9 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { DateRangePicker, Stack as StackRSuite } from 'rsuite';
 import { BsCalendar2MonthFill } from 'react-icons/bs';
 
-import { ICity, ICountry, IPercentualAreaChart, IStackedAreaChart, IState } from '../../types';
+import { ICity, IState, ICountry } from '../charts/types';
+import { IStackedAreaChart } from '../charts/types';
+import { IPercentualAreaChart } from '../charts/IPercentualAreaChart';
 import { usePesticidasContext } from './PesticidasContext';
 import PercentualAreaChart from '../charts/PercentualAreaChart';
 import { DateRange } from 'rsuite/esm/DateRangePicker';

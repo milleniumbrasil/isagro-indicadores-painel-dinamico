@@ -1,6 +1,7 @@
 // src/services/GetHttpClientNPK.ts
 
-import { IPercentualAreaChart, IStackedAreaChart } from '../types';
+import { IStackedAreaChart } from '../components/charts/types';
+import { IPercentualAreaChart } from '../components/charts/IPercentualAreaChart';
 import BaseGetHttpClient from './BaseGetHttpClient';
 
 class GetHttpClientNPK extends BaseGetHttpClient {

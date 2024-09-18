@@ -1,7 +1,9 @@
 // src/components/OrganicasContext.tsx
 
 import { createContext, useContext } from 'react';
-import { IStackedAreaChart, IPercentualAreaChart, ICity, IState, ICountry } from '../../types';
+import { ICity, IState, ICountry } from '../charts/types';
+import { IStackedAreaChart } from '../charts/types';
+import { IPercentualAreaChart } from '../charts/IPercentualAreaChart';
 
 // Interface para o contexto
 export interface OrganicasContextProps {

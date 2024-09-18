@@ -281,9 +281,7 @@ const PaperPesticidas: FC<PaperPesticidasProps> = (props) => {
                                 Percentual de áreas Pesticidas por período de {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
                             </Typography>
                             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                Percentual consolidado de uso da terra por período, considerando
-                                dados para fertilizantes químicos, fertilizantes orgânicos, manejo de esterco,
-                                deposição de extretas, queimas de resíduos de culturas.
+                                Percentual consolidado de nitrato, fosfato, cations, anions.
                             </Typography>
                             <Suspense fallback={<Loading />}>
                                 {internalPercentualData.length > 0 ? (
@@ -301,9 +299,7 @@ const PaperPesticidas: FC<PaperPesticidasProps> = (props) => {
                                 Áreas Pesticidas por período {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
                             </Typography>
                             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                Números absolutos, consolidando dados de fertilizantes químicos,
-                                fertilizantes orgânicos, manejo de esterco, deposição de extretas,
-                                queimas de resíduos de culturas.
+                                Números absolutos, consolidando dados de nitrato, fosfato, cations, anions.
                             </Typography>
                             <Suspense fallback={<Loading />}>
                                 {internalStackedData.length > 0 ? (
@@ -321,8 +317,7 @@ const PaperPesticidas: FC<PaperPesticidasProps> = (props) => {
                                 Áreas Pesticidas por período de {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
                             </Typography>
                             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                Números absolutos, consolidando dados de fertilizantes químicos, fertilizantes orgânicos,
-                                manejo de esterco, deposição de extretas, queimas de resíduos de culturas
+                                Números absolutos, consolidando dados de nitrato, fosfato, cations, anions.
                             </Typography>
                             <AreaChart width={1200} height={400} data={internalStackedData} defaultPalette={yellowPalette}/>
                         </CardContent>

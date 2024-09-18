@@ -3,9 +3,6 @@
 import './GEEPage.css';
 
 import { FC, useEffect, useState, Suspense } from 'react';
-import Stack from '@mui/material/Stack';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 import { useGEEContext } from '../components/GEEContext';
 import { IPercentualAreaChart, IStackedAreaChart } from '../types';
 import PaperGEE from '../components/PaperGEE';
@@ -57,29 +54,19 @@ const GEEPage: FC = () => {
     }, [contextGEEPercentual, contextGEEStackedData]);
 
     return (
-        <div>
-            <Stack spacing={2} sx={{ alignItems: 'center' }}>
-                <Card variant="outlined" sx={{ width: '90%' }}>
-                    <CardContent>
-                        <h3>GEE</h3>
-                    </CardContent>
-                </Card>
-
-                <Suspense fallback={<Loading />}>
-                    {internalGEEPercentual.length > 0 ? (
-                        <PaperGEE
-                            stackedData={internalGEEStacked}
-                            percentualData={internalGEEPercentual}
-                            countries={contextCountries}
-                            states={contextStates}
-                            cities={contextCities}
-                        />
-                    ) : (
-                        <Loading />
-                    )}
-                </Suspense>
-            </Stack>
-        </div>
+        <Suspense fallback={<Loading />}>
+            {internalGEEPercentual.length > 0 ? (
+                <PaperGEE
+                    stackedData={internalGEEStacked}
+                    percentualData={internalGEEPercentual}
+                    countries={contextCountries}
+                    states={contextStates}
+                    cities={contextCities}
+                />
+            ) : (
+                <Loading />
+            )}
+        </Suspense>
     );
 };
 

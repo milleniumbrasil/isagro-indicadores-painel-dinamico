@@ -3,9 +3,6 @@
 import './NPKPage.css';
 
 import { FC, useEffect, useState, Suspense } from 'react';
-import Stack from '@mui/material/Stack';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 import { IPercentualAreaChart, IStackedAreaChart } from '../types';
 import { useNPKContext } from '../components/NPKContext';
 import PaperNPK from '../components/PaperNPK';
@@ -57,30 +54,19 @@ const Page: FC = () => {
     }, [contextNpkPercentual, contextNpkStackedData]);
 
     return (
-        <div>
-            <Stack spacing={2} sx={{ alignItems: 'center' }}>
-                <Card variant="outlined" sx={{ width: '90%' }}>
-                    <CardContent>
-                        <h3>NPK</h3>
-                    </CardContent>
-                </Card>
-
-                <Suspense fallback={<Loading />}>
-                    {internalNpkPercentual.length > 0 ? (
-                        <PaperNPK
-                            stackedData={internalNpkStacked}
-                            percentualData={internalNpkPercentual}
-                            countries={contextCountries}
-                            states={contextStates}
-                            cities={contextCities}
-                        />
-                    ) : (
-                        <Loading />
-                    )}
-                </Suspense>
-
-            </Stack>
-        </div>
+        <Suspense fallback={<Loading />}>
+            {internalNpkPercentual.length > 0 ? (
+                <PaperNPK
+                    stackedData={internalNpkStacked}
+                    percentualData={internalNpkPercentual}
+                    countries={contextCountries}
+                    states={contextStates}
+                    cities={contextCities}
+                />
+            ) : (
+                <Loading />
+            )}
+        </Suspense>
     );
 };
 

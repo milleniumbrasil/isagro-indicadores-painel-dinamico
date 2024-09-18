@@ -3,9 +3,6 @@
 import './NH3Page.css';
 
 import { FC, useEffect, useState, Suspense } from 'react';
-import Stack from '@mui/material/Stack';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 import { useNH3Context } from '../components/NH3Context';
 import { IPercentualAreaChart, IStackedAreaChart } from '../types';
 import PaperNH3 from '../components/PaperNH3';
@@ -57,29 +54,19 @@ const PageNH3: FC = () => {
     }, [contextNH3Percentual, contextNH3StackedData]);
 
     return (
-        <div>
-            <Stack spacing={2} sx={{ alignItems: 'center' }}>
-                <Card variant="outlined" sx={{ width: '90%' }}>
-                    <CardContent>
-                        <h3>NH3</h3>
-                    </CardContent>
-                </Card>
-
-                <Suspense fallback={<Loading />}>
-                    {internalNH3Percentual.length > 0 ? (
-                        <PaperNH3
-                            stackedData={internalNH3Stacked}
-                            percentualData={internalNH3Percentual}
-                            countries={contextCountries}
-                            states={contextStates}
-                            cities={contextCities}
-                        />
-                    ) : (
-                        <Loading />
-                    )}
-                </Suspense>
-            </Stack>
-        </div>
+        <Suspense fallback={<Loading />}>
+            {internalNH3Percentual.length > 0 ? (
+                <PaperNH3
+                    stackedData={internalNH3Stacked}
+                    percentualData={internalNH3Percentual}
+                    countries={contextCountries}
+                    states={contextStates}
+                    cities={contextCities}
+                />
+            ) : (
+                <Loading />
+            )}
+        </Suspense>
     );
 };
 

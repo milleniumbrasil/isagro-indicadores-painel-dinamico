@@ -8,10 +8,6 @@ import { IPercentualAreaChart, IStackedAreaChart } from '../types';
 import { useOrganicasContext } from '../components/OrganicasContext';
 import PaperOrganicas from '../components/PaperOrganicas';
 
-import Stack from '@mui/material/Stack';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-
 export function Loading() {
     return (
         <p>
@@ -60,29 +56,19 @@ const Page: FC = () => {
     }, [contextOrganicasPercentual, contextOrganicasStackedData]);
 
     return (
-        <div>
-            <Stack spacing={2} sx={{ alignItems: 'center' }}>
-                <Card variant="outlined" sx={{ width: '90%' }}>
-                    <CardContent>
-                        <h3>Orgânicas</h3>
-                    </CardContent>
-                </Card>
-
-                <Suspense fallback={<Loading />}>
-                    {internalOrganicasPercentual.length > 0 ? (
-                        <PaperOrganicas
-                            stackedData={internalOrganicasStacked}
-                            percentualData={internalOrganicasPercentual}
-                            countries={contextCountries}
-                            states={contextStates}
-                            cities={contextCities}
-                        />
-                    ) : (
-                        <Loading />
-                    )}
-                </Suspense>
-            </Stack>
-        </div>
+        <Suspense fallback={<Loading />}>
+            {internalOrganicasPercentual.length > 0 ? (
+                <PaperOrganicas
+                    stackedData={internalOrganicasStacked}
+                    percentualData={internalOrganicasPercentual}
+                    countries={contextCountries}
+                    states={contextStates}
+                    cities={contextCities}
+                />
+            ) : (
+                <Loading />
+            )}
+        </Suspense>
     );
 };
 

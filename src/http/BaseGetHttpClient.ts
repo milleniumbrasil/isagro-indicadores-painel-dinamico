@@ -28,14 +28,14 @@ export default class BaseGetHttpClient {
                 headers: this.headers,
             });
             if (!Array.isArray(response.data))
-                console.warn(`[Service]: o corpo da resposta não é um array. ${JSON.stringify(response.data)}`);
+                console.warn(`[BaseGetHttpClient]: o corpo da resposta não é um array. ${JSON.stringify(response.data)}`);
 			else
-				console.log(`[Service]: Resposta de ${targetURL}: ${response.data.length} itens`);
+				console.log(`[BaseGetHttpClient]: Resposta de ${targetURL}: ${response.data.length} itens`);
             if (response.data === null || response.data === undefined)
-                console.warn(`[Service]: data is required.`);
+                console.warn(`[BaseGetHttpClient]: data is required.`);
             return response.data;
         } catch (error) {
-            throw new Error(`[Service]: Resposta de ${targetURL}: ${error}`);
+            throw new Error(`[BaseGetHttpClient]: Resposta de ${targetURL}: ${error}`);
         }
     }
 }

@@ -29,7 +29,10 @@ import { greenBackgroundColor,
     brownPalette,
     brownBackgroundColor,
     redBackgroundColor,
-    grayBackgroundColor
+    grayBackgroundColor,
+    blueBackgroundColor,
+    blueColors,
+    purplePalette
 } from './constants';
 
 import { Box, Typography } from '@mui/material';
@@ -279,7 +282,7 @@ const PaperOrganicas: FC<PaperOrganicasProps> = (props) => {
                         </FormControl>
                     </Stack>
 
-                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: brownBackgroundColor }}>
+                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: blueBackgroundColor }}>
                         <CardContent>
                             <Typography gutterBottom variant="h5" component="div">
                                 Percentual de áreas Organicas por período {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
@@ -290,7 +293,7 @@ const PaperOrganicas: FC<PaperOrganicasProps> = (props) => {
                             </Typography>
                             <Suspense fallback={<Loading />}>
                                 {internalPercentualData.length > 0 ? (
-                                    <PercentualAreaChart width={1200} height={400} data={internalPercentualData} valueLabel="Área" />
+                                    <PercentualAreaChart width={1200} height={400} data={internalPercentualData} valueLabel="Área" fillColor={blueColors.lightSkyBlue} strokeColor={blueColors.lightBlue}/>
                                 ) : (
                                     <Loading />
                                 )}
@@ -298,7 +301,7 @@ const PaperOrganicas: FC<PaperOrganicasProps> = (props) => {
                         </CardContent>
                     </Card>
 
-                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: greenBackgroundColor }}>
+                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: blueBackgroundColor }}>
                         <CardContent>
                             <Typography gutterBottom variant="h5" component="div">
                                 Áreas Organicas por período {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
@@ -309,7 +312,7 @@ const PaperOrganicas: FC<PaperOrganicasProps> = (props) => {
                             </Typography>
                             <Suspense fallback={<Loading />}>
                                 {internalStackedData.length > 0 ? (
-                                    <AreaChart width={1200} height={400} data={internalStackedData} defaultPalette={brownPalette}/>
+                                    <AreaChart width={1200} height={400} data={internalStackedData} defaultPalette={purplePalette}/>
                                 ) : (
                                     <Loading />
                                 )}
@@ -317,7 +320,7 @@ const PaperOrganicas: FC<PaperOrganicasProps> = (props) => {
                         </CardContent>
                     </Card>
 
-                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: redBackgroundColor }}>
+                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: blueBackgroundColor }}>
                         <CardContent>
                             <Typography gutterBottom variant="h5" component="div">
                                 Áreas Organicas por período {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
@@ -329,7 +332,7 @@ const PaperOrganicas: FC<PaperOrganicasProps> = (props) => {
                             <AreaChart width={1200} height={400} data={internalStackedData} defaultPalette={yellowPalette}/>
                         </CardContent>
                     </Card>
-                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: grayBackgroundColor }}>
+                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: blueBackgroundColor }}>
                         <CardContent>
                             <div>
                                 <Typography gutterBottom variant="h5" component="div">

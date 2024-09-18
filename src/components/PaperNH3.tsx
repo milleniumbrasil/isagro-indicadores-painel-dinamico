@@ -28,7 +28,8 @@ import { greenBackgroundColor,
     brownPalette,
     brownBackgroundColor,
     redBackgroundColor,
-    grayBackgroundColor
+    grayBackgroundColor,
+    redPalette
 } from './constants';
 
 import { Box, Typography } from '@mui/material';
@@ -294,7 +295,7 @@ const PaperNH3: FC<PaperNH3Props> = (props) => {
                         </CardContent>
                     </Card>
 
-                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: greenBackgroundColor }}>
+                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: brownBackgroundColor }}>
                         <CardContent>
                             <Typography gutterBottom variant="h5" component="div">
                                 Áreas NH3 por período {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
@@ -313,7 +314,7 @@ const PaperNH3: FC<PaperNH3Props> = (props) => {
                         </CardContent>
                     </Card>
 
-                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: redBackgroundColor }}>
+                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: brownBackgroundColor }}>
                         <CardContent>
                             <Typography gutterBottom variant="h5" component="div">
                                 Áreas NH3 por período {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
@@ -322,7 +323,7 @@ const PaperNH3: FC<PaperNH3Props> = (props) => {
                                 Números absolutos, consolidando dados de fertilizantes químicos, fertilizantes orgânicos,
                                 manejo de esterco, deposição de extretas, queimas de resíduos de culturas.
                             </Typography>
-                            <AreaChart width={1200} height={400} data={internalStackedData} defaultPalette={yellowPalette}/>
+                            <AreaChart width={1200} height={400} data={internalStackedData} defaultPalette={redPalette}/>
                         </CardContent>
                     </Card>
                 </Stack>

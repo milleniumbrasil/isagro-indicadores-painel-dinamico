@@ -30,6 +30,7 @@ import { greenBackgroundColor,
         redBackgroundColor,
         grayBackgroundColor
     } from './constants';
+
 import { Box, Typography } from '@mui/material';
 
 interface PaperNPKProps {
@@ -278,7 +279,7 @@ const PaperNPK: FC<PaperNPKProps> = (props) => {
                         </FormControl>
                     </Stack>
 
-                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: brownBackgroundColor }}>
+                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: redBackgroundColor }}>
                         <CardContent>
                             <Typography gutterBottom variant="h5" component="div">
                                 Percentual de áreas NPK por período {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
@@ -300,7 +301,7 @@ const PaperNPK: FC<PaperNPKProps> = (props) => {
                         </CardContent>
                     </Card>
 
-                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: greenBackgroundColor }}>
+                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: redBackgroundColor }}>
                         <CardContent>
                             <Typography gutterBottom variant="h5" component="div">
                                 Áreas NPK por período {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}

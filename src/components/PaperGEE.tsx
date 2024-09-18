@@ -28,7 +28,9 @@ import { greenBackgroundColor,
     brownPalette,
     brownBackgroundColor,
     redBackgroundColor,
-    grayBackgroundColor
+    grayBackgroundColor,
+    blueBackgroundColor,
+    yellowBackgroundColor
 } from './constants';
 
 import { Box, Typography } from '@mui/material';
@@ -273,7 +275,7 @@ const PaperGEE: FC<PaperGEEProps> = (props) => {
                         </FormControl>
                     </Stack>
 
-                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: brownBackgroundColor }}>
+                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: greenBackgroundColor }}>
                         <CardContent>
                             <Typography gutterBottom variant="h5" component="div">
                                 Percentual de áreas GEE por período de {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
@@ -285,7 +287,7 @@ const PaperGEE: FC<PaperGEEProps> = (props) => {
                             </Typography>
                             <Suspense fallback={<Loading />}>
                                 {internalPercentualData.length > 0 ? (
-                                    <PercentualAreaChart width={1200} height={400} data={internalPercentualData} valueLabel="Área" />
+                                    <PercentualAreaChart width={1200} height={400} data={internalPercentualData} valueLabel="Área"  />
                                 ) : (
                                     <Loading />
                                 )}
@@ -293,7 +295,7 @@ const PaperGEE: FC<PaperGEEProps> = (props) => {
                         </CardContent>
                     </Card>
 
-                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: greenBackgroundColor }}>
+                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: brownBackgroundColor }}>
                         <CardContent>
                             <Typography gutterBottom variant="h5" component="div">
                                 Áreas GEE por período {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
@@ -313,7 +315,7 @@ const PaperGEE: FC<PaperGEEProps> = (props) => {
                         </CardContent>
                     </Card>
 
-                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: redBackgroundColor }}>
+                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: yellowBackgroundColor }}>
                         <CardContent>
                             <Typography gutterBottom variant="h5" component="div">
                                 Áreas GEE por período de {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}

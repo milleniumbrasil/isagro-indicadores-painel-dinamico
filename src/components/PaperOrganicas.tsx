@@ -23,7 +23,7 @@ import { DateRange } from 'rsuite/esm/DateRangePicker';
 import AreaChart from './AreaChart';
 
 import { greenBackgroundColor, yellowPalette, bluePalette, brownPalette, brownBackgroundColor, redBackgroundColor, grayBackgroundColor } from './constants';
-import { Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
 interface PaperOrganicasProps {
     countries: ICountry[];
@@ -159,15 +159,17 @@ const PaperOrganicas: FC<PaperOrganicasProps> = (props) => {
             >
                 <Stack spacing={2} sx={{ alignItems: 'center', width: '100%' }}>
                     <Stack direction="row" spacing={2} sx={{ alignItems: 'center', width: '100%' }}>
-                        <StackRSuite spacing={10} direction="column" alignItems="flex-start" style={{ padding: '2px', margin: '2px' }}>
-                            <DateRangePicker
-                                format="MMM yyyy"
-                                caretAs={BsCalendar2MonthFill}
-                                limitEndYear={1900}
-                                limitStartYear={new Date().getFullYear()}
-                                onChange={handleChangeRangeDates}
-                            />
-                        </StackRSuite>
+                        <Box sx={{ width: '100%', padding: '5px', margin: '5px' }}>
+                            <StackRSuite spacing={10} direction="column" alignItems="flex-start" style={{ padding: '2px', margin: '2px' }}>
+                                <DateRangePicker
+                                    format="MMM yyyy"
+                                    caretAs={BsCalendar2MonthFill}
+                                    limitEndYear={1900}
+                                    limitStartYear={new Date().getFullYear()}
+                                    onChange={handleChangeRangeDates}
+                                />
+                            </StackRSuite>
+                        </Box>
 
                         <FormControl
                             size="small"

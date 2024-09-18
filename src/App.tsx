@@ -20,15 +20,15 @@ const App: React.FC = () => {
         <GEEProvider>
             <GEEPage />
         </GEEProvider>
-        {/* <OrganicasProvider>
+        <OrganicasProvider>
             <OrganicasPage />
-        </OrganicasProvider> */}
-        {/* <NH3Provider>
+        </OrganicasProvider>
+        <NH3Provider>
             <NH3Page />
-        </NH3Provider> */}
-        {/* <NPKProvider>
+        </NH3Provider>
+        <NPKProvider>
             <NPKPage />
-        </NPKProvider> */}
+        </NPKProvider>
         </>
     );
 };

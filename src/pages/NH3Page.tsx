@@ -61,7 +61,7 @@ const PageNH3: FC = () => {
             <Stack spacing={2} sx={{ alignItems: 'center' }}>
                 <Card variant="outlined" sx={{ width: '90%' }}>
                     <CardContent>
-                        <h3>Componentes</h3>
+                        <h3>NH3</h3>
                     </CardContent>
                 </Card>
 

@@ -1,4 +1,4 @@
-// src/components/PaperPoluicoes.tsx
+// src/components/PaperOrganicas.tsx
 
 import 'rsuite/dist/rsuite.min.css';
 
@@ -16,11 +16,12 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { DateRangePicker, Stack as StackRSuite } from 'rsuite';
 import { BsCalendar2MonthFill } from 'react-icons/bs';
 
-import { ICity, ICountry, IPercentualAreaChart, IStackedAreaChart, IState } from '../types';
-import { usePoluicoesContext } from './PoluicoesContext';
-import PercentualAreaChart from './PercentualAreaChart';
+import { ICity, ICountry, IPercentualAreaChart, IStackedAreaChart, IState } from '../../types';
+import { useOrganicasContext } from './OrganicasContext';
+import PercentualAreaChart from '../charts/PercentualAreaChart';
 import { DateRange } from 'rsuite/esm/DateRangePicker';
-import AreaChart from './AreaChart';
+import AreaChart from '../charts/AreaChart';
+
 
 import { greenBackgroundColor,
     yellowPalette,
@@ -30,12 +31,13 @@ import { greenBackgroundColor,
     redBackgroundColor,
     grayBackgroundColor,
     blueBackgroundColor,
-    yellowBackgroundColor
-} from './constants';
+    blueColors,
+    purplePalette
+} from '../colors';
 
 import { Box, Typography } from '@mui/material';
 
-interface PaperPoluicoesProps {
+interface PaperOrganicasProps {
     countries: ICountry[];
     states: IState[];
     cities: ICity[];
@@ -51,11 +53,11 @@ export function Loading() {
     );
 }
 
-const PaperPoluicoes: FC<PaperPoluicoesProps> = (props) => {
+const PaperOrganicas: FC<PaperOrganicasProps> = (props) => {
     // dados do servidor armazenados no contexto
-    const { contextCountries } = usePoluicoesContext();
-    const { contextStates } = usePoluicoesContext();
-    const { contextCities } = usePoluicoesContext();
+    const { countries: contextCountries } = useOrganicasContext();
+    const { states: contextStates } = useOrganicasContext();
+    const { cities: contextCities } = useOrganicasContext();
 
     // dados internos do componente
     const [internalCountries, setInternalCountries] = useState<ICountry[]>([]);
@@ -71,43 +73,49 @@ const PaperPoluicoes: FC<PaperPoluicoesProps> = (props) => {
     const [selectedStartDate, setSelectedStartDate] = useState<Date>(new Date());
     const [selectedEndDate, setSelectedEndDate] = useState<Date>(new Date());
 
+    const [subsequenceRange, setSubsequenceRange] = useState<number>(1);
+
+    const [loading, setLoading] = useState(true);
+
     useEffect(() => {
         const fetchData = async () => {
             try {
                 if (!props.percentualData || props.percentualData.length === 0)
-                    throw new Error('[PaperPoluicoes]: percentualData is required');
+                    throw new Error('[PaperOrganicas]: percentualData is required');
                 setInternalPercentualData(props.percentualData);
-                console.log(`[PaperPoluicoes] internalPercentualData: ${JSON.stringify(internalPercentualData)}`);
+                console.log(`[PaperOrganicas] organicasPercentual: ${JSON.stringify(internalPercentualData)}`);
 
-                if (!props.stackedData || props.stackedData.length === 0) throw new Error('[PaperPoluicoes]: stackedData is required');
+                if (!props.stackedData || props.stackedData.length === 0) throw new Error('[PaperOrganicas]: stackedData is required');
                 setInternalStackedData(props.stackedData);
-                console.log(`[PaperPoluicoes] internalStackedData: ${JSON.stringify(internalStackedData)}`);
+                console.log(`[PaperOrganicas] organicasStacked: ${JSON.stringify(internalStackedData)}`);
 
                 if (!props.countries) {
                     setInternalCountries(props.countries);
-                    console.log(`[PaperPoluicoes] internalCountries loaded from props: ${internalCountries.length}`);
+                    console.log(`[PaperOrganicas] countries loaded from props: ${internalCountries.length}`);
                 } else {
                     setInternalCountries(contextCountries);
-                    console.log(`[PaperPoluicoes] internalCountries loaded from context: ${internalCountries.length}`);
+                    console.log(`[PaperOrganicas] countries loaded from context: ${internalCountries.length}`);
                 }
 
                 if (!props.states) {
                     setInternalStates(props.states);
-                    console.log(`[PaperPoluicoes] internalStates loaded from props: ${internalStates.length}`);
+                    console.log(`[PaperOrganicas] states loaded from props: ${internalStates.length}`);
                 } else {
                     setInternalStates(contextStates);
-                    console.log(`[PaperPoluicoes] internalStates loaded from context: ${internalStates.length}`);
+                    console.log(`[PaperOrganicas] states loaded from context: ${internalStates.length}`);
                 }
 
                 if (!props.cities) {
                     setInternalCities(props.cities);
-                    console.log(`[PaperPoluicoes] internalCities loaded from props: ${internalCities.length}`);
+                    console.log(`[PaperOrganicas] cities loaded from props: ${internalCities.length}`);
                 } else {
                     setInternalCities(contextCities);
-                    console.log(`[PaperPoluicoes] internalCities loaded from context: ${internalCities.length}`);
+                    console.log(`[PaperOrganicas] cities loaded from context: ${internalCities.length}`);
                 }
             } catch (error) {
                 console.error(error);
+            } finally {
+                setLoading(false);
             }
         };
 
@@ -163,7 +171,6 @@ const PaperPoluicoes: FC<PaperPoluicoesProps> = (props) => {
             >
                 <Stack spacing={2} sx={{ alignItems: 'center', width: '100%' }}>
                     <Stack direction="row" spacing={2} sx={{ alignItems: 'center', width: '100%' }}>
-
                         <Box sx={{ width: '100%', padding: '5px', margin: '5px' }}>
                             <StackRSuite spacing={10} direction="column" alignItems="flex-start" style={{ padding: '2px', margin: '2px' }}>
                                 <DateRangePicker
@@ -275,19 +282,18 @@ const PaperPoluicoes: FC<PaperPoluicoesProps> = (props) => {
                         </FormControl>
                     </Stack>
 
-                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: greenBackgroundColor }}>
+                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: blueBackgroundColor }}>
                         <CardContent>
                             <Typography gutterBottom variant="h5" component="div">
-                                Percentual de áreas Poluicoes por período de {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
+                                Percentual de áreas Organicas por período {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
                             </Typography>
                             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                Percentual consolidado de uso da terra por período, considerando
-                                dados para fertilizantes químicos, fertilizantes orgânicos, manejo de esterco,
-                                deposição de extretas, queimas de resíduos de culturas.
+                                Percentual consolidado de uso da terra por período, considerando dados para Grãos,
+                                Hortaliças, Fruticulturas e Pastagens
                             </Typography>
                             <Suspense fallback={<Loading />}>
                                 {internalPercentualData.length > 0 ? (
-                                    <PercentualAreaChart width={1200} height={400} data={internalPercentualData} valueLabel="Área"  />
+                                    <PercentualAreaChart width={1200} height={400} data={internalPercentualData} valueLabel="Área" fillColor={blueColors.lightSkyBlue} strokeColor={blueColors.lightBlue}/>
                                 ) : (
                                     <Loading />
                                 )}
@@ -295,19 +301,18 @@ const PaperPoluicoes: FC<PaperPoluicoesProps> = (props) => {
                         </CardContent>
                     </Card>
 
-                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: brownBackgroundColor }}>
+                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: blueBackgroundColor }}>
                         <CardContent>
                             <Typography gutterBottom variant="h5" component="div">
-                                Áreas Poluicoes por período {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
+                                Áreas Organicas por período {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
                             </Typography>
                             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                Números absolutos, consolidando dados de fertilizantes químicos,
-                                fertilizantes orgânicos, manejo de esterco, deposição de extretas,
-                                queimas de resíduos de culturas.
+                                Números absolutos, consolidando dados de uso da terra por período, considerando Grãos,
+                                Hortaliças, Fruticulturas e Pastagens
                             </Typography>
                             <Suspense fallback={<Loading />}>
                                 {internalStackedData.length > 0 ? (
-                                    <AreaChart width={1200} height={400} data={internalStackedData} defaultPalette={brownPalette}/>
+                                    <AreaChart width={1200} height={400} data={internalStackedData} defaultPalette={purplePalette}/>
                                 ) : (
                                     <Loading />
                                 )}
@@ -315,16 +320,41 @@ const PaperPoluicoes: FC<PaperPoluicoesProps> = (props) => {
                         </CardContent>
                     </Card>
 
-                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: yellowBackgroundColor }}>
+                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: blueBackgroundColor }}>
                         <CardContent>
                             <Typography gutterBottom variant="h5" component="div">
-                                Áreas Poluicoes por período de {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
+                                Áreas Organicas por período {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
                             </Typography>
                             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                Números absolutos, consolidando dados de fertilizantes químicos, fertilizantes orgânicos,
-                                manejo de esterco, deposição de extretas, queimas de resíduos de culturas
+                                Números absolutos, consolidando dados de uso da terra por período, considerando Grãos,
+                                Hortaliças, Fruticulturas e Pastagens
                             </Typography>
                             <AreaChart width={1200} height={400} data={internalStackedData} defaultPalette={yellowPalette}/>
+                        </CardContent>
+                    </Card>
+                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: blueBackgroundColor }}>
+                        <CardContent>
+                            <div>
+                                <Typography gutterBottom variant="h5" component="div">
+                                    Áreas Organicas por período {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
+                                </Typography>
+                                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                                    Empilhados por Grão, Hortaliças, Fruticultura, Pastagens
+                                </Typography>
+                                <div>
+                                    <label>
+                                        Subsequências (anos):
+                                        <select value={subsequenceRange} onChange={(e) => setSubsequenceRange(Number(e.target.value))}>
+                                            <option value={1}>1</option>
+                                            <option value={2}>2</option>
+                                            <option value={3}>3</option>
+                                            <option value={4}>4</option>
+                                            <option value={5}>5</option>
+                                        </select>
+                                    </label>
+                                </div>
+                                <AreaChart width={1200} height={400} data={internalStackedData} defaultPalette={bluePalette}/>
+                            </div>
                         </CardContent>
                     </Card>
                 </Stack>
@@ -333,4 +363,4 @@ const PaperPoluicoes: FC<PaperPoluicoesProps> = (props) => {
     );
 };
 
-export default PaperPoluicoes;
+export default PaperOrganicas;

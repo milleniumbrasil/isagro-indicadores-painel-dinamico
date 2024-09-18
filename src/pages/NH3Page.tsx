@@ -3,9 +3,9 @@
 import './NH3Page.css';
 
 import { FC, useEffect, useState, Suspense } from 'react';
-import { useNH3Context } from '../components/NH3Context';
+import { useNH3Context } from '../components/nh3s/NH3Context';
 import { IPercentualAreaChart, IStackedAreaChart } from '../types';
-import PaperNH3 from '../components/PaperNH3';
+import PaperNH3 from '../components/nh3s/PaperNH3';
 import { Loader } from 'rsuite';
 
 export function Loading() {

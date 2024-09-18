@@ -1,27 +1,26 @@
-// src/components/NPKProvider.tsx
+// src/components/OrganicasProvider.tsx
 
 import { useState, useEffect, FC, ReactNode } from 'react';
+import { ICity, ICountry, IState, IPercentualAreaChart, IStackedAreaChart } from '../../types';
+import GetHttpClientStates from '../../http/GetHttpClientStates';
+import GetHttpClientCountries from '../../http/GetCountriesService';
+import GetHttpClientCities from '../../http/GetHttpClientCities';
+import GetHttpClientOrganicas from '../../http/GetHttpClientOrganicas';
+import { OrganicasContext } from './OrganicasContext';
 
-import { ICity, ICountry, IState, IPercentualAreaChart, IStackedAreaChart } from '../types';
-import GetHttpClientNPK from '../http/GetHttpClientNPK';
-import GetHttpClientStates from '../http/GetHttpClientStates';
-import GetHttpClientCountries from '../http/GetCountriesService';
-import GetHttpClientCities from '../http/GetHttpClientCities';
-import { NPKContext } from './NPKContext';
-
-export const NPKProvider: FC<{ children: ReactNode }> = ({ children }) => {
+export const OrganicasProvider: FC<{ children: ReactNode }> = ({ children }) => {
     const [loading, setLoading] = useState(true);
 
     const [states, setStates] = useState<IState[]>([]);
     const [countries, setCountries] = useState<ICountry[]>([]);
     const [cities, setCities] = useState<ICity[]>([]);
-    const [npkStackedData, setNpkStackedData] = useState<IStackedAreaChart[]>([]);
-    const [npkPercentual, setNpkPercentual] = useState<IPercentualAreaChart[]>([]);
+    const [organicasStackedData, setOrganicasStackedData] = useState<IStackedAreaChart[]>([]);
+    const [organicasPercentual, setOrganicasPercentual] = useState<IPercentualAreaChart[]>([]);
 
     const getCountriesService = new GetHttpClientCountries<ICountry[]>();
     const getStatesService = new GetHttpClientStates<IState[]>();
     const getCitiesService = new GetHttpClientCities<ICity[]>();
-    const getNPKDataService = new GetHttpClientNPK();
+    const getOrganicasService = new GetHttpClientOrganicas();
 
     const fetchData = async (): Promise<boolean> => {
         let result = false;
@@ -35,15 +34,14 @@ export const NPKProvider: FC<{ children: ReactNode }> = ({ children }) => {
             const tmpCitiesData = await getCitiesService.getData();
             setCities(tmpCitiesData);
 
-            const tmpNPKStackedData = await getNPKDataService.getStackedData();
-            setNpkStackedData(tmpNPKStackedData);
+            const tmpOrganicasStackedData = await getOrganicasService.getStackedData();
+            setOrganicasStackedData(tmpOrganicasStackedData);
 
-            const tmpNpkPercentualData = await getNPKDataService.getPercentualData();
-            setNpkPercentual(tmpNpkPercentualData);
-
+            const tmpOrganicasPercentualData = await getOrganicasService.getOrganicasAsPercentual();
+            setOrganicasPercentual(tmpOrganicasPercentualData);
             result = true;
         } catch (error) {
-            console.error('[NPKProvider]: Erro ao buscar dados:', error);
+            console.error('[OrganicasProvider]: Erro ao buscar dados:', error);
         } finally {
             setLoading(false);
         }
@@ -59,13 +57,13 @@ export const NPKProvider: FC<{ children: ReactNode }> = ({ children }) => {
     }
 
     const value = {
-        npkStackedData,
-        npkPercentual,
+        organicasStackedData,
+        organicasPercentual,
         cities,
         states,
         countries,
         fetchData,
     };
 
-    return <NPKContext.Provider value={value}>{children}</NPKContext.Provider>;
+    return <OrganicasContext.Provider value={value}>{children}</OrganicasContext.Provider>;
 };

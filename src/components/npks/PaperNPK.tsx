@@ -1,4 +1,4 @@
-// src/components/PaperPesticidas.tsx
+// src/components/PaperNPK.tsx
 
 import 'rsuite/dist/rsuite.min.css';
 
@@ -16,27 +16,24 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { DateRangePicker, Stack as StackRSuite } from 'rsuite';
 import { BsCalendar2MonthFill } from 'react-icons/bs';
 
-import { ICity, ICountry, IPercentualAreaChart, IStackedAreaChart, IState } from '../types';
-import { usePesticidasContext } from './PesticidasContext';
-import PercentualAreaChart from './PercentualAreaChart';
+import { ICity, ICountry, IPercentualAreaChart, IStackedAreaChart, IState } from '../../types';
+import { useNPKContext } from './NPKContext';
+import PercentualAreaChart from '../charts/PercentualAreaChart';
 import { DateRange } from 'rsuite/esm/DateRangePicker';
-import AreaChart from './AreaChart';
+import AreaChart from '../charts/AreaChart';
 
 import { greenBackgroundColor,
-    yellowPalette,
-    bluePalette,
-    brownPalette,
-    brownBackgroundColor,
-    redBackgroundColor,
-    grayBackgroundColor,
-    blueBackgroundColor,
-    yellowBackgroundColor
-} from './constants';
+        yellowPalette,
+        bluePalette,
+        brownPalette,
+        brownBackgroundColor,
+        redBackgroundColor,
+        grayBackgroundColor
+    } from '../colors';
 
 import { Box, Typography } from '@mui/material';
-import { Loader, Placeholder } from 'rsuite';
 
-interface PaperPesticidasProps {
+interface PaperNPKProps {
     countries: ICountry[];
     states: IState[];
     cities: ICity[];
@@ -46,18 +43,17 @@ interface PaperPesticidasProps {
 
 export function Loading() {
     return (
-            <div>
-                <Placeholder.Paragraph rows={8} />
-                <Loader center content="loading" />
-            </div>
-        );
+        <p>
+            <i>Loading...</i>
+        </p>
+    );
 }
 
-const PaperPesticidas: FC<PaperPesticidasProps> = (props) => {
+const PaperNPK: FC<PaperNPKProps> = (props) => {
     // dados do servidor armazenados no contexto
-    const { contextCountries } = usePesticidasContext();
-    const { contextStates } = usePesticidasContext();
-    const { contextCities } = usePesticidasContext();
+    const { countries: contextCountries } = useNPKContext();
+    const { states: contextStates } = useNPKContext();
+    const { cities: contextCities } = useNPKContext();
 
     // dados internos do componente
     const [internalCountries, setInternalCountries] = useState<ICountry[]>([]);
@@ -73,43 +69,49 @@ const PaperPesticidas: FC<PaperPesticidasProps> = (props) => {
     const [selectedStartDate, setSelectedStartDate] = useState<Date>(new Date());
     const [selectedEndDate, setSelectedEndDate] = useState<Date>(new Date());
 
+    const [subsequenceRange, setSubsequenceRange] = useState<number>(1);
+
+    const [loading, setLoading] = useState(true);
+
     useEffect(() => {
         const fetchData = async () => {
             try {
                 if (!props.percentualData || props.percentualData.length === 0)
-                    throw new Error('[PaperPesticidas]: percentualData is required');
+                    throw new Error('[PaperNPK]: percentualData is required');
                 setInternalPercentualData(props.percentualData);
-                console.log(`[PaperPesticidas] internalPercentualData: ${JSON.stringify(internalPercentualData)}`);
+                console.log(`[PaperNPK] npkPercentual: ${JSON.stringify(internalPercentualData)}`);
 
-                if (!props.stackedData || props.stackedData.length === 0) throw new Error('[PaperPesticidas]: stackedData is required');
+                if (!props.stackedData || props.stackedData.length === 0) throw new Error('[PaperNPK]: stackedData is required');
                 setInternalStackedData(props.stackedData);
-                console.log(`[PaperPesticidas] internalStackedData: ${JSON.stringify(internalStackedData)}`);
+                console.log(`[PaperNPK] npkStacked: ${JSON.stringify(internalStackedData)}`);
 
                 if (!props.countries) {
                     setInternalCountries(props.countries);
-                    console.log(`[PaperPesticidas] internalCountries loaded from props: ${internalCountries.length}`);
+                    console.log(`[PaperNPK] countries loaded from props: ${internalCountries.length}`);
                 } else {
                     setInternalCountries(contextCountries);
-                    console.log(`[PaperPesticidas] internalCountries loaded from context: ${internalCountries.length}`);
+                    console.log(`[PaperNPK] countries loaded from context: ${internalCountries.length}`);
                 }
 
                 if (!props.states) {
                     setInternalStates(props.states);
-                    console.log(`[PaperPesticidas] internalStates loaded from props: ${internalStates.length}`);
+                    console.log(`[PaperNPK] states loaded from props: ${internalStates.length}`);
                 } else {
                     setInternalStates(contextStates);
-                    console.log(`[PaperPesticidas] internalStates loaded from context: ${internalStates.length}`);
+                    console.log(`[PaperNPK] states loaded from context: ${internalStates.length}`);
                 }
 
                 if (!props.cities) {
                     setInternalCities(props.cities);
-                    console.log(`[PaperPesticidas] internalCities loaded from props: ${internalCities.length}`);
+                    console.log(`[PaperNPK] cities loaded from props: ${internalCities.length}`);
                 } else {
                     setInternalCities(contextCities);
-                    console.log(`[PaperPesticidas] internalCities loaded from context: ${internalCities.length}`);
+                    console.log(`[PaperNPK] cities loaded from context: ${internalCities.length}`);
                 }
             } catch (error) {
                 console.error(error);
+            } finally {
+                setLoading(false);
             }
         };
 
@@ -277,17 +279,21 @@ const PaperPesticidas: FC<PaperPesticidasProps> = (props) => {
                         </FormControl>
                     </Stack>
 
-                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: greenBackgroundColor }}>
+                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: redBackgroundColor }}>
                         <CardContent>
                             <Typography gutterBottom variant="h5" component="div">
-                                Percentual de áreas Pesticidas por período de {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
+                                Percentual de áreas NPK por período {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
                             </Typography>
                             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                Percentual consolidado de nitrato, fosfato, cations, anions.
+                                Percentual consolidado de uso da terra por período, considerando dados para 'dejetos animais',
+                                'deposição atmosférica', 'fertilizantes minerais', 'fertilizantes orgânicos', 'fixação biológica de nitrogênio',
+                                'resíduos culturais', 'resíduos industriais', 'resíduos urbanos', 'produção carne bovina', 'produção agrícola',
+                                'área agropecuária'.
                             </Typography>
+                            <p>{`${selectedStartDate.getFullYear()} - ${selectedEndDate.getFullYear()}`}</p>
                             <Suspense fallback={<Loading />}>
                                 {internalPercentualData.length > 0 ? (
-                                    <PercentualAreaChart width={1200} height={400} data={internalPercentualData} valueLabel="Área"  />
+                                    <PercentualAreaChart width={1200} height={400} data={internalPercentualData} valueLabel="Área" />
                                 ) : (
                                     <Loading />
                                 )}
@@ -295,13 +301,16 @@ const PaperPesticidas: FC<PaperPesticidasProps> = (props) => {
                         </CardContent>
                     </Card>
 
-                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: brownBackgroundColor }}>
+                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: redBackgroundColor }}>
                         <CardContent>
                             <Typography gutterBottom variant="h5" component="div">
-                                Áreas Pesticidas por período {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
+                                Áreas NPK por período {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
                             </Typography>
                             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                Números absolutos, consolidando dados de nitrato, fosfato, cations, anions.
+                                Números absolutos, consolidando dados de 'dejetos animais', 'deposição atmosférica',
+                                'fertilizantes minerais', 'fertilizantes orgânicos', 'fixação biológica de nitrogênio',
+                                'resíduos culturais', 'resíduos industriais', 'resíduos urbanos', 'produção carne bovina',
+                                'produção agrícola', 'área agropecuária'.
                             </Typography>
                             <Suspense fallback={<Loading />}>
                                 {internalStackedData.length > 0 ? (
@@ -313,13 +322,16 @@ const PaperPesticidas: FC<PaperPesticidasProps> = (props) => {
                         </CardContent>
                     </Card>
 
-                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: yellowBackgroundColor }}>
+                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: redBackgroundColor }}>
                         <CardContent>
                             <Typography gutterBottom variant="h5" component="div">
-                                Áreas Pesticidas por período de {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
+                                Áreas NPK por período {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
                             </Typography>
                             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                Números absolutos, consolidando dados de nitrato, fosfato, cations, anions.
+                                Números absolutos, consolidando dados de 'dejetos animais', 'deposição atmosférica',
+                                'fertilizantes minerais', 'fertilizantes orgânicos', 'fixação biológica de nitrogênio',
+                                'resíduos culturais', 'resíduos industriais', 'resíduos urbanos', 'produção carne bovina',
+                                'produção agrícola', 'área agropecuária'
                             </Typography>
                             <AreaChart width={1200} height={400} data={internalStackedData} defaultPalette={yellowPalette}/>
                         </CardContent>
@@ -330,4 +342,4 @@ const PaperPesticidas: FC<PaperPesticidasProps> = (props) => {
     );
 };
 
-export default PaperPesticidas;
+export default PaperNPK;

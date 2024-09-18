@@ -1,4 +1,4 @@
-// src/components/PaperOrganicas.tsx
+// src/components/PaperNH3.tsx
 
 import 'rsuite/dist/rsuite.min.css';
 
@@ -16,12 +16,11 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { DateRangePicker, Stack as StackRSuite } from 'rsuite';
 import { BsCalendar2MonthFill } from 'react-icons/bs';
 
-import { ICity, ICountry, IPercentualAreaChart, IStackedAreaChart, IState } from '../types';
-import { useOrganicasContext } from './OrganicasContext';
-import PercentualAreaChart from './PercentualAreaChart';
+import { ICity, ICountry, IPercentualAreaChart, IStackedAreaChart, IState } from '../../types';
+import { useNH3Context } from './NH3Context';
+import PercentualAreaChart from '../charts/PercentualAreaChart';
 import { DateRange } from 'rsuite/esm/DateRangePicker';
-import AreaChart from './AreaChart';
-
+import AreaChart from '../charts/AreaChart';
 
 import { greenBackgroundColor,
     yellowPalette,
@@ -30,14 +29,12 @@ import { greenBackgroundColor,
     brownBackgroundColor,
     redBackgroundColor,
     grayBackgroundColor,
-    blueBackgroundColor,
-    blueColors,
-    purplePalette
-} from './constants';
+    redPalette
+} from '../colors';
 
 import { Box, Typography } from '@mui/material';
 
-interface PaperOrganicasProps {
+interface PaperNH3Props {
     countries: ICountry[];
     states: IState[];
     cities: ICity[];
@@ -53,11 +50,11 @@ export function Loading() {
     );
 }
 
-const PaperOrganicas: FC<PaperOrganicasProps> = (props) => {
+const PaperNH3: FC<PaperNH3Props> = (props) => {
     // dados do servidor armazenados no contexto
-    const { countries: contextCountries } = useOrganicasContext();
-    const { states: contextStates } = useOrganicasContext();
-    const { cities: contextCities } = useOrganicasContext();
+    const { contextCountries } = useNH3Context();
+    const { contextStates } = useNH3Context();
+    const { contextCities } = useNH3Context();
 
     // dados internos do componente
     const [internalCountries, setInternalCountries] = useState<ICountry[]>([]);
@@ -73,49 +70,43 @@ const PaperOrganicas: FC<PaperOrganicasProps> = (props) => {
     const [selectedStartDate, setSelectedStartDate] = useState<Date>(new Date());
     const [selectedEndDate, setSelectedEndDate] = useState<Date>(new Date());
 
-    const [subsequenceRange, setSubsequenceRange] = useState<number>(1);
-
-    const [loading, setLoading] = useState(true);
-
     useEffect(() => {
         const fetchData = async () => {
             try {
                 if (!props.percentualData || props.percentualData.length === 0)
-                    throw new Error('[PaperOrganicas]: percentualData is required');
+                    throw new Error('[PaperNH3]: percentualData is required');
                 setInternalPercentualData(props.percentualData);
-                console.log(`[PaperOrganicas] organicasPercentual: ${JSON.stringify(internalPercentualData)}`);
+                console.log(`[PaperNH3] internalPercentualData: ${JSON.stringify(internalPercentualData)}`);
 
-                if (!props.stackedData || props.stackedData.length === 0) throw new Error('[PaperOrganicas]: stackedData is required');
+                if (!props.stackedData || props.stackedData.length === 0) throw new Error('[PaperNH3]: stackedData is required');
                 setInternalStackedData(props.stackedData);
-                console.log(`[PaperOrganicas] organicasStacked: ${JSON.stringify(internalStackedData)}`);
+                console.log(`[PaperNH3] internalStackedData: ${JSON.stringify(internalStackedData)}`);
 
                 if (!props.countries) {
                     setInternalCountries(props.countries);
-                    console.log(`[PaperOrganicas] countries loaded from props: ${internalCountries.length}`);
+                    console.log(`[PaperNH3] internalCountries loaded from props: ${internalCountries.length}`);
                 } else {
                     setInternalCountries(contextCountries);
-                    console.log(`[PaperOrganicas] countries loaded from context: ${internalCountries.length}`);
+                    console.log(`[PaperNH3] internalCountries loaded from context: ${internalCountries.length}`);
                 }
 
                 if (!props.states) {
                     setInternalStates(props.states);
-                    console.log(`[PaperOrganicas] states loaded from props: ${internalStates.length}`);
+                    console.log(`[PaperNH3] internalStates loaded from props: ${internalStates.length}`);
                 } else {
                     setInternalStates(contextStates);
-                    console.log(`[PaperOrganicas] states loaded from context: ${internalStates.length}`);
+                    console.log(`[PaperNH3] internalStates loaded from context: ${internalStates.length}`);
                 }
 
                 if (!props.cities) {
                     setInternalCities(props.cities);
-                    console.log(`[PaperOrganicas] cities loaded from props: ${internalCities.length}`);
+                    console.log(`[PaperNH3] internalCities loaded from props: ${internalCities.length}`);
                 } else {
                     setInternalCities(contextCities);
-                    console.log(`[PaperOrganicas] cities loaded from context: ${internalCities.length}`);
+                    console.log(`[PaperNH3] internalCities loaded from context: ${internalCities.length}`);
                 }
             } catch (error) {
                 console.error(error);
-            } finally {
-                setLoading(false);
             }
         };
 
@@ -171,6 +162,7 @@ const PaperOrganicas: FC<PaperOrganicasProps> = (props) => {
             >
                 <Stack spacing={2} sx={{ alignItems: 'center', width: '100%' }}>
                     <Stack direction="row" spacing={2} sx={{ alignItems: 'center', width: '100%' }}>
+
                         <Box sx={{ width: '100%', padding: '5px', margin: '5px' }}>
                             <StackRSuite spacing={10} direction="column" alignItems="flex-start" style={{ padding: '2px', margin: '2px' }}>
                                 <DateRangePicker
@@ -282,18 +274,20 @@ const PaperOrganicas: FC<PaperOrganicasProps> = (props) => {
                         </FormControl>
                     </Stack>
 
-                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: blueBackgroundColor }}>
+                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: brownBackgroundColor }}>
                         <CardContent>
                             <Typography gutterBottom variant="h5" component="div">
-                                Percentual de áreas Organicas por período {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
+                                Percentual de áreas NH3 por período {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
                             </Typography>
                             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                Percentual consolidado de uso da terra por período, considerando dados para Grãos,
-                                Hortaliças, Fruticulturas e Pastagens
+                                Percentual consolidado de uso da terra por período, considerando dados para f
+                                ertilizantes químicos, fertilizantes orgânicos, manejo de esterco, deposição de extretas,
+                                queimas de resíduos de culturas.
                             </Typography>
+                            <p>{`${selectedStartDate.getFullYear()} - ${selectedEndDate.getFullYear()}`}</p>
                             <Suspense fallback={<Loading />}>
                                 {internalPercentualData.length > 0 ? (
-                                    <PercentualAreaChart width={1200} height={400} data={internalPercentualData} valueLabel="Área" fillColor={blueColors.lightSkyBlue} strokeColor={blueColors.lightBlue}/>
+                                    <PercentualAreaChart width={1200} height={400} data={internalPercentualData} valueLabel="Área" />
                                 ) : (
                                     <Loading />
                                 )}
@@ -301,18 +295,18 @@ const PaperOrganicas: FC<PaperOrganicasProps> = (props) => {
                         </CardContent>
                     </Card>
 
-                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: blueBackgroundColor }}>
+                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: brownBackgroundColor }}>
                         <CardContent>
                             <Typography gutterBottom variant="h5" component="div">
-                                Áreas Organicas por período {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
+                                Áreas NH3 por período {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
                             </Typography>
                             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                Números absolutos, consolidando dados de uso da terra por período, considerando Grãos,
-                                Hortaliças, Fruticulturas e Pastagens
+                                Números absolutos, consolidando dados de fertilizantes químicos, fertilizantes orgânicos,
+                                manejo de esterco, deposição de extretas, queimas de resíduos de culturas.
                             </Typography>
                             <Suspense fallback={<Loading />}>
                                 {internalStackedData.length > 0 ? (
-                                    <AreaChart width={1200} height={400} data={internalStackedData} defaultPalette={purplePalette}/>
+                                    <AreaChart width={1200} height={400} data={internalStackedData} defaultPalette={brownPalette}/>
                                 ) : (
                                     <Loading />
                                 )}
@@ -320,41 +314,16 @@ const PaperOrganicas: FC<PaperOrganicasProps> = (props) => {
                         </CardContent>
                     </Card>
 
-                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: blueBackgroundColor }}>
+                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: brownBackgroundColor }}>
                         <CardContent>
                             <Typography gutterBottom variant="h5" component="div">
-                                Áreas Organicas por período {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
+                                Áreas NH3 por período {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
                             </Typography>
                             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                Números absolutos, consolidando dados de uso da terra por período, considerando Grãos,
-                                Hortaliças, Fruticulturas e Pastagens
+                                Números absolutos, consolidando dados de fertilizantes químicos, fertilizantes orgânicos,
+                                manejo de esterco, deposição de extretas, queimas de resíduos de culturas.
                             </Typography>
-                            <AreaChart width={1200} height={400} data={internalStackedData} defaultPalette={yellowPalette}/>
-                        </CardContent>
-                    </Card>
-                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: blueBackgroundColor }}>
-                        <CardContent>
-                            <div>
-                                <Typography gutterBottom variant="h5" component="div">
-                                    Áreas Organicas por período {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
-                                </Typography>
-                                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                    Empilhados por Grão, Hortaliças, Fruticultura, Pastagens
-                                </Typography>
-                                <div>
-                                    <label>
-                                        Subsequências (anos):
-                                        <select value={subsequenceRange} onChange={(e) => setSubsequenceRange(Number(e.target.value))}>
-                                            <option value={1}>1</option>
-                                            <option value={2}>2</option>
-                                            <option value={3}>3</option>
-                                            <option value={4}>4</option>
-                                            <option value={5}>5</option>
-                                        </select>
-                                    </label>
-                                </div>
-                                <AreaChart width={1200} height={400} data={internalStackedData} defaultPalette={bluePalette}/>
-                            </div>
+                            <AreaChart width={1200} height={400} data={internalStackedData} defaultPalette={redPalette}/>
                         </CardContent>
                     </Card>
                 </Stack>
@@ -363,4 +332,4 @@ const PaperOrganicas: FC<PaperOrganicasProps> = (props) => {
     );
 };
 
-export default PaperOrganicas;
+export default PaperNH3;

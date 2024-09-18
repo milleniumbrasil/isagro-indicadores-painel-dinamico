@@ -2,11 +2,11 @@
 
 import { useState, useEffect, FC, ReactNode } from 'react';
 
-import { ICity, ICountry, IState, IPercentualAreaChart, IStackedAreaChart } from '../types';
-import GetHttpClientErosoes from '../http/GetHttpClientErosoes';
-import GetHttpClientStates from '../http/GetHttpClientStates';
-import GetHttpClientCountries from '../http/GetCountriesService';
-import GetHttpClientCities from '../http/GetHttpClientCities';
+import { ICity, ICountry, IState, IPercentualAreaChart, IStackedAreaChart } from '../../types';
+import GetHttpClientErosoes from '../../http/GetHttpClientErosoes';
+import GetHttpClientStates from '../../http/GetHttpClientStates';
+import GetHttpClientCountries from '../../http/GetCountriesService';
+import GetHttpClientCities from '../../http/GetHttpClientCities';
 import { ErosoesContext } from './ErosoesContext';
 
 export const ErosoesProvider: FC<{ children: ReactNode }> = ({ children }) => {

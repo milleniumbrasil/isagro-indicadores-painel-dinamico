@@ -1,4 +1,4 @@
-// src/components/PaperNPK.tsx
+// src/components/PaperPoluicoes.tsx
 
 import 'rsuite/dist/rsuite.min.css';
 
@@ -16,24 +16,26 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { DateRangePicker, Stack as StackRSuite } from 'rsuite';
 import { BsCalendar2MonthFill } from 'react-icons/bs';
 
-import { ICity, ICountry, IPercentualAreaChart, IStackedAreaChart, IState } from '../types';
-import { useNPKContext } from './NPKContext';
-import PercentualAreaChart from './PercentualAreaChart';
+import { ICity, ICountry, IPercentualAreaChart, IStackedAreaChart, IState } from '../../types';
+import { usePoluicoesContext } from './PoluicoesContext';
+import PercentualAreaChart from '../charts/PercentualAreaChart';
 import { DateRange } from 'rsuite/esm/DateRangePicker';
-import AreaChart from './AreaChart';
+import AreaChart from '../charts/AreaChart';
 
 import { greenBackgroundColor,
-        yellowPalette,
-        bluePalette,
-        brownPalette,
-        brownBackgroundColor,
-        redBackgroundColor,
-        grayBackgroundColor
-    } from './constants';
+    yellowPalette,
+    bluePalette,
+    brownPalette,
+    brownBackgroundColor,
+    redBackgroundColor,
+    grayBackgroundColor,
+    blueBackgroundColor,
+    yellowBackgroundColor
+} from '../colors';
 
 import { Box, Typography } from '@mui/material';
 
-interface PaperNPKProps {
+interface PaperPoluicoesProps {
     countries: ICountry[];
     states: IState[];
     cities: ICity[];
@@ -49,11 +51,11 @@ export function Loading() {
     );
 }
 
-const PaperNPK: FC<PaperNPKProps> = (props) => {
+const PaperPoluicoes: FC<PaperPoluicoesProps> = (props) => {
     // dados do servidor armazenados no contexto
-    const { countries: contextCountries } = useNPKContext();
-    const { states: contextStates } = useNPKContext();
-    const { cities: contextCities } = useNPKContext();
+    const { contextCountries } = usePoluicoesContext();
+    const { contextStates } = usePoluicoesContext();
+    const { contextCities } = usePoluicoesContext();
 
     // dados internos do componente
     const [internalCountries, setInternalCountries] = useState<ICountry[]>([]);
@@ -69,49 +71,43 @@ const PaperNPK: FC<PaperNPKProps> = (props) => {
     const [selectedStartDate, setSelectedStartDate] = useState<Date>(new Date());
     const [selectedEndDate, setSelectedEndDate] = useState<Date>(new Date());
 
-    const [subsequenceRange, setSubsequenceRange] = useState<number>(1);
-
-    const [loading, setLoading] = useState(true);
-
     useEffect(() => {
         const fetchData = async () => {
             try {
                 if (!props.percentualData || props.percentualData.length === 0)
-                    throw new Error('[PaperNPK]: percentualData is required');
+                    throw new Error('[PaperPoluicoes]: percentualData is required');
                 setInternalPercentualData(props.percentualData);
-                console.log(`[PaperNPK] npkPercentual: ${JSON.stringify(internalPercentualData)}`);
+                console.log(`[PaperPoluicoes] internalPercentualData: ${JSON.stringify(internalPercentualData)}`);
 
-                if (!props.stackedData || props.stackedData.length === 0) throw new Error('[PaperNPK]: stackedData is required');
+                if (!props.stackedData || props.stackedData.length === 0) throw new Error('[PaperPoluicoes]: stackedData is required');
                 setInternalStackedData(props.stackedData);
-                console.log(`[PaperNPK] npkStacked: ${JSON.stringify(internalStackedData)}`);
+                console.log(`[PaperPoluicoes] internalStackedData: ${JSON.stringify(internalStackedData)}`);
 
                 if (!props.countries) {
                     setInternalCountries(props.countries);
-                    console.log(`[PaperNPK] countries loaded from props: ${internalCountries.length}`);
+                    console.log(`[PaperPoluicoes] internalCountries loaded from props: ${internalCountries.length}`);
                 } else {
                     setInternalCountries(contextCountries);
-                    console.log(`[PaperNPK] countries loaded from context: ${internalCountries.length}`);
+                    console.log(`[PaperPoluicoes] internalCountries loaded from context: ${internalCountries.length}`);
                 }
 
                 if (!props.states) {
                     setInternalStates(props.states);
-                    console.log(`[PaperNPK] states loaded from props: ${internalStates.length}`);
+                    console.log(`[PaperPoluicoes] internalStates loaded from props: ${internalStates.length}`);
                 } else {
                     setInternalStates(contextStates);
-                    console.log(`[PaperNPK] states loaded from context: ${internalStates.length}`);
+                    console.log(`[PaperPoluicoes] internalStates loaded from context: ${internalStates.length}`);
                 }
 
                 if (!props.cities) {
                     setInternalCities(props.cities);
-                    console.log(`[PaperNPK] cities loaded from props: ${internalCities.length}`);
+                    console.log(`[PaperPoluicoes] internalCities loaded from props: ${internalCities.length}`);
                 } else {
                     setInternalCities(contextCities);
-                    console.log(`[PaperNPK] cities loaded from context: ${internalCities.length}`);
+                    console.log(`[PaperPoluicoes] internalCities loaded from context: ${internalCities.length}`);
                 }
             } catch (error) {
                 console.error(error);
-            } finally {
-                setLoading(false);
             }
         };
 
@@ -279,21 +275,19 @@ const PaperNPK: FC<PaperNPKProps> = (props) => {
                         </FormControl>
                     </Stack>
 
-                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: redBackgroundColor }}>
+                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: greenBackgroundColor }}>
                         <CardContent>
                             <Typography gutterBottom variant="h5" component="div">
-                                Percentual de áreas NPK por período {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
+                                Percentual de áreas Poluicoes por período de {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
                             </Typography>
                             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                Percentual consolidado de uso da terra por período, considerando dados para 'dejetos animais',
-                                'deposição atmosférica', 'fertilizantes minerais', 'fertilizantes orgânicos', 'fixação biológica de nitrogênio',
-                                'resíduos culturais', 'resíduos industriais', 'resíduos urbanos', 'produção carne bovina', 'produção agrícola',
-                                'área agropecuária'.
+                                Percentual consolidado de uso da terra por período, considerando
+                                dados para fertilizantes químicos, fertilizantes orgânicos, manejo de esterco,
+                                deposição de extretas, queimas de resíduos de culturas.
                             </Typography>
-                            <p>{`${selectedStartDate.getFullYear()} - ${selectedEndDate.getFullYear()}`}</p>
                             <Suspense fallback={<Loading />}>
                                 {internalPercentualData.length > 0 ? (
-                                    <PercentualAreaChart width={1200} height={400} data={internalPercentualData} valueLabel="Área" />
+                                    <PercentualAreaChart width={1200} height={400} data={internalPercentualData} valueLabel="Área"  />
                                 ) : (
                                     <Loading />
                                 )}
@@ -301,16 +295,15 @@ const PaperNPK: FC<PaperNPKProps> = (props) => {
                         </CardContent>
                     </Card>
 
-                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: redBackgroundColor }}>
+                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: brownBackgroundColor }}>
                         <CardContent>
                             <Typography gutterBottom variant="h5" component="div">
-                                Áreas NPK por período {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
+                                Áreas Poluicoes por período {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
                             </Typography>
                             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                Números absolutos, consolidando dados de 'dejetos animais', 'deposição atmosférica',
-                                'fertilizantes minerais', 'fertilizantes orgânicos', 'fixação biológica de nitrogênio',
-                                'resíduos culturais', 'resíduos industriais', 'resíduos urbanos', 'produção carne bovina',
-                                'produção agrícola', 'área agropecuária'.
+                                Números absolutos, consolidando dados de fertilizantes químicos,
+                                fertilizantes orgânicos, manejo de esterco, deposição de extretas,
+                                queimas de resíduos de culturas.
                             </Typography>
                             <Suspense fallback={<Loading />}>
                                 {internalStackedData.length > 0 ? (
@@ -322,16 +315,14 @@ const PaperNPK: FC<PaperNPKProps> = (props) => {
                         </CardContent>
                     </Card>
 
-                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: redBackgroundColor }}>
+                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: yellowBackgroundColor }}>
                         <CardContent>
                             <Typography gutterBottom variant="h5" component="div">
-                                Áreas NPK por período {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
+                                Áreas Poluicoes por período de {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
                             </Typography>
                             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                Números absolutos, consolidando dados de 'dejetos animais', 'deposição atmosférica',
-                                'fertilizantes minerais', 'fertilizantes orgânicos', 'fixação biológica de nitrogênio',
-                                'resíduos culturais', 'resíduos industriais', 'resíduos urbanos', 'produção carne bovina',
-                                'produção agrícola', 'área agropecuária'
+                                Números absolutos, consolidando dados de fertilizantes químicos, fertilizantes orgânicos,
+                                manejo de esterco, deposição de extretas, queimas de resíduos de culturas
                             </Typography>
                             <AreaChart width={1200} height={400} data={internalStackedData} defaultPalette={yellowPalette}/>
                         </CardContent>
@@ -342,4 +333,4 @@ const PaperNPK: FC<PaperNPKProps> = (props) => {
     );
 };
 
-export default PaperNPK;
+export default PaperPoluicoes;

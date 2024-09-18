@@ -1,4 +1,4 @@
-// src/components/PaperNH3.tsx
+// src/components/PaperErosoes.tsx
 
 import 'rsuite/dist/rsuite.min.css';
 
@@ -16,11 +16,11 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { DateRangePicker, Stack as StackRSuite } from 'rsuite';
 import { BsCalendar2MonthFill } from 'react-icons/bs';
 
-import { ICity, ICountry, IPercentualAreaChart, IStackedAreaChart, IState } from '../types';
-import { useNH3Context } from './NH3Context';
-import PercentualAreaChart from './PercentualAreaChart';
+import { ICity, ICountry, IPercentualAreaChart, IStackedAreaChart, IState } from '../../types';
+import { useErosoesContext } from './ErosoesContext';
+import PercentualAreaChart from '../charts/PercentualAreaChart';
 import { DateRange } from 'rsuite/esm/DateRangePicker';
-import AreaChart from './AreaChart';
+import AreaChart from '../charts/AreaChart';
 
 import { greenBackgroundColor,
     yellowPalette,
@@ -29,12 +29,13 @@ import { greenBackgroundColor,
     brownBackgroundColor,
     redBackgroundColor,
     grayBackgroundColor,
-    redPalette
-} from './constants';
+    blueBackgroundColor,
+    yellowBackgroundColor
+} from '../colors';
 
 import { Box, Typography } from '@mui/material';
 
-interface PaperNH3Props {
+interface PaperErosoesProps {
     countries: ICountry[];
     states: IState[];
     cities: ICity[];
@@ -50,11 +51,11 @@ export function Loading() {
     );
 }
 
-const PaperNH3: FC<PaperNH3Props> = (props) => {
+const PaperErosoes: FC<PaperErosoesProps> = (props) => {
     // dados do servidor armazenados no contexto
-    const { contextCountries } = useNH3Context();
-    const { contextStates } = useNH3Context();
-    const { contextCities } = useNH3Context();
+    const { contextCountries } = useErosoesContext();
+    const { contextStates } = useErosoesContext();
+    const { contextCities } = useErosoesContext();
 
     // dados internos do componente
     const [internalCountries, setInternalCountries] = useState<ICountry[]>([]);
@@ -74,36 +75,36 @@ const PaperNH3: FC<PaperNH3Props> = (props) => {
         const fetchData = async () => {
             try {
                 if (!props.percentualData || props.percentualData.length === 0)
-                    throw new Error('[PaperNH3]: percentualData is required');
+                    throw new Error('[PaperErosoes]: percentualData is required');
                 setInternalPercentualData(props.percentualData);
-                console.log(`[PaperNH3] internalPercentualData: ${JSON.stringify(internalPercentualData)}`);
+                console.log(`[PaperErosoes] internalPercentualData: ${JSON.stringify(internalPercentualData)}`);
 
-                if (!props.stackedData || props.stackedData.length === 0) throw new Error('[PaperNH3]: stackedData is required');
+                if (!props.stackedData || props.stackedData.length === 0) throw new Error('[PaperErosoes]: stackedData is required');
                 setInternalStackedData(props.stackedData);
-                console.log(`[PaperNH3] internalStackedData: ${JSON.stringify(internalStackedData)}`);
+                console.log(`[PaperErosoes] internalStackedData: ${JSON.stringify(internalStackedData)}`);
 
                 if (!props.countries) {
                     setInternalCountries(props.countries);
-                    console.log(`[PaperNH3] internalCountries loaded from props: ${internalCountries.length}`);
+                    console.log(`[PaperErosoes] internalCountries loaded from props: ${internalCountries.length}`);
                 } else {
                     setInternalCountries(contextCountries);
-                    console.log(`[PaperNH3] internalCountries loaded from context: ${internalCountries.length}`);
+                    console.log(`[PaperErosoes] internalCountries loaded from context: ${internalCountries.length}`);
                 }
 
                 if (!props.states) {
                     setInternalStates(props.states);
-                    console.log(`[PaperNH3] internalStates loaded from props: ${internalStates.length}`);
+                    console.log(`[PaperErosoes] internalStates loaded from props: ${internalStates.length}`);
                 } else {
                     setInternalStates(contextStates);
-                    console.log(`[PaperNH3] internalStates loaded from context: ${internalStates.length}`);
+                    console.log(`[PaperErosoes] internalStates loaded from context: ${internalStates.length}`);
                 }
 
                 if (!props.cities) {
                     setInternalCities(props.cities);
-                    console.log(`[PaperNH3] internalCities loaded from props: ${internalCities.length}`);
+                    console.log(`[PaperErosoes] internalCities loaded from props: ${internalCities.length}`);
                 } else {
                     setInternalCities(contextCities);
-                    console.log(`[PaperNH3] internalCities loaded from context: ${internalCities.length}`);
+                    console.log(`[PaperErosoes] internalCities loaded from context: ${internalCities.length}`);
                 }
             } catch (error) {
                 console.error(error);
@@ -274,20 +275,19 @@ const PaperNH3: FC<PaperNH3Props> = (props) => {
                         </FormControl>
                     </Stack>
 
-                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: brownBackgroundColor }}>
+                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: greenBackgroundColor }}>
                         <CardContent>
                             <Typography gutterBottom variant="h5" component="div">
-                                Percentual de áreas NH3 por período {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
+                                Percentual de áreas Erosoes por período de {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
                             </Typography>
                             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                Percentual consolidado de uso da terra por período, considerando dados para f
-                                ertilizantes químicos, fertilizantes orgânicos, manejo de esterco, deposição de extretas,
-                                queimas de resíduos de culturas.
+                                Percentual consolidado de uso da terra por período, considerando
+                                dados para fertilizantes químicos, fertilizantes orgânicos, manejo de esterco,
+                                deposição de extretas, queimas de resíduos de culturas.
                             </Typography>
-                            <p>{`${selectedStartDate.getFullYear()} - ${selectedEndDate.getFullYear()}`}</p>
                             <Suspense fallback={<Loading />}>
                                 {internalPercentualData.length > 0 ? (
-                                    <PercentualAreaChart width={1200} height={400} data={internalPercentualData} valueLabel="Área" />
+                                    <PercentualAreaChart width={1200} height={400} data={internalPercentualData} valueLabel="Área"  />
                                 ) : (
                                     <Loading />
                                 )}
@@ -298,11 +298,12 @@ const PaperNH3: FC<PaperNH3Props> = (props) => {
                     <Card variant="outlined" sx={{ width: '90%', backgroundColor: brownBackgroundColor }}>
                         <CardContent>
                             <Typography gutterBottom variant="h5" component="div">
-                                Áreas NH3 por período {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
+                                Áreas Erosoes por período {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
                             </Typography>
                             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                Números absolutos, consolidando dados de fertilizantes químicos, fertilizantes orgânicos,
-                                manejo de esterco, deposição de extretas, queimas de resíduos de culturas.
+                                Números absolutos, consolidando dados de fertilizantes químicos,
+                                fertilizantes orgânicos, manejo de esterco, deposição de extretas,
+                                queimas de resíduos de culturas.
                             </Typography>
                             <Suspense fallback={<Loading />}>
                                 {internalStackedData.length > 0 ? (
@@ -314,16 +315,16 @@ const PaperNH3: FC<PaperNH3Props> = (props) => {
                         </CardContent>
                     </Card>
 
-                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: brownBackgroundColor }}>
+                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: yellowBackgroundColor }}>
                         <CardContent>
                             <Typography gutterBottom variant="h5" component="div">
-                                Áreas NH3 por período {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
+                                Áreas Erosoes por período de {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
                             </Typography>
                             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                                 Números absolutos, consolidando dados de fertilizantes químicos, fertilizantes orgânicos,
-                                manejo de esterco, deposição de extretas, queimas de resíduos de culturas.
+                                manejo de esterco, deposição de extretas, queimas de resíduos de culturas
                             </Typography>
-                            <AreaChart width={1200} height={400} data={internalStackedData} defaultPalette={redPalette}/>
+                            <AreaChart width={1200} height={400} data={internalStackedData} defaultPalette={yellowPalette}/>
                         </CardContent>
                     </Card>
                 </Stack>
@@ -332,4 +333,4 @@ const PaperNH3: FC<PaperNH3Props> = (props) => {
     );
 };
 
-export default PaperNH3;
+export default PaperErosoes;

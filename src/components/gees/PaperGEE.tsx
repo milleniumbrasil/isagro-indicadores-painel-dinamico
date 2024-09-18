@@ -16,11 +16,11 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { DateRangePicker, Stack as StackRSuite } from 'rsuite';
 import { BsCalendar2MonthFill } from 'react-icons/bs';
 
-import { ICity, ICountry, IPercentualAreaChart, IStackedAreaChart, IState } from '../types';
+import { ICity, ICountry, IPercentualAreaChart, IStackedAreaChart, IState } from '../../types';
 import { useGEEContext } from './GEEContext';
-import PercentualAreaChart from './PercentualAreaChart';
+import PercentualAreaChart from '../charts/PercentualAreaChart';
 import { DateRange } from 'rsuite/esm/DateRangePicker';
-import AreaChart from './AreaChart';
+import AreaChart from '../charts/AreaChart';
 
 import { greenBackgroundColor,
     yellowPalette,
@@ -31,7 +31,7 @@ import { greenBackgroundColor,
     grayBackgroundColor,
     blueBackgroundColor,
     yellowBackgroundColor
-} from './constants';
+} from '../colors';
 
 import { Box, Typography } from '@mui/material';
 

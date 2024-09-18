@@ -4,8 +4,8 @@ import './NPKPage.css';
 
 import { FC, useEffect, useState, Suspense } from 'react';
 import { IPercentualAreaChart, IStackedAreaChart } from '../types';
-import { useNPKContext } from '../components/NPKContext';
-import PaperNPK from '../components/PaperNPK';
+import { useNPKContext } from '../components/npks/NPKContext';
+import PaperNPK from '../components/npks/PaperNPK';
 import { Loader } from 'rsuite';
 
 export function Loading() {

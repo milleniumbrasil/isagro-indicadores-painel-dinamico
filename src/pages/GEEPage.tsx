@@ -3,9 +3,9 @@
 import './GEEPage.css';
 
 import { FC, useEffect, useState, Suspense } from 'react';
-import { useGEEContext } from '../components/GEEContext';
+import { useGEEContext } from '../components/gees/GEEContext';
 import { IPercentualAreaChart, IStackedAreaChart } from '../types';
-import PaperGEE from '../components/PaperGEE';
+import PaperGEE from '../components/gees/PaperGEE';
 import { Loader } from 'rsuite';
 
 export function Loading() {

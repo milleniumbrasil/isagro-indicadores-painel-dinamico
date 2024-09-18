@@ -1,15 +1,15 @@
-// src/components/PesticidasProvider.tsx
+// src/components/PoluicoesProvider.tsx
 
 import { useState, useEffect, FC, ReactNode } from 'react';
 
-import { ICity, ICountry, IState, IPercentualAreaChart, IStackedAreaChart } from '../types';
-import GetHttpClientPesticidas from '../http/GetHttpClientPesticidas';
-import GetHttpClientStates from '../http/GetHttpClientStates';
-import GetHttpClientCountries from '../http/GetCountriesService';
-import GetHttpClientCities from '../http/GetHttpClientCities';
-import { PesticidasContext } from './PesticidasContext';
+import { ICity, ICountry, IState, IPercentualAreaChart, IStackedAreaChart } from '../../types';
+import GetHttpClientPoluicoes from '../../http/GetHttpClientPoluicoes';
+import GetHttpClientStates from '../../http/GetHttpClientStates';
+import GetHttpClientCountries from '../../http/GetCountriesService';
+import GetHttpClientCities from '../../http/GetHttpClientCities';
+import { PoluicoesContext } from './PoluicoesContext';
 
-export const PesticidasProvider: FC<{ children: ReactNode }> = ({ children }) => {
+export const PoluicoesProvider: FC<{ children: ReactNode }> = ({ children }) => {
 
     const [contextStates, setContextStates] = useState<IState[]>([]);
     const [contextCountries, setContextCountries] = useState<ICountry[]>([]);
@@ -21,7 +21,7 @@ export const PesticidasProvider: FC<{ children: ReactNode }> = ({ children }) =>
     const getCountriesService = new GetHttpClientCountries<ICountry[]>();
     const getStatesService = new GetHttpClientStates<IState[]>();
     const getCitiesService = new GetHttpClientCities<ICity[]>();
-    const getPesticidasDataService = new GetHttpClientPesticidas();
+    const getPoluicoesDataService = new GetHttpClientPoluicoes();
 
     const fetchData = async (): Promise<boolean> => {
         let result = false;
@@ -35,15 +35,15 @@ export const PesticidasProvider: FC<{ children: ReactNode }> = ({ children }) =>
             const tmpCitiesData = await getCitiesService.getData();
             setContextCities(tmpCitiesData);
 
-            const tmpStackedData = await getPesticidasDataService.getStackedData();
+            const tmpStackedData = await getPoluicoesDataService.getStackedData();
             setContextStackedData(tmpStackedData);
 
-            const tmpPercentualData = await getPesticidasDataService.getPercentualData();
+            const tmpPercentualData = await getPoluicoesDataService.getPercentualData();
             setContextPercentualData(tmpPercentualData);
 
             result = true;
         } catch (error) {
-            console.warn('[PesticidasProvider]: Erro ao buscar dados:', error);
+            console.warn('[PoluicoesProvider]: Erro ao buscar dados:', error);
         }
         return result;
     };
@@ -61,5 +61,5 @@ export const PesticidasProvider: FC<{ children: ReactNode }> = ({ children }) =>
         fetchData,
     };
 
-    return <PesticidasContext.Provider value={value}>{children}</PesticidasContext.Provider>;
+    return <PoluicoesContext.Provider value={value}>{children}</PoluicoesContext.Provider>;
 };

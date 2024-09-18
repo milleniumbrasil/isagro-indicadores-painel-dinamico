@@ -1,4 +1,4 @@
-// src/components/PaperErosoes.tsx
+// src/components/PaperPesticidas.tsx
 
 import 'rsuite/dist/rsuite.min.css';
 
@@ -16,11 +16,11 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { DateRangePicker, Stack as StackRSuite } from 'rsuite';
 import { BsCalendar2MonthFill } from 'react-icons/bs';
 
-import { ICity, ICountry, IPercentualAreaChart, IStackedAreaChart, IState } from '../types';
-import { useErosoesContext } from './ErosoesContext';
-import PercentualAreaChart from './PercentualAreaChart';
+import { ICity, ICountry, IPercentualAreaChart, IStackedAreaChart, IState } from '../../types';
+import { usePesticidasContext } from './PesticidasContext';
+import PercentualAreaChart from '../charts/PercentualAreaChart';
 import { DateRange } from 'rsuite/esm/DateRangePicker';
-import AreaChart from './AreaChart';
+import AreaChart from '../charts/AreaChart';
 
 import { greenBackgroundColor,
     yellowPalette,
@@ -31,11 +31,12 @@ import { greenBackgroundColor,
     grayBackgroundColor,
     blueBackgroundColor,
     yellowBackgroundColor
-} from './constants';
+} from '../colors';
 
 import { Box, Typography } from '@mui/material';
+import { Loader, Placeholder } from 'rsuite';
 
-interface PaperErosoesProps {
+interface PaperPesticidasProps {
     countries: ICountry[];
     states: IState[];
     cities: ICity[];
@@ -45,17 +46,18 @@ interface PaperErosoesProps {
 
 export function Loading() {
     return (
-        <p>
-            <i>Loading...</i>
-        </p>
-    );
+            <div>
+                <Placeholder.Paragraph rows={8} />
+                <Loader center content="loading" />
+            </div>
+        );
 }
 
-const PaperErosoes: FC<PaperErosoesProps> = (props) => {
+const PaperPesticidas: FC<PaperPesticidasProps> = (props) => {
     // dados do servidor armazenados no contexto
-    const { contextCountries } = useErosoesContext();
-    const { contextStates } = useErosoesContext();
-    const { contextCities } = useErosoesContext();
+    const { contextCountries } = usePesticidasContext();
+    const { contextStates } = usePesticidasContext();
+    const { contextCities } = usePesticidasContext();
 
     // dados internos do componente
     const [internalCountries, setInternalCountries] = useState<ICountry[]>([]);
@@ -75,36 +77,36 @@ const PaperErosoes: FC<PaperErosoesProps> = (props) => {
         const fetchData = async () => {
             try {
                 if (!props.percentualData || props.percentualData.length === 0)
-                    throw new Error('[PaperErosoes]: percentualData is required');
+                    throw new Error('[PaperPesticidas]: percentualData is required');
                 setInternalPercentualData(props.percentualData);
-                console.log(`[PaperErosoes] internalPercentualData: ${JSON.stringify(internalPercentualData)}`);
+                console.log(`[PaperPesticidas] internalPercentualData: ${JSON.stringify(internalPercentualData)}`);
 
-                if (!props.stackedData || props.stackedData.length === 0) throw new Error('[PaperErosoes]: stackedData is required');
+                if (!props.stackedData || props.stackedData.length === 0) throw new Error('[PaperPesticidas]: stackedData is required');
                 setInternalStackedData(props.stackedData);
-                console.log(`[PaperErosoes] internalStackedData: ${JSON.stringify(internalStackedData)}`);
+                console.log(`[PaperPesticidas] internalStackedData: ${JSON.stringify(internalStackedData)}`);
 
                 if (!props.countries) {
                     setInternalCountries(props.countries);
-                    console.log(`[PaperErosoes] internalCountries loaded from props: ${internalCountries.length}`);
+                    console.log(`[PaperPesticidas] internalCountries loaded from props: ${internalCountries.length}`);
                 } else {
                     setInternalCountries(contextCountries);
-                    console.log(`[PaperErosoes] internalCountries loaded from context: ${internalCountries.length}`);
+                    console.log(`[PaperPesticidas] internalCountries loaded from context: ${internalCountries.length}`);
                 }
 
                 if (!props.states) {
                     setInternalStates(props.states);
-                    console.log(`[PaperErosoes] internalStates loaded from props: ${internalStates.length}`);
+                    console.log(`[PaperPesticidas] internalStates loaded from props: ${internalStates.length}`);
                 } else {
                     setInternalStates(contextStates);
-                    console.log(`[PaperErosoes] internalStates loaded from context: ${internalStates.length}`);
+                    console.log(`[PaperPesticidas] internalStates loaded from context: ${internalStates.length}`);
                 }
 
                 if (!props.cities) {
                     setInternalCities(props.cities);
-                    console.log(`[PaperErosoes] internalCities loaded from props: ${internalCities.length}`);
+                    console.log(`[PaperPesticidas] internalCities loaded from props: ${internalCities.length}`);
                 } else {
                     setInternalCities(contextCities);
-                    console.log(`[PaperErosoes] internalCities loaded from context: ${internalCities.length}`);
+                    console.log(`[PaperPesticidas] internalCities loaded from context: ${internalCities.length}`);
                 }
             } catch (error) {
                 console.error(error);
@@ -278,12 +280,10 @@ const PaperErosoes: FC<PaperErosoesProps> = (props) => {
                     <Card variant="outlined" sx={{ width: '90%', backgroundColor: greenBackgroundColor }}>
                         <CardContent>
                             <Typography gutterBottom variant="h5" component="div">
-                                Percentual de áreas Erosoes por período de {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
+                                Percentual de áreas Pesticidas por período de {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
                             </Typography>
                             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                Percentual consolidado de uso da terra por período, considerando
-                                dados para fertilizantes químicos, fertilizantes orgânicos, manejo de esterco,
-                                deposição de extretas, queimas de resíduos de culturas.
+                                Percentual consolidado de nitrato, fosfato, cations, anions.
                             </Typography>
                             <Suspense fallback={<Loading />}>
                                 {internalPercentualData.length > 0 ? (
@@ -298,12 +298,10 @@ const PaperErosoes: FC<PaperErosoesProps> = (props) => {
                     <Card variant="outlined" sx={{ width: '90%', backgroundColor: brownBackgroundColor }}>
                         <CardContent>
                             <Typography gutterBottom variant="h5" component="div">
-                                Áreas Erosoes por período {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
+                                Áreas Pesticidas por período {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
                             </Typography>
                             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                Números absolutos, consolidando dados de fertilizantes químicos,
-                                fertilizantes orgânicos, manejo de esterco, deposição de extretas,
-                                queimas de resíduos de culturas.
+                                Números absolutos, consolidando dados de nitrato, fosfato, cations, anions.
                             </Typography>
                             <Suspense fallback={<Loading />}>
                                 {internalStackedData.length > 0 ? (
@@ -318,11 +316,10 @@ const PaperErosoes: FC<PaperErosoesProps> = (props) => {
                     <Card variant="outlined" sx={{ width: '90%', backgroundColor: yellowBackgroundColor }}>
                         <CardContent>
                             <Typography gutterBottom variant="h5" component="div">
-                                Áreas Erosoes por período de {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
+                                Áreas Pesticidas por período de {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
                             </Typography>
                             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                Números absolutos, consolidando dados de fertilizantes químicos, fertilizantes orgânicos,
-                                manejo de esterco, deposição de extretas, queimas de resíduos de culturas
+                                Números absolutos, consolidando dados de nitrato, fosfato, cations, anions.
                             </Typography>
                             <AreaChart width={1200} height={400} data={internalStackedData} defaultPalette={yellowPalette}/>
                         </CardContent>
@@ -333,4 +330,4 @@ const PaperErosoes: FC<PaperErosoesProps> = (props) => {
     );
 };
 
-export default PaperErosoes;
+export default PaperPesticidas;

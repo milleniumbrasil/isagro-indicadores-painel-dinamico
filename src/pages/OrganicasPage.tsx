@@ -5,8 +5,8 @@ import './OrganicasPage.css';
 import { FC, useEffect, useState, Suspense } from 'react';
 
 import { IPercentualAreaChart, IStackedAreaChart } from '../types';
-import { useOrganicasContext } from '../components/OrganicasContext';
-import PaperOrganicas from '../components/PaperOrganicas';
+import { useOrganicasContext } from '../components/organicas/OrganicasContext';
+import PaperOrganicas from '../components/organicas/PaperOrganicas';
 import { Loader } from 'rsuite';
 
 export function Loading() {

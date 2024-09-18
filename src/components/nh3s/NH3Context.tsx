@@ -1,7 +1,7 @@
 // src/components/NH3Context.tsx
 
 import { createContext, useContext } from 'react';
-import { IStackedAreaChart, IPercentualAreaChart, ICity, IState, ICountry } from '../types';
+import { IStackedAreaChart, IPercentualAreaChart, ICity, IState, ICountry } from '../../types';
 
 // Interface para o contexto
 export interface NH3ContextProps {

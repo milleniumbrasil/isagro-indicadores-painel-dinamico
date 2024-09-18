@@ -3,9 +3,9 @@
 import './ErosoesPage.css';
 
 import { FC, useEffect, useState, Suspense } from 'react';
-import { useErosoesContext } from '../components/ErosoesContext';
+import { useErosoesContext } from '../components/erosoes/ErosoesContext';
 import { IPercentualAreaChart, IStackedAreaChart } from '../types';
-import PaperErosoes from '../components/PaperErosoes';
+import PaperErosoes from '../components/erosoes/PaperErosoes';
 import { Loader } from 'rsuite';
 
 export function Loading() {

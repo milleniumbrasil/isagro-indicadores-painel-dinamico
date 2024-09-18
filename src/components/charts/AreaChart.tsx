@@ -2,8 +2,8 @@
 
 import { PureComponent } from 'react';
 import { AreaChart as RechatsAreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
-import { greenPalette } from './constants';
-import { IStackedAreaChart } from '../types';
+import { greenPalette } from '../colors';
+import { IStackedAreaChart } from '../../types';
 
 interface PercentualAreaChartProps {
     data: IStackedAreaChart[];

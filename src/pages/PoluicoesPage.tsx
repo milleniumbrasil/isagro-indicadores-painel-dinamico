@@ -3,9 +3,9 @@
 import './PoluicoesPage.css';
 
 import { FC, useEffect, useState, Suspense } from 'react';
-import { usePoluicoesContext } from '../components/PoluicoesContext';
+import { usePoluicoesContext } from '../components/poluicoes/PoluicoesContext';
 import { IPercentualAreaChart, IStackedAreaChart } from '../types';
-import PaperPoluicoes from '../components/PaperPoluicoes';
+import PaperPoluicoes from '../components/poluicoes/PaperPoluicoes';
 import { Loader } from 'rsuite';
 
 export function Loading() {

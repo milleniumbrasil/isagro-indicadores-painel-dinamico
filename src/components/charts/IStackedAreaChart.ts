@@ -1,4 +1,4 @@
-// src/components/ISAgro/types.ts
+// src/components/charts/IStackedAreaChart.ts
 
 export interface ICity {
     uf: string;

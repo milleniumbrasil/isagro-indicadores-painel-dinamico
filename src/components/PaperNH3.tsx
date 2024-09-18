@@ -44,7 +44,7 @@ const PaperNH3: FC<PaperNH3Props> = (props) => {
     // dados do servidor armazenados no contexto
     const { contextCountries: contextCountries } = useNH3Context();
     const { contextStates: contextStates } = useNH3Context();
-    const { cities: contextCities } = useNH3Context();
+    const { contextCities } = useNH3Context();
 
     // dados internos do componente
     const [internalCountries, setInternalCountries] = useState<ICountry[]>([]);

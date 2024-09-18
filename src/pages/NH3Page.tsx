@@ -18,11 +18,11 @@ export function Loading() {
     );
 }
 
-const Page: FC = () => {
+const PageNH3: FC = () => {
     // dados do servidor armazenados no contexto
     const { contextStates: contextStates } = useNH3Context();
     const { contextCountries: contextCountries } = useNH3Context();
-    const { cities: contextCities } = useNH3Context();
+    const { contextCities } = useNH3Context();
     const { nh3StackedData: contextNH3StackedData } = useNH3Context();
     const { nh3StackedPercentual: contextNH3Percentual } = useNH3Context();
 
@@ -83,4 +83,4 @@ const Page: FC = () => {
     );
 };
 
-export default Page;
+export default PageNH3;

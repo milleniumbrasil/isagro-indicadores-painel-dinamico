@@ -7,7 +7,7 @@ import { IStackedAreaChart, IPercentualAreaChart, ICity, IState, ICountry } from
 export interface NH3ContextProps {
     nh3StackedData?: IStackedAreaChart[];
     nh3StackedPercentual?: IPercentualAreaChart[];
-    cities: ICity[];
+    contextCities: ICity[];
     contextStates: IState[];
     contextCountries: ICountry[];
     fetchData: () => Promise<boolean>;
@@ -17,7 +17,7 @@ export interface NH3ContextProps {
 export const NH3Context = createContext<NH3ContextProps>({
     nh3StackedData: [],
     nh3StackedPercentual: [],
-    cities: [],
+    contextCities: [],
     contextStates: [],
     contextCountries: [],
     fetchData: () => Promise.resolve(false),
@@ -35,7 +35,7 @@ export const useNH3Context = () => {
     if (!context.contextStates || context.contextStates.length === 0) {
         console.warn('useNH3Context: states is required');
     }
-    if (!context.cities || context.cities.length === 0) {
+    if (!context.contextCities || context.contextCities.length === 0) {
         console.warn('useNH3Context: cities is required');
     }
     return context;

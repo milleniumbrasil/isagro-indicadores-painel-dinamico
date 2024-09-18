@@ -1,7 +1,9 @@
 // src/components/NH3Context.tsx
 
 import { createContext, useContext } from 'react';
-import { ICity, IState, ICountry } from '../charts/IStackedAreaChart';
+import { ICountry } from "../charts/ICountry";
+import { IState } from "../charts/IState";
+import { ICity } from "../charts/ICity";
 import { IStackedAreaChart } from '../charts/IStackedAreaChart';
 import { IPercentualAreaChart } from '../charts/IPercentualAreaChart';
 

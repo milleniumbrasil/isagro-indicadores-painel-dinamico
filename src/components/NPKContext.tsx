@@ -27,19 +27,19 @@ export const NPKContext = createContext<NPKContextProps>({
 export const useNPKContext = () => {
     const context = useContext(NPKContext);
     if (!context) {
-        throw new Error('useNPKContext deve ser usado dentro de um NPKProvider');
+        console.warn('useNPKContext deve ser usado dentro de um NPKProvider');
     }
     if (!context.countries || context.countries.length === 0) {
-        throw new Error('useNPKContext: countries is required');
+        console.warn('useNPKContext: countries is required');
     }
     if (!context.states || context.states.length === 0) {
-        throw new Error('useNPKContext: states is required');
+        console.warn('useNPKContext: states is required');
     }
     if (!context.cities || context.cities.length === 0) {
-        throw new Error('useNPKContext: cities is required');
+        console.warn('useNPKContext: cities is required');
     }
     if (!context.npkStackedData || context.npkStackedData.length === 0) {
-        throw new Error('useNPKContext: npkStackedData is required');
+        console.warn('useNPKContext: npkStackedData is required');
     }
     return context;
 };

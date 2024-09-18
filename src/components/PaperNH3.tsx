@@ -17,7 +17,7 @@ import { DateRangePicker, Stack as StackRSuite } from 'rsuite';
 import { BsCalendar2MonthFill } from 'react-icons/bs';
 
 import { ICity, ICountry, IPercentualAreaChart, IStackedAreaChart, IState } from '../types';
-import { useISAgroContext } from './ISAgroContext';
+import { useNH3Context } from './NH3Context';
 import PercentualAreaChart from './PercentualAreaChart';
 import { DateRange } from 'rsuite/esm/DateRangePicker';
 import AreaChart from './AreaChart';
@@ -42,9 +42,9 @@ export function Loading() {
 
 const PaperNH3: FC<PaperNH3Props> = (props) => {
     // dados do servidor armazenados no contexto
-    const { countries: contextCountries } = useISAgroContext();
-    const { states: contextStates } = useISAgroContext();
-    const { cities: contextCities } = useISAgroContext();
+    const { contextCountries: contextCountries } = useNH3Context();
+    const { contextStates: contextStates } = useNH3Context();
+    const { cities: contextCities } = useNH3Context();
 
     // dados internos do componente
     const [internalCountries, setInternalCountries] = useState<ICountry[]>([]);

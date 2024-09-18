@@ -7,7 +7,7 @@ import Stack from '@mui/material/Stack';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { IPercentualAreaChart, IStackedAreaChart } from '../types';
-import { useISAgroContext } from '../components/ISAgroContext';
+import { useNPKContext } from '../components/NPKContext';
 import PaperNPK from '../components/PaperNPK';
 
 export function Loading() {
@@ -20,11 +20,11 @@ export function Loading() {
 
 const Page: FC = () => {
     // dados do servidor armazenados no contexto
-    const { states: contextStates } = useISAgroContext();
-    const { countries: contextCountries } = useISAgroContext();
-    const { cities: contextCities } = useISAgroContext();
-    const { npkStackedData: contextNpkStackedData } = useISAgroContext();
-    const { npkPercentual: contextNpkPercentual } = useISAgroContext();
+    const { states: contextStates } = useNPKContext();
+    const { countries: contextCountries } = useNPKContext();
+    const { cities: contextCities } = useNPKContext();
+    const { npkStackedData: contextNpkStackedData } = useNPKContext();
+    const { npkPercentual: contextNpkPercentual } = useNPKContext();
 
     const [internalNpkStacked, setInternalNpkStacked] = useState<IStackedAreaChart[]>([]);
     const [internalNpkPercentual, setInternalNpkPercentual] = useState<IPercentualAreaChart[]>([]);

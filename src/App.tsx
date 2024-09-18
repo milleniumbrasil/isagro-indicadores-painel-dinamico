@@ -14,6 +14,9 @@ import { NPKProvider } from './components/NPKProvider';
 import GEEPage from './pages/GEEPage';
 import { GEEProvider } from './components/GEEProvider';
 
+import PoluicoesPage from './pages/PoluicoesPage';
+import { PoluicoesProvider } from './components/PoluicoesProvider';
+
 import PesticidasPage from './pages/PesticidasPage';
 import { PesticidasProvider } from './components/PesticidasProvider';
 
@@ -23,6 +26,9 @@ import { ErosoesProvider } from './components/ErosoesProvider';
 const App: React.FC = () => {
     return (
         <>
+        <PoluicoesProvider>
+            <PoluicoesPage />
+        </PoluicoesProvider>
         <PesticidasProvider>
             <PesticidasPage />
         </PesticidasProvider>

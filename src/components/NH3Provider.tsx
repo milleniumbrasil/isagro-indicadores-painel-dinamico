@@ -11,8 +11,6 @@ import { NH3Context } from './NH3Context';
 
 export const NH3Provider: FC<{ children: ReactNode }> = ({ children }) => {
 
-    const [loading, setLoading] = useState(true);
-
     const [contextStates, setContextStates] = useState<IState[]>([]);
     const [contextCountries, setContextCountries] = useState<ICountry[]>([]);
     const [contextCities, setContextCities] = useState<ICity[]>([]);
@@ -46,8 +44,6 @@ export const NH3Provider: FC<{ children: ReactNode }> = ({ children }) => {
             result = true;
         } catch (error) {
             console.warn('[NH3Provider]: Erro ao buscar dados:', error);
-        } finally {
-            setLoading(false);
         }
         return result;
     };
@@ -55,10 +51,6 @@ export const NH3Provider: FC<{ children: ReactNode }> = ({ children }) => {
     useEffect(() => {
         fetchData();
     }, []);
-
-    if (loading) {
-        return <div>Providers carregando...</div>; // Um estado de carregamento enquanto os dados são obtidos
-    }
 
     const value = {
         contextStackedData,

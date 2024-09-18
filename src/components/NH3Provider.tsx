@@ -17,8 +17,8 @@ export const NH3Provider: FC<{ children: ReactNode }> = ({ children }) => {
     const [contextCountries, setContextCountries] = useState<ICountry[]>([]);
     const [contextCities, setContextCities] = useState<ICity[]>([]);
 
-    const [contextNh3StackedData, setContextNh3StackedData] = useState<IStackedAreaChart[]>([]);
-    const [contextNh3Percentual, setContextNh3Percentual] = useState<IPercentualAreaChart[]>([]);
+    const [contextStackedData, setContextStackedData] = useState<IStackedAreaChart[]>([]);
+    const [contextPercentualData, setContextPercentualData] = useState<IPercentualAreaChart[]>([]);
 
     const getCountriesService = new GetHttpClientCountries<ICountry[]>();
     const getStatesService = new GetHttpClientStates<IState[]>();
@@ -37,13 +37,11 @@ export const NH3Provider: FC<{ children: ReactNode }> = ({ children }) => {
             const tmpCitiesData = await getCitiesService.getData();
             setContextCities(tmpCitiesData);
 
-            const tmpNH3StackedData = await getNH3DataService.getStackedData();
-            console.log('[NH3Provider] tmpNH3StackedData taken: ', tmpNH3StackedData?.length, ' records.');
-            setContextNh3StackedData(tmpNH3StackedData);
+            const tmpStackedData = await getNH3DataService.getStackedData();
+            setContextStackedData(tmpStackedData);
 
-            const tmpNpkPercentualData = await getNH3DataService.getPercentualData();
-            console.log('[NH3Provider] tmpNpkPercentualData taken: ', tmpNpkPercentualData?.length, ' records.');
-            setContextNh3Percentual(tmpNpkPercentualData);
+            const tmpPercentualData = await getNH3DataService.getPercentualData();
+            setContextPercentualData(tmpPercentualData);
 
             result = true;
         } catch (error) {
@@ -63,8 +61,8 @@ export const NH3Provider: FC<{ children: ReactNode }> = ({ children }) => {
     }
 
     const value = {
-        contextNh3StackedData,
-        contextNh3Percentual,
+        contextStackedData,
+        contextPercentualData,
         contextCities,
         contextStates,
         contextCountries,

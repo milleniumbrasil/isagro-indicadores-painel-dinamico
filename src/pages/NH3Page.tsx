@@ -23,8 +23,8 @@ const PageNH3: FC = () => {
     const { contextStates: contextStates } = useNH3Context();
     const { contextCountries: contextCountries } = useNH3Context();
     const { contextCities } = useNH3Context();
-    const { contextNh3StackedData: contextNH3StackedData } = useNH3Context();
-    const { contextNh3StackedPercentual: contextNH3Percentual } = useNH3Context();
+    const { contextStackedData: contextNH3StackedData } = useNH3Context();
+    const { contextPercentualData: contextNH3Percentual } = useNH3Context();
 
     const [internalNH3Stacked, setInternalNH3Stacked] = useState<IStackedAreaChart[]>([]);
     const [internalNH3Percentual, setInternalNH3Percentual] = useState<IPercentualAreaChart[]>([]);

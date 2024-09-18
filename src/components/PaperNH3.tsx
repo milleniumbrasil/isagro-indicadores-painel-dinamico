@@ -42,8 +42,8 @@ export function Loading() {
 
 const PaperNH3: FC<PaperNH3Props> = (props) => {
     // dados do servidor armazenados no contexto
-    const { contextCountries: contextCountries } = useNH3Context();
-    const { contextStates: contextStates } = useNH3Context();
+    const { contextCountries } = useNH3Context();
+    const { contextStates } = useNH3Context();
     const { contextCities } = useNH3Context();
 
     // dados internos do componente
@@ -60,49 +60,43 @@ const PaperNH3: FC<PaperNH3Props> = (props) => {
     const [selectedStartDate, setSelectedStartDate] = useState<Date>(new Date());
     const [selectedEndDate, setSelectedEndDate] = useState<Date>(new Date());
 
-    const [subsequenceRange, setSubsequenceRange] = useState<number>(1);
-
-    const [loading, setLoading] = useState(true);
-
     useEffect(() => {
         const fetchData = async () => {
             try {
                 if (!props.percentualData || props.percentualData.length === 0)
                     throw new Error('[PaperNH3]: percentualData is required');
                 setInternalPercentualData(props.percentualData);
-                console.log(`[PaperNH3] nh3Percentual: ${JSON.stringify(internalPercentualData)}`);
+                console.log(`[PaperNH3] internalPercentualData: ${JSON.stringify(internalPercentualData)}`);
 
                 if (!props.stackedData || props.stackedData.length === 0) throw new Error('[PaperNH3]: stackedData is required');
                 setInternalStackedData(props.stackedData);
-                console.log(`[PaperNH3] nh3Stacked: ${JSON.stringify(internalStackedData)}`);
+                console.log(`[PaperNH3] internalStackedData: ${JSON.stringify(internalStackedData)}`);
 
                 if (!props.countries) {
                     setInternalCountries(props.countries);
-                    console.log(`[PaperNH3] countries loaded from props: ${internalCountries.length}`);
+                    console.log(`[PaperNH3] internalCountries loaded from props: ${internalCountries.length}`);
                 } else {
                     setInternalCountries(contextCountries);
-                    console.log(`[PaperNH3] countries loaded from context: ${internalCountries.length}`);
+                    console.log(`[PaperNH3] internalCountries loaded from context: ${internalCountries.length}`);
                 }
 
                 if (!props.states) {
                     setInternalStates(props.states);
-                    console.log(`[PaperNH3] states loaded from props: ${internalStates.length}`);
+                    console.log(`[PaperNH3] internalStates loaded from props: ${internalStates.length}`);
                 } else {
                     setInternalStates(contextStates);
-                    console.log(`[PaperNH3] states loaded from context: ${internalStates.length}`);
+                    console.log(`[PaperNH3] internalStates loaded from context: ${internalStates.length}`);
                 }
 
                 if (!props.cities) {
                     setInternalCities(props.cities);
-                    console.log(`[PaperNH3] cities loaded from props: ${internalCities.length}`);
+                    console.log(`[PaperNH3] internalCities loaded from props: ${internalCities.length}`);
                 } else {
                     setInternalCities(contextCities);
-                    console.log(`[PaperNH3] cities loaded from context: ${internalCities.length}`);
+                    console.log(`[PaperNH3] internalCities loaded from context: ${internalCities.length}`);
                 }
             } catch (error) {
                 console.error(error);
-            } finally {
-                setLoading(false);
             }
         };
 

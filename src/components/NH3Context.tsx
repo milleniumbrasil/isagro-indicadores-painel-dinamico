@@ -5,8 +5,8 @@ import { IStackedAreaChart, IPercentualAreaChart, ICity, IState, ICountry } from
 
 // Interface para o contexto
 export interface NH3ContextProps {
-    contextNh3StackedData?: IStackedAreaChart[];
-    contextNh3StackedPercentual?: IPercentualAreaChart[];
+    contextStackedData?: IStackedAreaChart[];
+    contextPercentualData?: IPercentualAreaChart[];
     contextCities: ICity[];
     contextStates: IState[];
     contextCountries: ICountry[];
@@ -15,8 +15,8 @@ export interface NH3ContextProps {
 
 // Criação do contexto
 export const NH3Context = createContext<NH3ContextProps>({
-    contextNh3StackedData: [],
-    contextNh3StackedPercentual: [],
+    contextStackedData: [],
+    contextPercentualData: [],
     contextCities: [],
     contextStates: [],
     contextCountries: [],
@@ -31,18 +31,18 @@ export const useNH3Context = () => {
     }
     if (!context.contextCountries || context.contextCountries.length === 0) {
         console.warn('[NH3Context]: countries is required');
-    }
+    } else console.log('[NH3Context]: countries loaded: ', context.contextCountries.length);
     if (!context.contextStates || context.contextStates.length === 0) {
         console.warn('[NH3Context]: states is required');
-    }
+    } else console.log('[NH3Context]: states loaded: ', context.contextStates.length);
     if (!context.contextCities || context.contextCities.length === 0) {
         console.warn('[NH3Context]: cities is required');
-    }
-    if (!context.contextNh3StackedData || context.contextNh3StackedData.length === 0) {
-        console.warn('[NH3Context]: contextNh3StackedData is required');
-    }
-    if (!context.contextNh3StackedPercentual || context.contextNh3StackedPercentual.length === 0) {
-        console.warn('[NH3Context]: contextNh3StackedPercentual is required');
-    }
+    } else console.log('[NH3Context]: cities loaded: ', context.contextCities.length);
+    if (!context.contextStackedData || context.contextStackedData.length === 0) {
+        console.warn('[NH3Context]: contextStackedData is required');
+    } else console.log('[NH3Context]: contextStackedData loaded: ', context.contextStackedData.length);
+    if (!context.contextPercentualData || context.contextPercentualData.length === 0) {
+        console.warn('[NH3Context]: contextPercentualData is required');
+    } else console.log('[NH3Context]: contextPercentualData loaded: ', context.contextPercentualData.length);
     return context;
 };

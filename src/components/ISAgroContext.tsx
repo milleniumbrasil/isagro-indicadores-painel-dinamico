@@ -7,6 +7,7 @@ import { IStackedAreaChart, IPercentualAreaChart, ICity, IState, ICountry } from
 export interface ISAgroContextProps {
     geeStackedData?: IStackedAreaChart[];
     nh3StackedData?: IStackedAreaChart[];
+    nh3StackedPercentual?: IPercentualAreaChart[];
     npkStackedData?: IStackedAreaChart[];
     npkPercentual?: IPercentualAreaChart[];
     organicasStackedData: IStackedAreaChart[];
@@ -23,6 +24,7 @@ export interface ISAgroContextProps {
 export const ISAgroContext = createContext<ISAgroContextProps>({
     geeStackedData: [],
     nh3StackedData: [],
+    nh3StackedPercentual: [],
     npkStackedData: [],
     npkPercentual: [],
     organicasStackedData: [],
@@ -54,6 +56,9 @@ export const useISAgroContext = () => {
         throw new Error('useISAgroContext: organicasStackedData is required');
     }
     if (!context.npkStackedData || context.npkStackedData.length === 0) {
+        throw new Error('useISAgroContext: npkStackedData is required');
+    }
+    if (!context.nh3StackedData || context.npkStackedData.length === 0) {
         throw new Error('useISAgroContext: npkStackedData is required');
     }
     return context;

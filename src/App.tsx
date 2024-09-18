@@ -1,14 +1,14 @@
 // src/App.tsx
 
 import React from 'react';
-import Page from './pages/Page';
-import { ISAgroProvider } from './components/ISAgroProvider';
+import OrganicasPage from './pages/OrganicasPage';
+import { OrganicasProvider } from './components/OrganicasProvider';
 
 const App: React.FC = () => {
     return (
-        <ISAgroProvider>
-            <Page />
-        </ISAgroProvider>
+        <OrganicasProvider>
+            <OrganicasPage />
+        </OrganicasProvider>
     );
 };
 

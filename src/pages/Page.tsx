@@ -29,9 +29,13 @@ const Page: FC = () => {
     const { organicasPercentual: contextOrganicasPercentual } = useISAgroContext();
     const { npkStackedData: contextNpkStackedData } = useISAgroContext();
     const { npkPercentual: contextNpkPercentual } = useISAgroContext();
+    const { nh3StackedData: contextNH3StackedData } = useISAgroContext();
+    const { nh3StackedPercentual: contextNH3Percentual } = useISAgroContext();
 
-    const [internalNPKStacked, setInternalNPKStacked] = useState<IStackedAreaChart[]>([]);
-    const [internalNPKPercentual, setInternalNPKPercentual] = useState<IPercentualAreaChart[]>([]);
+    const [internalNpkStacked, setInternalNpkStacked] = useState<IStackedAreaChart[]>([]);
+    const [internalNpkPercentual, setInternalNpkPercentual] = useState<IPercentualAreaChart[]>([]);
+    const [internalNH3Stacked, setInternalNH3Stacked] = useState<IStackedAreaChart[]>([]);
+    const [internalNH3Percentual, setInternalNH3Percentual] = useState<IPercentualAreaChart[]>([]);
     const [internalOrganicasStacked, setInternalOrganicasStacked] = useState<IStackedAreaChart[]>([]);
     const [internalOrganicasPercentual, setInternalOrganicasPercentual] = useState<IPercentualAreaChart[]>([]);
 
@@ -46,12 +50,36 @@ const Page: FC = () => {
                 } else {
                     throw new Error('Page: contextOrganicasPercentual is required');
                 }
+                if (contextNpkPercentual && contextNpkPercentual.length > 0) {
+                    setInternalNpkPercentual(contextNpkPercentual);
+                    console.log(`[Page] internalNpkPercentual loaded from context: ${contextNpkPercentual.length}`);
+                } else {
+                    throw new Error('Page: contextNpkPercentual is required');
+                }
+                if (contextNH3Percentual && contextNH3Percentual.length > 0) {
+                    setInternalNH3Percentual(contextNH3Percentual);
+                    console.log(`[Page] internalNH3Percentual loaded from context: ${contextNH3Percentual.length}`);
+                } else {
+                    throw new Error('Page: contextNH3Percentual is required');
+                }
 
                 if (contextOrganicasStackedData && contextOrganicasStackedData.length > 0) {
                     setInternalOrganicasStacked(contextOrganicasStackedData);
                     console.log(`[Page] internalOrganicasStacked loaded from context: ${internalOrganicasStacked.length}`);
                 } else {
                     throw new Error('Page: contextOrganicasStackedData is required');
+                }
+                if (contextNpkStackedData && contextNpkStackedData.length > 0) {
+                    setInternalNpkStacked(contextNpkStackedData);
+                    console.log(`[Page] internalNpkStacked loaded from context: ${internalNpkStacked.length}`);
+                } else {
+                    throw new Error('Page: contextNpkStackedData is required');
+                }
+                if (contextNH3StackedData && contextNH3StackedData.length > 0) {
+                    setInternalNH3Stacked(contextNH3StackedData);
+                    console.log(`[Page] internalNH3Stacked loaded from context: ${internalNH3Stacked.length}`);
+                } else {
+                    throw new Error('Page: contextNH3StackedData is required');
                 }
             } catch (error) {
                 console.error(error);
@@ -61,7 +89,7 @@ const Page: FC = () => {
         };
 
         fetchData();
-    }, [contextOrganicasPercentual, contextOrganicasStackedData]);
+    }, [contextOrganicasPercentual, contextOrganicasStackedData, contextNpkPercentual, contextNpkStackedData]);
 
     return (
         <div>
@@ -87,10 +115,10 @@ const Page: FC = () => {
                 </Suspense>
 
                 <Suspense fallback={<Loading />}>
-                    {internalNPKPercentual.length > 0 ? (
+                    {internalNpkPercentual.length > 0 ? (
                         <PaperNPK
-                            stackedData={internalNPKStacked}
-                            percentualData={internalNPKPercentual}
+                            stackedData={internalNpkStacked}
+                            percentualData={internalNpkPercentual}
                             countries={countries}
                             states={states}
                             cities={cities}
@@ -101,10 +129,10 @@ const Page: FC = () => {
                 </Suspense>
 
                 <Suspense fallback={<Loading />}>
-                    {internalOrganicasPercentual.length > 0 ? (
+                    {internalNH3Percentual.length > 0 ? (
                         <PaperNH3
-                            stackedData={internalOrganicasStacked}
-                            percentualData={internalOrganicasPercentual}
+                            stackedData={internalNH3Stacked}
+                            percentualData={internalNH3Percentual}
                             countries={countries}
                             states={states}
                             cities={cities}

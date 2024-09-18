@@ -23,6 +23,7 @@ export const ISAgroProvider: FC<{ children: ReactNode }> = ({ children }) => {
     const [erosaoStackedData, setErosaoStackedData] = useState<IStackedAreaChart[]>([]);
     const [geeStackedData, setGeeStackedData] = useState<IStackedAreaChart[]>([]);
     const [nh3StackedData, setNh3StackedData] = useState<IStackedAreaChart[]>([]);
+    const [nh3Percentual, setNh3Percentual] = useState<IPercentualAreaChart[]>([]);
     const [npkStackedData, setNpkStackedData] = useState<IStackedAreaChart[]>([]);
     const [npkPercentual, setNpkPercentual] = useState<IPercentualAreaChart[]>([]);
     const [organicasStackedData, setOrganicasStackedData] = useState<IStackedAreaChart[]>([]);
@@ -59,8 +60,11 @@ export const ISAgroProvider: FC<{ children: ReactNode }> = ({ children }) => {
             // const tmpGEEStackedData = await getGEEDataService.getStackedData();
             // setGeeStackedData(tmpGEEStackedData);
 
-            // const tmpNH3StackedData = await getNH3DataService.getStackedData();
-            // setNh3StackedData(tmpNH3StackedData);
+            const tmpNH3StackedData = await getNH3DataService.getStackedData();
+            setNh3StackedData(tmpNH3StackedData);
+
+            const tmpNh3PercentualData = await getNH3DataService.getPercentualData();
+            setNh3Percentual(tmpNh3PercentualData);
 
             const tmpNPKStackedData = await getNPKDataService.getStackedData();
             setNpkStackedData(tmpNPKStackedData);

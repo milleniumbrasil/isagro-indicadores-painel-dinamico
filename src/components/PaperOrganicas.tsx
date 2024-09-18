@@ -23,6 +23,7 @@ import { DateRange } from 'rsuite/esm/DateRangePicker';
 import AreaChart from './AreaChart';
 
 import { greenBackgroundColor, yellowPalette, bluePalette, brownPalette, brownBackgroundColor, redBackgroundColor, grayBackgroundColor } from './constants';
+import { Typography } from '@mui/material';
 
 interface PaperOrganicasProps {
     countries: ICountry[];
@@ -269,12 +270,13 @@ const PaperOrganicas: FC<PaperOrganicasProps> = (props) => {
 
                     <Card variant="outlined" sx={{ width: '90%', backgroundColor: brownBackgroundColor }}>
                         <CardContent>
-                            <h3>Percentual de áreas Organicas por período</h3>
-                            <h5>
-                                Percentual consolidado de uso da terra por período, considerando dados para Grãos, Hortaliças, Fruticulturas
-                                e Pastagens
-                            </h5>
-                            <p>{`${selectedStartDate.getFullYear()} - ${selectedEndDate.getFullYear()}`}</p>
+                            <Typography gutterBottom variant="h5" component="div">
+                                Percentual de áreas Organicas por período {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
+                            </Typography>
+                            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                                Percentual consolidado de uso da terra por período, considerando dados para Grãos,
+                                Hortaliças, Fruticulturas e Pastagens
+                            </Typography>
                             <Suspense fallback={<Loading />}>
                                 {internalPercentualData.length > 0 ? (
                                     <PercentualAreaChart width={1200} height={400} data={internalPercentualData} valueLabel="Área" />
@@ -287,11 +289,13 @@ const PaperOrganicas: FC<PaperOrganicasProps> = (props) => {
 
                     <Card variant="outlined" sx={{ width: '90%', backgroundColor: greenBackgroundColor }}>
                         <CardContent>
-                            <h3>Áreas Organicas por período</h3>
-                            <h5>
-                                Números absolutos, consolidando dados de uso da terra por período, considerando Grãos, Hortaliças,
-                                Fruticulturas e Pastagens
-                            </h5>
+                            <Typography gutterBottom variant="h5" component="div">
+                                Áreas Organicas por período {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
+                            </Typography>
+                            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                                Números absolutos, consolidando dados de uso da terra por período, considerando Grãos,
+                                Hortaliças, Fruticulturas e Pastagens
+                            </Typography>
                             <Suspense fallback={<Loading />}>
                                 {internalStackedData.length > 0 ? (
                                     <AreaChart width={1200} height={400} data={internalStackedData} defaultPalette={brownPalette}/>
@@ -304,19 +308,25 @@ const PaperOrganicas: FC<PaperOrganicasProps> = (props) => {
 
                     <Card variant="outlined" sx={{ width: '90%', backgroundColor: redBackgroundColor }}>
                         <CardContent>
-                            <h3>Áreas Organicas por período</h3>
-                            <h5>
-                                Números absolutos, consolidando dados de uso da terra por período, considerando Grãos, Hortaliças,
-                                Fruticulturas e Pastagens
-                            </h5>
+                            <Typography gutterBottom variant="h5" component="div">
+                                Áreas Organicas por período {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
+                            </Typography>
+                            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                                Números absolutos, consolidando dados de uso da terra por período, considerando Grãos,
+                                Hortaliças, Fruticulturas e Pastagens
+                            </Typography>
                             <AreaChart width={1200} height={400} data={internalStackedData} defaultPalette={yellowPalette}/>
                         </CardContent>
                     </Card>
                     <Card variant="outlined" sx={{ width: '90%', backgroundColor: grayBackgroundColor }}>
                         <CardContent>
                             <div>
-                                <h3>Áreas Organicas</h3>
-                                <h5>Empilhados por Grão, Hortaliças, Fruticultura, Pastagens</h5>
+                                <Typography gutterBottom variant="h5" component="div">
+                                    Áreas Organicas por período {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
+                                </Typography>
+                                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                                    Empilhados por Grão, Hortaliças, Fruticultura, Pastagens
+                                </Typography>
                                 <div>
                                     <label>
                                         Subsequências (anos):

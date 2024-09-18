@@ -23,6 +23,7 @@ import { DateRange } from 'rsuite/esm/DateRangePicker';
 import AreaChart from './AreaChart';
 
 import { greenBackgroundColor, yellowPalette, bluePalette, brownPalette, brownBackgroundColor, redBackgroundColor, grayBackgroundColor } from './constants';
+import { Typography } from '@mui/material';
 
 interface PaperGEEProps {
     countries: ICountry[];
@@ -263,11 +264,14 @@ const PaperGEE: FC<PaperGEEProps> = (props) => {
 
                     <Card variant="outlined" sx={{ width: '90%', backgroundColor: brownBackgroundColor }}>
                         <CardContent>
-                            <h3>Percentual de áreas GEE por período</h3>
-                            <h5>
-                                Percentual consolidado de uso da terra por período, considerando dados para fertilizantes químicos, fertilizantes orgânicos, manejo de esterco, deposição de extretas, queimas de resíduos de culturas
-                            </h5>
-                            <p>{`${selectedStartDate.getFullYear()} - ${selectedEndDate.getFullYear()}`}</p>
+                            <Typography gutterBottom variant="h5" component="div">
+                            Percentual de áreas GEE por período de {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
+                            </Typography>
+                            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                                Percentual consolidado de uso da terra por período, considerando
+                                dados para fertilizantes químicos, fertilizantes orgânicos, manejo de esterco,
+                                deposição de extretas, queimas de resíduos de culturas.
+                            </Typography>
                             <Suspense fallback={<Loading />}>
                                 {internalPercentualData.length > 0 ? (
                                     <PercentualAreaChart width={1200} height={400} data={internalPercentualData} valueLabel="Área" />
@@ -282,8 +286,12 @@ const PaperGEE: FC<PaperGEEProps> = (props) => {
                         <CardContent>
                             <h3>Áreas GEE por período</h3>
                             <h5>
-                                Números absolutos, consolidando dados de fertilizantes químicos, fertilizantes orgânicos, manejo de esterco, deposição de extretas, queimas de resíduos de culturas
                             </h5>
+                            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                                Números absolutos, consolidando dados de fertilizantes químicos,
+                                fertilizantes orgânicos, manejo de esterco, deposição de extretas,
+                                queimas de resíduos de culturas.
+                            </Typography>
                             <Suspense fallback={<Loading />}>
                                 {internalStackedData.length > 0 ? (
                                     <AreaChart width={1200} height={400} data={internalStackedData} defaultPalette={brownPalette}/>
@@ -297,9 +305,10 @@ const PaperGEE: FC<PaperGEEProps> = (props) => {
                     <Card variant="outlined" sx={{ width: '90%', backgroundColor: redBackgroundColor }}>
                         <CardContent>
                             <h3>Áreas GEE por período</h3>
-                            <h5>
-                                Números absolutos, consolidando dados de fertilizantes químicos, fertilizantes orgânicos, manejo de esterco, deposição de extretas, queimas de resíduos de culturas
-                            </h5>
+                            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                                Números absolutos, consolidando dados de fertilizantes químicos, fertilizantes orgânicos,
+                                manejo de esterco, deposição de extretas, queimas de resíduos de culturas
+                            </Typography>
                             <AreaChart width={1200} height={400} data={internalStackedData} defaultPalette={yellowPalette}/>
                         </CardContent>
                     </Card>

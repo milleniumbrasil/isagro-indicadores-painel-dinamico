@@ -17,8 +17,8 @@ export const NH3Provider: FC<{ children: ReactNode }> = ({ children }) => {
     const [contextCountries, setContextCountries] = useState<ICountry[]>([]);
     const [contextCities, setContextCities] = useState<ICity[]>([]);
 
-    const [nh3StackedData, setNh3StackedData] = useState<IStackedAreaChart[]>([]);
-    const [nh3Percentual, setNh3Percentual] = useState<IPercentualAreaChart[]>([]);
+    const [contextNh3StackedData, setContextNh3StackedData] = useState<IStackedAreaChart[]>([]);
+    const [contextNh3Percentual, setContextNh3Percentual] = useState<IPercentualAreaChart[]>([]);
 
     const getCountriesService = new GetHttpClientCountries<ICountry[]>();
     const getStatesService = new GetHttpClientStates<IState[]>();
@@ -38,10 +38,10 @@ export const NH3Provider: FC<{ children: ReactNode }> = ({ children }) => {
             setContextCities(tmpCitiesData);
 
             const tmpNH3StackedData = await getNH3DataService.getStackedData();
-            setNh3StackedData(tmpNH3StackedData);
+            setContextNh3StackedData(tmpNH3StackedData);
 
             const tmpNpkPercentualData = await getNH3DataService.getPercentualData();
-            setNh3Percentual(tmpNpkPercentualData);
+            setContextNh3Percentual(tmpNpkPercentualData);
 
             result = true;
         } catch (error) {
@@ -61,8 +61,8 @@ export const NH3Provider: FC<{ children: ReactNode }> = ({ children }) => {
     }
 
     const value = {
-        nh3StackedData,
-        nh3Percentual,
+        contextNh3StackedData,
+        contextNh3Percentual,
         contextCities,
         contextStates,
         contextCountries,

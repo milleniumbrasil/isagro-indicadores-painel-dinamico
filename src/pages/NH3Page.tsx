@@ -23,8 +23,8 @@ const PageNH3: FC = () => {
     const { contextStates: contextStates } = useNH3Context();
     const { contextCountries: contextCountries } = useNH3Context();
     const { contextCities } = useNH3Context();
-    const { nh3StackedData: contextNH3StackedData } = useNH3Context();
-    const { nh3StackedPercentual: contextNH3Percentual } = useNH3Context();
+    const { contextNh3StackedData: contextNH3StackedData } = useNH3Context();
+    const { contextNh3StackedPercentual: contextNH3Percentual } = useNH3Context();
 
     const [internalNH3Stacked, setInternalNH3Stacked] = useState<IStackedAreaChart[]>([]);
     const [internalNH3Percentual, setInternalNH3Percentual] = useState<IPercentualAreaChart[]>([]);
@@ -36,15 +36,15 @@ const PageNH3: FC = () => {
             try {
                 if (contextNH3Percentual && contextNH3Percentual.length > 0) {
                     setInternalNH3Percentual(contextNH3Percentual);
-                    console.log(`[Page] internalNH3Percentual loaded from context: ${contextNH3Percentual.length}`);
+                    console.log(`[PageNH3] internalNH3Percentual loaded from context: ${contextNH3Percentual.length}`);
                 } else {
-                    throw new Error('Page: contextNH3Percentual is required');
+                    console.warn('Page: contextNH3Percentual is required');
                 }
                 if (contextNH3StackedData && contextNH3StackedData.length > 0) {
                     setInternalNH3Stacked(contextNH3StackedData);
-                    console.log(`[Page] internalNH3Stacked loaded from context: ${internalNH3Stacked.length}`);
+                    console.log(`[PageNH3] internalNH3Stacked loaded from context: ${internalNH3Stacked.length}`);
                 } else {
-                    throw new Error('Page: contextNH3StackedData is required');
+                    console.warn('Page: contextNH3StackedData is required');
                 }
             } catch (error) {
                 console.error(error);

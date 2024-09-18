@@ -5,8 +5,8 @@ import { IStackedAreaChart, IPercentualAreaChart, ICity, IState, ICountry } from
 
 // Interface para o contexto
 export interface NH3ContextProps {
-    nh3StackedData?: IStackedAreaChart[];
-    nh3StackedPercentual?: IPercentualAreaChart[];
+    contextNh3StackedData?: IStackedAreaChart[];
+    contextNh3StackedPercentual?: IPercentualAreaChart[];
     contextCities: ICity[];
     contextStates: IState[];
     contextCountries: ICountry[];
@@ -15,8 +15,8 @@ export interface NH3ContextProps {
 
 // Criação do contexto
 export const NH3Context = createContext<NH3ContextProps>({
-    nh3StackedData: [],
-    nh3StackedPercentual: [],
+    contextNh3StackedData: [],
+    contextNh3StackedPercentual: [],
     contextCities: [],
     contextStates: [],
     contextCountries: [],
@@ -27,16 +27,22 @@ export const NH3Context = createContext<NH3ContextProps>({
 export const useNH3Context = () => {
     const context = useContext(NH3Context);
     if (!context) {
-        console.warn('useNH3Context deve ser usado dentro de um NH3Provider');
+        console.warn('[NH3Context]: deve ser usado dentro de um NH3Provider');
     }
     if (!context.contextCountries || context.contextCountries.length === 0) {
-        console.warn('useNH3Context: countries is required');
+        console.warn('[NH3Context]: countries is required');
     }
     if (!context.contextStates || context.contextStates.length === 0) {
-        console.warn('useNH3Context: states is required');
+        console.warn('[NH3Context]: states is required');
     }
     if (!context.contextCities || context.contextCities.length === 0) {
-        console.warn('useNH3Context: cities is required');
+        console.warn('[NH3Context]: cities is required');
+    }
+    if (!context.contextNh3StackedData || context.contextNh3StackedData.length === 0) {
+        console.warn('[NH3Context]: contextNh3StackedData is required');
+    }
+    if (!context.contextNh3StackedPercentual || context.contextNh3StackedPercentual.length === 0) {
+        console.warn('[NH3Context]: contextNh3StackedPercentual is required');
     }
     return context;
 };

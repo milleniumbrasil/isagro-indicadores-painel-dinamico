@@ -28,12 +28,12 @@ export default class BaseGetHttpClient {
                 headers: this.headers,
             });
             if (!Array.isArray(response.data))
-                throw new Error(`[Service]: o corpo da resposta não é um array. ${JSON.stringify(response.data)}`);
-            if (response.data === null || response.data === undefined || response.data.length === 0)
-                throw new Error(`[Service]: data is required.`);
+                console.warn(`[Service]: o corpo da resposta não é um array. ${JSON.stringify(response.data)}`);
+            if (response.data === null || response.data === undefined)
+                console.warn(`[Service]: data is required.`);
             return response.data;
         } catch (error) {
-            throw new Error(`[Service]: Resposta de ${endpoint}: ${error}`);
+            throw new Error(`[Service]: Resposta de ${targetURL}: ${error}`);
         }
     }
 }

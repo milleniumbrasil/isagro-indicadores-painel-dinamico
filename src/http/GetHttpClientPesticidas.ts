@@ -1,6 +1,6 @@
 // src/services/GetHttpClientPesticidas.ts
 
-import { IStackedAreaChart } from '../types';
+import { IPercentualAreaChart, IStackedAreaChart } from '../types';
 import BaseGetHttpClient from './BaseGetHttpClient';
 
 class GetHttpClientPesticidas extends BaseGetHttpClient {
@@ -13,8 +13,8 @@ class GetHttpClientPesticidas extends BaseGetHttpClient {
         return this.get<IStackedAreaChart[]>('/stacked');
     }
 
-    public async getPercentualData(): Promise<IStackedAreaChart[]> {
-        return this.get<IStackedAreaChart[]>('/percentuals');
+    public async getPercentualData(): Promise<IPercentualAreaChart[]> {
+        return this.get<IPercentualAreaChart[]>('/percentuals');
     }
 }
 

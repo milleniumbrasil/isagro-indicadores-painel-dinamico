@@ -14,12 +14,18 @@ import { NPKProvider } from './components/NPKProvider';
 import GEEPage from './pages/GEEPage';
 import { GEEProvider } from './components/GEEProvider';
 
+import PesticidasPage from './pages/PesticidasPage';
+import { PesticidasProvider } from './components/PesticidasProvider';
+
 import ErosoesPage from './pages/ErosoesPage';
 import { ErosoesProvider } from './components/ErosoesProvider';
 
 const App: React.FC = () => {
     return (
         <>
+        <PesticidasProvider>
+            <PesticidasPage />
+        </PesticidasProvider>
         <ErosoesProvider>
             <ErosoesPage />
         </ErosoesProvider>

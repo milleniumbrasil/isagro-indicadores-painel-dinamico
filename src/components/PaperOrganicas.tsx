@@ -202,7 +202,7 @@ const PaperOrganicas: FC<PaperOrganicasProps> = (props) => {
                                 label="País"
                                 onChange={handleChangeCountry}
                                 sx={{
-                                    borderRadius: '20px',
+                                    borderRadius: '5px',
                                 }}
                             >
                                 {internalCountries?.map((y, k) => {
@@ -235,7 +235,7 @@ const PaperOrganicas: FC<PaperOrganicasProps> = (props) => {
                                 label="Estado"
                                 onChange={handleChangeState}
                                 sx={{
-                                    borderRadius: '20px',
+                                    borderRadius: '5px',
                                 }}
                             >
                                 {internalStates?.map((y, k) => {
@@ -268,7 +268,7 @@ const PaperOrganicas: FC<PaperOrganicasProps> = (props) => {
                                 label="Cidade"
                                 onChange={handleChangeCity}
                                 sx={{
-                                    borderRadius: '20px',
+                                    borderRadius: '5px',
                                 }}
                             >
                                 {internalCities?.map((y, k) => {

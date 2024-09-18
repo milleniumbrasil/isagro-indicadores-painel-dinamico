@@ -265,7 +265,7 @@ const PaperGEE: FC<PaperGEEProps> = (props) => {
                     <Card variant="outlined" sx={{ width: '90%', backgroundColor: brownBackgroundColor }}>
                         <CardContent>
                             <Typography gutterBottom variant="h5" component="div">
-                            Percentual de áreas GEE por período de {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
+                                Percentual de áreas GEE por período de {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
                             </Typography>
                             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                                 Percentual consolidado de uso da terra por período, considerando
@@ -284,9 +284,9 @@ const PaperGEE: FC<PaperGEEProps> = (props) => {
 
                     <Card variant="outlined" sx={{ width: '90%', backgroundColor: greenBackgroundColor }}>
                         <CardContent>
-                            <h3>Áreas GEE por período</h3>
-                            <h5>
-                            </h5>
+                            <Typography gutterBottom variant="h5" component="div">
+                                Áreas GEE por período {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
+                            </Typography>
                             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                                 Números absolutos, consolidando dados de fertilizantes químicos,
                                 fertilizantes orgânicos, manejo de esterco, deposição de extretas,
@@ -304,7 +304,9 @@ const PaperGEE: FC<PaperGEEProps> = (props) => {
 
                     <Card variant="outlined" sx={{ width: '90%', backgroundColor: redBackgroundColor }}>
                         <CardContent>
-                            <h3>Áreas GEE por período</h3>
+                            <Typography gutterBottom variant="h5" component="div">
+                                Áreas GEE por período de {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
+                            </Typography>
                             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                                 Números absolutos, consolidando dados de fertilizantes químicos, fertilizantes orgânicos,
                                 manejo de esterco, deposição de extretas, queimas de resíduos de culturas

@@ -23,6 +23,7 @@ import { DateRange } from 'rsuite/esm/DateRangePicker';
 import AreaChart from './AreaChart';
 
 import { greenBackgroundColor, yellowPalette, bluePalette, brownPalette, brownBackgroundColor, redBackgroundColor, grayBackgroundColor } from './constants';
+import { Typography } from '@mui/material';
 
 interface PaperNPKProps {
     countries: ICountry[];
@@ -269,10 +270,15 @@ const PaperNPK: FC<PaperNPKProps> = (props) => {
 
                     <Card variant="outlined" sx={{ width: '90%', backgroundColor: brownBackgroundColor }}>
                         <CardContent>
-                            <h3>Percentual de áreas NPK por período</h3>
-                            <h5>
-                                Percentual consolidado de uso da terra por período, considerando dados para 'dejetos animais', 'deposição atmosférica', 'fertilizantes minerais', 'fertilizantes orgânicos', 'fixação biológica de nitrogênio', 'resíduos culturais', 'resíduos industriais', 'resíduos urbanos', 'produção carne bovina', 'produção agrícola', 'área agropecuária'
-                            </h5>
+                            <Typography gutterBottom variant="h5" component="div">
+                                Percentual de áreas NPK por período {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
+                            </Typography>
+                            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                                Percentual consolidado de uso da terra por período, considerando dados para 'dejetos animais',
+                                'deposição atmosférica', 'fertilizantes minerais', 'fertilizantes orgânicos', 'fixação biológica de nitrogênio',
+                                'resíduos culturais', 'resíduos industriais', 'resíduos urbanos', 'produção carne bovina', 'produção agrícola',
+                                'área agropecuária'.
+                            </Typography>
                             <p>{`${selectedStartDate.getFullYear()} - ${selectedEndDate.getFullYear()}`}</p>
                             <Suspense fallback={<Loading />}>
                                 {internalPercentualData.length > 0 ? (
@@ -286,10 +292,15 @@ const PaperNPK: FC<PaperNPKProps> = (props) => {
 
                     <Card variant="outlined" sx={{ width: '90%', backgroundColor: greenBackgroundColor }}>
                         <CardContent>
-                            <h3>Áreas NPK por período</h3>
-                            <h5>
-                                Números absolutos, consolidando dados de 'dejetos animais', 'deposição atmosférica', 'fertilizantes minerais', 'fertilizantes orgânicos', 'fixação biológica de nitrogênio', 'resíduos culturais', 'resíduos industriais', 'resíduos urbanos', 'produção carne bovina', 'produção agrícola', 'área agropecuária'
-                            </h5>
+                            <Typography gutterBottom variant="h5" component="div">
+                                Áreas NPK por período {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
+                            </Typography>
+                            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                                Números absolutos, consolidando dados de 'dejetos animais', 'deposição atmosférica',
+                                'fertilizantes minerais', 'fertilizantes orgânicos', 'fixação biológica de nitrogênio',
+                                'resíduos culturais', 'resíduos industriais', 'resíduos urbanos', 'produção carne bovina',
+                                'produção agrícola', 'área agropecuária'.
+                            </Typography>
                             <Suspense fallback={<Loading />}>
                                 {internalStackedData.length > 0 ? (
                                     <AreaChart width={1200} height={400} data={internalStackedData} defaultPalette={brownPalette}/>
@@ -302,10 +313,15 @@ const PaperNPK: FC<PaperNPKProps> = (props) => {
 
                     <Card variant="outlined" sx={{ width: '90%', backgroundColor: redBackgroundColor }}>
                         <CardContent>
-                            <h3>Áreas NPK por período</h3>
-                            <h5>
-                                Números absolutos, consolidando dados de 'dejetos animais', 'deposição atmosférica', 'fertilizantes minerais', 'fertilizantes orgânicos', 'fixação biológica de nitrogênio', 'resíduos culturais', 'resíduos industriais', 'resíduos urbanos', 'produção carne bovina', 'produção agrícola', 'área agropecuária'
-                            </h5>
+                            <Typography gutterBottom variant="h5" component="div">
+                                Áreas NPK por período {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
+                            </Typography>
+                            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                                Números absolutos, consolidando dados de 'dejetos animais', 'deposição atmosférica',
+                                'fertilizantes minerais', 'fertilizantes orgânicos', 'fixação biológica de nitrogênio',
+                                'resíduos culturais', 'resíduos industriais', 'resíduos urbanos', 'produção carne bovina',
+                                'produção agrícola', 'área agropecuária'
+                            </Typography>
                             <AreaChart width={1200} height={400} data={internalStackedData} defaultPalette={yellowPalette}/>
                         </CardContent>
                     </Card>

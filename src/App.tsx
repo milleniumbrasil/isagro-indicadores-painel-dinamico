@@ -14,12 +14,12 @@ import { NPKProvider } from './components/NPKProvider';
 const App: React.FC = () => {
     return (
         <>
-        {/* <OrganicasProvider>
+        <OrganicasProvider>
             <OrganicasPage />
-        </OrganicasProvider> */}
-        <NH3Provider>
+        </OrganicasProvider>
+        {/* <NH3Provider>
             <NH3Page />
-        </NH3Provider>
+        </NH3Provider> */}
         {/* <NPKProvider>
             <NPKPage />
         </NPKProvider> */}

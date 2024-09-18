@@ -4,7 +4,7 @@ import './GEEPage.css';
 
 import { FC, useEffect, useState, Suspense } from 'react';
 import { useGEEContext } from '../components/gees/GEEContext';
-import { IStackedAreaChart } from '../components/charts/types';
+import { IStackedAreaChart } from '../components/charts/IStackedAreaChart';
 import { IPercentualAreaChart } from '../components/charts/IPercentualAreaChart';
 import PaperGEE from '../components/gees/PaperGEE';
 import { Loader } from 'rsuite';

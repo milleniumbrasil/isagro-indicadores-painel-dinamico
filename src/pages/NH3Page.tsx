@@ -4,7 +4,7 @@ import './NH3Page.css';
 
 import { FC, useEffect, useState, Suspense } from 'react';
 import { useNH3Context } from '../components/nh3s/NH3Context';
-import { IStackedAreaChart } from '../components/charts/types';
+import { IStackedAreaChart } from '../components/charts/IStackedAreaChart';
 import { IPercentualAreaChart } from '../components/charts/IPercentualAreaChart';
 import PaperNH3 from '../components/nh3s/PaperNH3';
 import { Loader } from 'rsuite';

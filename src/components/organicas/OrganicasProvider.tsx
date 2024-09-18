@@ -1,8 +1,8 @@
 // src/components/OrganicasProvider.tsx
 
 import { useState, useEffect, FC, ReactNode } from 'react';
-import { ICity, IState, ICountry } from '../charts/types';
-import { IStackedAreaChart } from '../charts/types';
+import { ICity, IState, ICountry } from '../charts/IStackedAreaChart';
+import { IStackedAreaChart } from '../charts/IStackedAreaChart';
 import { IPercentualAreaChart } from '../charts/IPercentualAreaChart';
 import GetHttpClientStates from '../../http/GetHttpClientStates';
 import GetHttpClientCountries from '../../http/GetCountriesService';

@@ -4,7 +4,7 @@ import './ErosoesPage.css';
 
 import { FC, useEffect, useState, Suspense } from 'react';
 import { useErosoesContext } from '../components/erosoes/ErosoesContext';
-import { IStackedAreaChart } from '../components/charts/types';
+import { IStackedAreaChart } from '../components/charts/IStackedAreaChart';
 import { IPercentualAreaChart } from '../components/charts/IPercentualAreaChart';
 import PaperErosoes from '../components/erosoes/PaperErosoes';
 import { Loader } from 'rsuite';

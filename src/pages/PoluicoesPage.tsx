@@ -4,7 +4,7 @@ import './PoluicoesPage.css';
 
 import { FC, useEffect, useState, Suspense } from 'react';
 import { usePoluicoesContext } from '../components/poluicoes/PoluicoesContext';
-import { IStackedAreaChart } from '../components/charts/types';
+import { IStackedAreaChart } from '../components/charts/IStackedAreaChart';
 import { IPercentualAreaChart } from '../components/charts/IPercentualAreaChart';
 import PaperPoluicoes from '../components/poluicoes/PaperPoluicoes';
 import { Loader } from 'rsuite';

@@ -1,8 +1,8 @@
 // src/components/ErosoesContext.tsx
 
 import { createContext, useContext } from 'react';
-import { ICity, IState, ICountry } from '../charts/types';
-import { IStackedAreaChart } from '../charts/types';
+import { ICity, IState, ICountry } from '../charts/IStackedAreaChart';
+import { IStackedAreaChart } from '../charts/IStackedAreaChart';
 import { IPercentualAreaChart } from '../charts/IPercentualAreaChart';
 
 // Interface para o contexto

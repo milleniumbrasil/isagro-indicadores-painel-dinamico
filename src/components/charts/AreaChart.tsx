@@ -3,7 +3,7 @@
 import { PureComponent } from 'react';
 import { AreaChart as RechatsAreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { greenPalette } from '../colors';
-import { IStackedAreaChart } from './types';
+import { IStackedAreaChart } from './IStackedAreaChart';
 
 interface PercentualAreaChartProps {
     data: IStackedAreaChart[];

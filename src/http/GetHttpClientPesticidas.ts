@@ -1,6 +1,6 @@
 // src/services/GetHttpClientPesticidas.ts
 
-import { IStackedAreaChart } from '../components/charts/types';
+import { IStackedAreaChart } from '../components/charts/IStackedAreaChart';
 import { IPercentualAreaChart } from '../components/charts/IPercentualAreaChart';
 import BaseGetHttpClient from './BaseGetHttpClient';
 

@@ -3,7 +3,7 @@
 import './NPKPage.css';
 
 import { FC, useEffect, useState, Suspense } from 'react';
-import { IStackedAreaChart } from '../components/charts/types';
+import { IStackedAreaChart } from '../components/charts/IStackedAreaChart';
 import { IPercentualAreaChart } from '../components/charts/IPercentualAreaChart';
 import { useNPKContext } from '../components/npks/NPKContext';
 import PaperNPK from '../components/npks/PaperNPK';

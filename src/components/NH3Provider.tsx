@@ -38,9 +38,11 @@ export const NH3Provider: FC<{ children: ReactNode }> = ({ children }) => {
             setContextCities(tmpCitiesData);
 
             const tmpNH3StackedData = await getNH3DataService.getStackedData();
+            console.log('[NH3Provider] tmpNH3StackedData taken: ', tmpNH3StackedData?.length, ' records.');
             setContextNh3StackedData(tmpNH3StackedData);
 
             const tmpNpkPercentualData = await getNH3DataService.getPercentualData();
+            console.log('[NH3Provider] tmpNpkPercentualData taken: ', tmpNpkPercentualData?.length, ' records.');
             setContextNh3Percentual(tmpNpkPercentualData);
 
             result = true;

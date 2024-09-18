@@ -38,13 +38,13 @@ const PageNH3: FC = () => {
                     setInternalNH3Percentual(contextNH3Percentual);
                     console.log(`[PageNH3] internalNH3Percentual loaded from context: ${contextNH3Percentual.length}`);
                 } else {
-                    console.warn('Page: contextNH3Percentual is required');
+                    console.warn('[PageNH3] contextNH3Percentual is required');
                 }
                 if (contextNH3StackedData && contextNH3StackedData.length > 0) {
                     setInternalNH3Stacked(contextNH3StackedData);
                     console.log(`[PageNH3] internalNH3Stacked loaded from context: ${internalNH3Stacked.length}`);
                 } else {
-                    console.warn('Page: contextNH3StackedData is required');
+                    console.warn('[PageNH3] contextNH3StackedData is required');
                 }
             } catch (error) {
                 console.error(error);

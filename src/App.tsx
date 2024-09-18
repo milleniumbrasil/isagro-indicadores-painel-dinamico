@@ -14,9 +14,15 @@ import { NPKProvider } from './components/NPKProvider';
 import GEEPage from './pages/GEEPage';
 import { GEEProvider } from './components/GEEProvider';
 
+import ErosoesPage from './pages/ErosoesPage';
+import { ErosoesProvider } from './components/ErosoesProvider';
+
 const App: React.FC = () => {
     return (
         <>
+        <ErosoesProvider>
+            <ErosoesPage />
+        </ErosoesProvider>
         <GEEProvider>
             <GEEPage />
         </GEEProvider>

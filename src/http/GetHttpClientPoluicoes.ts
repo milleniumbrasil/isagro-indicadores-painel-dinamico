@@ -19,6 +19,11 @@ class GetHttpClientPoluicao extends BaseGetHttpClient {
         return this.get<IStackedAreaChart[]>(`/${period}/stacked`);
     }
 
+    public async getStackedDataByPeriodNState(period: string, state: string): Promise<IStackedAreaChart[]> {
+		this.periodValidation(period);
+        return this.get<IStackedAreaChart[]>(`/${period}/${state}/stacked`);
+    }
+
     public async getPercentualData(): Promise<IPercentualAreaChart[]> {
         return this.get<IPercentualAreaChart[]>('/percentuals');
     }

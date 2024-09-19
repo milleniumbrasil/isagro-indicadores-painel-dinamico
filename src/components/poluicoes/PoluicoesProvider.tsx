@@ -73,13 +73,9 @@ export const PoluicoesProvider: FC<{ children: ReactNode }> = ({ children }) => 
         fetchData();
     }, []);
 
-    const fetchDataByPeriod = async (selectedStart: Date, selectedEnd: Date): Promise<boolean> => {
+    const fetchDataByPeriod = async (period: string): Promise<boolean> => {
         let result = false;
         try {
-            setContextStartDate(selectedStart);
-            setContextEndDate(selectedEnd);
-            // Monta o período no formato "YYYY-YYYY"
-            const period = `${selectedStart.getFullYear().toString()}-${selectedEnd.getFullYear().toString()}`;
             const tmpStackedDataByPeriod = await getPoluicoesDataService.getStackedDataByPeriod(period);
             setContextStackedData(tmpStackedDataByPeriod);
             result = true;
@@ -90,7 +86,11 @@ export const PoluicoesProvider: FC<{ children: ReactNode }> = ({ children }) => 
     };
 
     useEffect(() => {
-        fetchDataByPeriod(contextStartDate, contextEndDate);
+        setContextStartDate(contextStartDate);
+        setContextEndDate(contextEndDate);
+        // Monta o período no formato "YYYY-YYYY"
+        const period = `${contextStartDate.getFullYear().toString()}-${contextEndDate.getFullYear().toString()}`;
+        fetchDataByPeriod(period);
     }, [setContextStartDate, setContextStartDate]);
 
     const value = {

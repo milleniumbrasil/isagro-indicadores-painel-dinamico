@@ -69,6 +69,10 @@ export const PoluicoesProvider: FC<{ children: ReactNode }> = ({ children }) => 
         return result;
     };
 
+    useEffect(() => {
+        fetchData();
+    }, []);
+
     const fetchDataByPeriod = async (selectedStart: Date, selectedEnd: Date): Promise<boolean> => {
         let result = false;
         try {
@@ -84,10 +88,6 @@ export const PoluicoesProvider: FC<{ children: ReactNode }> = ({ children }) => 
         }
         return result;
     };
-
-    useEffect(() => {
-        fetchData();
-    }, []);
 
     useEffect(() => {
         fetchDataByPeriod(contextStartDate, contextEndDate);

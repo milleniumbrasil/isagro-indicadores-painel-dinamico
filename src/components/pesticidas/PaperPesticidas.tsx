@@ -91,32 +91,6 @@ const PaperPesticidas: FC<PaperPesticidasProps> = (props) => {
         setSelectedEndDate(endDate);
     }
 
-    // manipuladores de eventos de tela
-    const handleChangeCountry = (event: SelectChangeEvent) => {
-        setSelectedCountry(event.target.value as string);
-    };
-
-    const handleChangeState = (event: SelectChangeEvent) => {
-        setSelectedState(event.target.value as string);
-    };
-
-    const handleChangeCity = (event: SelectChangeEvent) => {
-        setSelectedCity(event.target.value as string);
-    };
-
-    const handleChangeRangeDates = (rangeDates: DateRange | null, event: SyntheticEvent<Element, Event>) => {
-        // preciso atribuir os valores de data para as variaveis startDate e endDate
-        if (rangeDates) {
-            rangeDates.map((date, index) => {
-                if (index === 0) {
-                    setSelectedStartDate(date);
-                } else {
-                    setSelectedEndDate(date);
-                }
-            });
-        }
-    };
-
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -171,6 +145,32 @@ const PaperPesticidas: FC<PaperPesticidasProps> = (props) => {
         contextStates,
         contextCities,
     ]);
+
+    // manipuladores de eventos de tela
+    const handleChangeCountry = (event: SelectChangeEvent) => {
+        setSelectedCountry(event.target.value as string);
+    };
+
+    const handleChangeState = (event: SelectChangeEvent) => {
+        setSelectedState(event.target.value as string);
+    };
+
+    const handleChangeCity = (event: SelectChangeEvent) => {
+        setSelectedCity(event.target.value as string);
+    };
+
+    const handleChangeRangeDates = (rangeDates: DateRange | null, event: SyntheticEvent<Element, Event>) => {
+        // preciso atribuir os valores de data para as variaveis startDate e endDate
+        if (rangeDates) {
+            rangeDates.map((date, index) => {
+                if (index === 0) {
+                    setSelectedStartDate(date);
+                } else {
+                    setSelectedEndDate(date);
+                }
+            });
+        }
+    };
 
     return (
         <div>

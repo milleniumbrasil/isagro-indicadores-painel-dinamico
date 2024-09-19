@@ -18,6 +18,8 @@ export const PoluicoesProvider: FC<{ children: ReactNode }> = ({ children }) => 
     const [contextStates, setContextStates] = useState<IState[]>([]);
     const [contextCountries, setContextCountries] = useState<ICountry[]>([]);
     const [contextCities, setContextCities] = useState<ICity[]>([]);
+    const [contextStartDate, setContextStartDate] = useState<Date>(new Date());
+    const [contextEndDate, setContextEndDate] = useState<Date>(new Date());
 
     const [contextStackedData, setContextStackedData] = useState<IStackedAreaChart[]>([]);
     const [contextPercentualData, setContextPercentualData] = useState<IPercentualAreaChart[]>([]);
@@ -26,6 +28,20 @@ export const PoluicoesProvider: FC<{ children: ReactNode }> = ({ children }) => 
     const getStatesService = new GetHttpClientStates<IState[]>();
     const getCitiesService = new GetHttpClientCities<ICity[]>();
     const getPoluicoesDataService = new GetHttpClientPoluicoes();
+
+    const initializeStackedDataPeriods = (_stackedData: IStackedAreaChart[]) => {
+        if (_stackedData.length === 0) {
+            return;
+        }
+
+        const dates = _stackedData.map(data => new Date(data.period));
+
+        const startDate = new Date(Math.min(...dates.map(date => date.getTime())));
+        const endDate = new Date(Math.max(...dates.map(date => date.getTime())));
+
+        setContextStartDate(startDate);
+        setContextEndDate(endDate);
+    }
 
     const fetchData = async (): Promise<boolean> => {
         let result = false;
@@ -41,6 +57,7 @@ export const PoluicoesProvider: FC<{ children: ReactNode }> = ({ children }) => 
 
             const tmpStackedData = await getPoluicoesDataService.getStackedData();
             setContextStackedData(tmpStackedData);
+            initializeStackedDataPeriods(tmpStackedData);
 
             const tmpPercentualData = await getPoluicoesDataService.getPercentualData();
             setContextPercentualData(tmpPercentualData);
@@ -52,9 +69,29 @@ export const PoluicoesProvider: FC<{ children: ReactNode }> = ({ children }) => 
         return result;
     };
 
+    const fetchDataByPeriod = async (selectedStart: Date, selectedEnd: Date): Promise<boolean> => {
+        let result = false;
+        try {
+            setContextStartDate(selectedStart);
+            setContextEndDate(selectedEnd);
+            // Monta o período no formato "YYYY-YYYY"
+            const period = `${selectedStart.getFullYear().toString()}-${selectedEnd.getFullYear().toString()}`;
+            const tmpStackedDataByPeriod = await getPoluicoesDataService.getStackedDataByPeriod(period);
+            setContextStackedData(tmpStackedDataByPeriod);
+            result = true;
+        } catch (error) {
+            console.warn('[PoluicoesProvider]: Erro ao buscar dados por periodo:', error);
+        }
+        return result;
+    };
+
     useEffect(() => {
         fetchData();
     }, []);
+
+    useEffect(() => {
+        fetchDataByPeriod(contextStartDate, contextEndDate);
+    }, [setContextStartDate, setContextStartDate]);
 
     const value = {
         contextStackedData,
@@ -62,6 +99,10 @@ export const PoluicoesProvider: FC<{ children: ReactNode }> = ({ children }) => 
         contextCities,
         contextStates,
         contextCountries,
+        contextStartDate,
+        contextEndDate,
+        setContextStartDate,
+        setContextEndDate,
         fetchData,
     };
 

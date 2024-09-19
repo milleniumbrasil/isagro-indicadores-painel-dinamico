@@ -105,15 +105,10 @@ const PaperPoluicoes: FC<PaperPoluicoesProps> = (props) => {
     };
 
     const handleChangeRangeDates = (rangeDates: DateRange | null, event: SyntheticEvent<Element, Event>) => {
-        // preciso atribuir os valores de data para as variaveis startDate e endDate
         if (rangeDates) {
-            rangeDates.map((date, index) => {
-                if (index === 0) {
-                    setContextStartDate(date);
-                } else {
-                    setContextEndDate(date);
-                }
-            });
+            const [startDate, endDate] = rangeDates;
+            setContextStartDate(startDate);
+            setContextEndDate(endDate);
         }
     };
 
@@ -129,7 +124,6 @@ const PaperPoluicoes: FC<PaperPoluicoesProps> = (props) => {
                 setInternalStackedData(props.stackedData);
                 console.log(`[PaperPoluicoes] internalStackedData: ${JSON.stringify(internalStackedData)}`);
 
-                // set selectedStartDate and selectedEndDate
                 handleStackedDataPeriods(internalStackedData);
 
                 if (!props.countries) {

@@ -86,12 +86,11 @@ export const PoluicoesProvider: FC<{ children: ReactNode }> = ({ children }) => 
     };
 
     useEffect(() => {
-        setContextStartDate(contextStartDate);
-        setContextEndDate(contextEndDate);
-        // Monta o período no formato "YYYY-YYYY"
-        const period = `${contextStartDate.getFullYear().toString()}-${contextEndDate.getFullYear().toString()}`;
-        fetchDataByPeriod(period);
-    }, [setContextStartDate, setContextStartDate]);
+        if (contextStartDate && contextEndDate) {
+            const period = `${contextStartDate.getFullYear()}-${contextEndDate.getFullYear()}`;
+            fetchDataByPeriod(period);
+        }
+    }, [contextStartDate, contextEndDate]);
 
     const value = {
         contextStackedData,

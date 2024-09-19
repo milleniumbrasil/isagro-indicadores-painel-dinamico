@@ -60,6 +60,10 @@ const PaperPoluicoes: FC<PaperPoluicoesProps> = (props) => {
     const { contextCountries } = usePoluicoesContext();
     const { contextStates } = usePoluicoesContext();
     const { contextCities } = usePoluicoesContext();
+    const { contextStartDate } = usePoluicoesContext();
+    const { contextEndDate } = usePoluicoesContext();
+    const { setContextStartDate } = usePoluicoesContext();
+    const { setContextEndDate } = usePoluicoesContext();
 
     // dados internos do componente
     const [internalCountries, setInternalCountries] = useState<ICountry[]>([]);
@@ -72,8 +76,6 @@ const PaperPoluicoes: FC<PaperPoluicoesProps> = (props) => {
     const [selectedCountry, setSelectedCountry] = useState('');
     const [selectedState, setSelectedState] = useState('');
     const [selectedCity, setSelectedCity] = useState('');
-    const [selectedStartDate, setSelectedStartDate] = useState<Date>(new Date());
-    const [selectedEndDate, setSelectedEndDate] = useState<Date>(new Date());
 
     const handleStackedDataPeriods = (_stackedData: IStackedAreaChart[]) => {
         if (_stackedData.length === 0) {
@@ -85,8 +87,8 @@ const PaperPoluicoes: FC<PaperPoluicoesProps> = (props) => {
         const startDate = new Date(Math.min(...dates.map(date => date.getTime())));
         const endDate = new Date(Math.max(...dates.map(date => date.getTime())));
 
-        setSelectedStartDate(startDate);
-        setSelectedEndDate(endDate);
+        setContextStartDate(startDate);
+        setContextEndDate(endDate);
     }
 
     // manipuladores de eventos de tela
@@ -107,9 +109,9 @@ const PaperPoluicoes: FC<PaperPoluicoesProps> = (props) => {
         if (rangeDates) {
             rangeDates.map((date, index) => {
                 if (index === 0) {
-                    setSelectedStartDate(date);
+                    setContextStartDate(date);
                 } else {
-                    setSelectedEndDate(date);
+                    setContextEndDate(date);
                 }
             });
         }
@@ -299,7 +301,7 @@ const PaperPoluicoes: FC<PaperPoluicoesProps> = (props) => {
                     <Card variant="outlined" sx={{ width: '90%', backgroundColor: greenBackgroundColor }}>
                         <CardContent>
                             <Typography gutterBottom variant="h5" component="div">
-                                Percentual de poluições por período de {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
+                                Percentual de poluições por período de {`${contextStartDate?.getFullYear()} à ${contextEndDate?.getFullYear()}`}
                             </Typography>
                             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                                 Percentual consolidado, considerando dados para fertilizantes químicos,
@@ -318,7 +320,7 @@ const PaperPoluicoes: FC<PaperPoluicoesProps> = (props) => {
                     <Card variant="outlined" sx={{ width: '90%', backgroundColor: brownBackgroundColor }}>
                         <CardContent>
                             <Typography gutterBottom variant="h5" component="div">
-                                Áreas Poluições por período {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
+                                Áreas Poluições por período {`${contextStartDate?.getFullYear()} à ${contextEndDate?.getFullYear()}`}
                             </Typography>
                             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                                 Números absolutos, consolidando dados de fertilizantes químicos,
@@ -338,7 +340,7 @@ const PaperPoluicoes: FC<PaperPoluicoesProps> = (props) => {
                     <Card variant="outlined" sx={{ width: '90%', backgroundColor: yellowBackgroundColor }}>
                         <CardContent>
                             <Typography gutterBottom variant="h5" component="div">
-                                Média Móvel de poluições por período de {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
+                                Média Móvel de poluições por período de {`${contextStartDate?.getFullYear()} à ${contextEndDate?.getFullYear()}`}
                             </Typography>
                             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                                 Números absolutos, consolidando dados de fertilizantes químicos, fertilizantes orgânicos,

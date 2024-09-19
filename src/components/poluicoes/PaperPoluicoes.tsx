@@ -77,20 +77,6 @@ const PaperPoluicoes: FC<PaperPoluicoesProps> = (props) => {
     const [selectedState, setSelectedState] = useState('');
     const [selectedCity, setSelectedCity] = useState('');
 
-    const handleStackedDataPeriods = (_stackedData: IStackedAreaChart[]) => {
-        if (_stackedData.length === 0) {
-            return;
-        }
-
-        const dates = _stackedData.map(data => new Date(data.period));
-
-        const startDate = new Date(Math.min(...dates.map(date => date.getTime())));
-        const endDate = new Date(Math.max(...dates.map(date => date.getTime())));
-
-        setContextStartDate(startDate);
-        setContextEndDate(endDate);
-    }
-
     // manipuladores de eventos de tela
     const handleChangeCountry = (event: SelectChangeEvent) => {
         setSelectedCountry(event.target.value as string);
@@ -123,8 +109,6 @@ const PaperPoluicoes: FC<PaperPoluicoesProps> = (props) => {
                 if (!props.stackedData || props.stackedData.length === 0) throw new Error('[PaperPoluicoes]: stackedData is required');
                 setInternalStackedData(props.stackedData);
                 console.log(`[PaperPoluicoes] internalStackedData: ${JSON.stringify(internalStackedData)}`);
-
-                handleStackedDataPeriods(internalStackedData);
 
                 if (!props.countries) {
                     setInternalCountries(props.countries);
@@ -164,6 +148,8 @@ const PaperPoluicoes: FC<PaperPoluicoesProps> = (props) => {
         contextCountries,
         contextStates,
         contextCities,
+        contextStartDate,
+        contextEndDate,
     ]);
 
     return (

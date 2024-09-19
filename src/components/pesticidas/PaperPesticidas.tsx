@@ -77,6 +77,46 @@ const PaperPesticidas: FC<PaperPesticidasProps> = (props) => {
     const [selectedStartDate, setSelectedStartDate] = useState<Date>(new Date());
     const [selectedEndDate, setSelectedEndDate] = useState<Date>(new Date());
 
+    const handleStackedDataPeriods = (_stackedData: IStackedAreaChart[]) => {
+        if (_stackedData.length === 0) {
+            return;
+        }
+
+        const dates = _stackedData.map(data => new Date(data.period));
+
+        const startDate = new Date(Math.min(...dates.map(date => date.getTime())));
+        const endDate = new Date(Math.max(...dates.map(date => date.getTime())));
+
+        setSelectedStartDate(startDate);
+        setSelectedEndDate(endDate);
+    }
+
+    // manipuladores de eventos de tela
+    const handleChangeCountry = (event: SelectChangeEvent) => {
+        setSelectedCountry(event.target.value as string);
+    };
+
+    const handleChangeState = (event: SelectChangeEvent) => {
+        setSelectedState(event.target.value as string);
+    };
+
+    const handleChangeCity = (event: SelectChangeEvent) => {
+        setSelectedCity(event.target.value as string);
+    };
+
+    const handleChangeRangeDates = (rangeDates: DateRange | null, event: SyntheticEvent<Element, Event>) => {
+        // preciso atribuir os valores de data para as variaveis startDate e endDate
+        if (rangeDates) {
+            rangeDates.map((date, index) => {
+                if (index === 0) {
+                    setSelectedStartDate(date);
+                } else {
+                    setSelectedEndDate(date);
+                }
+            });
+        }
+    };
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -88,6 +128,9 @@ const PaperPesticidas: FC<PaperPesticidasProps> = (props) => {
                 if (!props.stackedData || props.stackedData.length === 0) throw new Error('[PaperPesticidas]: stackedData is required');
                 setInternalStackedData(props.stackedData);
                 console.log(`[PaperPesticidas] internalStackedData: ${JSON.stringify(internalStackedData)}`);
+
+                // set selectedStartDate and selectedEndDate
+                handleStackedDataPeriods(internalStackedData);
 
                 if (!props.countries) {
                     setInternalCountries(props.countries);
@@ -128,32 +171,6 @@ const PaperPesticidas: FC<PaperPesticidasProps> = (props) => {
         contextStates,
         contextCities,
     ]);
-
-    // manipuladores de eventos de tela
-    const handleChangeCountry = (event: SelectChangeEvent) => {
-        setSelectedCountry(event.target.value as string);
-    };
-
-    const handleChangeState = (event: SelectChangeEvent) => {
-        setSelectedState(event.target.value as string);
-    };
-
-    const handleChangeCity = (event: SelectChangeEvent) => {
-        setSelectedCity(event.target.value as string);
-    };
-
-    const handleChangeRangeDates = (rangeDates: DateRange | null, event: SyntheticEvent<Element, Event>) => {
-        // preciso atribuir os valores de data para as variaveis startDate e endDate
-        if (rangeDates) {
-            rangeDates.map((date, index) => {
-                if (index === 0) {
-                    setSelectedStartDate(date);
-                } else {
-                    setSelectedEndDate(date);
-                }
-            });
-        }
-    };
 
     return (
         <div>

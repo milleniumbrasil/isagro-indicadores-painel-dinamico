@@ -75,7 +75,7 @@ const PaperPoluicoes: FC<PaperPoluicoesProps> = (props) => {
     const [selectedStartDate, setSelectedStartDate] = useState<Date>(new Date());
     const [selectedEndDate, setSelectedEndDate] = useState<Date>(new Date());
 
-    function handleStackedDataPeriods(_stackedData: IStackedAreaChart[]) {
+    const handleStackedDataPeriods = (_stackedData: IStackedAreaChart[]) => {
         if (_stackedData.length === 0) {
             return;
         }

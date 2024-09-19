@@ -74,6 +74,20 @@ const PaperNH3: FC<PaperNH3Props> = (props) => {
     const [selectedStartDate, setSelectedStartDate] = useState<Date>(new Date());
     const [selectedEndDate, setSelectedEndDate] = useState<Date>(new Date());
 
+    const handleStackedDataPeriods = (_stackedData: IStackedAreaChart[]) => {
+        if (_stackedData.length === 0) {
+            return;
+        }
+
+        const dates = _stackedData.map(data => new Date(data.period));
+
+        const startDate = new Date(Math.min(...dates.map(date => date.getTime())));
+        const endDate = new Date(Math.max(...dates.map(date => date.getTime())));
+
+        setSelectedStartDate(startDate);
+        setSelectedEndDate(endDate);
+    }
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -85,6 +99,9 @@ const PaperNH3: FC<PaperNH3Props> = (props) => {
                 if (!props.stackedData || props.stackedData.length === 0) throw new Error('[PaperNH3]: stackedData is required');
                 setInternalStackedData(props.stackedData);
                 console.log(`[PaperNH3] internalStackedData: ${JSON.stringify(internalStackedData)}`);
+
+                // set selectedStartDate and selectedEndDate
+                handleStackedDataPeriods(internalStackedData);
 
                 if (!props.countries) {
                     setInternalCountries(props.countries);

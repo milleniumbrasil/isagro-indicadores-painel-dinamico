@@ -75,6 +75,46 @@ const PaperPoluicoes: FC<PaperPoluicoesProps> = (props) => {
     const [selectedStartDate, setSelectedStartDate] = useState<Date>(new Date());
     const [selectedEndDate, setSelectedEndDate] = useState<Date>(new Date());
 
+    function handleStackedDataPeriods(_stackedData: IStackedAreaChart[]) {
+        if (_stackedData.length === 0) {
+            return;
+        }
+
+        const dates = _stackedData.map(data => new Date(data.period));
+
+        const startDate = new Date(Math.min(...dates.map(date => date.getTime())));
+        const endDate = new Date(Math.max(...dates.map(date => date.getTime())));
+
+        setSelectedStartDate(startDate);
+        setSelectedEndDate(endDate);
+    }
+
+    // manipuladores de eventos de tela
+    const handleChangeCountry = (event: SelectChangeEvent) => {
+        setSelectedCountry(event.target.value as string);
+    };
+
+    const handleChangeState = (event: SelectChangeEvent) => {
+        setSelectedState(event.target.value as string);
+    };
+
+    const handleChangeCity = (event: SelectChangeEvent) => {
+        setSelectedCity(event.target.value as string);
+    };
+
+    const handleChangeRangeDates = (rangeDates: DateRange | null, event: SyntheticEvent<Element, Event>) => {
+        // preciso atribuir os valores de data para as variaveis startDate e endDate
+        if (rangeDates) {
+            rangeDates.map((date, index) => {
+                if (index === 0) {
+                    setSelectedStartDate(date);
+                } else {
+                    setSelectedEndDate(date);
+                }
+            });
+        }
+    };
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -86,6 +126,9 @@ const PaperPoluicoes: FC<PaperPoluicoesProps> = (props) => {
                 if (!props.stackedData || props.stackedData.length === 0) throw new Error('[PaperPoluicoes]: stackedData is required');
                 setInternalStackedData(props.stackedData);
                 console.log(`[PaperPoluicoes] internalStackedData: ${JSON.stringify(internalStackedData)}`);
+
+                // set selectedStartDate and selectedEndDate
+                handleStackedDataPeriods(internalStackedData);
 
                 if (!props.countries) {
                     setInternalCountries(props.countries);
@@ -126,32 +169,6 @@ const PaperPoluicoes: FC<PaperPoluicoesProps> = (props) => {
         contextStates,
         contextCities,
     ]);
-
-    // manipuladores de eventos de tela
-    const handleChangeCountry = (event: SelectChangeEvent) => {
-        setSelectedCountry(event.target.value as string);
-    };
-
-    const handleChangeState = (event: SelectChangeEvent) => {
-        setSelectedState(event.target.value as string);
-    };
-
-    const handleChangeCity = (event: SelectChangeEvent) => {
-        setSelectedCity(event.target.value as string);
-    };
-
-    const handleChangeRangeDates = (rangeDates: DateRange | null, event: SyntheticEvent<Element, Event>) => {
-        // preciso atribuir os valores de data para as variaveis startDate e endDate
-        if (rangeDates) {
-            rangeDates.map((date, index) => {
-                if (index === 0) {
-                    setSelectedStartDate(date);
-                } else {
-                    setSelectedEndDate(date);
-                }
-            });
-        }
-    };
 
     return (
         <div>
@@ -282,12 +299,11 @@ const PaperPoluicoes: FC<PaperPoluicoesProps> = (props) => {
                     <Card variant="outlined" sx={{ width: '90%', backgroundColor: greenBackgroundColor }}>
                         <CardContent>
                             <Typography gutterBottom variant="h5" component="div">
-                                Percentual de áreas Poluicoes por período de {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
+                                Percentual de poluições por período de {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
                             </Typography>
                             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                Percentual consolidado de uso da terra por período, considerando
-                                dados para fertilizantes químicos, fertilizantes orgânicos, manejo de esterco,
-                                deposição de extretas, queimas de resíduos de culturas.
+                                Percentual consolidado, considerando dados para fertilizantes químicos,
+                                fertilizantes orgânicos, manejo de esterco, deposição de extretas, queimas de resíduos de culturas.
                             </Typography>
                             <Suspense fallback={<Loading />}>
                                 {internalPercentualData.length > 0 ? (
@@ -302,7 +318,7 @@ const PaperPoluicoes: FC<PaperPoluicoesProps> = (props) => {
                     <Card variant="outlined" sx={{ width: '90%', backgroundColor: brownBackgroundColor }}>
                         <CardContent>
                             <Typography gutterBottom variant="h5" component="div">
-                                Áreas Poluicoes por período {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
+                                Áreas Poluições por período {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
                             </Typography>
                             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                                 Números absolutos, consolidando dados de fertilizantes químicos,
@@ -322,7 +338,7 @@ const PaperPoluicoes: FC<PaperPoluicoesProps> = (props) => {
                     <Card variant="outlined" sx={{ width: '90%', backgroundColor: yellowBackgroundColor }}>
                         <CardContent>
                             <Typography gutterBottom variant="h5" component="div">
-                                Áreas Poluicoes por período de {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
+                                Média Móvel de poluições por período de {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
                             </Typography>
                             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                                 Números absolutos, consolidando dados de fertilizantes químicos, fertilizantes orgânicos,
@@ -338,3 +354,5 @@ const PaperPoluicoes: FC<PaperPoluicoesProps> = (props) => {
 };
 
 export default PaperPoluicoes;
+
+

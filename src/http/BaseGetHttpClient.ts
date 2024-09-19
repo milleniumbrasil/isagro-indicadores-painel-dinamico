@@ -38,5 +38,18 @@ export default class BaseGetHttpClient {
             throw new Error(`[BaseGetHttpClient]: Resposta de ${targetURL}: ${error}`);
         }
     }
+
+    protected periodValidation(period: string): void {
+		const periodRegex = /^\d{4}-\d{4}$/;
+		if (!periodRegex.test(period)) {
+			throw new Error(`[BaseGetHttpClient] O período [${period}] está no formato incorreto. O formato correto é 'ano-ano', como '1990-2000'.`);
+		  }
+	  }
+
+	protected parsePeriod(period: string): number[] {
+		const [anoInicial, anoFinal] = period.split('-');
+		console.log(`[BaseGetHttpClient] parsePeriod: Ano Inicial: ${anoInicial}, Ano Final: ${anoFinal}`);
+		return [parseInt(anoInicial), parseInt(anoFinal)];
+	}
 }
 

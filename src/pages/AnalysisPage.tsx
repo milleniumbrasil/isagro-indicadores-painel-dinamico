@@ -13,15 +13,14 @@ import InfoIcon from '@mui/icons-material/Info';
 import CloseIcon from '@mui/icons-material/Close';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 
-import {
-    Box,
-    Fab,
-    FormControl,
-    MenuItem,
-    Select,
-    SelectChangeEvent,
-    Typography,
-} from '@mui/material';
+import { Box, Fab, FormControl, MenuItem, Select, SelectChangeEvent, Typography } from '@mui/material';
+
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import Avatar from '@mui/material/Avatar';
+import ListItemText from '@mui/material/ListItemText';
+import FolderIcon from '@mui/icons-material/Folder';
 
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -100,8 +99,15 @@ const AnalysisPage: FC = () => {
     const [selectedLabel, setSelectedLabel] = useState<string>('fruticultura');
     const [selectedStateName, setSelectedStateName] = useState<string>('Distrito Federal');
     const [selectedState, setSelectedState] = useState<iEstado>(estados['Distrito Federal']);
-    const [selectedStartDate, setSelectedStartDate] = useState<Date>(new Date());
-    const [selectedEndDate, setSelectedEndDate] = useState<Date>(new Date());
+    const [selectedStartDate, setSelectedStartDate] = useState<Date>(new Date('1990-01-01'));
+    const [selectedEndDate, setSelectedEndDate] = useState<Date>(new Date('1995-12-31'));
+    const [analysisDescription, setAnalysisDescription] = useState<string>(`
+        Análise: Orgânicas.
+        Fonte: UNB.
+        Rótulo: Fruticultura.
+        Período: Janeiro de 1990 - Dezembro de 1995.
+        Gráficos disponíveis: Média Móvel Simples, Soma Agregada, Percentual.
+    `);
 
     const [layers, setLayers] = useState(initialConfig.layers);
     const [styles, setStyles] = useState(initialConfig.styles);
@@ -317,19 +323,24 @@ const AnalysisPage: FC = () => {
         setBbox(state.bbox.join(','));
         setZoom(state.zoom);
     };
-
     const handleChangeRangeDates = (rangeDates: DateRange | null, event: SyntheticEvent<Element, Event>) => {
-        // preciso atribuir os valores de data para as variaveis startDate e endDate
         if (rangeDates) {
-            rangeDates.map((date, index) => {
-                if (index === 0) {
-                    setSelectedStartDate(date);
-                } else {
-                    setSelectedEndDate(date);
-                }
-            });
+            setSelectedStartDate(rangeDates[0]);
+            setSelectedEndDate(rangeDates[1]);
         }
     };
+    // const handleChangeRangeDates = (rangeDates: DateRange | null, event: SyntheticEvent<Element, Event>) => {
+    //     // preciso atribuir os valores de data para as variaveis startDate e endDate
+    //     if (rangeDates) {
+    //         rangeDates.map((date, index) => {
+    //             if (index === 0) {
+    //                 setSelectedStartDate(date);
+    //             } else {
+    //                 setSelectedEndDate(date);
+    //             }
+    //         });
+    //     }
+    // };
 
     const handleSourceChange = (event: SelectChangeEvent) => {
         const selectedValue = event.target.value as string;
@@ -352,6 +363,69 @@ const AnalysisPage: FC = () => {
         setSelectedLabel(selectedValue); // Atualiza o estado do rótulo selecionado
         console.log('Rótulo selecionado:', selectedValue);
     };
+
+    const analysisDescriptions = {
+        erosao: {
+            title: "Análise de Erosão",
+            description: "A análise de erosão foca em identificar e monitorar áreas sujeitas à degradação do solo devido à ação da água ou vento. Essa análise é fundamental para a preservação ambiental e a implementação de práticas de conservação.",
+            source: "Instituto Agronômico de Campinas (IAC)",
+            labels: "Pastagem, Cultura",
+            period: `${selectedStartDate.toLocaleDateString('pt-BR')} - ${selectedEndDate.toLocaleDateString('pt-BR')}`,
+            charts: "Média Móvel Simples, Soma Agregada, Percentual"
+        },
+        gee: {
+            title: "Análise de Emissões de GEE (Gases de Efeito Estufa)",
+            description: "Esta análise acompanha as emissões de gases de efeito estufa (GEE) provenientes de diversas atividades agrícolas e industriais, sendo essencial para entender o impacto das mudanças climáticas.",
+            source: "Organização para a Cooperação e Desenvolvimento Econômico (OCDE)",
+            labels: "Tecnologia 1, Tecnologia 2, Tecnologia 3, Tecnologia 4",
+            period: `${selectedStartDate.toLocaleDateString('pt-BR')} - ${selectedEndDate.toLocaleDateString('pt-BR')}`,
+            charts: "Média Móvel Simples, Soma Agregada, Percentual"
+        },
+        nh3: {
+            title: "Análise de Emissões de NH3",
+            description: "A análise de emissões de amônia (NH3) busca entender como a aplicação de fertilizantes e o manejo de dejetos animais contribuem para a poluição do ar e a acidificação do solo.",
+            source: "Universidade de Brasília (UNB)",
+            labels: "Fertilizantes Químicos, Fertilizantes Orgânicos, Manejo de Esterco, Deposição de Extretas",
+            period: `${selectedStartDate.toLocaleDateString('pt-BR')} - ${selectedEndDate.toLocaleDateString('pt-BR')}`,
+            charts: "Média Móvel Simples, Soma Agregada, Percentual"
+        },
+        npk: {
+            title: "Análise de Nutrientes NPK",
+            description: "Esta análise aborda o uso de nutrientes NPK (nitrogênio, fósforo e potássio) nas práticas agrícolas e seu impacto sobre a produtividade e a sustentabilidade do solo.",
+            source: "Instituto Agronômico de Campinas (IAC)",
+            labels: "Dejetos Animais, Deposição Atmosférica, Fertilizantes Minerais, Produção Agrícola",
+            period: `${selectedStartDate.toLocaleDateString('pt-BR')} - ${selectedEndDate.toLocaleDateString('pt-BR')}`,
+            charts: "Média Móvel Simples, Soma Agregada, Percentual"
+        },
+        organicas: {
+            title: "Análise de Áreas Orgânicas",
+            description: "A análise de áreas orgânicas foca no acompanhamento do uso de práticas agrícolas orgânicas, explorando o impacto positivo no meio ambiente e a qualidade do solo.",
+            source: "Universidade de Brasília (UNB)",
+            labels: "Grão, Hortaliças, Fruticultura, Pastagem",
+            period: `${selectedStartDate.toLocaleDateString('pt-BR')} - ${selectedEndDate.toLocaleDateString('pt-BR')}`,
+            charts: "Média Móvel Simples, Soma Agregada, Percentual"
+        },
+        pesticidas: {
+            title: "Análise de Uso de Pesticidas",
+            description: "Esta análise acompanha o uso de pesticidas, como herbicidas, fungicidas e inseticidas, nas práticas agrícolas, avaliando o impacto sobre o solo e os ecossistemas.",
+            source: "Organização para a Cooperação e Desenvolvimento Econômico (OCDE)",
+            labels: "Herbicidas, Fungicidas, Inseticidas, Outros",
+            period: `${selectedStartDate.toLocaleDateString('pt-BR')} - ${selectedEndDate.toLocaleDateString('pt-BR')}`,
+            charts: "Média Móvel Simples, Soma Agregada, Percentual"
+        },
+        poluicao: {
+            title: "Análise de Poluição",
+            description: "A análise de poluição monitora a presença de poluentes como nitrato, fosfato, cátions e ânions no solo e na água, essenciais para preservar a qualidade dos recursos naturais.",
+            source: "Universidade de Brasília (UNB)",
+            labels: "Nitrato, Fosfato, Cations, Anions",
+            period: `${selectedStartDate.toLocaleDateString('pt-BR')} - ${selectedEndDate.toLocaleDateString('pt-BR')}`,
+            charts: "Média Móvel Simples, Soma Agregada, Percentual"
+        }
+    };
+
+    const currentAnalysisDescription = analysisDescriptions[
+        selectedAnalysis.toLowerCase() as keyof typeof analysisDescriptions
+      ] || {};
 
     // useEffect(() => {
     //     const fetchData = async () => {
@@ -380,25 +454,19 @@ const AnalysisPage: FC = () => {
     // }, [contextAnalysisPercentual, contextAnalysisStackedData]);
 
     useEffect(() => {
-        // Atualiza os rótulos com base na análise padrão (orgânicas)
-        const validLabelValues = getValidLabelsByAnalysis(selectedAnalysis);
-        const validLabelsForDisplay = availableLabels.filter((labelItem) => validLabelValues.includes(labelItem.value));
+        const startDateFormatted = selectedStartDate.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+        const endDateFormatted = selectedEndDate.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
 
-        // Apenas atualize os rótulos se forem diferentes dos atuais
-        if (JSON.stringify(labels) !== JSON.stringify(validLabelsForDisplay)) {
-            setLabels(validLabelsForDisplay);
-        }
+        const description = `
+            Análise: ${selectedAnalysis.charAt(0).toUpperCase() + selectedAnalysis.slice(1)}.
+            Fonte: ${selectedSource}.
+            Rótulo: ${selectedLabel}.
+            Período: ${startDateFormatted} - ${endDateFormatted}.
+            Gráficos disponíveis: Média Móvel Simples, Soma Agregada, Percentual.
+        `;
 
-        // Verifica se o rótulo padrão existe na lista de rótulos válidos
-        if (!validLabelValues.includes(selectedLabel)) {
-            setSelectedLabel(validLabelsForDisplay.length > 0 ? validLabelsForDisplay[0].value : '');
-        }
-
-        // Inicializa a fonte com 'UNB' se disponível, senão escolhe a primeira fonte disponível
-        if (!availableSsources.map(source => source.value).includes(selectedSource)) {
-            setSelectedSource(availableSsources.length > 0 ? availableSsources[0].value : '');
-        }
-    }, [selectedAnalysis, availableSsources]); // Removi `availableLabels` da lista de dependências para evitar loop
+        setAnalysisDescription(description);
+    }, [selectedAnalysis, selectedLabel, selectedSource, selectedStartDate, selectedEndDate]);
 
     return (
         <>
@@ -415,7 +483,6 @@ const AnalysisPage: FC = () => {
                     <Loading />
                 )}
             </Suspense> */}
-
 
             <div>
                 <Drawer anchor={'right'} open={open} onClose={() => setOpen(false)}>
@@ -459,11 +526,7 @@ const AnalysisPage: FC = () => {
                                 <Typography>Ao selecionar uma análise, os gráficos devem exibir os dados correspondentes.</Typography>
                                 <Divider variant="middle" sx={{ margin: '15px' }} />
                                 <FormControl fullWidth>
-                                    <Select
-                                        id="analysis-select"
-                                        value={selectedAnalysis}
-                                        onChange={handleAnalysisChange}
-                                    >
+                                    <Select id="analysis-select" value={selectedAnalysis} onChange={handleAnalysisChange}>
                                         <MenuItem value="">
                                             <em>Selecione uma análise</em>
                                         </MenuItem>
@@ -507,11 +570,7 @@ const AnalysisPage: FC = () => {
                                 <Typography>Ao selecionar uma fonte, os gráficos devem exibir os dados correspondentes.</Typography>
                                 <Divider variant="middle" sx={{ margin: '15px' }} />
                                 <FormControl fullWidth>
-                                    <Select
-                                        id="source-select"
-                                        value={selectedSource}
-                                        onChange={handleSourceChange}
-                                    >
+                                    <Select id="source-select" value={selectedSource} onChange={handleSourceChange}>
                                         <MenuItem value="">
                                             <em>Selecione uma fonte</em>
                                         </MenuItem>
@@ -534,12 +593,64 @@ const AnalysisPage: FC = () => {
                         id="summary-header"
                         sx={{ justifyContent: 'flex-end' }}
                     >
-                        <Typography sx={{ ml: 'auto', marginRight: '10px' }}>Sobre o Dashboard de Componentes</Typography>
+                        <Typography sx={{ ml: 'auto', marginRight: '10px' }}>
+                            Sobre o painel de análise de {selectedAnalysis}
+                        </Typography>
                     </AccordionSummary>
                     <AccordionDetails>
-                        <Typography>
-                            ...
-                        </Typography>
+                        <Box sx={{ flexGrow: 1, maxWidth: 752 }}>
+                            <Typography variant="h6" sx={{ padding: '15px' }}>
+                                {currentAnalysisDescription.title || "Informações Detalhadas da Análise"}
+                            </Typography>
+
+                            <Typography variant="body1" sx={{ padding: '10px' }}>
+                                {currentAnalysisDescription.description || "Descrição não disponível para esta análise."}
+                            </Typography>
+
+                            <List dense>
+                                <ListItem>
+                                    <ListItemAvatar>
+                                        <Avatar>
+                                            <InfoIcon />
+                                        </Avatar>
+                                    </ListItemAvatar>
+                                    <ListItemText primary="Fonte" secondary={currentAnalysisDescription.source || selectedSource} />
+                                </ListItem>
+                                <Divider variant="inset" component="li" />
+
+                                <ListItem>
+                                    <ListItemAvatar>
+                                        <Avatar>
+                                            <FolderIcon />
+                                        </Avatar>
+                                    </ListItemAvatar>
+                                    <ListItemText primary="Rótulo" secondary={currentAnalysisDescription.labels || selectedLabel} />
+                                </ListItem>
+                                <Divider variant="inset" component="li" />
+
+                                <ListItem>
+                                    <ListItemAvatar>
+                                        <Avatar>
+                                            <FolderIcon />
+                                        </Avatar>
+                                    </ListItemAvatar>
+                                    <ListItemText primary="Período" secondary={currentAnalysisDescription.period} />
+                                </ListItem>
+                                <Divider variant="inset" component="li" />
+
+                                <ListItem>
+                                    <ListItemAvatar>
+                                        <Avatar>
+                                            <FolderIcon />
+                                        </Avatar>
+                                    </ListItemAvatar>
+                                    <ListItemText
+                                        primary="Gráficos disponíveis"
+                                        secondary={currentAnalysisDescription.charts || "Média Móvel Simples, Soma Agregada, Percentual"}
+                                    />
+                                </ListItem>
+                            </List>
+                        </Box>
                     </AccordionDetails>
                 </Accordion>
 
@@ -571,10 +682,11 @@ const AnalysisPage: FC = () => {
                         </Fab>
                     </Box>
                     <Box sx={{ margin: '10px' }}>
-
-                    <Accordion>
+                        <Accordion>
                             <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="period-content" id="period-header">
-                                <Typography>Período</Typography>
+                            <Typography>
+                            Período de {selectedStartDate.getFullYear()} até {selectedEndDate.getFullYear()}
+                            </Typography>
                             </AccordionSummary>
                             <AccordionDetails>
                                 <Typography>Ao selecionar um período, os gráficos devem exibir os dados correspondentes.</Typography>
@@ -590,15 +702,10 @@ const AnalysisPage: FC = () => {
                                 </FormControl>
                             </AccordionDetails>
                         </Accordion>
-                        <Typography variant="h6" sx={{ padding: '15px' }}>
+                        <Typography variant="h6" sx={{ padding: '15px' }}></Typography>
+                        <Typography variant="body2" sx={{ padding: '15px', width: '550px' }}></Typography>
 
-                        </Typography>
-                        <Typography variant="body2" sx={{ padding: '15px', width: '550px' }}>
-
-                        </Typography>
-
-                        <Typography variant="body2">
-                        </Typography>
+                        <Typography variant="body2"></Typography>
                     </Box>
                 </Box>
             </div>

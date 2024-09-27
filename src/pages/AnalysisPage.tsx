@@ -128,6 +128,7 @@ const AnalysisPage: FC = () => {
     `);
 
     const [internalStackedData, setInternalStackedData] = useState<IStackedAreaChart[]>([]);
+    const [smaData, setSmaData] = useState<IStackedAreaChart[]>([]);
     const [layers, setLayers] = useState(initialConfig.layers);
     const [styles, setStyles] = useState(initialConfig.styles);
     const [format, setFormat] = useState(initialConfig.format);
@@ -449,8 +450,32 @@ const AnalysisPage: FC = () => {
         }
     };
 
+    const fetchSmaData = async () => {
+        setLoading(true);
+        const startDateFormatted = selectedStartDate.toISOString().split('T')[0];
+        const endDateFormatted = selectedEndDate.toISOString().split('T')[0];
+
+        const url = `http://localhost:3001/sma/${interval}?analysis=${encodeURIComponent(
+            selectedAnalysis
+        )}&startDate=${startDateFormatted}&endDate=${endDateFormatted}`;
+
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error('Falha ao buscar os dados de Média Móvel');
+            }
+            const data: IStackedAreaChart[] = await response.json();
+            setSmaData(data);
+        } catch (error) {
+            console.error('Erro ao buscar os dados de Média Móvel:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
         fetchData();
+        fetchSmaData();
     }, [selectedAnalysis, selectedLabel, selectedStartDate, selectedEndDate, selectedStateName, selectedSource, interval]);
 
     return (
@@ -737,7 +762,7 @@ const AnalysisPage: FC = () => {
                             comportamento errático.
                         </Typography>
 
-                        <AreaChart width={400} height={400} data={internalStackedData} defaultPalette={brownPalette} />
+                        <AreaChart width={400} height={400} data={smaData} defaultPalette={brownPalette} />
                     </CardContent>
                 </Card>
             </div>

@@ -93,6 +93,7 @@ const AnalysisPage: FC = () => {
 
     type Label = { label: string; value: string };
 
+    const [selectedSource, setSelectedSource] = useState<string>('UNB');
     const [selectedAnalysis, setSelectedAnalysis] = useState<string>('orgânicas');
     const [labels, setLabels] = useState<Label[]>([]);
     const [selectedLabel, setSelectedLabel] = useState<string>('fruticultura');
@@ -118,7 +119,7 @@ const AnalysisPage: FC = () => {
     const [currentCenter, setCurrentCenter] = useState<string>();
     const [loading, setLoading] = useState(true);
 
-    const analysis = [
+    const availableAnalysis = [
         { label: 'Erosões', value: 'erosão' },
         { label: 'GEE', value: 'GEE' },
         { label: 'NH3', value: 'NH3' },
@@ -163,7 +164,7 @@ const AnalysisPage: FC = () => {
         { label: 'Ânions', value: 'anions' },
     ];
 
-    const sources = [
+    const availableSsources = [
         { label: 'Organização para a Cooperação e Desenvolvimento Econômico', value: 'OCDE' },
         { label: 'Instituto Agronômico de Campinas', value: 'IAC' },
         { label: 'Universidade de Brasília', value: 'UNB' },
@@ -313,6 +314,11 @@ const AnalysisPage: FC = () => {
         setZoom(state.zoom);
     };
 
+    const handleSourceChange = (event: SelectChangeEvent) => {
+        const selectedValue = event.target.value as string;
+        setSelectedSource(selectedValue);
+    };
+
     const handleAnalysisChange = (event: SelectChangeEvent<string>) => {
         const selectedValue = event.target.value as string;
         setSelectedAnalysis(selectedValue);
@@ -368,8 +374,15 @@ const AnalysisPage: FC = () => {
         } else {
             setSelectedLabel(validLabelsForDisplay.length > 0 ? validLabelsForDisplay[0].value : '');
         }
-    }, [selectedAnalysis, availableLabels]);
-    
+
+        // Inicializa a fonte com 'UNB' se disponível, senão escolhe a primeira fonte disponível
+        if (availableSsources.map(source => source.value).includes('UNB')) {
+            setSelectedSource('UNB');
+        } else {
+            setSelectedSource(availableSsources.length > 0 ? availableSsources[0].value : '');
+        }
+    }, [selectedAnalysis, availableLabels, availableSsources]);
+
     return (
         <>
             {/* <Suspense fallback={<Loading />}>
@@ -436,7 +449,7 @@ const AnalysisPage: FC = () => {
                                         <MenuItem value="">
                                             <em>Selecione uma análise</em>
                                         </MenuItem>
-                                        {analysis.map((e, index) => (
+                                        {availableAnalysis.map((e, index) => (
                                             <MenuItem id={`${index}-menu-item-analysis`} value={e.value} key={index}>
                                                 {e.label}
                                             </MenuItem>
@@ -467,6 +480,33 @@ const AnalysisPage: FC = () => {
                                 </FormControl>
                             </AccordionDetails>
                         </Accordion>
+
+                        <Accordion>
+                            <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="source-content" id="source-header">
+                                <Typography>Fonte</Typography>
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                <Typography>Ao selecionar uma fonte, os gráficos devem exibir os dados correspondentes.</Typography>
+                                <Divider variant="middle" sx={{ margin: '15px' }} />
+                                <FormControl fullWidth>
+                                    <Select
+                                        id="source-select"
+                                        value={selectedSource}
+                                        onChange={handleSourceChange}
+                                    >
+                                        <MenuItem value="">
+                                            <em>Selecione uma fonte</em>
+                                        </MenuItem>
+                                        {availableSsources.map((e, index) => (
+                                            <MenuItem id={`${index}-menu-item-source`} value={e.value} key={index}>
+                                                {e.label}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                            </AccordionDetails>
+                        </Accordion>
+
                     </Box>
                 </Drawer>
 

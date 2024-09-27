@@ -5,7 +5,7 @@ import { ICountry } from '../charts/ICountry';
 import { IState } from '../charts/IState';
 import { useMenuContext } from './MenuContext';
 
-interface PaperGEEProps {
+interface MenuProps {
     countries: ICountry[];
     states: IState[];
     cities: ICity[];
@@ -19,7 +19,7 @@ export function Loading() {
     );
 }
 
-const PaperGEE: FC<PaperGEEProps> = (props) => {
+const PaperGEE: FC<MenuProps> = (props) => {
     // dados do servidor armazenados no contexto
     const { contextCountries } = useMenuContext();
     const { contextStates } = useMenuContext();

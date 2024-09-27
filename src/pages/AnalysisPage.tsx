@@ -329,18 +329,6 @@ const AnalysisPage: FC = () => {
             setSelectedEndDate(rangeDates[1]);
         }
     };
-    // const handleChangeRangeDates = (rangeDates: DateRange | null, event: SyntheticEvent<Element, Event>) => {
-    //     // preciso atribuir os valores de data para as variaveis startDate e endDate
-    //     if (rangeDates) {
-    //         rangeDates.map((date, index) => {
-    //             if (index === 0) {
-    //                 setSelectedStartDate(date);
-    //             } else {
-    //                 setSelectedEndDate(date);
-    //             }
-    //         });
-    //     }
-    // };
 
     const handleSourceChange = (event: SelectChangeEvent) => {
         const selectedValue = event.target.value as string;
@@ -370,7 +358,7 @@ const AnalysisPage: FC = () => {
             description: "A análise de erosão foca em identificar e monitorar áreas sujeitas à degradação do solo devido à ação da água ou vento. Essa análise é fundamental para a preservação ambiental e a implementação de práticas de conservação.",
             source: "Instituto Agronômico de Campinas (IAC)",
             labels: "Pastagem, Cultura",
-            period: `${selectedStartDate.toLocaleDateString('pt-BR')} - ${selectedEndDate.toLocaleDateString('pt-BR')}`,
+            period: `${selectedStartDate.getFullYear()} até ${selectedEndDate.getFullYear()}`,  // Atualizando o período
             charts: "Média Móvel Simples, Soma Agregada, Percentual"
         },
         gee: {
@@ -378,7 +366,7 @@ const AnalysisPage: FC = () => {
             description: "Esta análise acompanha as emissões de gases de efeito estufa (GEE) provenientes de diversas atividades agrícolas e industriais, sendo essencial para entender o impacto das mudanças climáticas.",
             source: "Organização para a Cooperação e Desenvolvimento Econômico (OCDE)",
             labels: "Tecnologia 1, Tecnologia 2, Tecnologia 3, Tecnologia 4",
-            period: `${selectedStartDate.toLocaleDateString('pt-BR')} - ${selectedEndDate.toLocaleDateString('pt-BR')}`,
+            period: `${selectedStartDate.getFullYear()} até ${selectedEndDate.getFullYear()}`,
             charts: "Média Móvel Simples, Soma Agregada, Percentual"
         },
         nh3: {
@@ -386,7 +374,7 @@ const AnalysisPage: FC = () => {
             description: "A análise de emissões de amônia (NH3) busca entender como a aplicação de fertilizantes e o manejo de dejetos animais contribuem para a poluição do ar e a acidificação do solo.",
             source: "Universidade de Brasília (UNB)",
             labels: "Fertilizantes Químicos, Fertilizantes Orgânicos, Manejo de Esterco, Deposição de Extretas",
-            period: `${selectedStartDate.toLocaleDateString('pt-BR')} - ${selectedEndDate.toLocaleDateString('pt-BR')}`,
+            period: `${selectedStartDate.getFullYear()} até ${selectedEndDate.getFullYear()}`,
             charts: "Média Móvel Simples, Soma Agregada, Percentual"
         },
         npk: {
@@ -394,7 +382,7 @@ const AnalysisPage: FC = () => {
             description: "Esta análise aborda o uso de nutrientes NPK (nitrogênio, fósforo e potássio) nas práticas agrícolas e seu impacto sobre a produtividade e a sustentabilidade do solo.",
             source: "Instituto Agronômico de Campinas (IAC)",
             labels: "Dejetos Animais, Deposição Atmosférica, Fertilizantes Minerais, Produção Agrícola",
-            period: `${selectedStartDate.toLocaleDateString('pt-BR')} - ${selectedEndDate.toLocaleDateString('pt-BR')}`,
+            period: `${selectedStartDate.getFullYear()} até ${selectedEndDate.getFullYear()}`,
             charts: "Média Móvel Simples, Soma Agregada, Percentual"
         },
         organicas: {
@@ -402,7 +390,7 @@ const AnalysisPage: FC = () => {
             description: "A análise de áreas orgânicas foca no acompanhamento do uso de práticas agrícolas orgânicas, explorando o impacto positivo no meio ambiente e a qualidade do solo.",
             source: "Universidade de Brasília (UNB)",
             labels: "Grão, Hortaliças, Fruticultura, Pastagem",
-            period: `${selectedStartDate.toLocaleDateString('pt-BR')} - ${selectedEndDate.toLocaleDateString('pt-BR')}`,
+            period: `${selectedStartDate.getFullYear()} até ${selectedEndDate.getFullYear()}`,
             charts: "Média Móvel Simples, Soma Agregada, Percentual"
         },
         pesticidas: {
@@ -410,7 +398,7 @@ const AnalysisPage: FC = () => {
             description: "Esta análise acompanha o uso de pesticidas, como herbicidas, fungicidas e inseticidas, nas práticas agrícolas, avaliando o impacto sobre o solo e os ecossistemas.",
             source: "Organização para a Cooperação e Desenvolvimento Econômico (OCDE)",
             labels: "Herbicidas, Fungicidas, Inseticidas, Outros",
-            period: `${selectedStartDate.toLocaleDateString('pt-BR')} - ${selectedEndDate.toLocaleDateString('pt-BR')}`,
+            period: `${selectedStartDate.getFullYear()} até ${selectedEndDate.getFullYear()}`,
             charts: "Média Móvel Simples, Soma Agregada, Percentual"
         },
         poluicao: {
@@ -418,7 +406,7 @@ const AnalysisPage: FC = () => {
             description: "A análise de poluição monitora a presença de poluentes como nitrato, fosfato, cátions e ânions no solo e na água, essenciais para preservar a qualidade dos recursos naturais.",
             source: "Universidade de Brasília (UNB)",
             labels: "Nitrato, Fosfato, Cations, Anions",
-            period: `${selectedStartDate.toLocaleDateString('pt-BR')} - ${selectedEndDate.toLocaleDateString('pt-BR')}`,
+            period: `${selectedStartDate.getFullYear()} até ${selectedEndDate.getFullYear()}`,
             charts: "Média Móvel Simples, Soma Agregada, Percentual"
         }
     };
@@ -427,63 +415,19 @@ const AnalysisPage: FC = () => {
         selectedAnalysis.toLowerCase() as keyof typeof analysisDescriptions
       ] || {};
 
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         try {
-    //             if (contextAnalysisPercentual && contextAnalysisPercentual.length > 0) {
-    //                 setInternalAnalysisPercentual(contextAnalysisPercentual);
-    //                 console.log(`[Page] internalAnalysisPercentual loaded from context: ${contextAnalysisPercentual.length}`);
-    //             } else {
-    //                 throw new Error('Page: contextAnalysisPercentual is required');
-    //             }
-
-    //             if (contextAnalysisStackedData && contextAnalysisStackedData.length > 0) {
-    //                 setInternalAnalysisStacked(contextAnalysisStackedData);
-    //                 console.log(`[Page] internalAnalysisStacked loaded from context: ${internalAnalysisStacked.length}`);
-    //             } else {
-    //                 throw new Error('Page: contextAnalysisStackedData is required');
-    //             }
-    //         } catch (error) {
-    //             console.error(error);
-    //         } finally {
-    //             setLoading(false);
-    //         }
-    //     };
-
-    //     fetchData();
-    // }, [contextAnalysisPercentual, contextAnalysisStackedData]);
-
-    useEffect(() => {
+      useEffect(() => {
         const startDateFormatted = selectedStartDate.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
         const endDateFormatted = selectedEndDate.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
 
-        const description = `
-            Análise: ${selectedAnalysis.charAt(0).toUpperCase() + selectedAnalysis.slice(1)}.
-            Fonte: ${selectedSource}.
-            Rótulo: ${selectedLabel}.
-            Período: ${startDateFormatted} - ${endDateFormatted}.
-            Gráficos disponíveis: Média Móvel Simples, Soma Agregada, Percentual.
-        `;
+        const analysisDescriptionObject = analysisDescriptions[selectedAnalysis.toLowerCase() as keyof typeof analysisDescriptions];
 
-        setAnalysisDescription(description);
+        if (analysisDescriptionObject) {
+            setAnalysisDescription(analysisDescriptionObject.description);
+        }
     }, [selectedAnalysis, selectedLabel, selectedSource, selectedStartDate, selectedEndDate]);
 
     return (
         <>
-            {/* <Suspense fallback={<Loading />}>
-                {internalAnalysisPercentual.length > 0 ? (
-                    <PaperAnalysis
-                        stackedData={internalAnalysisStacked}
-                        percentualData={internalAnalysisPercentual}
-                        countries={contextCountries}
-                        states={contextStates}
-                        cities={contextCities}
-                    />
-                ) : (
-                    <Loading />
-                )}
-            </Suspense> */}
-
             <div>
                 <Drawer anchor={'right'} open={open} onClose={() => setOpen(false)}>
                     <Box sx={{ width: '600px', padding: '60px' }}>
@@ -634,7 +578,10 @@ const AnalysisPage: FC = () => {
                                             <FolderIcon />
                                         </Avatar>
                                     </ListItemAvatar>
-                                    <ListItemText primary="Período" secondary={currentAnalysisDescription.period} />
+                                    <ListItemText
+                                        primary="Período"
+                                        secondary={`De ${selectedStartDate.getFullYear()} até ${selectedEndDate.getFullYear()}`}
+                                    />
                                 </ListItem>
                                 <Divider variant="inset" component="li" />
 

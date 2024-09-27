@@ -7,6 +7,7 @@ export const purpleBackgroundColor = 'rgba(230, 230, 250, 0.6)'; // Roxo claro (
 export const grayBackgroundColor   = 'rgba(245, 245, 245, 0.6)';   // Cinza claro (próximo a "whitesmoke")
 export const redBackgroundColor    = 'rgba(255, 182, 193, 0.1)';   // Vermelho claro (próximo a "lightpink")
 export const brownBackgroundColor  = 'rgba(222, 184, 135, 0.1)'; // Marrom claro (próximo a "burlywood")
+export const whiteBackgroundColor  = 'rgba(255, 255, 255, 0.6)';  // Branco com baixa opacidade
 
 // Paleta de Verde do mais claro para o mais escuro
 export const greenColors = {

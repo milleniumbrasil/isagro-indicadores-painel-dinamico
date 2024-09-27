@@ -35,6 +35,7 @@ import { greenBackgroundColor,
     redBackgroundColor,
     grayBackgroundColor,
     blueBackgroundColor,
+    whiteBackgroundColor,
     blueColors,
     purplePalette
 } from '../colors';
@@ -302,8 +303,10 @@ const PaperOrganicas: FC<PaperOrganicasProps> = (props) => {
                             </Select>
                         </FormControl>
                     </Stack>
+                </Stack>
 
-                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: blueBackgroundColor }}>
+                    <Box sx={{ width: '50%', alignItems: 'center', padding: '5px', margin: '5px' }}>
+                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: whiteBackgroundColor }}>
                         <CardContent>
                             <Typography gutterBottom variant="h5" component="div">
                                 Percentual de áreas Organicas por período {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
@@ -322,7 +325,7 @@ const PaperOrganicas: FC<PaperOrganicasProps> = (props) => {
                         </CardContent>
                     </Card>
 
-                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: blueBackgroundColor }}>
+                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: whiteBackgroundColor }}>
                         <CardContent>
                             <Typography gutterBottom variant="h5" component="div">
                                 Áreas Organicas por período {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
@@ -341,7 +344,7 @@ const PaperOrganicas: FC<PaperOrganicasProps> = (props) => {
                         </CardContent>
                     </Card>
 
-                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: blueBackgroundColor }}>
+                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: whiteBackgroundColor }}>
                         <CardContent>
                             <Typography gutterBottom variant="h5" component="div">
                                 Áreas Organicas por período {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
@@ -353,7 +356,7 @@ const PaperOrganicas: FC<PaperOrganicasProps> = (props) => {
                             <AreaChart width={1200} height={400} data={internalStackedData} defaultPalette={yellowPalette}/>
                         </CardContent>
                     </Card>
-                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: blueBackgroundColor }}>
+                    <Card variant="outlined" sx={{ width: '90%', backgroundColor: whiteBackgroundColor }}>
                         <CardContent>
                             <div>
                                 <Typography gutterBottom variant="h5" component="div">
@@ -374,11 +377,11 @@ const PaperOrganicas: FC<PaperOrganicasProps> = (props) => {
                                         </select>
                                     </label>
                                 </div>
-                                <AreaChart width={1200} height={400} data={internalStackedData} defaultPalette={bluePalette}/>
+                                <AreaChart width={1200} height={400} data={internalStackedData} defaultPalette={purplePalette}/>
                             </div>
                         </CardContent>
                     </Card>
-                </Stack>
+                    </Box>
             </Paper>
         </div>
     );

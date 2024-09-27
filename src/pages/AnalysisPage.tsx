@@ -42,6 +42,7 @@ import {
     purplePalette,
     yellowBackgroundColor,
     greenPalette,
+    redPalette,
 } from '../components/colors';
 import AreaChart from '../components/charts/AreaChart';
 
@@ -69,6 +70,8 @@ export interface TileLayerConfig {
 import { Loader } from 'rsuite';
 import { DateRange } from 'rsuite/esm/DateRangePicker';
 import { IStackedAreaChart } from '../components/charts/IStackedAreaChart';
+import { IPercentualAreaChart } from '../components/charts/IPercentualAreaChart';
+import PercentualAreaChart from '../components/charts/PercentualAreaChart';
 
 export function Loading() {
     return (
@@ -128,6 +131,7 @@ const AnalysisPage: FC = () => {
     `);
 
     const [internalStackedData, setInternalStackedData] = useState<IStackedAreaChart[]>([]);
+    const [internalPercentualData, setInternalPercentualData] = useState<IPercentualAreaChart[]>([]);
     const [smaData, setSmaData] = useState<IStackedAreaChart[]>([]);
     const [layers, setLayers] = useState(initialConfig.layers);
     const [styles, setStyles] = useState(initialConfig.styles);
@@ -456,7 +460,7 @@ const AnalysisPage: FC = () => {
         const endDateFormatted = selectedEndDate.toISOString().split('T')[0];
 
         const url = `http://localhost:3001/sma/${interval}?analysis=${encodeURIComponent(
-            selectedAnalysis
+            selectedAnalysis,
         )}&startDate=${startDateFormatted}&endDate=${endDateFormatted}`;
 
         try {
@@ -473,9 +477,39 @@ const AnalysisPage: FC = () => {
         }
     };
 
+    const fetchPercentagelData = async () => {
+        setLoading(true);
+        const startDateFormatted = selectedStartDate.toISOString().split('T')[0];
+        const endDateFormatted = selectedEndDate.toISOString().split('T')[0];
+
+        const url = `http://localhost:3001/percentage/${interval}?analysis=${encodeURIComponent(
+            selectedAnalysis,
+        )}&startDate=${startDateFormatted}&endDate=${endDateFormatted}`;
+
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error('Falha ao buscar os dados de percentage');
+            }
+            const stackedData: IStackedAreaChart[] = await response.json();
+            // Transformando de IStackedAreaChart para IPercentualAreaChart
+            const percentualData: IPercentualAreaChart[] = stackedData.map((item) => ({
+                period: item.period,
+                value: parseFloat(item.entry[1].toString()), // Pega diretamente o valor de entry[1] como percentual
+            }));
+
+            setInternalPercentualData(percentualData);
+        } catch (error) {
+            console.error('Erro ao buscar os dados de percentage:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
         fetchData();
         fetchSmaData();
+        fetchPercentagelData();
     }, [selectedAnalysis, selectedLabel, selectedStartDate, selectedEndDate, selectedStateName, selectedSource, interval]);
 
     return (
@@ -569,7 +603,8 @@ const AnalysisPage: FC = () => {
                             bgcolor="0xFFFFFF"
                         />
                     </Box>
-                    <Box sx={{ margin: '20px' }}>
+
+                    <Box sx={{ width: '50%', alignItems: 'center', padding: '5px', margin: '5px' }}>
                         <Accordion>
                             <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="period-content" id="period-header">
                                 <Typography>
@@ -699,72 +734,112 @@ const AnalysisPage: FC = () => {
                         <Typography variant="body2"></Typography>
                     </Box>
                 </Box>
+                <Box sx={{ width: '100%', alignItems: 'center', padding: '5px', margin: '5px' }}>
+                <Box sx={{ width: '50%', alignItems: 'center', padding: '5px', margin: '5px' }}>
+                    <Card
+                        variant="outlined"
+                        sx={{ alignItems: 'center', width: '98%', backgroundColor: greenBackgroundColor, margin: '10px' }}
+                    >
+                        <CardContent>
+                            <Typography variant="h6" sx={{ padding: '15px' }}>
+                                {currentAnalysisDescription.title} por período{' '}
+                                {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
+                            </Typography>
+                            <Typography variant="body2" sx={{ padding: '10px' }}>
+                                {currentAnalysisDescription.description}
+                            </Typography>
 
-                <Card
-                    variant="outlined"
-                    sx={{ alignItems: 'center', width: '98%', backgroundColor: yellowBackgroundColor, margin: '10px' }}
-                >
-                    <CardContent>
-                        <Typography variant="h6" sx={{ padding: '15px' }}>
-                            {currentAnalysisDescription.title} por período{' '}
-                            {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
-                        </Typography>
-                        <Typography variant="body2" sx={{ padding: '10px' }}>
-                            {currentAnalysisDescription.description}
-                        </Typography>
+                            {/* Explicação sobre o gráfico de soma agregada */}
+                            <Typography variant="h6" sx={{ padding: '15px', marginTop: '15px' }}>
+                                Como interpretar o gráfico de soma agregada
+                            </Typography>
+                            <Typography variant="body2" sx={{ padding: '10px' }}>
+                                Este gráfico de soma agregada apresenta o total acumulado de dados ao longo do período selecionado. Ele exibe o
+                                volume ou a soma dos valores de cada rótulo em diferentes períodos, permitindo a visualização de tendências e
+                                comparações entre as categorias ao longo do tempo.
+                            </Typography>
+                            <Typography variant="body2" sx={{ padding: '10px' }}>
+                                Para analisá-lo corretamente, observe a altura de cada camada no gráfico, que representa a contribuição de um
+                                rótulo específico em relação ao total acumulado. A soma de todas as camadas em um determinado período reflete o
+                                valor total acumulado até aquele momento.
+                            </Typography>
 
-                        {/* Explicação sobre o gráfico de soma agregada */}
-                        <Typography variant="h6" sx={{ padding: '15px', marginTop: '15px' }}>
-                            Como interpretar o gráfico de soma agregada
-                        </Typography>
-                        <Typography variant="body2" sx={{ padding: '10px' }}>
-                            Este gráfico de soma agregada apresenta o total acumulado de dados ao longo do período selecionado. Ele exibe o
-                            volume ou a soma dos valores de cada rótulo em diferentes períodos, permitindo a visualização de tendências e
-                            comparações entre as categorias ao longo do tempo.
-                        </Typography>
-                        <Typography variant="body2" sx={{ padding: '10px' }}>
-                            Para analisá-lo corretamente, observe a altura de cada camada no gráfico, que representa a contribuição de um
-                            rótulo específico em relação ao total acumulado. A soma de todas as camadas em um determinado período reflete o
-                            valor total acumulado até aquele momento.
-                        </Typography>
+                            <AreaChart width={400} height={250} data={internalStackedData} defaultPalette={bluePalette} />
+                        </CardContent>
+                    </Card>
+                    <Card
+                        variant="outlined"
+                        sx={{ alignItems: 'center', width: '98%', backgroundColor: yellowBackgroundColor, margin: '10px' }}
+                    >
+                        <CardContent>
+                            <Typography variant="h6" sx={{ padding: '15px' }}>
+                                {currentAnalysisDescription.title} por período{' '}
+                                {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
+                            </Typography>
+                            <Typography variant="body2" sx={{ padding: '10px' }}>
+                                {currentAnalysisDescription.description}
+                            </Typography>
 
-                        <AreaChart width={400} height={400} data={internalStackedData} defaultPalette={brownPalette} />
-                    </CardContent>
-                </Card>
-                <Card
-                    variant="outlined"
-                    sx={{ alignItems: 'center', width: '98%', backgroundColor: yellowBackgroundColor, margin: '10px' }}
-                >
-                    <CardContent>
-                        <Typography variant="h6" sx={{ padding: '15px' }}>
-                            {currentAnalysisDescription.title} por período{' '}
-                            {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
-                        </Typography>
-                        <Typography variant="body2" sx={{ padding: '10px' }}>
-                            {currentAnalysisDescription.description}
-                        </Typography>
+                            {/* Explicação sobre o gráfico de média móvel simples */}
+                            <Typography variant="h6" sx={{ padding: '15px', marginTop: '15px' }}>
+                                Como interpretar o gráfico de Média Móvel Simples
+                            </Typography>
+                            <Typography variant="body2" sx={{ padding: '10px' }}>
+                                Este gráfico de Média Móvel Simples utiliza uma técnica estatística para suavizar as variações dos dados ao
+                                longo do tempo, calculando a média dos valores de um conjunto de períodos consecutivos. A principal vantagem
+                                desta abordagem é eliminar flutuações de curto prazo, revelando tendências mais estáveis e padrões que poderiam
+                                ser obscurecidos pelas variações naturais dos dados.
+                            </Typography>
+                            <Typography variant="body2" sx={{ padding: '10px' }}>
+                                Para analisá-lo corretamente, observe que cada ponto do gráfico representa a média dos valores de um número fixo
+                                de períodos anteriores. Dessa forma, ele suaviza os picos e vales dos dados brutos, proporcionando uma visão
+                                mais clara da direção geral e das tendências de longo prazo. Esse tipo de análise é ideal para identificar se
+                                uma variável está aumentando ou diminuindo ao longo do tempo de forma mais consistente, ao invés de seguir um
+                                comportamento errático.
+                            </Typography>
 
-                        {/* Explicação sobre o gráfico de média móvel simples */}
-                        <Typography variant="h6" sx={{ padding: '15px', marginTop: '15px' }}>
-                            Como interpretar o gráfico de Média Móvel Simples
-                        </Typography>
-                        <Typography variant="body2" sx={{ padding: '10px' }}>
-                            Este gráfico de Média Móvel Simples utiliza uma técnica estatística para suavizar as variações dos dados ao
-                            longo do tempo, calculando a média dos valores de um conjunto de períodos consecutivos. A principal vantagem
-                            desta abordagem é eliminar flutuações de curto prazo, revelando tendências mais estáveis e padrões que poderiam
-                            ser obscurecidos pelas variações naturais dos dados.
-                        </Typography>
-                        <Typography variant="body2" sx={{ padding: '10px' }}>
-                            Para analisá-lo corretamente, observe que cada ponto do gráfico representa a média dos valores de um número fixo
-                            de períodos anteriores. Dessa forma, ele suaviza os picos e vales dos dados brutos, proporcionando uma visão
-                            mais clara da direção geral e das tendências de longo prazo. Esse tipo de análise é ideal para identificar se
-                            uma variável está aumentando ou diminuindo ao longo do tempo de forma mais consistente, ao invés de seguir um
-                            comportamento errático.
-                        </Typography>
-
-                        <AreaChart width={400} height={400} data={smaData} defaultPalette={brownPalette} />
-                    </CardContent>
-                </Card>
+                            <AreaChart width={400} height={250} data={smaData} defaultPalette={purplePalette} />
+                        </CardContent>
+                    </Card>
+                    <Card
+                        variant="outlined"
+                        sx={{ alignItems: 'center', width: '98%', backgroundColor: blueBackgroundColor, margin: '10px' }}
+                    >
+                        <CardContent>
+                            <Typography variant="h6" sx={{ padding: '15px' }}>
+                                {currentAnalysisDescription.title} por período{' '}
+                                {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
+                            </Typography>
+                            <Typography variant="body2" sx={{ padding: '10px' }}>
+                                {currentAnalysisDescription.description}
+                            </Typography>
+                            <Typography variant="h6" sx={{ padding: '15px', marginTop: '15px' }}>
+                                Como interpretar o gráfico de percentual
+                            </Typography>
+                            <Typography variant="body2" sx={{ padding: '10px' }}>
+                                Este gráfico de percentual utiliza uma técnica de visualização que exibe os dados como uma proporção em relação
+                                ao valor total, facilitando a análise das variações relativas ao longo do tempo. Ele é útil para identificar
+                                mudanças na composição percentual de um dado conjunto, permitindo verificar, por exemplo, como diferentes
+                                categorias (como áreas cultivadas) contribuem para o todo.
+                            </Typography>
+                            <Typography variant="body2" sx={{ padding: '10px' }}>
+                                Para analisá-lo corretamente, observe as mudanças no valor percentual entre os períodos selecionados. A
+                                tendência de aumento ou diminuição indica a variação da importância relativa de cada categoria ao longo do
+                                tempo. Este tipo de gráfico é particularmente útil para comparações de categorias em diferentes períodos,
+                                ajudando a entender a dinâmica de crescimento ou redução em termos proporcionais.
+                            </Typography>
+                            <PercentualAreaChart
+                                width={400}
+                                height={250}
+                                data={internalPercentualData}
+                                valueLabel="Área"
+                                fillColor={blueColors.lightSkyBlue}
+                                strokeColor={blueColors.lightBlue}
+                            />
+                        </CardContent>
+                    </Card>
+                </Box>
+                </Box>
             </div>
         </>
     );

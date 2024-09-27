@@ -286,33 +286,6 @@ const AnalysisPage: FC = () => {
         setZoom(initialConfig.zoom);
     };
 
-    // Função para buscar os dados do servidor
-    const fetchStackedData = async () => {
-        setLoading(true);
-        const startDateFormatted = selectedStartDate.toISOString().split('T')[0];
-        const endDateFormatted = selectedEndDate.toISOString().split('T')[0];
-        const selectedStateIsoCode = stateToIsoCodeMap[selectedStateName] || selectedStateName; // Usa o ISO ou o nome se não mapeado
-
-        const url = `http://localhost:3001/sum/biennial?analysis=${encodeURIComponent(
-            selectedAnalysis
-        )}&label=${encodeURIComponent(selectedLabel)}&startDate=${startDateFormatted}&endDate=${endDateFormatted}&country=BR&state=${selectedStateIsoCode}&city=Brasília&source=${encodeURIComponent(
-            selectedSource
-        )}`;
-
-        try {
-            const response = await fetch(url);
-            if (!response.ok) {
-                throw new Error('Falha ao buscar os dados');
-            }
-            const data: IStackedAreaChart[] = await response.json();
-
-            // Atribui os dados diretamente, sem necessidade de conversão
-            setInternalStackedData(data);
-        } catch (error) {
-            console.error('Erro ao buscar os dados:', error);
-        }
-    };
-
     const handleStateChange = (event: SelectChangeEvent) => {
         const stateName = event.target.value as string;
         setSelectedStateName(stateName);
@@ -418,53 +391,58 @@ const AnalysisPage: FC = () => {
     const currentAnalysisDescription = analysisDescriptions[
         selectedAnalysis.toLowerCase() as keyof typeof analysisDescriptions
       ] || {};
+      const buildUrl = () => {
+        const startDateFormatted = selectedStartDate ? selectedStartDate.toISOString().split('T')[0] : null;
+        const endDateFormatted = selectedEndDate ? selectedEndDate.toISOString().split('T')[0] : null;
+        const selectedStateIsoCode = selectedStateName ? stateToIsoCodeMap[selectedStateName] || selectedStateName : null;
+        const encodedSource = selectedSource ? encodeURIComponent(selectedSource) : null;
+        const encodedLabel = selectedLabel ? encodeURIComponent(selectedLabel) : null;
 
+        // Parâmetros obrigatórios
+        let url = `http://localhost:3001/sum/${interval}?analysis=${encodeURIComponent(selectedAnalysis)}`;
 
-    useEffect(() => {
-        console.log('Zoom state updated:', zoom);
-    }, [zoom]);
-
-    useEffect(() => {
-        console.log('BBox state updated:', bbox);
-    }, [bbox]);
-
-    useEffect(() => {
-
-        const analysisDescriptionObject = analysisDescriptions[selectedAnalysis.toLowerCase() as keyof typeof analysisDescriptions];
-
-        if (analysisDescriptionObject) {
-            setAnalysisDescription(analysisDescriptionObject.description);
+        // Parâmetros opcionais (adiciona à URL apenas se estiverem presentes)
+        if (encodedLabel) {
+            url += `&label=${encodedLabel}`;
+        }
+        if (startDateFormatted) {
+            url += `&startDate=${startDateFormatted}`;
+        }
+        if (endDateFormatted) {
+            url += `&endDate=${endDateFormatted}`;
+        }
+        if (selectedStateIsoCode) {
+            url += `&state=${selectedStateIsoCode}`;
+        }
+        if (encodedSource) {
+            url += `&source=${encodedSource}`;
         }
 
-        fetchStackedData();
+        // Parâmetro fixo para cidade
+        url += `&country=BR&city=Brasília`;
 
-    }, [selectedAnalysis, selectedLabel, selectedSource, selectedStartDate, selectedEndDate]);
+        return url;
+    };
 
+    const fetchData = async () => {
+        setLoading(true);
+        const url = buildUrl(); // Usa a função para construir a URL dinamicamente
+
+        try {
+            const response = await fetch(url);
+            if (!response.ok) throw new Error('Falha ao buscar os dados');
+
+            const data: IStackedAreaChart[] = await response.json();
+
+            setInternalStackedData(data);
+        } catch (error) {
+            console.error('Erro ao buscar os dados:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
-        const fetchData = async () => {
-            const startDateFormatted = selectedStartDate.toISOString().split('T')[0];
-            const endDateFormatted = selectedEndDate.toISOString().split('T')[0];
-            const selectedStateIsoCode = stateToIsoCodeMap[selectedStateName] || selectedStateName;
-
-            const url = `http://localhost:3001/sum/${interval}?analysis=${encodeURIComponent(
-                selectedAnalysis
-            )}&label=${encodeURIComponent(selectedLabel)}&startDate=${startDateFormatted}&endDate=${endDateFormatted}&country=BR&state=${selectedStateIsoCode}&city=Brasília&source=${encodeURIComponent(
-                selectedSource
-            )}`;
-
-            try {
-                const response = await fetch(url);
-                if (!response.ok) {
-                    throw new Error('Falha ao buscar os dados');
-                }
-                const data: IStackedAreaChart[] = await response.json();
-                setInternalStackedData(data);
-            } catch (error) {
-                console.error('Erro ao buscar os dados:', error);
-            }
-        };
-
         fetchData();
     }, [selectedAnalysis, selectedLabel, selectedStartDate, selectedEndDate, selectedStateName, selectedSource, interval]);
 
@@ -602,7 +580,7 @@ const AnalysisPage: FC = () => {
                                 <FormControl fullWidth>
                                     <Select id="state-select" value={selectedStateName} onChange={handleStateChange}>
                                         <MenuItem value="">
-                                            <em>Selecione um estado</em>
+                                            <em>Não informado</em>
                                         </MenuItem>
                                         {Object.keys(estados).map((e, index) => (
                                             <MenuItem id={`${index}-menu-item-estado`} value={e} key={e}>
@@ -623,9 +601,6 @@ const AnalysisPage: FC = () => {
                                 <Divider variant="middle" sx={{ margin: '15px' }} />
                                 <FormControl fullWidth>
                                     <Select id="analysis-select" value={selectedAnalysis} onChange={handleAnalysisChange}>
-                                        <MenuItem value="">
-                                            <em>Selecione uma análise</em>
-                                        </MenuItem>
                                         {availableAnalysis.map((e, index) => (
                                             <MenuItem id={`${index}-menu-item-analysis`} value={e.value} key={index}>
                                                 {e.label}
@@ -646,7 +621,7 @@ const AnalysisPage: FC = () => {
                                 <FormControl fullWidth>
                                     <Select id="analysis-select" value={selectedLabel} onChange={handleLabelChange}>
                                         <MenuItem value="">
-                                            <em>Selecione um rótulo</em>
+                                            <em>Não informado</em>
                                         </MenuItem>
                                         {labels.map((labelItem, index) => (
                                             <MenuItem id={`${index}-menu-item-label`} value={labelItem.value} key={index}>
@@ -668,7 +643,7 @@ const AnalysisPage: FC = () => {
                                 <FormControl fullWidth>
                                     <Select id="source-select" value={selectedSource} onChange={handleSourceChange}>
                                         <MenuItem value="">
-                                            <em>Selecione uma fonte</em>
+                                            <em>Não informado</em>
                                         </MenuItem>
                                         {availableSsources.map((e, index) => (
                                             <MenuItem id={`${index}-menu-item-source`} value={e.value} key={index}>
@@ -706,12 +681,11 @@ const AnalysisPage: FC = () => {
 
                 <Card variant="outlined" sx={{ width: '90%', backgroundColor: yellowBackgroundColor, margin: '10px' }}>
                     <CardContent>
-                        <Typography gutterBottom variant="h5" component="div">
-                            {selectedAnalysis} por período {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
+                        <Typography variant="h6" sx={{ padding: '15px' }}>
+                            {currentAnalysisDescription.title} por período {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
                         </Typography>
-                        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                            Números absolutos, consolidando dados de uso da terra por período, considerando Grãos,
-                            Hortaliças, Fruticulturas e Pastagens
+                        <Typography variant="body2" sx={{ padding: '10px' }}>
+                            {currentAnalysisDescription.description}
                         </Typography>
                         <AreaChart width={400} height={400} data={internalStackedData} defaultPalette={brownPalette}/>
                     </CardContent>

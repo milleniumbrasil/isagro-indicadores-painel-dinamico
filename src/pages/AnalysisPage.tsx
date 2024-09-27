@@ -539,15 +539,7 @@ const AnalysisPage: FC = () => {
                             bgcolor="0xFFFFFF"
                         />
                     </Box>
-                    <Box sx={{ margin: '15px' }}>
-                        <Fab color="default" size="small" aria-label="reset" onClick={() => reset()} sx={{ margin: '5px' }}>
-                            <RestartAltIcon sx={{ margin: '10px' }} />
-                        </Fab>
-                        <Fab color="secondary" size="small" aria-label="close" onClick={() => setOpen(true)} sx={{ margin: '5px' }}>
-                            <EditIcon sx={{ margin: '10px' }} />
-                        </Fab>
-                    </Box>
-                    <Box sx={{ margin: '10px' }}>
+                    <Box sx={{ margin: '20px'}}>
                         <Accordion>
                             <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="period-content" id="period-header">
                             <Typography>
@@ -679,7 +671,7 @@ const AnalysisPage: FC = () => {
                     </Box>
                 </Box>
 
-                <Card variant="outlined" sx={{ width: '90%', backgroundColor: yellowBackgroundColor, margin: '10px' }}>
+                <Card variant="outlined" sx={{ alignItems: 'center', width: '98%', backgroundColor: yellowBackgroundColor, margin: '10px' }}>
                     <CardContent>
                         <Typography variant="h6" sx={{ padding: '15px' }}>
                             {currentAnalysisDescription.title} por período {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}

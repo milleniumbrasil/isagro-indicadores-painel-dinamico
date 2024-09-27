@@ -60,6 +60,7 @@ const PaperPoluicoes: FC<PaperPoluicoesProps> = (props) => {
     const { contextCountries } = usePoluicoesContext();
     const { contextStates } = usePoluicoesContext();
     const { contextCities } = usePoluicoesContext();
+    const { contextPeriod } = usePoluicoesContext();
     const { contextStartDate } = usePoluicoesContext();
     const { contextEndDate } = usePoluicoesContext();
     const { setContextStartDate } = usePoluicoesContext();
@@ -281,7 +282,7 @@ const PaperPoluicoes: FC<PaperPoluicoesProps> = (props) => {
                     <Card variant="outlined" sx={{ width: '90%', backgroundColor: greenBackgroundColor }}>
                         <CardContent>
                             <Typography gutterBottom variant="h5" component="div">
-                                Percentual de poluições por período de {`${contextStartDate?.getFullYear()} à ${contextEndDate?.getFullYear()}`}
+                            contextPeriod: {contextPeriod} Percentual de poluições por período de {`${contextStartDate?.getFullYear()} à ${contextEndDate?.getFullYear()}`}
                             </Typography>
                             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                                 Percentual consolidado, considerando dados para fertilizantes químicos,

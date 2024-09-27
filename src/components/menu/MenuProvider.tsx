@@ -1,0 +1,54 @@
+// src/components/MenuProvider.tsx
+
+import { useState, useEffect, FC, ReactNode } from 'react';
+
+import { ICountry } from "../charts/ICountry";
+import { IState } from "../charts/IState";
+import { ICity } from "../charts/ICity";
+import GetHttpClientStates from '../../http/GetHttpClientStates';
+import GetHttpClientCountries from '../../http/GetCountriesService';
+import GetHttpClientCities from '../../http/GetHttpClientCities';
+import { MenuContext } from './MenuContext';
+
+export const MenuProvider: FC<{ children: ReactNode }> = ({ children }) => {
+
+    const [contextStates, setContextStates] = useState<IState[]>([]);
+    const [contextCountries, setContextCountries] = useState<ICountry[]>([]);
+    const [contextCities, setContextCities] = useState<ICity[]>([]);
+
+    const getCountriesService = new GetHttpClientCountries<ICountry[]>();
+    const getStatesService = new GetHttpClientStates<IState[]>();
+    const getCitiesService = new GetHttpClientCities<ICity[]>();
+
+    const fetchData = async (): Promise<boolean> => {
+        let result = false;
+        try {
+            const tmpCountriesData = await getCountriesService.getData();
+            setContextCountries(tmpCountriesData);
+
+            const tmpStatesData = await getStatesService.getData();
+            setContextStates(tmpStatesData);
+
+            const tmpCitiesData = await getCitiesService.getData();
+            setContextCities(tmpCitiesData);
+
+            result = true;
+        } catch (error) {
+            console.warn('[MenuProvider]: Erro ao buscar dados:', error);
+        }
+        return result;
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    const value = {
+        contextCities,
+        contextStates,
+        contextCountries,
+        fetchData,
+    };
+
+    return <MenuContext.Provider value={value}>{children}</MenuContext.Provider>;
+};

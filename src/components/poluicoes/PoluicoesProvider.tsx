@@ -1,17 +1,17 @@
 // src/components/PoluicoesProvider.tsx
 
-import { useState, useEffect, FC, ReactNode } from 'react';
+import { useState, useEffect, FC, ReactNode, useRef } from 'react';
 
 import { ICountry } from "../charts/ICountry";
 import { IState } from "../charts/IState";
 import { ICity } from "../charts/ICity";
 import { IStackedAreaChart } from '../charts/IStackedAreaChart';
 import { IPercentualAreaChart } from '../charts/IPercentualAreaChart';
-import GetHttpClientPoluicoes from '../../http/GetHttpClientPoluicoes';
 import GetHttpClientStates from '../../http/GetHttpClientStates';
 import GetHttpClientCountries from '../../http/GetCountriesService';
 import GetHttpClientCities from '../../http/GetHttpClientCities';
 import { PoluicoesContext } from './PoluicoesContext';
+import BasicGetHttpClient from '../../http/BasicGetHttpClient';
 
 export const PoluicoesProvider: FC<{ children: ReactNode }> = ({ children }) => {
 
@@ -20,6 +20,10 @@ export const PoluicoesProvider: FC<{ children: ReactNode }> = ({ children }) => 
     const [contextCities, setContextCities] = useState<ICity[]>([]);
     const [contextStartDate, setContextStartDate] = useState<Date>(new Date());
     const [contextEndDate, setContextEndDate] = useState<Date>(new Date());
+    const [contextPeriod, setContextPeriod] = useState<string>('');
+    // UseRef para armazenar os valores anteriores de contextStartDate e contextEndDate
+    const prevStartDateRef = useRef(contextStartDate); // Inicializa com o valor atual
+    const prevEndDateRef = useRef(contextEndDate); // Inicializa com o valor atual
 
     const [contextStackedData, setContextStackedData] = useState<IStackedAreaChart[]>([]);
     const [contextPercentualData, setContextPercentualData] = useState<IPercentualAreaChart[]>([]);
@@ -27,7 +31,7 @@ export const PoluicoesProvider: FC<{ children: ReactNode }> = ({ children }) => 
     const getCountriesService = new GetHttpClientCountries<ICountry[]>();
     const getStatesService = new GetHttpClientStates<IState[]>();
     const getCitiesService = new GetHttpClientCities<ICity[]>();
-    const getPoluicoesDataService = new GetHttpClientPoluicoes();
+    const getPoluicoesDataService = new BasicGetHttpClient(process.env.REACT_APP_API_BASE_URL, '/poluicoes');
 
     const initializeStackedDataPeriods = (_stackedData: IStackedAreaChart[]) => {
         if (_stackedData.length === 0) {
@@ -73,23 +77,28 @@ export const PoluicoesProvider: FC<{ children: ReactNode }> = ({ children }) => 
         fetchData();
     }, []);
 
-    const fetchDataByPeriod = async (period: string): Promise<boolean> => {
-        let result = false;
-        try {
-            const tmpStackedDataByPeriod = await getPoluicoesDataService.getStackedDataByPeriod(period);
-            setContextStackedData(tmpStackedDataByPeriod);
-            result = true;
-        } catch (error) {
-            console.warn('[PoluicoesProvider]: Erro ao buscar dados por periodo:', error);
-        }
-        return result;
-    };
+    useEffect(() => {
+        // fetchDataByPeriod(contextPeriod, getPoluicoesDataService).then(data => setContextStackedData(data));
+    }, [contextPeriod]);
 
     useEffect(() => {
-        if (contextStartDate && contextEndDate) {
-            const period = `${contextStartDate.getFullYear()}-${contextEndDate.getFullYear()}`;
-            fetchDataByPeriod(period);
+        // Detecta alterações em contextStartDate
+        if (prevStartDateRef.current !== contextStartDate
+                || prevEndDateRef.current !== contextEndDate) {
+            console.log("[PoluicoesProvider] useEffect: contextStartDate ou contextEndDate foi alterado.");
+            console.log(`[PoluicoesProvider] useEffect: prevStartDateRef: ${prevStartDateRef.current}, contextStartDate: ${contextStartDate}`);
+            console.log(`[PoluicoesProvider] useEffect: prevEndDateRef: ${prevEndDateRef.current}, contextEndDate: ${contextEndDate}`);
+
+            // Cria o period formatado ao alterar qualquer uma das variáveis
+            if (contextStartDate && contextEndDate) {
+                const period = `${contextStartDate.getFullYear()}-${contextEndDate.getFullYear()}`;
+                setContextPeriod(period);
+            }
         }
+        // Atualiza as referências com os valores atuais
+        prevStartDateRef.current = contextStartDate;
+        prevEndDateRef.current = contextEndDate;
+
     }, [contextStartDate, contextEndDate]);
 
     const value = {
@@ -98,6 +107,7 @@ export const PoluicoesProvider: FC<{ children: ReactNode }> = ({ children }) => 
         contextCities,
         contextStates,
         contextCountries,
+        contextPeriod,
         contextStartDate,
         contextEndDate,
         setContextStartDate,

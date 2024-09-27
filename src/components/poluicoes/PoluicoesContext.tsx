@@ -14,6 +14,7 @@ export interface PoluicoesContextProps {
     contextCities: ICity[];
     contextStates: IState[];
     contextCountries: ICountry[];
+    contextPeriod?: string;
     contextStartDate?: Date;
     contextEndDate?: Date;
     setContextStartDate: (start: Date) => void;
@@ -28,6 +29,7 @@ export const PoluicoesContext = createContext<PoluicoesContextProps>({
     contextCities: [],
     contextStates: [],
     contextCountries: [],
+    contextPeriod: undefined,
     contextStartDate: undefined,
     contextEndDate: undefined,
     setContextStartDate: () => Promise.resolve(),

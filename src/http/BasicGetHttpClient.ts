@@ -1,12 +1,15 @@
 // src/services/BaseGetHttpClient.ts
 
 import axios, { AxiosResponse } from 'axios';
+import { IPercentualAreaChart } from '../components/charts/IPercentualAreaChart';
+import { IStackedAreaChart } from '../components/charts/IStackedAreaChart';
+import { IGetHttpClient } from './IGetHttpClient';
 
 interface RequestHeaders {
     [key: string]: string;
 }
 
-export default class BaseGetHttpClient {
+export default class BaseGetHttpClient implements IGetHttpClient {
     protected baseURL: string;
     protected headers: RequestHeaders;
 	protected basePath: string;
@@ -51,5 +54,24 @@ export default class BaseGetHttpClient {
 		console.log(`[BaseGetHttpClient] parsePeriod: Ano Inicial: ${anoInicial}, Ano Final: ${anoFinal}`);
 		return [parseInt(anoInicial), parseInt(anoFinal)];
 	}
+
+    public async getStackedData(): Promise<IStackedAreaChart[]> {
+        return this.get<IStackedAreaChart[]>('/stacked');
+    }
+
+    public async getStackedDataByPeriod(period: string): Promise<IStackedAreaChart[]> {
+		this.periodValidation(period);
+        return this.get<IStackedAreaChart[]>(`/${period}/stacked`);
+    }
+
+    public async getStackedDataByPeriodNState(period: string, state: string): Promise<IStackedAreaChart[]> {
+		this.periodValidation(period);
+        return this.get<IStackedAreaChart[]>(`/${period}/${state}/stacked`);
+    }
+
+    public async getPercentualData(): Promise<IPercentualAreaChart[]> {
+        return this.get<IPercentualAreaChart[]>('/percentuals');
+    }
+
 }
 

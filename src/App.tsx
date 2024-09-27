@@ -29,7 +29,7 @@ const App: React.FC = () => {
         <PoluicoesProvider>
             <PoluicoesPage />
         </PoluicoesProvider>
-        <PesticidasProvider>
+        {/* <PesticidasProvider>
             <PesticidasPage />
         </PesticidasProvider>
         <ErosoesProvider>
@@ -46,7 +46,7 @@ const App: React.FC = () => {
         </NH3Provider>
         <NPKProvider>
             <NPKPage />
-        </NPKProvider>
+        </NPKProvider> */}
         </>
     );
 };

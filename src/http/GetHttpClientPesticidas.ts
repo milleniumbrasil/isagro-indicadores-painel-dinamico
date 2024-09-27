@@ -2,7 +2,7 @@
 
 import { IStackedAreaChart } from '../components/charts/IStackedAreaChart';
 import { IPercentualAreaChart } from '../components/charts/IPercentualAreaChart';
-import BaseGetHttpClient from './BaseGetHttpClient';
+import BaseGetHttpClient from './BasicGetHttpClient';
 
 class GetHttpClientPesticidas extends BaseGetHttpClient {
 

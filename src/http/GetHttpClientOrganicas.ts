@@ -1,6 +1,6 @@
 // src/services/GetOrganicaService.ts
 
-import BaseGetHttpClient from './BaseGetHttpClient';
+import BaseGetHttpClient from './BasicGetHttpClient';
 import { IStackedAreaChart } from '../components/charts/IStackedAreaChart';
 import { IPercentualAreaChart } from '../components/charts/IPercentualAreaChart';
 

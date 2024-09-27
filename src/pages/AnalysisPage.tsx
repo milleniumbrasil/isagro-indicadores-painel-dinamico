@@ -7,10 +7,8 @@ import 'rsuite/dist/rsuite.min.css';
 
 import { FC, useEffect, useState, Suspense, SyntheticEvent } from 'react';
 
-import Drawer from '@mui/material/Drawer';
 import EditIcon from '@mui/icons-material/Edit';
 import InfoIcon from '@mui/icons-material/Info';
-import CloseIcon from '@mui/icons-material/Close';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 
 import { Box, Fab, FormControl, MenuItem, Select, SelectChangeEvent, Typography } from '@mui/material';
@@ -40,7 +38,8 @@ import { greenBackgroundColor,
     grayBackgroundColor,
     blueBackgroundColor,
     blueColors,
-    purplePalette
+    purplePalette,
+    yellowBackgroundColor
 } from '../components/colors';
 import AreaChart from '../components/charts/AreaChart';
 
@@ -438,107 +437,6 @@ const AnalysisPage: FC = () => {
     return (
         <>
             <div>
-                <Drawer anchor={'right'} open={open} onClose={() => setOpen(false)}>
-                    <Box sx={{ width: '600px', padding: '60px' }}>
-                        <Box sx={{ margin: '15px' }}>
-                            <Fab color="default" size="small" aria-label="reset" onClick={() => reset()} sx={{ margin: '5px' }}>
-                                <RestartAltIcon sx={{ margin: '10px' }} />
-                            </Fab>
-                            <Fab color="error" size="small" aria-label="close" onClick={() => setOpen(false)} sx={{ margin: '5px' }}>
-                                <CloseIcon sx={{ margin: '10px' }} />
-                            </Fab>
-                        </Box>
-
-                        <Accordion defaultExpanded>
-                            <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="estado-content" id="estado-header">
-                                <Typography>Estado</Typography>
-                            </AccordionSummary>
-                            <AccordionDetails>
-                                <Typography>Ao selecionar um estado, o mapa deve exibir a imagem correspondente.</Typography>
-                                <Divider variant="middle" sx={{ margin: '15px' }} />
-                                <FormControl fullWidth>
-                                    <Select id="state-select" value={selectedStateName} onChange={handleStateChange}>
-                                        <MenuItem value="">
-                                            <em>Selecione um estado</em>
-                                        </MenuItem>
-                                        {Object.keys(estados).map((e, index) => (
-                                            <MenuItem id={`${index}-menu-item-estado`} value={e} key={e}>
-                                                {e}
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                </FormControl>
-                            </AccordionDetails>
-                        </Accordion>
-
-                        <Accordion>
-                            <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="analysis-content" id="analysis-header">
-                                <Typography>Análise</Typography>
-                            </AccordionSummary>
-                            <AccordionDetails>
-                                <Typography>Ao selecionar uma análise, os gráficos devem exibir os dados correspondentes.</Typography>
-                                <Divider variant="middle" sx={{ margin: '15px' }} />
-                                <FormControl fullWidth>
-                                    <Select id="analysis-select" value={selectedAnalysis} onChange={handleAnalysisChange}>
-                                        <MenuItem value="">
-                                            <em>Selecione uma análise</em>
-                                        </MenuItem>
-                                        {availableAnalysis.map((e, index) => (
-                                            <MenuItem id={`${index}-menu-item-analysis`} value={e.value} key={index}>
-                                                {e.label}
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                </FormControl>
-                            </AccordionDetails>
-                        </Accordion>
-
-                        <Accordion>
-                            <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="label-content" id="label-header">
-                                <Typography>Rótulo</Typography>
-                            </AccordionSummary>
-                            <AccordionDetails>
-                                <Typography>Ao selecionar um rótulo, os gráficos devem exibir os dados correspondentes.</Typography>
-                                <Divider variant="middle" sx={{ margin: '15px' }} />
-                                <FormControl fullWidth>
-                                    <Select id="analysis-select" value={selectedLabel} onChange={handleLabelChange}>
-                                        <MenuItem value="">
-                                            <em>Selecione um rótulo</em>
-                                        </MenuItem>
-                                        {labels.map((labelItem, index) => (
-                                            <MenuItem id={`${index}-menu-item-label`} value={labelItem.value} key={index}>
-                                                {labelItem.label}
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                </FormControl>
-                            </AccordionDetails>
-                        </Accordion>
-
-                        <Accordion>
-                            <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="source-content" id="source-header">
-                                <Typography>Fonte</Typography>
-                            </AccordionSummary>
-                            <AccordionDetails>
-                                <Typography>Ao selecionar uma fonte, os gráficos devem exibir os dados correspondentes.</Typography>
-                                <Divider variant="middle" sx={{ margin: '15px' }} />
-                                <FormControl fullWidth>
-                                    <Select id="source-select" value={selectedSource} onChange={handleSourceChange}>
-                                        <MenuItem value="">
-                                            <em>Selecione uma fonte</em>
-                                        </MenuItem>
-                                        {availableSsources.map((e, index) => (
-                                            <MenuItem id={`${index}-menu-item-source`} value={e.value} key={index}>
-                                                {e.label}
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                </FormControl>
-                            </AccordionDetails>
-                        </Accordion>
-                    </Box>
-                </Drawer>
-
                 <Accordion>
                     <AccordionSummary
                         expandIcon={<InfoIcon />}
@@ -658,6 +556,95 @@ const AnalysisPage: FC = () => {
                                 </FormControl>
                             </AccordionDetails>
                         </Accordion>
+
+
+                        <Accordion defaultExpanded>
+                            <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="estado-content" id="estado-header">
+                                <Typography>Estado</Typography>
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                <Typography>Ao selecionar um estado, o mapa deve exibir a imagem correspondente.</Typography>
+                                <Divider variant="middle" sx={{ margin: '15px' }} />
+                                <FormControl fullWidth>
+                                    <Select id="state-select" value={selectedStateName} onChange={handleStateChange}>
+                                        <MenuItem value="">
+                                            <em>Selecione um estado</em>
+                                        </MenuItem>
+                                        {Object.keys(estados).map((e, index) => (
+                                            <MenuItem id={`${index}-menu-item-estado`} value={e} key={e}>
+                                                {e}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                            </AccordionDetails>
+                        </Accordion>
+
+                        <Accordion>
+                            <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="analysis-content" id="analysis-header">
+                                <Typography>Análise</Typography>
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                <Typography>Ao selecionar uma análise, os gráficos devem exibir os dados correspondentes.</Typography>
+                                <Divider variant="middle" sx={{ margin: '15px' }} />
+                                <FormControl fullWidth>
+                                    <Select id="analysis-select" value={selectedAnalysis} onChange={handleAnalysisChange}>
+                                        <MenuItem value="">
+                                            <em>Selecione uma análise</em>
+                                        </MenuItem>
+                                        {availableAnalysis.map((e, index) => (
+                                            <MenuItem id={`${index}-menu-item-analysis`} value={e.value} key={index}>
+                                                {e.label}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                            </AccordionDetails>
+                        </Accordion>
+
+                        <Accordion>
+                            <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="label-content" id="label-header">
+                                <Typography>Rótulo</Typography>
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                <Typography>Ao selecionar um rótulo, os gráficos devem exibir os dados correspondentes.</Typography>
+                                <Divider variant="middle" sx={{ margin: '15px' }} />
+                                <FormControl fullWidth>
+                                    <Select id="analysis-select" value={selectedLabel} onChange={handleLabelChange}>
+                                        <MenuItem value="">
+                                            <em>Selecione um rótulo</em>
+                                        </MenuItem>
+                                        {labels.map((labelItem, index) => (
+                                            <MenuItem id={`${index}-menu-item-label`} value={labelItem.value} key={index}>
+                                                {labelItem.label}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                            </AccordionDetails>
+                        </Accordion>
+
+                        <Accordion>
+                            <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="source-content" id="source-header">
+                                <Typography>Fonte</Typography>
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                <Typography>Ao selecionar uma fonte, os gráficos devem exibir os dados correspondentes.</Typography>
+                                <Divider variant="middle" sx={{ margin: '15px' }} />
+                                <FormControl fullWidth>
+                                    <Select id="source-select" value={selectedSource} onChange={handleSourceChange}>
+                                        <MenuItem value="">
+                                            <em>Selecione uma fonte</em>
+                                        </MenuItem>
+                                        {availableSsources.map((e, index) => (
+                                            <MenuItem id={`${index}-menu-item-source`} value={e.value} key={index}>
+                                                {e.label}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                            </AccordionDetails>
+                        </Accordion>
                         <Typography variant="h6" sx={{ padding: '15px' }}></Typography>
                         <Typography variant="body2" sx={{ padding: '15px', width: '550px' }}></Typography>
 
@@ -665,7 +652,7 @@ const AnalysisPage: FC = () => {
                     </Box>
                 </Box>
 
-                <Card variant="outlined" sx={{ width: '90%', backgroundColor: blueBackgroundColor, margin: '10px' }}>
+                <Card variant="outlined" sx={{ width: '90%', backgroundColor: yellowBackgroundColor, margin: '10px' }}>
                     <CardContent>
                         <Typography gutterBottom variant="h5" component="div">
                             Áreas Organicas por período {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}

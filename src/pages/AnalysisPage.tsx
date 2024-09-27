@@ -95,6 +95,7 @@ const AnalysisPage: FC = () => {
 
     const [selectedAnalysis, setSelectedAnalysis] = useState<string>('orgânicas');
     const [labels, setLabels] = useState<Label[]>([]);
+    const [selectedLabel, setSelectedLabel] = useState<string>('fruticultura');
     const [selectedStateName, setSelectedStateName] = useState<string>('Distrito Federal');
     const [selectedState, setSelectedState] = useState<iEstado>(estados['Distrito Federal']);
     const [layers, setLayers] = useState(initialConfig.layers);
@@ -320,12 +321,13 @@ const AnalysisPage: FC = () => {
         const validLabelValues = getValidLabelsByAnalysis(selectedValue);
         const validLabelsForDisplay = availableLabels.filter((labelItem) => validLabelValues.includes(labelItem.value));
         setLabels(validLabelsForDisplay);
+        console.log('Análise selecionada:', selectedValue);
     };
 
-    const handleLabelChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-        const selectedLabel = event.target.value as string;
-        // Aqui você pode fazer algo com o rótulo selecionado
-        console.log('Rótulo selecionado:', selectedLabel);
+    const handleLabelChange = (event: SelectChangeEvent<string>) => {
+        const selectedValue = event.target.value as string;
+        setSelectedLabel(selectedValue); // Atualiza o estado do rótulo selecionado
+        console.log('Rótulo selecionado:', selectedValue);
     };
 
     // useEffect(() => {
@@ -354,6 +356,20 @@ const AnalysisPage: FC = () => {
     //     fetchData();
     // }, [contextAnalysisPercentual, contextAnalysisStackedData]);
 
+    useEffect(() => {
+        // Atualiza os rótulos com base na análise padrão (orgânicas)
+        const validLabelValues = getValidLabelsByAnalysis(selectedAnalysis);
+        const validLabelsForDisplay = availableLabels.filter((labelItem) => validLabelValues.includes(labelItem.value));
+        setLabels(validLabelsForDisplay);
+
+        // Verifica se o rótulo padrão existe na lista de rótulos válidos
+        if (validLabelValues.includes('fruticultura')) {
+            setSelectedLabel('fruticultura');
+        } else {
+            setSelectedLabel(validLabelsForDisplay.length > 0 ? validLabelsForDisplay[0].value : '');
+        }
+    }, [selectedAnalysis, availableLabels]);
+    
     return (
         <>
             {/* <Suspense fallback={<Loading />}>
@@ -438,7 +454,7 @@ const AnalysisPage: FC = () => {
                                 <Typography>Ao selecionar um rótulo, os gráficos devem exibir os dados correspondentes.</Typography>
                                 <Divider variant="middle" sx={{ margin: '15px' }} />
                                 <FormControl fullWidth>
-                                    <Select id="analysis-select" value={selectedAnalysis} onChange={handleAnalysisChange}>
+                                    <Select id="analysis-select" value={selectedLabel} onChange={handleLabelChange}>
                                         <MenuItem value="">
                                             <em>Selecione um rótulo</em>
                                         </MenuItem>

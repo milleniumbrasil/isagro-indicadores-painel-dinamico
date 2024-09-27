@@ -2,8 +2,10 @@
 
 import './AnalysisPage.css';
 import 'rsuite/SelectPicker/styles/index.css';
+import 'rsuite/DateRangePicker/styles/index.css';
+import 'rsuite/dist/rsuite.min.css';
 
-import { FC, useEffect, useState, Suspense } from 'react';
+import { FC, useEffect, useState, Suspense, SyntheticEvent } from 'react';
 
 import Drawer from '@mui/material/Drawer';
 import EditIcon from '@mui/icons-material/Edit';
@@ -15,12 +17,9 @@ import {
     Box,
     Fab,
     FormControl,
-    FormControlLabel,
-    FormGroup,
     MenuItem,
     Select,
     SelectChangeEvent,
-    TextField,
     Typography,
 } from '@mui/material';
 
@@ -31,7 +30,8 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Divider from '@mui/material/Divider';
 import { iEstado, estados, Map } from 'isagro-map';
 
-import { SelectPicker } from 'rsuite';
+import { DateRangePicker } from 'rsuite';
+import { BsCalendar2MonthFill } from 'react-icons/bs';
 
 export interface TileLayerConfig {
     layers?: string;
@@ -52,6 +52,7 @@ export interface TileLayerConfig {
 }
 
 import { Loader } from 'rsuite';
+import { DateRange } from 'rsuite/esm/DateRangePicker';
 
 export function Loading() {
     return (
@@ -99,6 +100,9 @@ const AnalysisPage: FC = () => {
     const [selectedLabel, setSelectedLabel] = useState<string>('fruticultura');
     const [selectedStateName, setSelectedStateName] = useState<string>('Distrito Federal');
     const [selectedState, setSelectedState] = useState<iEstado>(estados['Distrito Federal']);
+    const [selectedStartDate, setSelectedStartDate] = useState<Date>(new Date());
+    const [selectedEndDate, setSelectedEndDate] = useState<Date>(new Date());
+
     const [layers, setLayers] = useState(initialConfig.layers);
     const [styles, setStyles] = useState(initialConfig.styles);
     const [format, setFormat] = useState(initialConfig.format);
@@ -314,6 +318,19 @@ const AnalysisPage: FC = () => {
         setZoom(state.zoom);
     };
 
+    const handleChangeRangeDates = (rangeDates: DateRange | null, event: SyntheticEvent<Element, Event>) => {
+        // preciso atribuir os valores de data para as variaveis startDate e endDate
+        if (rangeDates) {
+            rangeDates.map((date, index) => {
+                if (index === 0) {
+                    setSelectedStartDate(date);
+                } else {
+                    setSelectedEndDate(date);
+                }
+            });
+        }
+    };
+
     const handleSourceChange = (event: SelectChangeEvent) => {
         const selectedValue = event.target.value as string;
         setSelectedSource(selectedValue);
@@ -366,22 +383,22 @@ const AnalysisPage: FC = () => {
         // Atualiza os rótulos com base na análise padrão (orgânicas)
         const validLabelValues = getValidLabelsByAnalysis(selectedAnalysis);
         const validLabelsForDisplay = availableLabels.filter((labelItem) => validLabelValues.includes(labelItem.value));
-        setLabels(validLabelsForDisplay);
+
+        // Apenas atualize os rótulos se forem diferentes dos atuais
+        if (JSON.stringify(labels) !== JSON.stringify(validLabelsForDisplay)) {
+            setLabels(validLabelsForDisplay);
+        }
 
         // Verifica se o rótulo padrão existe na lista de rótulos válidos
-        if (validLabelValues.includes('fruticultura')) {
-            setSelectedLabel('fruticultura');
-        } else {
+        if (!validLabelValues.includes(selectedLabel)) {
             setSelectedLabel(validLabelsForDisplay.length > 0 ? validLabelsForDisplay[0].value : '');
         }
 
         // Inicializa a fonte com 'UNB' se disponível, senão escolhe a primeira fonte disponível
-        if (availableSsources.map(source => source.value).includes('UNB')) {
-            setSelectedSource('UNB');
-        } else {
+        if (!availableSsources.map(source => source.value).includes(selectedSource)) {
             setSelectedSource(availableSsources.length > 0 ? availableSsources[0].value : '');
         }
-    }, [selectedAnalysis, availableLabels, availableSsources]);
+    }, [selectedAnalysis, availableSsources]); // Removi `availableLabels` da lista de dependências para evitar loop
 
     return (
         <>
@@ -398,6 +415,7 @@ const AnalysisPage: FC = () => {
                     <Loading />
                 )}
             </Suspense> */}
+
 
             <div>
                 <Drawer anchor={'right'} open={open} onClose={() => setOpen(false)}>
@@ -506,7 +524,6 @@ const AnalysisPage: FC = () => {
                                 </FormControl>
                             </AccordionDetails>
                         </Accordion>
-
                     </Box>
                 </Drawer>
 
@@ -554,12 +571,32 @@ const AnalysisPage: FC = () => {
                         </Fab>
                     </Box>
                     <Box sx={{ margin: '10px' }}>
+
+                    <Accordion>
+                            <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="period-content" id="period-header">
+                                <Typography>Período</Typography>
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                <Typography>Ao selecionar um período, os gráficos devem exibir os dados correspondentes.</Typography>
+                                <Divider variant="middle" sx={{ margin: '15px' }} />
+                                <FormControl fullWidth>
+                                    <DateRangePicker
+                                        format="MMM yyyy"
+                                        caretAs={BsCalendar2MonthFill}
+                                        limitEndYear={1900}
+                                        limitStartYear={new Date().getFullYear()}
+                                        onChange={handleChangeRangeDates}
+                                    />
+                                </FormControl>
+                            </AccordionDetails>
+                        </Accordion>
                         <Typography variant="h6" sx={{ padding: '15px' }}>
-                            Utilização do Componente Mapa
+
                         </Typography>
                         <Typography variant="body2" sx={{ padding: '15px', width: '550px' }}>
 
                         </Typography>
+
                         <Typography variant="body2">
                         </Typography>
                     </Box>

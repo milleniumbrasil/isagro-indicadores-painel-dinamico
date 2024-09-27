@@ -4,10 +4,6 @@ import './OrganicasPage.css';
 
 import { FC, useEffect, useState, Suspense } from 'react';
 
-import Mapa from '../components/map/Map';
-
-import { iEstado, estados, Map } from 'isagro-map';
-
 // import { IStackedAreaChart } from '../components/charts/IStackedAreaChart';
 // import { IPercentualAreaChart } from '../components/charts/IPercentualAreaChart';
 // import { useOrganicasContext } from '../components/organicas/OrganicasContext';

@@ -29,7 +29,8 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Divider from '@mui/material/Divider';
 import { iEstado, estados, Map } from 'isagro-map';
 
-import { greenBackgroundColor,
+import {
+    greenBackgroundColor,
     yellowPalette,
     bluePalette,
     brownPalette,
@@ -40,7 +41,7 @@ import { greenBackgroundColor,
     blueColors,
     purplePalette,
     yellowBackgroundColor,
-    greenPalette
+    greenPalette,
 } from '../components/colors';
 import AreaChart from '../components/charts/AreaChart';
 
@@ -200,33 +201,33 @@ const AnalysisPage: FC = () => {
 
     // Mapeamento do nome do estado para o código ISO
     const stateToIsoCodeMap: { [key: string]: string } = {
-        'Acre': 'AC',
-        'Alagoas': 'AL',
-        'Amapá': 'AP',
-        'Amazonas': 'AM',
-        'Bahia': 'BA',
-        'Ceará': 'CE',
+        Acre: 'AC',
+        Alagoas: 'AL',
+        Amapá: 'AP',
+        Amazonas: 'AM',
+        Bahia: 'BA',
+        Ceará: 'CE',
         'Distrito Federal': 'DF',
         'Espírito Santo': 'ES',
-        'Goiás': 'GO',
-        'Maranhão': 'MA',
+        Goiás: 'GO',
+        Maranhão: 'MA',
         'Mato Grosso': 'MT',
         'Mato Grosso do Sul': 'MS',
         'Minas Gerais': 'MG',
-        'Pará': 'PA',
-        'Paraíba': 'PB',
-        'Paraná': 'PR',
-        'Pernambuco': 'PE',
-        'Piauí': 'PI',
+        Pará: 'PA',
+        Paraíba: 'PB',
+        Paraná: 'PR',
+        Pernambuco: 'PE',
+        Piauí: 'PI',
         'Rio de Janeiro': 'RJ',
         'Rio Grande do Norte': 'RN',
         'Rio Grande do Sul': 'RS',
-        'Rondônia': 'RO',
-        'Roraima': 'RR',
+        Rondônia: 'RO',
+        Roraima: 'RR',
         'Santa Catarina': 'SC',
         'São Paulo': 'SP',
-        'Sergipe': 'SE',
-        'Tocantins': 'TO'
+        Sergipe: 'SE',
+        Tocantins: 'TO',
     };
 
     const getValidLabelsByAnalysis = (analysis: string): string[] => {
@@ -296,7 +297,6 @@ const AnalysisPage: FC = () => {
         setZoom(state.zoom);
     };
 
-
     const handleIntervalChange = (event: SelectChangeEvent) => {
         setInterval(event.target.value); // Atualiza o intervalo selecionado
     };
@@ -332,67 +332,73 @@ const AnalysisPage: FC = () => {
 
     const analysisDescriptions = {
         erosao: {
-            title: "Análise de Erosão",
-            description: "A análise de erosão foca em identificar e monitorar áreas sujeitas à degradação do solo devido à ação da água ou vento. Essa análise é fundamental para a preservação ambiental e a implementação de práticas de conservação.",
-            source: "Instituto Agronômico de Campinas (IAC)",
-            labels: "Pastagem, Cultura",
-            period: `${selectedStartDate.getFullYear()} até ${selectedEndDate.getFullYear()}`,  // Atualizando o período
-            charts: "Média Móvel Simples, Soma Agregada, Percentual"
+            title: 'Análise de Erosão',
+            description:
+                'A análise de erosão foca em identificar e monitorar áreas sujeitas à degradação do solo devido à ação da água ou vento. Essa análise é fundamental para a preservação ambiental e a implementação de práticas de conservação.',
+            source: 'Instituto Agronômico de Campinas (IAC)',
+            labels: 'Pastagem, Cultura',
+            period: `${selectedStartDate.getFullYear()} até ${selectedEndDate.getFullYear()}`, // Atualizando o período
+            charts: 'Média Móvel Simples, Soma Agregada, Percentual',
         },
         gee: {
-            title: "Análise de Emissões de GEE (Gases de Efeito Estufa)",
-            description: "Esta análise acompanha as emissões de gases de efeito estufa (GEE) provenientes de diversas atividades agrícolas e industriais, sendo essencial para entender o impacto das mudanças climáticas.",
-            source: "Organização para a Cooperação e Desenvolvimento Econômico (OCDE)",
-            labels: "Tecnologia 1, Tecnologia 2, Tecnologia 3, Tecnologia 4",
+            title: 'Análise de Emissões de GEE (Gases de Efeito Estufa)',
+            description:
+                'Esta análise acompanha as emissões de gases de efeito estufa (GEE) provenientes de diversas atividades agrícolas e industriais, sendo essencial para entender o impacto das mudanças climáticas.',
+            source: 'Organização para a Cooperação e Desenvolvimento Econômico (OCDE)',
+            labels: 'Tecnologia 1, Tecnologia 2, Tecnologia 3, Tecnologia 4',
             period: `${selectedStartDate.getFullYear()} até ${selectedEndDate.getFullYear()}`,
-            charts: "Média Móvel Simples, Soma Agregada, Percentual"
+            charts: 'Média Móvel Simples, Soma Agregada, Percentual',
         },
         nh3: {
-            title: "Análise de Emissões de NH3",
-            description: "A análise de emissões de amônia (NH3) busca entender como a aplicação de fertilizantes e o manejo de dejetos animais contribuem para a poluição do ar e a acidificação do solo.",
-            source: "Universidade de Brasília (UNB)",
-            labels: "Fertilizantes Químicos, Fertilizantes Orgânicos, Manejo de Esterco, Deposição de Extretas",
+            title: 'Análise de Emissões de NH3',
+            description:
+                'A análise de emissões de amônia (NH3) busca entender como a aplicação de fertilizantes e o manejo de dejetos animais contribuem para a poluição do ar e a acidificação do solo.',
+            source: 'Universidade de Brasília (UNB)',
+            labels: 'Fertilizantes Químicos, Fertilizantes Orgânicos, Manejo de Esterco, Deposição de Extretas',
             period: `${selectedStartDate.getFullYear()} até ${selectedEndDate.getFullYear()}`,
-            charts: "Média Móvel Simples, Soma Agregada, Percentual"
+            charts: 'Média Móvel Simples, Soma Agregada, Percentual',
         },
         npk: {
-            title: "Análise de Nutrientes NPK",
-            description: "Esta análise aborda o uso de nutrientes NPK (nitrogênio, fósforo e potássio) nas práticas agrícolas e seu impacto sobre a produtividade e a sustentabilidade do solo.",
-            source: "Instituto Agronômico de Campinas (IAC)",
-            labels: "Dejetos Animais, Deposição Atmosférica, Fertilizantes Minerais, Produção Agrícola",
+            title: 'Análise de Nutrientes NPK',
+            description:
+                'Esta análise aborda o uso de nutrientes NPK (nitrogênio, fósforo e potássio) nas práticas agrícolas e seu impacto sobre a produtividade e a sustentabilidade do solo.',
+            source: 'Instituto Agronômico de Campinas (IAC)',
+            labels: 'Dejetos Animais, Deposição Atmosférica, Fertilizantes Minerais, Produção Agrícola',
             period: `${selectedStartDate.getFullYear()} até ${selectedEndDate.getFullYear()}`,
-            charts: "Média Móvel Simples, Soma Agregada, Percentual"
+            charts: 'Média Móvel Simples, Soma Agregada, Percentual',
         },
         organicas: {
-            title: "Análise de Áreas Orgânicas",
-            description: "A análise de áreas orgânicas foca no acompanhamento do uso de práticas agrícolas orgânicas, explorando o impacto positivo no meio ambiente e a qualidade do solo.",
-            source: "Universidade de Brasília (UNB)",
-            labels: "Grão, Hortaliças, Fruticultura, Pastagem",
+            title: 'Análise de Áreas Orgânicas',
+            description:
+                'A análise de áreas orgânicas foca no acompanhamento do uso de práticas agrícolas orgânicas, explorando o impacto positivo no meio ambiente e a qualidade do solo.',
+            source: 'Universidade de Brasília (UNB)',
+            labels: 'Grão, Hortaliças, Fruticultura, Pastagem',
             period: `${selectedStartDate.getFullYear()} até ${selectedEndDate.getFullYear()}`,
-            charts: "Média Móvel Simples, Soma Agregada, Percentual"
+            charts: 'Média Móvel Simples, Soma Agregada, Percentual',
         },
         pesticidas: {
-            title: "Análise de Uso de Pesticidas",
-            description: "Esta análise acompanha o uso de pesticidas, como herbicidas, fungicidas e inseticidas, nas práticas agrícolas, avaliando o impacto sobre o solo e os ecossistemas.",
-            source: "Organização para a Cooperação e Desenvolvimento Econômico (OCDE)",
-            labels: "Herbicidas, Fungicidas, Inseticidas, Outros",
+            title: 'Análise de Uso de Pesticidas',
+            description:
+                'Esta análise acompanha o uso de pesticidas, como herbicidas, fungicidas e inseticidas, nas práticas agrícolas, avaliando o impacto sobre o solo e os ecossistemas.',
+            source: 'Organização para a Cooperação e Desenvolvimento Econômico (OCDE)',
+            labels: 'Herbicidas, Fungicidas, Inseticidas, Outros',
             period: `${selectedStartDate.getFullYear()} até ${selectedEndDate.getFullYear()}`,
-            charts: "Média Móvel Simples, Soma Agregada, Percentual"
+            charts: 'Média Móvel Simples, Soma Agregada, Percentual',
         },
         poluicao: {
-            title: "Análise de Poluição",
-            description: "A análise de poluição monitora a presença de poluentes como nitrato, fosfato, cátions e ânions no solo e na água, essenciais para preservar a qualidade dos recursos naturais.",
-            source: "Universidade de Brasília (UNB)",
-            labels: "Nitrato, Fosfato, Cations, Anions",
+            title: 'Análise de Poluição',
+            description:
+                'A análise de poluição monitora a presença de poluentes como nitrato, fosfato, cátions e ânions no solo e na água, essenciais para preservar a qualidade dos recursos naturais.',
+            source: 'Universidade de Brasília (UNB)',
+            labels: 'Nitrato, Fosfato, Cations, Anions',
             period: `${selectedStartDate.getFullYear()} até ${selectedEndDate.getFullYear()}`,
-            charts: "Média Móvel Simples, Soma Agregada, Percentual"
-        }
+            charts: 'Média Móvel Simples, Soma Agregada, Percentual',
+        },
     };
 
-    const currentAnalysisDescription = analysisDescriptions[
-        selectedAnalysis.toLowerCase() as keyof typeof analysisDescriptions
-      ] || {};
-      const buildUrl = () => {
+    const currentAnalysisDescription = analysisDescriptions[selectedAnalysis.toLowerCase() as keyof typeof analysisDescriptions] || {};
+
+    const buildUrl = () => {
         const startDateFormatted = selectedStartDate ? selectedStartDate.toISOString().split('T')[0] : null;
         const endDateFormatted = selectedEndDate ? selectedEndDate.toISOString().split('T')[0] : null;
         const selectedStateIsoCode = selectedStateName ? stateToIsoCodeMap[selectedStateName] || selectedStateName : null;
@@ -427,7 +433,7 @@ const AnalysisPage: FC = () => {
 
     const fetchData = async () => {
         setLoading(true);
-        const url = buildUrl(); // Usa a função para construir a URL dinamicamente
+        const url = buildUrl();
 
         try {
             const response = await fetch(url);
@@ -457,18 +463,16 @@ const AnalysisPage: FC = () => {
                         id="summary-header"
                         sx={{ justifyContent: 'flex-end' }}
                     >
-                        <Typography sx={{ ml: 'auto', marginRight: '10px' }}>
-                            Sobre o painel de análise de {selectedAnalysis}
-                        </Typography>
+                        <Typography sx={{ ml: 'auto', marginRight: '10px' }}>Sobre o painel de análise de {selectedAnalysis}</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
                         <Box sx={{ flexGrow: 1, maxWidth: 752 }}>
                             <Typography variant="h6" sx={{ padding: '15px' }}>
-                                {currentAnalysisDescription.title || "Informações Detalhadas da Análise"}
+                                {currentAnalysisDescription.title || 'Informações Detalhadas da Análise'}
                             </Typography>
 
                             <Typography variant="body1" sx={{ padding: '10px' }}>
-                                {currentAnalysisDescription.description || "Descrição não disponível para esta análise."}
+                                {currentAnalysisDescription.description || 'Descrição não disponível para esta análise.'}
                             </Typography>
 
                             <List dense>
@@ -513,7 +517,7 @@ const AnalysisPage: FC = () => {
                                     </ListItemAvatar>
                                     <ListItemText
                                         primary="Gráficos disponíveis"
-                                        secondary={currentAnalysisDescription.charts || "Média Móvel Simples, Soma Agregada, Percentual"}
+                                        secondary={currentAnalysisDescription.charts || 'Média Móvel Simples, Soma Agregada, Percentual'}
                                     />
                                 </ListItem>
                             </List>
@@ -540,12 +544,12 @@ const AnalysisPage: FC = () => {
                             bgcolor="0xFFFFFF"
                         />
                     </Box>
-                    <Box sx={{ margin: '20px'}}>
+                    <Box sx={{ margin: '20px' }}>
                         <Accordion>
                             <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="period-content" id="period-header">
-                            <Typography>
-                            Período selecionado de {selectedStartDate.getFullYear()} até {selectedEndDate.getFullYear()}
-                            </Typography>
+                                <Typography>
+                                    Período selecionado de {selectedStartDate.getFullYear()} até {selectedEndDate.getFullYear()}
+                                </Typography>
                             </AccordionSummary>
                             <AccordionDetails>
                                 <Typography>Ao selecionar um período, os gráficos devem exibir os dados correspondentes.</Typography>
@@ -561,7 +565,6 @@ const AnalysisPage: FC = () => {
                                 </FormControl>
                             </AccordionDetails>
                         </Accordion>
-
 
                         <Accordion>
                             <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="estado-content" id="estado-header">
@@ -672,10 +675,14 @@ const AnalysisPage: FC = () => {
                     </Box>
                 </Box>
 
-                <Card variant="outlined" sx={{ alignItems: 'center', width: '98%', backgroundColor: yellowBackgroundColor, margin: '10px' }}>
+                <Card
+                    variant="outlined"
+                    sx={{ alignItems: 'center', width: '98%', backgroundColor: yellowBackgroundColor, margin: '10px' }}
+                >
                     <CardContent>
                         <Typography variant="h6" sx={{ padding: '15px' }}>
-                            {currentAnalysisDescription.title} por período {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
+                            {currentAnalysisDescription.title} por período{' '}
+                            {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
                         </Typography>
                         <Typography variant="body2" sx={{ padding: '10px' }}>
                             {currentAnalysisDescription.description}
@@ -686,23 +693,27 @@ const AnalysisPage: FC = () => {
                             Como interpretar o gráfico de soma agregada
                         </Typography>
                         <Typography variant="body2" sx={{ padding: '10px' }}>
-                            Este gráfico de soma agregada apresenta o total acumulado de dados ao longo do período selecionado.
-                            Ele exibe o volume ou a soma dos valores de cada rótulo em diferentes períodos, permitindo a
-                            visualização de tendências e comparações entre as categorias ao longo do tempo.
+                            Este gráfico de soma agregada apresenta o total acumulado de dados ao longo do período selecionado. Ele exibe o
+                            volume ou a soma dos valores de cada rótulo em diferentes períodos, permitindo a visualização de tendências e
+                            comparações entre as categorias ao longo do tempo.
                         </Typography>
                         <Typography variant="body2" sx={{ padding: '10px' }}>
-                            Para analisá-lo corretamente, observe a altura de cada camada no gráfico, que representa a contribuição
-                            de um rótulo específico em relação ao total acumulado. A soma de todas as camadas em um determinado período
-                            reflete o valor total acumulado até aquele momento.
+                            Para analisá-lo corretamente, observe a altura de cada camada no gráfico, que representa a contribuição de um
+                            rótulo específico em relação ao total acumulado. A soma de todas as camadas em um determinado período reflete o
+                            valor total acumulado até aquele momento.
                         </Typography>
 
-                        <AreaChart width={400} height={400} data={internalStackedData} defaultPalette={brownPalette}/>
+                        <AreaChart width={400} height={400} data={internalStackedData} defaultPalette={brownPalette} />
                     </CardContent>
                 </Card>
-                <Card variant="outlined" sx={{ alignItems: 'center', width: '98%', backgroundColor: yellowBackgroundColor, margin: '10px' }}>
+                <Card
+                    variant="outlined"
+                    sx={{ alignItems: 'center', width: '98%', backgroundColor: yellowBackgroundColor, margin: '10px' }}
+                >
                     <CardContent>
                         <Typography variant="h6" sx={{ padding: '15px' }}>
-                            {currentAnalysisDescription.title} por período {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
+                            {currentAnalysisDescription.title} por período{' '}
+                            {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
                         </Typography>
                         <Typography variant="body2" sx={{ padding: '10px' }}>
                             {currentAnalysisDescription.description}
@@ -713,13 +724,20 @@ const AnalysisPage: FC = () => {
                             Como interpretar o gráfico de Média Móvel Simples
                         </Typography>
                         <Typography variant="body2" sx={{ padding: '10px' }}>
-                            Este gráfico de Média Móvel Simples utiliza uma técnica estatística para suavizar as variações dos dados ao longo do tempo, calculando a média dos valores de um conjunto de períodos consecutivos. A principal vantagem desta abordagem é eliminar flutuações de curto prazo, revelando tendências mais estáveis e padrões que poderiam ser obscurecidos pelas variações naturais dos dados.
+                            Este gráfico de Média Móvel Simples utiliza uma técnica estatística para suavizar as variações dos dados ao
+                            longo do tempo, calculando a média dos valores de um conjunto de períodos consecutivos. A principal vantagem
+                            desta abordagem é eliminar flutuações de curto prazo, revelando tendências mais estáveis e padrões que poderiam
+                            ser obscurecidos pelas variações naturais dos dados.
                         </Typography>
                         <Typography variant="body2" sx={{ padding: '10px' }}>
-                            Para analisá-lo corretamente, observe que cada ponto do gráfico representa a média dos valores de um número fixo de períodos anteriores. Dessa forma, ele suaviza os picos e vales dos dados brutos, proporcionando uma visão mais clara da direção geral e das tendências de longo prazo. Esse tipo de análise é ideal para identificar se uma variável está aumentando ou diminuindo ao longo do tempo de forma mais consistente, ao invés de seguir um comportamento errático.
+                            Para analisá-lo corretamente, observe que cada ponto do gráfico representa a média dos valores de um número fixo
+                            de períodos anteriores. Dessa forma, ele suaviza os picos e vales dos dados brutos, proporcionando uma visão
+                            mais clara da direção geral e das tendências de longo prazo. Esse tipo de análise é ideal para identificar se
+                            uma variável está aumentando ou diminuindo ao longo do tempo de forma mais consistente, ao invés de seguir um
+                            comportamento errático.
                         </Typography>
 
-                        <AreaChart width={400} height={400} data={internalStackedData} defaultPalette={brownPalette}/>
+                        <AreaChart width={400} height={400} data={internalStackedData} defaultPalette={brownPalette} />
                     </CardContent>
                 </Card>
             </div>

@@ -22,12 +22,27 @@ import Avatar from '@mui/material/Avatar';
 import ListItemText from '@mui/material/ListItemText';
 import FolderIcon from '@mui/icons-material/Folder';
 
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Divider from '@mui/material/Divider';
 import { iEstado, estados, Map } from 'isagro-map';
+
+import { greenBackgroundColor,
+    yellowPalette,
+    bluePalette,
+    brownPalette,
+    brownBackgroundColor,
+    redBackgroundColor,
+    grayBackgroundColor,
+    blueBackgroundColor,
+    blueColors,
+    purplePalette
+} from '../components/colors';
+import AreaChart from '../components/charts/AreaChart';
 
 import { DateRangePicker } from 'rsuite';
 import { BsCalendar2MonthFill } from 'react-icons/bs';
@@ -52,6 +67,7 @@ export interface TileLayerConfig {
 
 import { Loader } from 'rsuite';
 import { DateRange } from 'rsuite/esm/DateRangePicker';
+import { IStackedAreaChart } from '../components/charts/IStackedAreaChart';
 
 export function Loading() {
     return (
@@ -109,6 +125,7 @@ const AnalysisPage: FC = () => {
         Gráficos disponíveis: Média Móvel Simples, Soma Agregada, Percentual.
     `);
 
+    const [internalStackedData, setInternalStackedData] = useState<IStackedAreaChart[]>([]);
     const [layers, setLayers] = useState(initialConfig.layers);
     const [styles, setStyles] = useState(initialConfig.styles);
     const [format, setFormat] = useState(initialConfig.format);
@@ -655,6 +672,19 @@ const AnalysisPage: FC = () => {
                         <Typography variant="body2"></Typography>
                     </Box>
                 </Box>
+
+                <Card variant="outlined" sx={{ width: '90%', backgroundColor: blueBackgroundColor, margin: '10px' }}>
+                    <CardContent>
+                        <Typography gutterBottom variant="h5" component="div">
+                            Áreas Organicas por período {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
+                        </Typography>
+                        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                            Números absolutos, consolidando dados de uso da terra por período, considerando Grãos,
+                            Hortaliças, Fruticulturas e Pastagens
+                        </Typography>
+                        <AreaChart width={400} height={400} data={internalStackedData} defaultPalette={brownPalette}/>
+                    </CardContent>
+                </Card>
             </div>
         </>
     );

@@ -255,73 +255,62 @@ const AnalysisPage: FC = () => {
         setZoom(initialConfig.zoom);
     };
 
-    const handleConfigChange = (newConfig: TileLayerConfig) => {
-        console.log('Updating config in DashboardPage:', newConfig);
+    // Função para buscar os dados do servidor
+    const fetchStackedData = async () => {
+        setLoading(true);
+        const startDateFormatted = selectedStartDate.toISOString().split('T')[0];
+        const endDateFormatted = selectedEndDate.toISOString().split('T')[0];
 
-        if (newConfig.zoom !== zoom) {
-            setZoom(newConfig.zoom || initialConfig.zoom);
-            console.log('Zoom state updated:', newConfig.zoom || initialConfig.zoom);
-        }
+        const stateToIsoCodeMap: { [key: string]: string } = {
+            'Acre': 'AC',
+            'Alagoas': 'AL',
+            'Amapá': 'AP',
+            'Amazonas': 'AM',
+            'Bahia': 'BA',
+            'Ceará': 'CE',
+            'Distrito Federal': 'DF',
+            'Espírito Santo': 'ES',
+            'Goiás': 'GO',
+            'Maranhão': 'MA',
+            'Mato Grosso': 'MT',
+            'Mato Grosso do Sul': 'MS',
+            'Minas Gerais': 'MG',
+            'Pará': 'PA',
+            'Paraíba': 'PB',
+            'Paraná': 'PR',
+            'Pernambuco': 'PE',
+            'Piauí': 'PI',
+            'Rio de Janeiro': 'RJ',
+            'Rio Grande do Norte': 'RN',
+            'Rio Grande do Sul': 'RS',
+            'Rondônia': 'RO',
+            'Roraima': 'RR',
+            'Santa Catarina': 'SC',
+            'São Paulo': 'SP',
+            'Sergipe': 'SE',
+            'Tocantins': 'TO'
+        };
 
-        if (newConfig.bbox !== bbox) {
-            setBbox(newConfig.bbox || initialConfig.bbox);
-            console.log('BBox state updated:', newConfig.bbox || initialConfig.bbox);
-        }
+        const selectedStateIsoCode = stateToIsoCodeMap[selectedStateName] || selectedStateName; // Usa o ISO ou o nome se não mapeado
 
-        if (newConfig.layers !== layers) {
-            setLayers(newConfig.layers || initialConfig.layers);
-        }
-        if (newConfig.styles !== styles) {
-            setStyles(newConfig.styles || initialConfig.styles);
-        }
-        if (newConfig.format !== format) {
-            setFormat(newConfig.format || initialConfig.format);
-        }
-        if (newConfig.transparent !== transparent) {
-            setTransparent(newConfig.transparent || initialConfig.transparent);
-        }
-        if (newConfig.version !== version) {
-            setVersion(newConfig.version || initialConfig.version);
-        }
-        if (newConfig.crs !== crs) {
-            setCrs(newConfig.crs || initialConfig.crs);
-        }
-        if (newConfig.uppercase !== uppercase) {
-            setUppercase(newConfig.uppercase || initialConfig.uppercase);
-        }
-        if (newConfig.url !== url) {
-            setUrl(newConfig.url || initialConfig.url);
-        }
-        if (newConfig.exceptions !== exceptions) {
-            setExceptions(newConfig.exceptions || initialConfig.exceptions);
-        }
-        if (newConfig.bgcolor !== bgcolor) {
-            setBgcolor(newConfig.bgcolor || initialConfig.bgcolor);
-        }
-        if (newConfig.width !== width) {
-            setWidth(newConfig.width || initialConfig.width);
-        }
-        if (newConfig.height !== height) {
-            setHeight(newConfig.height || initialConfig.height);
-        }
-    };
+        const url = `http://localhost:3001/sum/biennial?analysis=${encodeURIComponent(
+            selectedAnalysis
+        )}&label=${encodeURIComponent(selectedLabel)}&startDate=${startDateFormatted}&endDate=${endDateFormatted}&country=BR&state=${selectedStateIsoCode}&city=Brasília&source=${encodeURIComponent(
+            selectedSource
+        )}`;
 
-    const tileLayerConfig: TileLayerConfig = {
-        layers,
-        styles,
-        format,
-        transparent,
-        version,
-        crs,
-        uppercase,
-        url,
-        exceptions,
-        bgcolor,
-        width,
-        height,
-        bbox,
-        zoom,
-        customParams: {},
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error('Falha ao buscar os dados');
+            }
+            const data: IStackedAreaChart[] = await response.json();
+
+            // Atribui os dados diretamente, sem necessidade de conversão
+            setInternalStackedData(data);
+        } catch (error) {
+            console.error('Erro ao buscar os dados:', error);
+        }
     };
 
     useEffect(() => {
@@ -340,6 +329,7 @@ const AnalysisPage: FC = () => {
         setBbox(state.bbox.join(','));
         setZoom(state.zoom);
     };
+
     const handleChangeRangeDates = (rangeDates: DateRange | null, event: SyntheticEvent<Element, Event>) => {
         if (rangeDates) {
             setSelectedStartDate(rangeDates[0]);
@@ -433,15 +423,17 @@ const AnalysisPage: FC = () => {
       ] || {};
 
       useEffect(() => {
-        const startDateFormatted = selectedStartDate.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
-        const endDateFormatted = selectedEndDate.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
-
         const analysisDescriptionObject = analysisDescriptions[selectedAnalysis.toLowerCase() as keyof typeof analysisDescriptions];
 
         if (analysisDescriptionObject) {
             setAnalysisDescription(analysisDescriptionObject.description);
         }
     }, [selectedAnalysis, selectedLabel, selectedSource, selectedStartDate, selectedEndDate]);
+
+    // useEffect para buscar dados quando houver mudanças nos parâmetros de controle
+    useEffect(() => {
+        fetchStackedData();
+    }, [selectedAnalysis, selectedLabel, selectedLabel, selectedStartDate, selectedEndDate]);
 
     return (
         <>

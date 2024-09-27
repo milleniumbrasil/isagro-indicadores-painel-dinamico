@@ -551,7 +551,7 @@ const AnalysisPage: FC = () => {
                         <Accordion>
                             <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="period-content" id="period-header">
                             <Typography>
-                            Período de {selectedStartDate.getFullYear()} até {selectedEndDate.getFullYear()}
+                            Período selecionado de {selectedStartDate.getFullYear()} até {selectedEndDate.getFullYear()}
                             </Typography>
                             </AccordionSummary>
                             <AccordionDetails>
@@ -570,9 +570,9 @@ const AnalysisPage: FC = () => {
                         </Accordion>
 
 
-                        <Accordion defaultExpanded>
+                        <Accordion>
                             <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="estado-content" id="estado-header">
-                                <Typography>Estado</Typography>
+                                <Typography>Estado selecionado {selectedStateName}</Typography>
                             </AccordionSummary>
                             <AccordionDetails>
                                 <Typography>Ao selecionar um estado, o mapa deve exibir a imagem correspondente.</Typography>
@@ -594,7 +594,7 @@ const AnalysisPage: FC = () => {
 
                         <Accordion>
                             <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="analysis-content" id="analysis-header">
-                                <Typography>Análise</Typography>
+                                <Typography>Análise selecionada {selectedAnalysis}</Typography>
                             </AccordionSummary>
                             <AccordionDetails>
                                 <Typography>Ao selecionar uma análise, os gráficos devem exibir os dados correspondentes.</Typography>
@@ -613,7 +613,7 @@ const AnalysisPage: FC = () => {
 
                         <Accordion>
                             <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="label-content" id="label-header">
-                                <Typography>Rótulo</Typography>
+                                <Typography>Rótulo selecionado {selectedLabel}</Typography>
                             </AccordionSummary>
                             <AccordionDetails>
                                 <Typography>Ao selecionar um rótulo, os gráficos devem exibir os dados correspondentes.</Typography>
@@ -635,7 +635,7 @@ const AnalysisPage: FC = () => {
 
                         <Accordion>
                             <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="source-content" id="source-header">
-                                <Typography>Fonte</Typography>
+                                <Typography>Fonte selecionada {selectedSource}</Typography>
                             </AccordionSummary>
                             <AccordionDetails>
                                 <Typography>Ao selecionar uma fonte, os gráficos devem exibir os dados correspondentes.</Typography>
@@ -656,7 +656,7 @@ const AnalysisPage: FC = () => {
                         </Accordion>
                         <Accordion>
                             <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="interval-content" id="interval-header">
-                                <Typography>Intervalo</Typography>
+                                <Typography>Intervalo selecionado {interval}</Typography>
                             </AccordionSummary>
                             <AccordionDetails>
                                 <Typography>Selecione o intervalo para a análise (anual, bienal, etc.).</Typography>
@@ -687,6 +687,22 @@ const AnalysisPage: FC = () => {
                         <Typography variant="body2" sx={{ padding: '10px' }}>
                             {currentAnalysisDescription.description}
                         </Typography>
+
+                        {/* Explicação sobre o gráfico de soma agregada */}
+                        <Typography variant="h6" sx={{ padding: '15px', marginTop: '15px' }}>
+                            Como interpretar o gráfico de soma agregada
+                        </Typography>
+                        <Typography variant="body2" sx={{ padding: '10px' }}>
+                            Este gráfico de soma agregada apresenta o total acumulado de dados ao longo do período selecionado.
+                            Ele exibe o volume ou a soma dos valores de cada rótulo em diferentes períodos, permitindo a
+                            visualização de tendências e comparações entre as categorias ao longo do tempo.
+                        </Typography>
+                        <Typography variant="body2" sx={{ padding: '10px' }}>
+                            Para analisá-lo corretamente, observe a altura de cada camada no gráfico, que representa a contribuição
+                            de um rótulo específico em relação ao total acumulado. A soma de todas as camadas em um determinado período
+                            reflete o valor total acumulado até aquele momento.
+                        </Typography>
+
                         <AreaChart width={400} height={400} data={internalStackedData} defaultPalette={brownPalette}/>
                     </CardContent>
                 </Card>

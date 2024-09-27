@@ -116,6 +116,7 @@ const AnalysisPage: FC = () => {
     const [selectedState, setSelectedState] = useState<iEstado>(estados['Distrito Federal']);
     const [selectedStartDate, setSelectedStartDate] = useState<Date>(new Date('1990-01-01'));
     const [selectedEndDate, setSelectedEndDate] = useState<Date>(new Date('1995-12-31'));
+    const [interval, setInterval] = useState<string>('biennial');
     const [analysisDescription, setAnalysisDescription] = useState<string>(`
         Análise: Orgânicas.
         Fonte: UNB.
@@ -196,6 +197,37 @@ const AnalysisPage: FC = () => {
         { label: 'Universidade de Brasília', value: 'UNB' },
     ];
 
+    // Mapeamento do nome do estado para o código ISO
+    const stateToIsoCodeMap: { [key: string]: string } = {
+        'Acre': 'AC',
+        'Alagoas': 'AL',
+        'Amapá': 'AP',
+        'Amazonas': 'AM',
+        'Bahia': 'BA',
+        'Ceará': 'CE',
+        'Distrito Federal': 'DF',
+        'Espírito Santo': 'ES',
+        'Goiás': 'GO',
+        'Maranhão': 'MA',
+        'Mato Grosso': 'MT',
+        'Mato Grosso do Sul': 'MS',
+        'Minas Gerais': 'MG',
+        'Pará': 'PA',
+        'Paraíba': 'PB',
+        'Paraná': 'PR',
+        'Pernambuco': 'PE',
+        'Piauí': 'PI',
+        'Rio de Janeiro': 'RJ',
+        'Rio Grande do Norte': 'RN',
+        'Rio Grande do Sul': 'RS',
+        'Rondônia': 'RO',
+        'Roraima': 'RR',
+        'Santa Catarina': 'SC',
+        'São Paulo': 'SP',
+        'Sergipe': 'SE',
+        'Tocantins': 'TO'
+    };
+
     const getValidLabelsByAnalysis = (analysis: string): string[] => {
         switch (analysis.toLowerCase()) {
             case 'erosão':
@@ -259,37 +291,6 @@ const AnalysisPage: FC = () => {
         setLoading(true);
         const startDateFormatted = selectedStartDate.toISOString().split('T')[0];
         const endDateFormatted = selectedEndDate.toISOString().split('T')[0];
-
-        const stateToIsoCodeMap: { [key: string]: string } = {
-            'Acre': 'AC',
-            'Alagoas': 'AL',
-            'Amapá': 'AP',
-            'Amazonas': 'AM',
-            'Bahia': 'BA',
-            'Ceará': 'CE',
-            'Distrito Federal': 'DF',
-            'Espírito Santo': 'ES',
-            'Goiás': 'GO',
-            'Maranhão': 'MA',
-            'Mato Grosso': 'MT',
-            'Mato Grosso do Sul': 'MS',
-            'Minas Gerais': 'MG',
-            'Pará': 'PA',
-            'Paraíba': 'PB',
-            'Paraná': 'PR',
-            'Pernambuco': 'PE',
-            'Piauí': 'PI',
-            'Rio de Janeiro': 'RJ',
-            'Rio Grande do Norte': 'RN',
-            'Rio Grande do Sul': 'RS',
-            'Rondônia': 'RO',
-            'Roraima': 'RR',
-            'Santa Catarina': 'SC',
-            'São Paulo': 'SP',
-            'Sergipe': 'SE',
-            'Tocantins': 'TO'
-        };
-
         const selectedStateIsoCode = stateToIsoCodeMap[selectedStateName] || selectedStateName; // Usa o ISO ou o nome se não mapeado
 
         const url = `http://localhost:3001/sum/biennial?analysis=${encodeURIComponent(
@@ -312,14 +313,6 @@ const AnalysisPage: FC = () => {
         }
     };
 
-    useEffect(() => {
-        console.log('Zoom state updated:', zoom);
-    }, [zoom]);
-
-    useEffect(() => {
-        console.log('BBox state updated:', bbox);
-    }, [bbox]);
-
     const handleStateChange = (event: SelectChangeEvent) => {
         const stateName = event.target.value as string;
         setSelectedStateName(stateName);
@@ -327,6 +320,11 @@ const AnalysisPage: FC = () => {
         setSelectedState(state);
         setBbox(state.bbox.join(','));
         setZoom(state.zoom);
+    };
+
+
+    const handleIntervalChange = (event: SelectChangeEvent) => {
+        setInterval(event.target.value); // Atualiza o intervalo selecionado
     };
 
     const handleChangeRangeDates = (rangeDates: DateRange | null, event: SyntheticEvent<Element, Event>) => {
@@ -421,18 +419,54 @@ const AnalysisPage: FC = () => {
         selectedAnalysis.toLowerCase() as keyof typeof analysisDescriptions
       ] || {};
 
-      useEffect(() => {
+
+    useEffect(() => {
+        console.log('Zoom state updated:', zoom);
+    }, [zoom]);
+
+    useEffect(() => {
+        console.log('BBox state updated:', bbox);
+    }, [bbox]);
+
+    useEffect(() => {
+
         const analysisDescriptionObject = analysisDescriptions[selectedAnalysis.toLowerCase() as keyof typeof analysisDescriptions];
 
         if (analysisDescriptionObject) {
             setAnalysisDescription(analysisDescriptionObject.description);
         }
+
+        fetchStackedData();
+
     }, [selectedAnalysis, selectedLabel, selectedSource, selectedStartDate, selectedEndDate]);
 
-    // useEffect para buscar dados quando houver mudanças nos parâmetros de controle
+
     useEffect(() => {
-        fetchStackedData();
-    }, [selectedAnalysis, selectedLabel, selectedLabel, selectedStartDate, selectedEndDate]);
+        const fetchData = async () => {
+            const startDateFormatted = selectedStartDate.toISOString().split('T')[0];
+            const endDateFormatted = selectedEndDate.toISOString().split('T')[0];
+            const selectedStateIsoCode = stateToIsoCodeMap[selectedStateName] || selectedStateName;
+
+            const url = `http://localhost:3001/sum/${interval}?analysis=${encodeURIComponent(
+                selectedAnalysis
+            )}&label=${encodeURIComponent(selectedLabel)}&startDate=${startDateFormatted}&endDate=${endDateFormatted}&country=BR&state=${selectedStateIsoCode}&city=Brasília&source=${encodeURIComponent(
+                selectedSource
+            )}`;
+
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error('Falha ao buscar os dados');
+                }
+                const data: IStackedAreaChart[] = await response.json();
+                setInternalStackedData(data);
+            } catch (error) {
+                console.error('Erro ao buscar os dados:', error);
+            }
+        };
+
+        fetchData();
+    }, [selectedAnalysis, selectedLabel, selectedStartDate, selectedEndDate, selectedStateName, selectedSource, interval]);
 
     return (
         <>
@@ -645,6 +679,24 @@ const AnalysisPage: FC = () => {
                                 </FormControl>
                             </AccordionDetails>
                         </Accordion>
+                        <Accordion>
+                            <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="interval-content" id="interval-header">
+                                <Typography>Intervalo</Typography>
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                <Typography>Selecione o intervalo para a análise (anual, bienal, etc.).</Typography>
+                                <Divider variant="middle" sx={{ margin: '15px' }} />
+                                <FormControl fullWidth>
+                                    <Select id="interval-select" value={interval} onChange={handleIntervalChange}>
+                                        <MenuItem value="annual">Anual</MenuItem>
+                                        <MenuItem value="biennial">Bienal</MenuItem>
+                                        <MenuItem value="triennial">Trienal</MenuItem>
+                                        <MenuItem value="quadrennial">Quadrienal</MenuItem>
+                                        <MenuItem value="quinquennial">Quinquenal</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </AccordionDetails>
+                        </Accordion>
                         <Typography variant="h6" sx={{ padding: '15px' }}></Typography>
                         <Typography variant="body2" sx={{ padding: '15px', width: '550px' }}></Typography>
 
@@ -655,7 +707,7 @@ const AnalysisPage: FC = () => {
                 <Card variant="outlined" sx={{ width: '90%', backgroundColor: yellowBackgroundColor, margin: '10px' }}>
                     <CardContent>
                         <Typography gutterBottom variant="h5" component="div">
-                            Áreas Organicas por período {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
+                            {selectedAnalysis} por período {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
                         </Typography>
                         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                             Números absolutos, consolidando dados de uso da terra por período, considerando Grãos,

@@ -11,14 +11,6 @@ interface MenuProps {
     cities: ICity[];
 }
 
-export function Loading() {
-    return (
-        <p>
-            <i>Loading...</i>
-        </p>
-    );
-}
-
 const PaperGEE: FC<MenuProps> = (props) => {
     // dados do servidor armazenados no contexto
     const { contextCountries } = useMenuContext();

@@ -39,7 +39,8 @@ import { greenBackgroundColor,
     blueBackgroundColor,
     blueColors,
     purplePalette,
-    yellowBackgroundColor
+    yellowBackgroundColor,
+    greenPalette
 } from '../components/colors';
 import AreaChart from '../components/charts/AreaChart';
 
@@ -693,6 +694,29 @@ const AnalysisPage: FC = () => {
                             Para analisá-lo corretamente, observe a altura de cada camada no gráfico, que representa a contribuição
                             de um rótulo específico em relação ao total acumulado. A soma de todas as camadas em um determinado período
                             reflete o valor total acumulado até aquele momento.
+                        </Typography>
+
+                        <AreaChart width={400} height={400} data={internalStackedData} defaultPalette={brownPalette}/>
+                    </CardContent>
+                </Card>
+                <Card variant="outlined" sx={{ alignItems: 'center', width: '98%', backgroundColor: yellowBackgroundColor, margin: '10px' }}>
+                    <CardContent>
+                        <Typography variant="h6" sx={{ padding: '15px' }}>
+                            {currentAnalysisDescription.title} por período {`${selectedStartDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
+                        </Typography>
+                        <Typography variant="body2" sx={{ padding: '10px' }}>
+                            {currentAnalysisDescription.description}
+                        </Typography>
+
+                        {/* Explicação sobre o gráfico de média móvel simples */}
+                        <Typography variant="h6" sx={{ padding: '15px', marginTop: '15px' }}>
+                            Como interpretar o gráfico de Média Móvel Simples
+                        </Typography>
+                        <Typography variant="body2" sx={{ padding: '10px' }}>
+                            Este gráfico de Média Móvel Simples utiliza uma técnica estatística para suavizar as variações dos dados ao longo do tempo, calculando a média dos valores de um conjunto de períodos consecutivos. A principal vantagem desta abordagem é eliminar flutuações de curto prazo, revelando tendências mais estáveis e padrões que poderiam ser obscurecidos pelas variações naturais dos dados.
+                        </Typography>
+                        <Typography variant="body2" sx={{ padding: '10px' }}>
+                            Para analisá-lo corretamente, observe que cada ponto do gráfico representa a média dos valores de um número fixo de períodos anteriores. Dessa forma, ele suaviza os picos e vales dos dados brutos, proporcionando uma visão mais clara da direção geral e das tendências de longo prazo. Esse tipo de análise é ideal para identificar se uma variável está aumentando ou diminuindo ao longo do tempo de forma mais consistente, ao invés de seguir um comportamento errático.
                         </Typography>
 
                         <AreaChart width={400} height={400} data={internalStackedData} defaultPalette={brownPalette}/>

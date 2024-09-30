@@ -54,7 +54,7 @@ import { IStackedAreaChart } from '../components/charts/IStackedAreaChart';
 import { IPercentualAreaChart } from '../components/charts/IPercentualAreaChart';
 import PercentualAreaChart from '../components/charts/PercentualAreaChart';
 import { AnalysisProvider } from '../components/AnalysisProvider';
-import { availableAnalysis, availableLabels, availableSsources, initialConfig, Label, stateToIsoCodeMap } from './AnalysisConstants';
+import Constants, { Label } from './AnalysisConstants';
 import { analysisDescriptions, getValidLabelsByAnalysis } from './AnalysisHelper';
 import { useAnalysisContext } from '../components/AnalysisContext';
 
@@ -67,7 +67,7 @@ export function Loading() {
 }
 
 const AnalysisPage: FC = () => {
-    const { fetchSmaData } = useAnalysisContext();
+    const { fetchSmaData, fetchPercentageData, fetchStackedData } = useAnalysisContext();
 
     const [selectedSource, setSelectedSource] = useState<string>('');
     const [selectedAnalysis, setSelectedAnalysis] = useState<string>('orgânicas');
@@ -89,44 +89,24 @@ const AnalysisPage: FC = () => {
     const [internalStackedData, setInternalStackedData] = useState<IStackedAreaChart[]>([]);
     const [internalPercentualData, setInternalPercentualData] = useState<IPercentualAreaChart[]>([]);
     const [smaData, setSmaData] = useState<IStackedAreaChart[]>([]);
-    const [layers, setLayers] = useState(initialConfig.layers);
-    const [styles, setStyles] = useState(initialConfig.styles);
-    const [format, setFormat] = useState(initialConfig.format);
-    const [transparent, setTransparent] = useState(initialConfig.transparent);
-    const [version, setVersion] = useState(initialConfig.version);
-    const [crs, setCrs] = useState(initialConfig.crs);
-    const [uppercase, setUppercase] = useState(initialConfig.uppercase);
-    const [url, setUrl] = useState(initialConfig.url);
-    const [exceptions, setExceptions] = useState(initialConfig.exceptions);
-    const [bgcolor, setBgcolor] = useState(initialConfig.bgcolor);
-    const [width, setWidth] = useState(initialConfig.width);
-    const [height, setHeight] = useState(initialConfig.height);
-    const [bbox, setBbox] = useState(initialConfig.bbox);
-    const [zoom, setZoom] = useState(initialConfig.zoom);
+    const [layers, setLayers] = useState(Constants.initialConfig.layers);
+    const [styles, setStyles] = useState(Constants.initialConfig.styles);
+    const [format, setFormat] = useState(Constants.initialConfig.format);
+    const [transparent, setTransparent] = useState(Constants.initialConfig.transparent);
+    const [version, setVersion] = useState(Constants.initialConfig.version);
+    const [crs, setCrs] = useState(Constants.initialConfig.crs);
+    const [uppercase, setUppercase] = useState(Constants.initialConfig.uppercase);
+    const [url, setUrl] = useState(Constants.initialConfig.url);
+    const [exceptions, setExceptions] = useState(Constants.initialConfig.exceptions);
+    const [bgcolor, setBgcolor] = useState(Constants.initialConfig.bgcolor);
+    const [width, setWidth] = useState(Constants.initialConfig.width);
+    const [height, setHeight] = useState(Constants.initialConfig.height);
+    const [bbox, setBbox] = useState(Constants.initialConfig.bbox);
+    const [zoom, setZoom] = useState(Constants.initialConfig.zoom);
     const [open, setOpen] = useState(false);
     const [currentZoom, setCurrentZoom] = useState(selectedState.zoom);
     const [currentBbox, setCurrentBbox] = useState<string>();
     const [currentCenter, setCurrentCenter] = useState<string>();
-    const [loading, setLoading] = useState(true);
-
-    const reset = () => {
-        console.log('Resetting to initial config:', initialConfig);
-        setSelectedState(estados['Distrito Federal']);
-        setLayers(initialConfig.layers);
-        setStyles(initialConfig.styles);
-        setFormat(initialConfig.format);
-        setTransparent(initialConfig.transparent);
-        setVersion(initialConfig.version);
-        setCrs(initialConfig.crs);
-        setUppercase(initialConfig.uppercase);
-        setUrl(initialConfig.url);
-        setExceptions(initialConfig.exceptions);
-        setBgcolor(initialConfig.bgcolor);
-        setWidth(initialConfig.width);
-        setHeight(initialConfig.height);
-        setBbox(initialConfig.bbox);
-        setZoom(initialConfig.zoom);
-    };
 
     const handleStateChange = (event: SelectChangeEvent) => {
         const stateName = event.target.value as string;
@@ -158,8 +138,8 @@ const AnalysisPage: FC = () => {
         setSelectedAnalysis(selectedValue);
 
         // Busca os rótulos válidos com base na análise e mapeia-os para a exibição correta
-        const validLabelValues = getValidLabelsByAnalysis(selectedValue);
-        const validLabelsForDisplay = availableLabels.filter((labelItem) => validLabelValues.includes(labelItem.value));
+        const validLabelValues: string[] = getValidLabelsByAnalysis(selectedValue);
+        const validLabelsForDisplay = Constants.availableLabels.filter((labelItem: Label) => validLabelValues.includes(labelItem.value));
         setLabels(validLabelsForDisplay);
         console.log('Análise selecionada:', selectedValue);
     };
@@ -185,91 +165,23 @@ const AnalysisPage: FC = () => {
 
     const currentAnalysisDescription = findAnalysisDescription(selectedAnalysis);
 
-    const buildUrl = () => {
-        const startDateFormatted = selectedStartDate ? selectedStartDate.toISOString().split('T')[0] : null;
-        const endDateFormatted = selectedEndDate ? selectedEndDate.toISOString().split('T')[0] : null;
-        const selectedStateIsoCode = selectedStateName ? stateToIsoCodeMap[selectedStateName] || selectedStateName : null;
-        const encodedSource = selectedSource ? encodeURIComponent(selectedSource) : null;
-        const encodedLabel = selectedLabel ? encodeURIComponent(selectedLabel) : null;
-
-        // Parâmetros obrigatórios
-        let url = `http://localhost:3001/sum/${interval}?analysis=${encodeURIComponent(selectedAnalysis)}`;
-
-        // Parâmetros opcionais (adiciona à URL apenas se estiverem presentes)
-        if (encodedLabel) {
-            url += `&label=${encodedLabel}`;
-        }
-        if (startDateFormatted) {
-            url += `&startDate=${startDateFormatted}`;
-        }
-        if (endDateFormatted) {
-            url += `&endDate=${endDateFormatted}`;
-        }
-        if (selectedStateIsoCode) {
-            url += `&state=${selectedStateIsoCode}`;
-        }
-        if (encodedSource) {
-            url += `&source=${encodedSource}`;
-        }
-
-        // Parâmetro fixo para cidade
-        url += `&country=BR&city=Brasília`;
-
-        return url;
-    };
-
-    const fetchData = async () => {
-        setLoading(true);
-        const url = buildUrl();
-
-        try {
-            const response = await fetch(url);
-            if (!response.ok) throw new Error('Falha ao buscar os dados');
-
-            const data: IStackedAreaChart[] = await response.json();
-
-            setInternalStackedData(data);
-        } catch (error) {
-            console.error('Erro ao buscar os dados:', error);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const fetchPercentageData = async () => {
-        setLoading(true);
-        const startDateFormatted = selectedStartDate.toISOString().split('T')[0];
-        const endDateFormatted = selectedEndDate.toISOString().split('T')[0];
-
-        const url = `http://localhost:3001/percentage/${interval}?analysis=${encodeURIComponent(
-            selectedAnalysis,
-        )}&startDate=${startDateFormatted}&endDate=${endDateFormatted}`;
-
-        try {
-            const response = await fetch(url);
-            if (!response.ok) {
-                throw new Error('Falha ao buscar os dados de percentage');
-            }
-            const stackedData: IStackedAreaChart[] = await response.json();
-            // Transformando de IStackedAreaChart para IPercentualAreaChart
-            const percentualData: IPercentualAreaChart[] = stackedData.map((item) => ({
-                period: item.period,
-                value: parseFloat(item.entry[1].toString()), // Pega diretamente o valor de entry[1] como percentual
-            }));
-
-            setInternalPercentualData(percentualData);
-        } catch (error) {
-            console.error('Erro ao buscar os dados de percentage:', error);
-        } finally {
-            setLoading(false);
-        }
-    };
+    useEffect(() => {
+        fetchStackedData(selectedStartDate, selectedEndDate, selectedAnalysis, interval, selectedStateName, selectedSource, selectedLabel)
+        .then((data: IStackedAreaChart[]) => setInternalStackedData(data));
+        fetchSmaData(selectedStartDate, selectedEndDate, selectedAnalysis, interval)
+        .then((data: IStackedAreaChart[]) => setSmaData(data));
+        fetchPercentageData(selectedStartDate, selectedEndDate, selectedAnalysis, interval)
+        .then((data: IPercentualAreaChart[]) => setInternalPercentualData(data));
+    }, [selectedAnalysis, selectedLabel, selectedStartDate, selectedEndDate, selectedStateName, selectedSource, interval]);
 
     useEffect(() => {
-        fetchData();
-        fetchSmaData(selectedStartDate, selectedEndDate, selectedAnalysis, interval).then((data: IStackedAreaChart[]) => setSmaData(data));
-        fetchPercentageData();
-    }, [selectedAnalysis, selectedLabel, selectedStartDate, selectedEndDate, selectedStateName, selectedSource, interval]);
+        fetchStackedData(selectedStartDate, selectedEndDate, selectedAnalysis, interval, selectedStateName, selectedSource, selectedLabel)
+        .then((data: IStackedAreaChart[]) => setInternalStackedData(data));
+        fetchSmaData(selectedStartDate, selectedEndDate, selectedAnalysis, interval)
+        .then((data: IStackedAreaChart[]) => setSmaData(data));
+        fetchPercentageData(selectedStartDate, selectedEndDate, selectedAnalysis, interval)
+        .then((data: IPercentualAreaChart[]) => setInternalPercentualData(data));
+    }, []);
 
     return (
         <AnalysisProvider>
@@ -416,9 +328,9 @@ const AnalysisPage: FC = () => {
                                 <Divider variant="middle" sx={{ margin: '15px' }} />
                                 <FormControl fullWidth>
                                     <Select id="analysis-select" value={selectedAnalysis} onChange={handleAnalysisChange}>
-                                        {availableAnalysis.map((e, index) => (
-                                            <MenuItem id={`${index}-menu-item-analysis`} value={e.value} key={index}>
-                                                {e.label}
+                                        {Constants.availableAnalysis.map((analysis: Label) => (
+                                            <MenuItem id={`${analysis.value}-menu-item-analysis`} value={analysis.value} key={analysis.value}>
+                                                {analysis.label}
                                             </MenuItem>
                                         ))}
                                     </Select>
@@ -460,9 +372,9 @@ const AnalysisPage: FC = () => {
                                         <MenuItem value="">
                                             <em>Não informado</em>
                                         </MenuItem>
-                                        {availableSsources.map((e, index) => (
-                                            <MenuItem id={`${index}-menu-item-source`} value={e.value} key={index}>
-                                                {e.label}
+                                        {Constants.availableSources.map((source: Label) => (
+                                            <MenuItem id={`${source.value}-menu-item-source`} value={source.value} key={source.value}>
+                                                {source.label}
                                             </MenuItem>
                                         ))}
                                     </Select>

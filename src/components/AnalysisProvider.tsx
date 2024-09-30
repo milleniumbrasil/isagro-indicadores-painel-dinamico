@@ -10,6 +10,7 @@ import GetHttpClientStates from '../http/GetHttpClientStates';
 import GetHttpClientCountries from '../http/GetCountriesService';
 import GetHttpClientCities from '../http/GetHttpClientCities';
 import { AnalysisContext } from './AnalysisContext';
+import { buildUrl } from '../pages/AnalysisHelper';
 
 export const AnalysisProvider: FC<{ children: ReactNode }> = ({ children }) => {
     const [loading, setLoading] = useState(true);
@@ -76,6 +77,47 @@ export const AnalysisProvider: FC<{ children: ReactNode }> = ({ children }) => {
         return [];
     };
 
+    const fetchStackedData = async (startDate: Date, endDate: Date, analysis: string, interval: string, stateName: string, source: string, label: string): Promise<IStackedAreaChart[]> => {
+        let result: IStackedAreaChart[] = []
+        const url = buildUrl(startDate, endDate, analysis, interval, stateName, source, label);
+
+        try {
+            const response = await fetch(url);
+            if (!response.ok) throw new Error('Falha ao buscar os dados');
+
+            result = await response.json();
+        } catch (error) {
+            console.error('Erro ao buscar os dados:', error);
+        }
+        return result;
+    };
+
+    const fetchPercentageData = async (startDate: Date, endDate: Date, analysis: string, interval: string): Promise<IPercentualAreaChart[]> => {
+        let result: IPercentualAreaChart[] = [];
+        try {
+            const startDateFormatted = startDate.toISOString().split('T')[0];
+            const endDateFormatted = endDate.toISOString().split('T')[0];
+
+            const url = `http://localhost:3001/percentage/${interval}?analysis=${encodeURIComponent(
+                analysis,
+            )}&startDate=${startDateFormatted}&endDate=${endDateFormatted}`;
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error('Falha ao buscar os dados de percentage');
+            }
+            const stackedData: IStackedAreaChart[] = await response.json();
+            // Transformando de IStackedAreaChart para IPercentualAreaChart
+            const percentualData: IPercentualAreaChart[] = stackedData.map((item) => ({
+                period: item.period,
+                value: parseFloat(item.entry[1].toString()), // Pega diretamente o valor de entry[1] como percentual
+            }));
+            result = percentualData;
+        } catch (error) {
+            console.error('Erro ao buscar os dados de percentage:', error);
+        }
+        return result;
+    };
+
     const value = {
         organicasStackedData,
         organicasPercentual,
@@ -84,6 +126,8 @@ export const AnalysisProvider: FC<{ children: ReactNode }> = ({ children }) => {
         countries,
         fetchRequiredData,
         fetchSmaData,
+        fetchPercentageData,
+        fetchStackedData,
     };
 
     return <AnalysisContext.Provider value={value}>{children}</AnalysisContext.Provider>;

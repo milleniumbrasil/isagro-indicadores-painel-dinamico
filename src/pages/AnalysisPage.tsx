@@ -54,9 +54,10 @@ import { IStackedAreaChart } from '../components/charts/IStackedAreaChart';
 import { IPercentualAreaChart } from '../components/charts/IPercentualAreaChart';
 import PercentualAreaChart from '../components/charts/PercentualAreaChart';
 import { AnalysisProvider } from '../components/AnalysisProvider';
-import Constants, { Label } from './AnalysisConstants';
-import { analysisDescriptions, getValidLabelsByAnalysis } from './AnalysisHelper';
+import Constants, { analysisDescriptions, getValidLabelsByAnalysis, Label } from './AnalysisConstants';
 import { useAnalysisContext } from '../components/AnalysisContext';
+import { IAnalysisInfo } from './IAnalysisInfo';
+import { findAnalysisDescription } from './AnalysisHelper';
 
 export function Loading() {
     return (
@@ -74,6 +75,7 @@ const AnalysisPage: FC = () => {
 
     const [selectedSource, setSelectedSource] = useState<string>('');
     const [selectedAnalysis, setSelectedAnalysis] = useState<string>('orgânicas');
+    const [currentAnalysisDescription, setCurrentAnalysisDescription] = useState<IAnalysisInfo>();
     const [labels, setLabels] = useState<Label[]>([]);
     const [selectedLabel, setSelectedLabel] = useState<string>('');
     const [selectedStateName, setSelectedStateName] = useState<string>('Distrito Federal');
@@ -134,21 +136,6 @@ const AnalysisPage: FC = () => {
         console.log('Rótulo selecionado:', selectedValue);
     };
 
-    const findAnalysisDescription = (selectedAnalysis: string) => {
-        const analysisLowerCase = selectedAnalysis.toLowerCase();
-
-        // Usa Object.values para varrer apenas os valores do objeto
-        for (const value of Object.values(analysisDescriptions(selectedStartDate, selectedEndDate))) {
-            if (value.title.toLowerCase().includes(analysisLowerCase)) {
-                return value; // Retorna a descrição correspondente
-            }
-        }
-
-        return null;
-    };
-
-    const currentAnalysisDescription = findAnalysisDescription(selectedAnalysis);
-
     useEffect(() => {
         fetchStackedData(selectedStartDate, selectedEndDate, selectedAnalysis, interval, selectedStateName, selectedSource, selectedLabel)
         .then((data: IStackedAreaChart[]) => setInternalStackedData(data));
@@ -165,6 +152,9 @@ const AnalysisPage: FC = () => {
         .then((data: IStackedAreaChart[]) => setSmaData(data));
         fetchPercentageData(selectedStartDate, selectedEndDate, selectedAnalysis, interval)
         .then((data: IPercentualAreaChart[]) => setInternalPercentualData(data));
+
+        const initialAnalysisDescription = findAnalysisDescription(selectedAnalysis, selectedStartDate, selectedEndDate);
+        setCurrentAnalysisDescription(initialAnalysisDescription);
     }, []);
 
     return (
@@ -240,6 +230,11 @@ const AnalysisPage: FC = () => {
                 </Accordion>
 
                 <Box sx={{ display: 'flex', '& > :not(style)': { m: 1 } }}>
+
+                    <Box sx={{ margin: '15px' }}>
+
+                    </Box>
+
                     <Box sx={{ flexGrow: 1 }}>
                         <Map
                             estado={selectedState}

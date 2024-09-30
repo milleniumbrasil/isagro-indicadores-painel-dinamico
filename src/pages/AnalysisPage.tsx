@@ -25,7 +25,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Divider from '@mui/material/Divider';
-import { iEstado, estados, Map } from 'isagro-map';
+import { iEstado, estados as mapStates, Map } from 'isagro-map';
 
 import {
     greenBackgroundColor,
@@ -75,13 +75,13 @@ const AnalysisPage: FC = () => {
 
     const [selectedSource, setSelectedSource] = useState<string>('');
     const [selectedAnalysis, setSelectedAnalysis] = useState<string>('orgânicas');
-    const [currentAnalysisDescription, setCurrentAnalysisDescription] = useState<IAnalysisInfo>();
     const [labels, setLabels] = useState<Label[]>([]);
     const [selectedLabel, setSelectedLabel] = useState<string>('');
-    const [selectedStateName, setSelectedStateName] = useState<string>('Distrito Federal');
-    const [selectedState, setSelectedState] = useState<iEstado>(estados['Distrito Federal']);
+    const [selectedState, setSelectedState] = useState<string>('Distrito Federal');
+    const [selectedMapState, setSelectedMapState] = useState<iEstado>(mapStates['Distrito Federal']);
     const [selectedStartDate, setSelectedStartDate] = useState<Date>(new Date('1990-01-01'));
     const [selectedEndDate, setSelectedEndDate] = useState<Date>(new Date('1995-12-31'));
+    const [currentAnalysisDescription, setCurrentAnalysisDescription] = useState<IAnalysisInfo>(findAnalysisDescription(selectedAnalysis, selectedStartDate, selectedEndDate, analysisDescriptions(selectedStartDate, selectedEndDate)));
     const [interval, setInterval] = useState<string>('annual');
     const [internalStackedData, setInternalStackedData] = useState<IStackedAreaChart[]>([]);
     const [internalPercentualData, setInternalPercentualData] = useState<IPercentualAreaChart[]>([]);
@@ -90,15 +90,15 @@ const AnalysisPage: FC = () => {
     const [height, setHeight] = useState(Constants.initialConfig.height);
     const [bbox, setBbox] = useState(Constants.initialConfig.bbox);
     const [zoom, setZoom] = useState(Constants.initialConfig.zoom);
-    const [currentZoom, setCurrentZoom] = useState(selectedState.zoom);
+    const [currentZoom, setCurrentZoom] = useState(selectedMapState.zoom);
     const [currentBbox, setCurrentBbox] = useState<string>();
     const [currentCenter, setCurrentCenter] = useState<string>();
 
     const handleStateChange = (event: SelectChangeEvent) => {
         const stateName = event.target.value as string;
-        setSelectedStateName(stateName);
-        const state = estados[stateName];
-        setSelectedState(state);
+        setSelectedState(stateName);
+        const state = mapStates[stateName];
+        setSelectedMapState(state);
         setBbox(state.bbox.join(','));
         setZoom(state.zoom);
     };
@@ -137,21 +137,30 @@ const AnalysisPage: FC = () => {
     };
 
     useEffect(() => {
-        fetchStackedData(selectedStartDate, selectedEndDate, selectedAnalysis, interval, selectedStateName, selectedSource, selectedLabel)
+        fetchStackedData(selectedStartDate, selectedEndDate, selectedAnalysis, interval, selectedState, selectedSource, selectedLabel)
         .then((data: IStackedAreaChart[]) => setInternalStackedData(data));
         fetchSmaData(selectedStartDate, selectedEndDate, selectedAnalysis, interval)
         .then((data: IStackedAreaChart[]) => setSmaData(data));
         fetchPercentageData(selectedStartDate, selectedEndDate, selectedAnalysis, interval)
         .then((data: IPercentualAreaChart[]) => setInternalPercentualData(data));
-    }, [selectedAnalysis, selectedLabel, selectedStartDate, selectedEndDate, selectedStateName, selectedSource, interval]);
+    }, [selectedAnalysis, selectedLabel, selectedStartDate, selectedEndDate, selectedState, selectedSource, interval]);
 
     useEffect(() => {
-        fetchStackedData(selectedStartDate, selectedEndDate, selectedAnalysis, interval, selectedStateName, selectedSource, selectedLabel)
-        .then((data: IStackedAreaChart[]) => setInternalStackedData(data));
+        fetchStackedData(selectedStartDate, selectedEndDate, selectedAnalysis, interval, selectedState, selectedSource, selectedLabel)
+        .then((data: IStackedAreaChart[]) => {
+            setInternalStackedData(data);
+            console.log(`[AnalysisPage] fetchStackedData(${selectedStartDate}, ${selectedEndDate}, ${selectedAnalysis}, ${interval}, ${selectedState}, ${selectedSource}, ${selectedLabel}) result: ${data.length}`);
+        });
         fetchSmaData(selectedStartDate, selectedEndDate, selectedAnalysis, interval)
-        .then((data: IStackedAreaChart[]) => setSmaData(data));
+        .then((data: IStackedAreaChart[]) => {
+            setSmaData(data);
+            console.log(`[AnalysisPage] fetchSmaData(${selectedStartDate}, ${selectedEndDate}, ${selectedAnalysis}, ${interval}, ${selectedState}, ${selectedSource}, ${selectedLabel}) result: ${data.length}`);
+        });
         fetchPercentageData(selectedStartDate, selectedEndDate, selectedAnalysis, interval)
-        .then((data: IPercentualAreaChart[]) => setInternalPercentualData(data));
+        .then((data: IPercentualAreaChart[]) => {
+            setInternalPercentualData(data);
+            console.log(`[AnalysisPage] fetchPercentageData(${selectedStartDate}, ${selectedEndDate}, ${selectedAnalysis}, ${interval}, ${selectedState}, ${selectedSource}, ${selectedLabel}) result: ${data.length}`);
+        });
 
         const analysisInfos = analysisDescriptions(selectedStartDate, selectedEndDate);
         const initialAnalysisDescription = findAnalysisDescription(selectedAnalysis, selectedStartDate, selectedEndDate, analysisInfos);
@@ -238,7 +247,7 @@ const AnalysisPage: FC = () => {
 
                     <Box sx={{ flexGrow: 1 }}>
                         <Map
-                            estado={selectedState}
+                            estado={selectedMapState}
                             width={width}
                             height={height}
                             coordinateOnClick={(coordinate: Array<number>) => alert(`Coordenada do clique: ${coordinate}`)}
@@ -279,17 +288,17 @@ const AnalysisPage: FC = () => {
 
                         <Accordion>
                             <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="estado-content" id="estado-header">
-                                <Typography>Estado selecionado {selectedStateName}</Typography>
+                                <Typography>Estado selecionado {selectedState}</Typography>
                             </AccordionSummary>
                             <AccordionDetails>
                                 <Typography>Ao selecionar um estado, o mapa deve exibir a imagem correspondente.</Typography>
                                 <Divider variant="middle" sx={{ margin: '15px' }} />
                                 <FormControl fullWidth>
-                                    <Select id="state-select" value={selectedStateName} onChange={handleStateChange}>
+                                    <Select id="state-select" value={selectedState} onChange={handleStateChange}>
                                         <MenuItem value="">
                                             <em>Não informado</em>
                                         </MenuItem>
-                                        {Object.keys(estados).map((e, index) => (
+                                        {Object.keys(mapStates).map((e, index) => (
                                             <MenuItem id={`${index}-menu-item-estado`} value={e} key={e}>
                                                 {e}
                                             </MenuItem>

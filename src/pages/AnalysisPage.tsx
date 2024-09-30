@@ -7,9 +7,7 @@ import 'rsuite/dist/rsuite.min.css';
 
 import { FC, useEffect, useState, Suspense, SyntheticEvent } from 'react';
 
-import EditIcon from '@mui/icons-material/Edit';
 import InfoIcon from '@mui/icons-material/Info';
-import RestartAltIcon from '@mui/icons-material/RestartAlt';
 
 import { Box, Fab, FormControl, MenuItem, Paper, Select, SelectChangeEvent, Typography } from '@mui/material';
 
@@ -72,6 +70,8 @@ import { DateRange } from 'rsuite/esm/DateRangePicker';
 import { IStackedAreaChart } from '../components/charts/IStackedAreaChart';
 import { IPercentualAreaChart } from '../components/charts/IPercentualAreaChart';
 import PercentualAreaChart from '../components/charts/PercentualAreaChart';
+import { AnalysisContext } from '../components/AnalysisContext';
+import { AnalysisProvider } from '../components/AnalysisProvider';
 
 export function Loading() {
     return (
@@ -526,7 +526,9 @@ const AnalysisPage: FC = () => {
     }, [selectedAnalysis, selectedLabel, selectedStartDate, selectedEndDate, selectedStateName, selectedSource, interval]);
 
     return (
-        <>
+
+    <AnalysisProvider>
+
             <div>
                 <Accordion>
                     <AccordionSummary
@@ -829,7 +831,7 @@ const AnalysisPage: FC = () => {
                             tempo. Este tipo de gráfico é particularmente útil para comparações de categorias em diferentes períodos,
                             ajudando a entender a dinâmica de crescimento ou redução em termos proporcionais.
                         </Typography>
-                        
+
                         <Card
                             variant="outlined"
                             sx={{ alignItems: 'center', width: '98%', backgroundColor: blueBackgroundColor, margin: '10px' }}
@@ -854,7 +856,8 @@ const AnalysisPage: FC = () => {
                         </Card>
                 </Paper>
             </div>
-        </>
+
+    </AnalysisProvider>
     );
 };
 

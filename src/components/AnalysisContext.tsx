@@ -1,14 +1,16 @@
-// src/components/OrganicasContext.tsx
+
+
+// src/components/AnalysisContext.ts
 
 import { createContext, useContext } from 'react';
-import { ICountry } from "../charts/ICountry";
-import { IState } from "../charts/IState";
-import { ICity } from "../charts/ICity";
-import { IStackedAreaChart } from '../charts/IStackedAreaChart';
-import { IPercentualAreaChart } from '../charts/IPercentualAreaChart';
+import { ICountry } from "./charts/ICountry";
+import { IState } from "./charts/IState";
+import { ICity } from "./charts/ICity";
+import { IStackedAreaChart } from './charts/IStackedAreaChart';
+import { IPercentualAreaChart } from './charts/IPercentualAreaChart';
 
 // Interface para o contexto
-export interface OrganicasContextProps {
+export interface AnalysisContextProps {
     organicasStackedData: IStackedAreaChart[];
     organicasPercentual?: IPercentualAreaChart[];
     poluicaoStackedData?: IStackedAreaChart[];
@@ -19,7 +21,7 @@ export interface OrganicasContextProps {
 }
 
 // Criação do contexto
-export const OrganicasContext = createContext<OrganicasContextProps>({
+export const AnalysisContext = createContext<AnalysisContextProps>({
     organicasStackedData: [],
     organicasPercentual: [],
     cities: [],
@@ -29,22 +31,22 @@ export const OrganicasContext = createContext<OrganicasContextProps>({
 });
 
 // Hook para utilizar o contexto
-export const useOrganicasContext = () => {
-    const context = useContext(OrganicasContext);
+export const useAnalysisContext = () => {
+    const context = useContext(AnalysisContext);
     if (!context) {
-        throw new Error('useOrganicasContext deve ser usado dentro de um OrganicasProvider');
+        throw new Error('useAnalysisContext deve ser usado dentro de um AnalysisProvider');
     }
     if (!context.countries || context.countries.length === 0) {
-        throw new Error('useOrganicasContext: countries is required');
+        throw new Error('useAnalysisContext: countries is required');
     }
     if (!context.states || context.states.length === 0) {
-        throw new Error('useOrganicasContext: states is required');
+        throw new Error('useAnalysisContext: states is required');
     }
     if (!context.cities || context.cities.length === 0) {
-        throw new Error('useOrganicasContext: cities is required');
+        throw new Error('useAnalysisContext: cities is required');
     }
     if (!context.organicasStackedData || context.organicasStackedData.length === 0) {
-        throw new Error('useOrganicasContext: organicasStackedData is required');
+        throw new Error('useAnalysisContext: organicasStackedData is required');
     }
     return context;
 };

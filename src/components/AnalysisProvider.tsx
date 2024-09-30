@@ -24,7 +24,7 @@ export const AnalysisProvider: FC<{ children: ReactNode }> = ({ children }) => {
     const getStatesService = new GetHttpClientStates<IState[]>();
     const getCitiesService = new GetHttpClientCities<ICity[]>();
 
-    const fetchData = async (): Promise<boolean> => {
+    const fetchRequiredData = async (): Promise<boolean> => {
         let result = false;
         try {
             const tmpCountriesData = await getCountriesService.getData();
@@ -51,8 +51,30 @@ export const AnalysisProvider: FC<{ children: ReactNode }> = ({ children }) => {
     };
 
     useEffect(() => {
-        fetchData();
+        fetchRequiredData();
     }, []);
+
+
+    const fetchSmaData = async (startDate: Date, endDate: Date, selectedAnalysis: string, interval: string): Promise<IStackedAreaChart[]> => {
+        const startDateFormatted = startDate.toISOString().split('T')[0];
+        const endDateFormatted = endDate.toISOString().split('T')[0];
+
+        const url = `http://localhost:3001/sma/${interval}?analysis=${encodeURIComponent(
+            selectedAnalysis,
+        )}&startDate=${startDateFormatted}&endDate=${endDateFormatted}`;
+
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error('Falha ao buscar os dados de Média Móvel');
+            }
+            const data: IStackedAreaChart[] = await response.json();
+            return data;
+        } catch (error) {
+            console.error('Erro ao buscar os dados de Média Móvel:', error);
+        }
+        return [];
+    };
 
     const value = {
         organicasStackedData,
@@ -60,7 +82,8 @@ export const AnalysisProvider: FC<{ children: ReactNode }> = ({ children }) => {
         cities,
         states,
         countries,
-        fetchData,
+        fetchRequiredData,
+        fetchSmaData,
     };
 
     return <AnalysisContext.Provider value={value}>{children}</AnalysisContext.Provider>;

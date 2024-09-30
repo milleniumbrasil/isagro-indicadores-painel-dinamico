@@ -17,7 +17,8 @@ export interface AnalysisContextProps {
     cities: ICity[];
     states: IState[];
     countries: ICountry[];
-    fetchData: () => Promise<boolean>;
+    fetchRequiredData: () => Promise<boolean>;
+    fetchSmaData: (startDate: Date, endDate: Date, selectedAnalysis: string, interval: string) => Promise<IStackedAreaChart[]>;
 }
 
 // Criação do contexto
@@ -27,7 +28,8 @@ export const AnalysisContext = createContext<AnalysisContextProps>({
     cities: [],
     states: [],
     countries: [],
-    fetchData: () => Promise.resolve(false),
+    fetchRequiredData: () => Promise.resolve(false),
+    fetchSmaData: (startDate: Date, endDate: Date, selectedAnalysis: string, interval: string) => Promise.resolve([])
 });
 
 // Hook para utilizar o contexto
@@ -35,18 +37,6 @@ export const useAnalysisContext = () => {
     const context = useContext(AnalysisContext);
     if (!context) {
         throw new Error('useAnalysisContext deve ser usado dentro de um AnalysisProvider');
-    }
-    if (!context.countries || context.countries.length === 0) {
-        throw new Error('useAnalysisContext: countries is required');
-    }
-    if (!context.states || context.states.length === 0) {
-        throw new Error('useAnalysisContext: states is required');
-    }
-    if (!context.cities || context.cities.length === 0) {
-        throw new Error('useAnalysisContext: cities is required');
-    }
-    if (!context.organicasStackedData || context.organicasStackedData.length === 0) {
-        throw new Error('useAnalysisContext: organicasStackedData is required');
     }
     return context;
 };

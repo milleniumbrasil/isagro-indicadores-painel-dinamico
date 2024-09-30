@@ -82,15 +82,6 @@ export function Loading() {
 }
 
 const AnalysisPage: FC = () => {
-    // dados do servidor armazenados no contexto
-    // const { states: contextStates } = useAnalysisContext();
-    // const { countries: contextCountries } = useAnalysisContext();
-    // const { cities: contextCities } = useAnalysisContext();
-    // const { organicasStackedData: contextAnalysisStackedData } = useAnalysisContext();
-    // const { organicasPercentual: contextAnalysisPercentual } = useAnalysisContext();
-
-    // const [internalAnalysisStacked, setInternalAnalysisStacked] = useState<IStackedAreaChart[]>([]);
-    // const [internalAnalysisPercentual, setInternalAnalysisPercentual] = useState<IPercentualAreaChart[]>([]);
 
     const defaultState = estados['Distrito Federal'].bbox.join(',');
     const initialConfig: TileLayerConfig = {

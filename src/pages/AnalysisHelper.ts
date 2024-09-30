@@ -37,10 +37,10 @@ export const buildUrl = (startDate: Date, endDate: Date, analysis: string, inter
 	return url;
 };
 
-export const findAnalysisDescription = (analysis: string, startDate: Date, endDate: Date): IAnalysisInfo => {
+export const findAnalysisDescription = (analysis: string, startDate: Date, endDate: Date, analysisInfos: Record<string, IAnalysisInfo>): IAnalysisInfo => {
 	const analysisLowerCase = analysis.toLowerCase();
 	// Usa Object.values para varrer apenas os valores do objeto
-	for (const value of Object.values(analysisDescriptions(startDate, endDate))) {
+	for (const value of Object.values(analysisInfos)) {
 		if (value.title.toLowerCase().includes(analysisLowerCase)) {
 			return value; // Retorna a descrição correspondente
 		}

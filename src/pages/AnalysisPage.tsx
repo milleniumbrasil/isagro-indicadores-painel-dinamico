@@ -153,7 +153,8 @@ const AnalysisPage: FC = () => {
         fetchPercentageData(selectedStartDate, selectedEndDate, selectedAnalysis, interval)
         .then((data: IPercentualAreaChart[]) => setInternalPercentualData(data));
 
-        const initialAnalysisDescription = findAnalysisDescription(selectedAnalysis, selectedStartDate, selectedEndDate);
+        const analysisInfos = analysisDescriptions(selectedStartDate, selectedEndDate);
+        const initialAnalysisDescription = findAnalysisDescription(selectedAnalysis, selectedStartDate, selectedEndDate, analysisInfos);
         setCurrentAnalysisDescription(initialAnalysisDescription);
     }, []);
 

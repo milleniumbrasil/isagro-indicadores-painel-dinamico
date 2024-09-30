@@ -67,7 +67,10 @@ export function Loading() {
 }
 
 const AnalysisPage: FC = () => {
-    const { fetchSmaData, fetchPercentageData, fetchStackedData } = useAnalysisContext();
+
+    const { fetchSmaData } = useAnalysisContext();
+    const { fetchPercentageData } = useAnalysisContext();
+    const { fetchStackedData } = useAnalysisContext();
 
     const [selectedSource, setSelectedSource] = useState<string>('');
     const [selectedAnalysis, setSelectedAnalysis] = useState<string>('orgânicas');
@@ -78,32 +81,13 @@ const AnalysisPage: FC = () => {
     const [selectedStartDate, setSelectedStartDate] = useState<Date>(new Date('1990-01-01'));
     const [selectedEndDate, setSelectedEndDate] = useState<Date>(new Date('1995-12-31'));
     const [interval, setInterval] = useState<string>('annual');
-    const [analysisDescription, setAnalysisDescription] = useState<string>(`
-        Análise: Orgânicas.
-        Fonte: UNB.
-        Rótulo: Fruticultura.
-        Período: Janeiro de 1990 - Dezembro de 1995.
-        Gráficos disponíveis: Média Móvel Simples, Soma Agregada, Percentual.
-    `);
-
     const [internalStackedData, setInternalStackedData] = useState<IStackedAreaChart[]>([]);
     const [internalPercentualData, setInternalPercentualData] = useState<IPercentualAreaChart[]>([]);
     const [smaData, setSmaData] = useState<IStackedAreaChart[]>([]);
-    const [layers, setLayers] = useState(Constants.initialConfig.layers);
-    const [styles, setStyles] = useState(Constants.initialConfig.styles);
-    const [format, setFormat] = useState(Constants.initialConfig.format);
-    const [transparent, setTransparent] = useState(Constants.initialConfig.transparent);
-    const [version, setVersion] = useState(Constants.initialConfig.version);
-    const [crs, setCrs] = useState(Constants.initialConfig.crs);
-    const [uppercase, setUppercase] = useState(Constants.initialConfig.uppercase);
-    const [url, setUrl] = useState(Constants.initialConfig.url);
-    const [exceptions, setExceptions] = useState(Constants.initialConfig.exceptions);
-    const [bgcolor, setBgcolor] = useState(Constants.initialConfig.bgcolor);
     const [width, setWidth] = useState(Constants.initialConfig.width);
     const [height, setHeight] = useState(Constants.initialConfig.height);
     const [bbox, setBbox] = useState(Constants.initialConfig.bbox);
     const [zoom, setZoom] = useState(Constants.initialConfig.zoom);
-    const [open, setOpen] = useState(false);
     const [currentZoom, setCurrentZoom] = useState(selectedState.zoom);
     const [currentBbox, setCurrentBbox] = useState<string>();
     const [currentCenter, setCurrentCenter] = useState<string>();

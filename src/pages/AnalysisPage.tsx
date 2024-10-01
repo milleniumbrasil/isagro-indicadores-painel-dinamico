@@ -68,7 +68,6 @@ export function Loading() {
 }
 
 const AnalysisPage: FC = () => {
-
     const { fetchSmaData } = useAnalysisContext();
     const { fetchPercentageData } = useAnalysisContext();
     const { fetchStackedData } = useAnalysisContext();
@@ -81,7 +80,14 @@ const AnalysisPage: FC = () => {
     const [selectedMapState, setSelectedMapState] = useState<iEstado>(mapStates['Distrito Federal']);
     const [selectedStartDate, setSelectedStartDate] = useState<Date>(new Date('1990-01-01'));
     const [selectedEndDate, setSelectedEndDate] = useState<Date>(new Date('1995-12-31'));
-    const [currentAnalysisDescription, setCurrentAnalysisDescription] = useState<IAnalysisInfo>(findAnalysisDescription(selectedAnalysis, selectedStartDate, selectedEndDate, analysisDescriptions(selectedStartDate, selectedEndDate)));
+    const [currentAnalysisDescription, setCurrentAnalysisDescription] = useState<IAnalysisInfo>(
+        findAnalysisDescription(
+            selectedAnalysis,
+            selectedStartDate,
+            selectedEndDate,
+            analysisDescriptions(selectedStartDate, selectedEndDate),
+        ),
+    );
     const [interval, setInterval] = useState<string>('annual');
     const [internalStackedData, setInternalStackedData] = useState<IStackedAreaChart[]>([]);
     const [internalPercentualData, setInternalPercentualData] = useState<IPercentualAreaChart[]>([]);
@@ -127,33 +133,37 @@ const AnalysisPage: FC = () => {
         const validLabelValues: string[] = getValidLabelsByAnalysis(selectedValue);
         const validLabelsForDisplay = Constants.availableLabels.filter((labelItem: Label) => validLabelValues.includes(labelItem.value));
         setLabels(validLabelsForDisplay);
-        console.log('Análise selecionada:', selectedValue);
+        console.log('[AnalysisPage] Análise selecionada:', selectedValue);
     };
 
     const handleLabelChange = (event: SelectChangeEvent<string>) => {
         const selectedValue = event.target.value as string;
         setSelectedLabel(selectedValue); // Atualiza o estado do rótulo selecionado
-        console.log('Rótulo selecionado:', selectedValue);
+        console.log('[AnalysisPage] Rótulo selecionado:', selectedValue);
     };
 
     useEffect(() => {
+        fetchStackedData(selectedStartDate, selectedEndDate, selectedAnalysis, interval, selectedState, selectedSource, selectedLabel).then(
+            (data: IStackedAreaChart[]) => {
+                setInternalStackedData(data);
+                console.log(
+                    `[AnalysisPage] fetchStackedData(${selectedStartDate}, ${selectedEndDate}, ${selectedAnalysis}, ${interval}, ${selectedState}, ${selectedSource}, ${selectedLabel}) result: ${data.length}`,
+                );
+            },
+        );
 
-        fetchStackedData(selectedStartDate, selectedEndDate, selectedAnalysis, interval, selectedState, selectedSource, selectedLabel)
-        .then((data: IStackedAreaChart[]) => {
-            setInternalStackedData(data);
-            console.log(`[AnalysisPage] fetchStackedData(${selectedStartDate}, ${selectedEndDate}, ${selectedAnalysis}, ${interval}, ${selectedState}, ${selectedSource}, ${selectedLabel}) result: ${data.length}`);
-        });
-
-        fetchSmaData(selectedStartDate, selectedEndDate, selectedAnalysis, interval)
-        .then((data: IStackedAreaChart[]) => {
+        fetchSmaData(selectedStartDate, selectedEndDate, selectedAnalysis, interval).then((data: IStackedAreaChart[]) => {
             setSmaData(data);
-            console.log(`[AnalysisPage] fetchSmaData(${selectedStartDate}, ${selectedEndDate}, ${selectedAnalysis}, ${interval}, ${selectedState}, ${selectedSource}, ${selectedLabel}) result: ${data.length}`);
+            console.log(
+                `[AnalysisPage] fetchSmaData(${selectedStartDate}, ${selectedEndDate}, ${selectedAnalysis}, ${interval}, ${selectedState}, ${selectedSource}, ${selectedLabel}) result: ${data.length}`,
+            );
         });
-        
-        fetchPercentageData(selectedStartDate, selectedEndDate, selectedAnalysis, interval)
-        .then((data: IPercentualAreaChart[]) => {
+
+        fetchPercentageData(selectedStartDate, selectedEndDate, selectedAnalysis, interval).then((data: IPercentualAreaChart[]) => {
             setInternalPercentualData(data);
-            console.log(`[AnalysisPage] fetchPercentageData(${selectedStartDate}, ${selectedEndDate}, ${selectedAnalysis}, ${interval}, ${selectedState}, ${selectedSource}, ${selectedLabel}) result: ${data.length}`);
+            console.log(
+                `[AnalysisPage] fetchPercentageData(${selectedStartDate}, ${selectedEndDate}, ${selectedAnalysis}, ${interval}, ${selectedState}, ${selectedSource}, ${selectedLabel}) result: ${data.length}`,
+            );
         });
 
         const analysisInfos = analysisDescriptions(selectedStartDate, selectedEndDate);
@@ -235,10 +245,7 @@ const AnalysisPage: FC = () => {
                 </Accordion>
 
                 <Box sx={{ display: 'flex', '& > :not(style)': { m: 1 } }}>
-
-                    <Box sx={{ margin: '15px' }}>
-
-                    </Box>
+                    <Box sx={{ margin: '15px' }}></Box>
 
                     <Box sx={{ flexGrow: 1 }}>
                         <Map
@@ -313,7 +320,11 @@ const AnalysisPage: FC = () => {
                                 <FormControl fullWidth>
                                     <Select id="analysis-select" value={selectedAnalysis} onChange={handleAnalysisChange}>
                                         {Constants.availableAnalysis.map((analysis: Label) => (
-                                            <MenuItem id={`${analysis.value}-menu-item-analysis`} value={analysis.value} key={analysis.value}>
+                                            <MenuItem
+                                                id={`${analysis.value}-menu-item-analysis`}
+                                                value={analysis.value}
+                                                key={analysis.value}
+                                            >
                                                 {analysis.label}
                                             </MenuItem>
                                         ))}

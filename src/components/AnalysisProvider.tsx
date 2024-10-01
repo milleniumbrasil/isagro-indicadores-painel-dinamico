@@ -65,11 +65,13 @@ export const AnalysisProvider: FC<{ children: ReactNode }> = ({ children }) => {
         )}&startDate=${startDateFormatted}&endDate=${endDateFormatted}`;
 
         try {
+            console.log(`[AnalysisProvider] fetchSmaData url: ${url}`);
             const response = await fetch(url);
             if (!response.ok) {
                 throw new Error('Falha ao buscar os dados de Média Móvel');
             }
             const data: IStackedAreaChart[] = await response.json();
+            console.log(`[AnalysisProvider] fetchSmaData result: ${JSON.stringify(data, null, 2)}`);
             return data;
         } catch (error) {
             console.error('Erro ao buscar os dados de Média Móvel:', error);
@@ -82,10 +84,12 @@ export const AnalysisProvider: FC<{ children: ReactNode }> = ({ children }) => {
         const url = buildUrl(startDate, endDate, analysis, interval, stateName, source, label);
 
         try {
+            console.log(`[AnalysisProvider] fetchStackedData url: ${url}`);
             const response = await fetch(url);
             if (!response.ok) throw new Error('Falha ao buscar os dados');
 
             result = await response.json();
+            console.log(`[AnalysisProvider] fetchStackedData result: ${JSON.stringify(result, null, 2)}`);
         } catch (error) {
             console.error('Erro ao buscar os dados:', error);
         }
@@ -101,6 +105,7 @@ export const AnalysisProvider: FC<{ children: ReactNode }> = ({ children }) => {
             const url = `http://localhost:3001/percentage/${interval}?analysis=${encodeURIComponent(
                 analysis,
             )}&startDate=${startDateFormatted}&endDate=${endDateFormatted}`;
+            console.log(`[AnalysisProvider] fetchPercentageData url: ${url}`);
             const response = await fetch(url);
             if (!response.ok) {
                 throw new Error('Falha ao buscar os dados de percentage');
@@ -112,6 +117,7 @@ export const AnalysisProvider: FC<{ children: ReactNode }> = ({ children }) => {
                 value: parseFloat(item.entry[1].toString()), // Pega diretamente o valor de entry[1] como percentual
             }));
             result = percentualData;
+            console.log(`[AnalysisProvider] fetchPercentageData result: ${JSON.stringify(result, null, 2)}`);
         } catch (error) {
             console.error('Erro ao buscar os dados de percentage:', error);
         }

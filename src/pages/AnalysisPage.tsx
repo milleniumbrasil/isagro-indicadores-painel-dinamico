@@ -92,23 +92,21 @@ const AnalysisPage: FC = () => {
     const [selectedStackedData, setSelectedStackedData] = useState<IStackedAreaChart[]>([]);
     const [selectedPercentualData, setSelectedPercentualData] = useState<IPercentualAreaChart[]>([]);
     const [selectedSmaData, setSelectedSmaData] = useState<IStackedAreaChart[]>([]);
-    
-    const [initialWidth, setInitialWidth] = useState(Constants.initialConfig.width);
-    const [initialHeight, setInitialHeight] = useState(Constants.initialConfig.height);
-    const [initialBbox, setInitialBbox] = useState(Constants.initialConfig.bbox);
-    const [initialZoom, setInitialZoom] = useState(Constants.initialConfig.zoom);
 
-    const [currentZoom, setCurrentZoom] = useState(selectedMapState.zoom);
-    const [currentBbox, setCurrentBbox] = useState<string>();
-    const [currentCenter, setCurrentCenter] = useState<string>();
+    const [selectedWidth, setSelectedWidth] = useState(Constants.initialConfig.width);
+    const [selectedHeight, setSelectedHeight] = useState(Constants.initialConfig.height);
+
+    const [selectedZoom, setSelectedZoom] = useState(selectedMapState.zoom);
+    const [selectedBbox, setSelectedBbox] = useState<string>(Constants.initialConfig.bbox);
+    const [selectedCenter, setSelectedCenter] = useState<string>();
 
     const handleStateChange = (event: SelectChangeEvent) => {
-        const stateName = event.target.value as string;
-        setSelectedState(stateName);
-        const state = mapStates[stateName];
-        setSelectedMapState(state);
-        setInitialBbox(state.bbox.join(','));
-        setInitialZoom(state.zoom);
+        const stateValue = event.target.value as string;
+        setSelectedState(stateValue);
+        const stateTaken = mapStates[stateValue];
+        setSelectedMapState(stateTaken);
+        setSelectedBbox(stateTaken.bbox.join(','));
+        setSelectedZoom(stateTaken.zoom);
     };
 
     const handleIntervalChange = (event: SelectChangeEvent) => {
@@ -252,12 +250,12 @@ const AnalysisPage: FC = () => {
                     <Box sx={{ flexGrow: 1 }}>
                         <Map
                             estado={selectedMapState}
-                            width={initialWidth}
-                            height={initialHeight}
+                            width={selectedWidth}
+                            height={selectedHeight}
                             coordinateOnClick={(coordinate: Array<number>) => alert(`Coordenada do clique: ${coordinate}`)}
-                            onZoomChange={(zoom: number) => setCurrentZoom(zoom)}
-                            onBboxChange={(b: Array<number>) => setCurrentBbox(b.join(', '))}
-                            onCenterChange={(c: Array<number>) => setCurrentCenter(c.join(', '))}
+                            onZoomChange={(zoom: number) => setSelectedZoom(zoom)}
+                            onBboxChange={(b: Array<number>) => setSelectedBbox(b.join(', '))}
+                            onCenterChange={(c: Array<number>) => setSelectedCenter(c.join(', '))}
                             version="1.3.0"
                             request="GetMap"
                             srs="EPSG:4326"

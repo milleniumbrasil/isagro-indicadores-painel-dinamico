@@ -137,25 +137,19 @@ const AnalysisPage: FC = () => {
     };
 
     useEffect(() => {
-        fetchStackedData(selectedStartDate, selectedEndDate, selectedAnalysis, interval, selectedState, selectedSource, selectedLabel)
-        .then((data: IStackedAreaChart[]) => setInternalStackedData(data));
-        fetchSmaData(selectedStartDate, selectedEndDate, selectedAnalysis, interval)
-        .then((data: IStackedAreaChart[]) => setSmaData(data));
-        fetchPercentageData(selectedStartDate, selectedEndDate, selectedAnalysis, interval)
-        .then((data: IPercentualAreaChart[]) => setInternalPercentualData(data));
-    }, [selectedAnalysis, selectedLabel, selectedStartDate, selectedEndDate, selectedState, selectedSource, interval]);
 
-    useEffect(() => {
         fetchStackedData(selectedStartDate, selectedEndDate, selectedAnalysis, interval, selectedState, selectedSource, selectedLabel)
         .then((data: IStackedAreaChart[]) => {
             setInternalStackedData(data);
             console.log(`[AnalysisPage] fetchStackedData(${selectedStartDate}, ${selectedEndDate}, ${selectedAnalysis}, ${interval}, ${selectedState}, ${selectedSource}, ${selectedLabel}) result: ${data.length}`);
         });
+
         fetchSmaData(selectedStartDate, selectedEndDate, selectedAnalysis, interval)
         .then((data: IStackedAreaChart[]) => {
             setSmaData(data);
             console.log(`[AnalysisPage] fetchSmaData(${selectedStartDate}, ${selectedEndDate}, ${selectedAnalysis}, ${interval}, ${selectedState}, ${selectedSource}, ${selectedLabel}) result: ${data.length}`);
         });
+        
         fetchPercentageData(selectedStartDate, selectedEndDate, selectedAnalysis, interval)
         .then((data: IPercentualAreaChart[]) => {
             setInternalPercentualData(data);
@@ -165,7 +159,8 @@ const AnalysisPage: FC = () => {
         const analysisInfos = analysisDescriptions(selectedStartDate, selectedEndDate);
         const initialAnalysisDescription = findAnalysisDescription(selectedAnalysis, selectedStartDate, selectedEndDate, analysisInfos);
         setCurrentAnalysisDescription(initialAnalysisDescription);
-    }, []);
+
+    }, [selectedAnalysis, selectedLabel, selectedStartDate, selectedEndDate, selectedState, selectedSource, interval]);
 
     return (
         <AnalysisProvider>

@@ -1,7 +1,7 @@
 
 // src/pages/AnalysisHelper.ts
 
-import Constants, { analysisDescriptions } from "./AnalysisConstants";
+import Constants from "./AnalysisConstants";
 import { IAnalysisInfo } from "./IAnalysisInfo";
 
 export const buildUrl = (startDate: Date, endDate: Date, analysis: string, interval: string, stateName: string, source: string, label: string) => {

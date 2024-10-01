@@ -168,9 +168,10 @@ const AnalysisPage: FC = () => {
         buildUrl('sma', selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval).then((smaUrl) => {
             console.log(`[AnalysisPage] requestStackedData url: ${smaUrl}`);
             requestStackedData(smaUrl).then(
-                (data) => {
-                    console.log(`[AnalysisPage] requestStackedData sma result: ${data.length}`);
-                    setSelectedSmaData(data);
+                (stackedObjects) => {
+                    console.log(`[AnalysisPage] requestStackedData sma result: ${stackedObjects.length}`);
+                    console.log(`[AnalysisPage] Primeiros dois itens: ${JSON.stringify(stackedObjects?.slice(0, 2), null, 2)}`);
+                    setSelectedSmaData(stackedObjects);
                 },
             );
         });
@@ -178,9 +179,10 @@ const AnalysisPage: FC = () => {
         buildUrl('sum', selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval).then((sumUrl) => {
             console.log(`[AnalysisPage] requestStackedData url: ${sumUrl}`);
             requestStackedData(sumUrl).then(
-                (data) => {
-                    console.log(`[AnalysisPage] requestStackedData sum result: ${data.length}`);
-                    setSelectedStackedData(data);
+                (stackedObjects) => {
+                    console.log(`[AnalysisPage] requestStackedData sum result: ${stackedObjects.length}`);
+                    console.log(`[AnalysisPage] Primeiros dois itens: ${JSON.stringify(stackedObjects?.slice(0, 2), null, 2)}`);
+                    setSelectedStackedData(stackedObjects);
                 },
             );
         });
@@ -188,14 +190,15 @@ const AnalysisPage: FC = () => {
         buildUrl('percentage', selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval).then((percentageUrl) => {
             console.log(`[AnalysisPage] requestStackedData url: ${percentageUrl}`);
             requestStackedData(percentageUrl).then(
-                (data) => {
-                    console.log(`[AnalysisPage] requestStackedData percentage result: ${data.length}`);
+                (stackedObjects) => {
+                    console.log(`[AnalysisPage] requestStackedData percentage result: ${stackedObjects.length}`);
+                    console.log(`[AnalysisPage] Primeiros dois itens: ${JSON.stringify(stackedObjects?.slice(0, 2), null, 2)}`);
                     // Transformando de IStackedAreaChart para IPercentualAreaChart
-                    const percentualData: IPercentualAreaChart[] = data.map((item) => ({
+                    const percentualObjects: IPercentualAreaChart[] = stackedObjects.map((item) => ({
                         period: item.period,
                         value: parseFloat(item.entry[1].toString()), // Pega diretamente o valor de entry[1] como percentual
                     }));
-                    setSelectedPercentualData(percentualData);
+                    setSelectedPercentualData(percentualObjects);
                 },
             );
         });

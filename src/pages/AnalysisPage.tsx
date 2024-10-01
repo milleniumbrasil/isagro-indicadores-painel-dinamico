@@ -70,8 +70,6 @@ export function Loading() {
 }
 
 const AnalysisPage: FC = () => {
-    const { fetchPercentageData } = useAnalysisContext();
-    const { fetchStackedData } = useAnalysisContext();
 
     const [selectedSource, setSelectedSource] = useState<string>('');
     const [selectedAnalysis, setSelectedAnalysis] = useState<string>('orgânicas');

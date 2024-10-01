@@ -3,38 +3,48 @@
 
 import Constants from "./AnalysisConstants";
 import { IAnalysisInfo } from "./IAnalysisInfo";
+// src/pages/AnalysisHelper.ts
 
-export const buildUrl = (startDate: Date, endDate: Date, analysis: string, interval: string, stateName: string, source: string, label: string) => {
-	const startDateFormatted = startDate ? startDate.toISOString().split('T')[0] : null;
-	const endDateFormatted = endDate ? endDate.toISOString().split('T')[0] : null;
-	const selectedStateIsoCode = stateName ? Constants.stateToIsoCodeMap[stateName] || stateName : null;
-	const encodedSource = source ? encodeURIComponent(source) : null;
-	const encodedLabel = label ? encodeURIComponent(label) : null;
+export const buildUrl = async (
+    path: string,
+    startDate: Date,
+    endDate: Date,
+    analysis: string,
+    interval: string,
+    stateName?: string,
+    source?: string,
+    label?: string
+): Promise<string> => {
+    const startDateFormatted = startDate ? startDate.toISOString().split('T')[0] : null;
+    const endDateFormatted = endDate ? endDate.toISOString().split('T')[0] : null;
+    const selectedStateIsoCode = stateName ? Constants.stateToIsoCodeMap[stateName] || stateName : null;
+    const encodedSource = source ? encodeURIComponent(source) : null;
+    const encodedLabel = label ? encodeURIComponent(label) : null;
 
-	// Parâmetros obrigatórios
-	let url = `http://localhost:3001/sum/${interval}?analysis=${encodeURIComponent(analysis)}`;
+    // Base URL usando o caminho fornecido
+    let url = `http://localhost:3001/${path}/${interval}?analysis=${encodeURIComponent(analysis)}`;
 
-	// Parâmetros opcionais (adiciona à URL apenas se estiverem presentes)
-	if (encodedLabel) {
-		url += `&label=${encodedLabel}`;
-	}
-	if (startDateFormatted) {
-		url += `&startDate=${startDateFormatted}`;
-	}
-	if (endDateFormatted) {
-		url += `&endDate=${endDateFormatted}`;
-	}
-	if (selectedStateIsoCode) {
-		url += `&state=${selectedStateIsoCode}`;
-	}
-	if (encodedSource) {
-		url += `&source=${encodedSource}`;
-	}
+    // Adiciona parâmetros opcionais se existirem
+    if (encodedLabel) {
+        url += `&label=${encodedLabel}`;
+    }
+    if (startDateFormatted) {
+        url += `&startDate=${startDateFormatted}`;
+    }
+    if (endDateFormatted) {
+        url += `&endDate=${endDateFormatted}`;
+    }
+    if (selectedStateIsoCode) {
+        url += `&state=${selectedStateIsoCode}`;
+    }
+    if (encodedSource) {
+        url += `&source=${encodedSource}`;
+    }
 
-	// Parâmetro fixo para cidade
-	url += `&country=BR&city=Brasília`;
+    // Adiciona país e cidade como valores fixos
+    url += `&country=BR&city=Brasília`;
 
-	return url;
+    return url;
 };
 
 export const findAnalysisDescription = (analysis: string, startDate: Date, endDate: Date, analysisInfos: Record<string, IAnalysisInfo>): IAnalysisInfo => {

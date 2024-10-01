@@ -27,6 +27,8 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Divider from '@mui/material/Divider';
 import { iEstado, estados as mapStates, Map } from 'isagro-map';
 
+import { buildUrl } from '../pages/AnalysisHelper';
+
 import {
     greenBackgroundColor,
     yellowPalette,
@@ -68,7 +70,6 @@ export function Loading() {
 }
 
 const AnalysisPage: FC = () => {
-    const { fetchSmaData } = useAnalysisContext();
     const { fetchPercentageData } = useAnalysisContext();
     const { fetchStackedData } = useAnalysisContext();
 
@@ -142,27 +143,67 @@ const AnalysisPage: FC = () => {
         console.log('[AnalysisPage] Rótulo selecionado:', selectedValue);
     };
 
-    useEffect(() => {
-        fetchStackedData(selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval, selectedState, selectedSource, selectedLabel).then(
-            (data: IStackedAreaChart[]) => {
-                setSelectedStackedData(data);
-                console.log(
-                    `[AnalysisPage] fetchStackedData(${selectedStartDate}, ${selectedEndDate}, ${selectedAnalysis}, ${selectedInterval}, ${selectedState}, ${selectedSource}, ${selectedLabel}) result: ${data.length}`,
-                );
-            },
-        );
+    const requestStackedData = async (
+        url: string,
+        startDate: Date,
+        endDate: Date,
+        analysis: string,
+        interval: string,
+        stateName: string,
+        source: string,
+        label: string
+    ): Promise<IStackedAreaChart[]> => {
+        return fetch(url)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('[AnalysisPage] requestStackedData Falha ao buscar os dados!');
+                }
+                return response.json(); // Convertendo a resposta para JSON
+            })
+            .then((data: IStackedAreaChart[]) => {
+                console.log(`[AnalysisPage] requestStackedData response data: ${JSON.stringify(data, null, 2)}`);
+                return data; // Retornando os dados para a função chamadora
+            })
+            .catch((error) => {
+                console.error('[AnalysisPage] requestStackedData Erro ao buscar os dados:', error);
+                return []; // Em caso de erro, retornar array vazio para evitar falhas
+            });
+    };
 
-        fetchSmaData(selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval).then((data: IStackedAreaChart[]) => {
-            setSelectedSmaData(data);
-            console.log(
-                `[AnalysisPage] fetchSmaData(${selectedStartDate}, ${selectedEndDate}, ${selectedAnalysis}, ${selectedInterval}, ${selectedState}, ${selectedSource}, ${selectedLabel}) result: ${data.length}`,
+    useEffect(() => {
+
+        buildUrl('sma', selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval).then((smaUrl) => {
+            console.log(`[AnalysisPage] requestStackedData url: ${smaUrl}`);
+            requestStackedData(smaUrl, selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval, selectedState, selectedSource, selectedLabel).then(
+                (data) => {
+                    console.log(`[AnalysisPage] requestStackedData(${selectedStartDate}, ${selectedEndDate}, ${selectedAnalysis}, ${selectedInterval}, ${selectedState}, ${selectedSource}, ${selectedLabel}) result: ${data.length}`);
+                    setSelectedSmaData(data);
+                },
             );
         });
 
-        fetchPercentageData(selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval).then((data: IPercentualAreaChart[]) => {
-            setSelectedPercentualData(data);
-            console.log(
-                `[AnalysisPage] fetchPercentageData(${selectedStartDate}, ${selectedEndDate}, ${selectedAnalysis}, ${selectedInterval}, ${selectedState}, ${selectedSource}, ${selectedLabel}) result: ${data.length}`,
+        buildUrl('sum', selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval).then((smaUrl) => {
+            console.log(`[AnalysisPage] requestStackedData url: ${smaUrl}`);
+            requestStackedData(smaUrl, selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval, selectedState, selectedSource, selectedLabel).then(
+                (data) => {
+                    console.log(`[AnalysisPage] requestStackedData(${selectedStartDate}, ${selectedEndDate}, ${selectedAnalysis}, ${selectedInterval}, ${selectedState}, ${selectedSource}, ${selectedLabel}) result: ${data.length}`);
+                    setSelectedStackedData(data);
+                },
+            );
+        });
+
+        buildUrl('sum', selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval).then((smaUrl) => {
+            console.log(`[AnalysisPage] requestStackedData url: ${smaUrl}`);
+            requestStackedData(smaUrl, selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval, selectedState, selectedSource, selectedLabel).then(
+                (data) => {
+                    console.log(`[AnalysisPage] requestStackedData(${selectedStartDate}, ${selectedEndDate}, ${selectedAnalysis}, ${selectedInterval}, ${selectedState}, ${selectedSource}, ${selectedLabel}) result: ${data.length}`);
+                    // Transformando de IStackedAreaChart para IPercentualAreaChart
+                    const percentualData: IPercentualAreaChart[] = data.map((item) => ({
+                        period: item.period,
+                        value: parseFloat(item.entry[1].toString()), // Pega diretamente o valor de entry[1] como percentual
+                    }));
+                    setSelectedPercentualData(percentualData);
+                },
             );
         });
 

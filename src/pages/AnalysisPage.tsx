@@ -88,14 +88,16 @@ const AnalysisPage: FC = () => {
             analysisDescriptions(selectedStartDate, selectedEndDate),
         ),
     );
-    const [interval, setInterval] = useState<string>('annual');
-    const [internalStackedData, setInternalStackedData] = useState<IStackedAreaChart[]>([]);
-    const [internalPercentualData, setInternalPercentualData] = useState<IPercentualAreaChart[]>([]);
-    const [smaData, setSmaData] = useState<IStackedAreaChart[]>([]);
-    const [width, setWidth] = useState(Constants.initialConfig.width);
-    const [height, setHeight] = useState(Constants.initialConfig.height);
-    const [bbox, setBbox] = useState(Constants.initialConfig.bbox);
-    const [zoom, setZoom] = useState(Constants.initialConfig.zoom);
+    const [selectedInterval, setSelectedInterval] = useState<string>('annual');
+    const [selectedStackedData, setSelectedStackedData] = useState<IStackedAreaChart[]>([]);
+    const [selectedPercentualData, setSelectedPercentualData] = useState<IPercentualAreaChart[]>([]);
+    const [selectedSmaData, setSelectedSmaData] = useState<IStackedAreaChart[]>([]);
+    
+    const [initialWidth, setInitialWidth] = useState(Constants.initialConfig.width);
+    const [initialHeight, setInitialHeight] = useState(Constants.initialConfig.height);
+    const [initialBbox, setInitialBbox] = useState(Constants.initialConfig.bbox);
+    const [initialZoom, setInitialZoom] = useState(Constants.initialConfig.zoom);
+
     const [currentZoom, setCurrentZoom] = useState(selectedMapState.zoom);
     const [currentBbox, setCurrentBbox] = useState<string>();
     const [currentCenter, setCurrentCenter] = useState<string>();
@@ -105,12 +107,12 @@ const AnalysisPage: FC = () => {
         setSelectedState(stateName);
         const state = mapStates[stateName];
         setSelectedMapState(state);
-        setBbox(state.bbox.join(','));
-        setZoom(state.zoom);
+        setInitialBbox(state.bbox.join(','));
+        setInitialZoom(state.zoom);
     };
 
     const handleIntervalChange = (event: SelectChangeEvent) => {
-        setInterval(event.target.value); // Atualiza o intervalo selecionado
+        setSelectedInterval(event.target.value); // Atualiza o intervalo selecionado
     };
 
     const handleChangeRangeDates = (rangeDates: DateRange | null, event: SyntheticEvent<Element, Event>) => {
@@ -143,26 +145,26 @@ const AnalysisPage: FC = () => {
     };
 
     useEffect(() => {
-        fetchStackedData(selectedStartDate, selectedEndDate, selectedAnalysis, interval, selectedState, selectedSource, selectedLabel).then(
+        fetchStackedData(selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval, selectedState, selectedSource, selectedLabel).then(
             (data: IStackedAreaChart[]) => {
-                setInternalStackedData(data);
+                setSelectedStackedData(data);
                 console.log(
-                    `[AnalysisPage] fetchStackedData(${selectedStartDate}, ${selectedEndDate}, ${selectedAnalysis}, ${interval}, ${selectedState}, ${selectedSource}, ${selectedLabel}) result: ${data.length}`,
+                    `[AnalysisPage] fetchStackedData(${selectedStartDate}, ${selectedEndDate}, ${selectedAnalysis}, ${selectedInterval}, ${selectedState}, ${selectedSource}, ${selectedLabel}) result: ${data.length}`,
                 );
             },
         );
 
-        fetchSmaData(selectedStartDate, selectedEndDate, selectedAnalysis, interval).then((data: IStackedAreaChart[]) => {
-            setSmaData(data);
+        fetchSmaData(selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval).then((data: IStackedAreaChart[]) => {
+            setSelectedSmaData(data);
             console.log(
-                `[AnalysisPage] fetchSmaData(${selectedStartDate}, ${selectedEndDate}, ${selectedAnalysis}, ${interval}, ${selectedState}, ${selectedSource}, ${selectedLabel}) result: ${data.length}`,
+                `[AnalysisPage] fetchSmaData(${selectedStartDate}, ${selectedEndDate}, ${selectedAnalysis}, ${selectedInterval}, ${selectedState}, ${selectedSource}, ${selectedLabel}) result: ${data.length}`,
             );
         });
 
-        fetchPercentageData(selectedStartDate, selectedEndDate, selectedAnalysis, interval).then((data: IPercentualAreaChart[]) => {
-            setInternalPercentualData(data);
+        fetchPercentageData(selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval).then((data: IPercentualAreaChart[]) => {
+            setSelectedPercentualData(data);
             console.log(
-                `[AnalysisPage] fetchPercentageData(${selectedStartDate}, ${selectedEndDate}, ${selectedAnalysis}, ${interval}, ${selectedState}, ${selectedSource}, ${selectedLabel}) result: ${data.length}`,
+                `[AnalysisPage] fetchPercentageData(${selectedStartDate}, ${selectedEndDate}, ${selectedAnalysis}, ${selectedInterval}, ${selectedState}, ${selectedSource}, ${selectedLabel}) result: ${data.length}`,
             );
         });
 
@@ -170,7 +172,7 @@ const AnalysisPage: FC = () => {
         const initialAnalysisDescription = findAnalysisDescription(selectedAnalysis, selectedStartDate, selectedEndDate, analysisInfos);
         setCurrentAnalysisDescription(initialAnalysisDescription);
 
-    }, [selectedAnalysis, selectedLabel, selectedStartDate, selectedEndDate, selectedState, selectedSource, interval]);
+    }, [selectedAnalysis, selectedLabel, selectedStartDate, selectedEndDate, selectedState, selectedSource, selectedInterval]);
 
     return (
         <AnalysisProvider>
@@ -250,8 +252,8 @@ const AnalysisPage: FC = () => {
                     <Box sx={{ flexGrow: 1 }}>
                         <Map
                             estado={selectedMapState}
-                            width={width}
-                            height={height}
+                            width={initialWidth}
+                            height={initialHeight}
                             coordinateOnClick={(coordinate: Array<number>) => alert(`Coordenada do clique: ${coordinate}`)}
                             onZoomChange={(zoom: number) => setCurrentZoom(zoom)}
                             onBboxChange={(b: Array<number>) => setCurrentBbox(b.join(', '))}
@@ -378,13 +380,13 @@ const AnalysisPage: FC = () => {
                         </Accordion>
                         <Accordion>
                             <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="interval-content" id="interval-header">
-                                <Typography>Intervalo selecionado {interval}</Typography>
+                                <Typography>Intervalo selecionado {selectedInterval}</Typography>
                             </AccordionSummary>
                             <AccordionDetails>
                                 <Typography>Selecione o intervalo para a análise (anual, bienal, etc.).</Typography>
                                 <Divider variant="middle" sx={{ margin: '15px' }} />
                                 <FormControl fullWidth>
-                                    <Select id="interval-select" value={interval} onChange={handleIntervalChange}>
+                                    <Select id="interval-select" value={selectedInterval} onChange={handleIntervalChange}>
                                         <MenuItem value="annual">Anual</MenuItem>
                                         <MenuItem value="biennial">Bienal</MenuItem>
                                         <MenuItem value="triennial">Trienal</MenuItem>
@@ -428,7 +430,7 @@ const AnalysisPage: FC = () => {
                                 {currentAnalysisDescription?.description}
                             </Typography>
 
-                            <AreaChart width={400} height={250} data={internalStackedData} defaultPalette={bluePalette} />
+                            <AreaChart width={400} height={250} data={selectedStackedData} defaultPalette={bluePalette} />
                         </CardContent>
                     </Card>
 
@@ -461,7 +463,7 @@ const AnalysisPage: FC = () => {
                                 {currentAnalysisDescription?.description}
                             </Typography>
 
-                            <AreaChart width={400} height={250} data={smaData} defaultPalette={purplePalette} />
+                            <AreaChart width={400} height={250} data={selectedSmaData} defaultPalette={purplePalette} />
                         </CardContent>
                     </Card>
 
@@ -496,7 +498,7 @@ const AnalysisPage: FC = () => {
                             <PercentualAreaChart
                                 width={400}
                                 height={250}
-                                data={internalPercentualData}
+                                data={selectedPercentualData}
                                 valueLabel="Área"
                                 fillColor={blueColors.lightSkyBlue}
                                 strokeColor={blueColors.lightBlue}

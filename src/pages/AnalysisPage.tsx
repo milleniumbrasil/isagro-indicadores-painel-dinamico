@@ -144,14 +144,7 @@ const AnalysisPage: FC = () => {
     };
 
     const requestStackedData = async (
-        url: string,
-        startDate: Date,
-        endDate: Date,
-        analysis: string,
-        interval: string,
-        stateName: string,
-        source: string,
-        label: string
+        url: string
     ): Promise<IStackedAreaChart[]> => {
         return fetch(url)
             .then((response) => {
@@ -174,29 +167,29 @@ const AnalysisPage: FC = () => {
 
         buildUrl('sma', selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval).then((smaUrl) => {
             console.log(`[AnalysisPage] requestStackedData url: ${smaUrl}`);
-            requestStackedData(smaUrl, selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval, selectedState, selectedSource, selectedLabel).then(
+            requestStackedData(smaUrl).then(
                 (data) => {
-                    console.log(`[AnalysisPage] requestStackedData(${selectedStartDate}, ${selectedEndDate}, ${selectedAnalysis}, ${selectedInterval}, ${selectedState}, ${selectedSource}, ${selectedLabel}) result: ${data.length}`);
+                    console.log(`[AnalysisPage] requestStackedData sma result: ${data.length}`);
                     setSelectedSmaData(data);
                 },
             );
         });
 
-        buildUrl('sum', selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval).then((smaUrl) => {
-            console.log(`[AnalysisPage] requestStackedData url: ${smaUrl}`);
-            requestStackedData(smaUrl, selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval, selectedState, selectedSource, selectedLabel).then(
+        buildUrl('sum', selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval).then((sumUrl) => {
+            console.log(`[AnalysisPage] requestStackedData url: ${sumUrl}`);
+            requestStackedData(sumUrl).then(
                 (data) => {
-                    console.log(`[AnalysisPage] requestStackedData(${selectedStartDate}, ${selectedEndDate}, ${selectedAnalysis}, ${selectedInterval}, ${selectedState}, ${selectedSource}, ${selectedLabel}) result: ${data.length}`);
+                    console.log(`[AnalysisPage] requestStackedData sum result: ${data.length}`);
                     setSelectedStackedData(data);
                 },
             );
         });
 
-        buildUrl('percentage', selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval).then((smaUrl) => {
-            console.log(`[AnalysisPage] requestStackedData url: ${smaUrl}`);
-            requestStackedData(smaUrl, selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval, selectedState, selectedSource, selectedLabel).then(
+        buildUrl('percentage', selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval).then((percentageUrl) => {
+            console.log(`[AnalysisPage] requestStackedData url: ${percentageUrl}`);
+            requestStackedData(percentageUrl).then(
                 (data) => {
-                    console.log(`[AnalysisPage] requestStackedData(${selectedStartDate}, ${selectedEndDate}, ${selectedAnalysis}, ${selectedInterval}, ${selectedState}, ${selectedSource}, ${selectedLabel}) result: ${data.length}`);
+                    console.log(`[AnalysisPage] requestStackedData percentage result: ${data.length}`);
                     // Transformando de IStackedAreaChart para IPercentualAreaChart
                     const percentualData: IPercentualAreaChart[] = data.map((item) => ({
                         period: item.period,

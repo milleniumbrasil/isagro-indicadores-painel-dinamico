@@ -192,7 +192,7 @@ const AnalysisPage: FC = () => {
             );
         });
 
-        buildUrl('sum', selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval).then((smaUrl) => {
+        buildUrl('percentage', selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval).then((smaUrl) => {
             console.log(`[AnalysisPage] requestStackedData url: ${smaUrl}`);
             requestStackedData(smaUrl, selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval, selectedState, selectedSource, selectedLabel).then(
                 (data) => {

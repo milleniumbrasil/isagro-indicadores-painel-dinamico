@@ -88,7 +88,7 @@ const PercentualAreaChart: React.FC<PercentualAreaChartProps> = (props) => {
 
     const renderTooltipContent = (o: any) => {
         const { payload = [] } = o;
-        console.log(`[PercentualAreaChart] Tooltip payload: ${JSON.stringify(payload)}`);
+        console.log(`[PercentualAreaChart] Tooltip payload: ${JSON.stringify(payload?.slice(0, 2), null, 2)}}`);
         return (
             <div
                 className="customized-tooltip-content"

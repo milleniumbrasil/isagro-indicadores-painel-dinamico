@@ -51,9 +51,9 @@ export default class AreaChart extends PureComponent<PercentualAreaChartProps> {
         return this.firstLetter2UpperCase(value);
     }
 
-    renderTooltipContent(o: any) {
-        const { payload = [] } = o;
-
+    renderTooltipContent(obj: any) {
+        const { payload = [] } = obj;
+        console.log(`[AreaChart] renderTooltipContent payload: ${JSON.stringify(payload?.slice(0, 2), null, 2)}}`);
         return (
             <div
                 className="customized-tooltip-content"

@@ -42,7 +42,8 @@ const StackedAreaChart: React.FC<StackedAreaChartProps> = (props) => {
 
     const renderTooltipContent = (obj: any) => {
         const { payload = [] } = obj;
-        console.log(`[StackedAreaChart] renderTooltipContent obj: ${JSON.stringify(obj, null, 2)}}`);
+        console.log(`[StackedAreaChart] renderTooltipContent obj: ${JSON.stringify(obj, null, 2)}`);
+
         return (
             <div
                 className="customized-tooltip-content"
@@ -51,14 +52,20 @@ const StackedAreaChart: React.FC<StackedAreaChartProps> = (props) => {
                 <ul className="list" style={{ listStyleType: 'none', padding: 0, fontSize: '12px' }}>
                     {payload.map((entry: any, index: number) => {
                         const fontColor = 'black';
-                        if (entry.name !== dataKey && attributeNames.includes(entry.name) && typeof entry.value === 'number') {
-                            return (
-                                <li key={`item-${index}`} style={{ color: fontColor }}>
-                                    {firstLetter2UpperCase(entry.name)} {entry.value}
-                                </li>
-                            );
-                        }
-                        return null;
+                        const entryPayload = entry.payload || {};
+
+                        // Filtrar todas as chaves que não são 'period'
+                        const filteredKeys = Object.keys(entryPayload).filter(key => key !== 'period');
+
+                        return (
+                            <li key={`item-${index}`} style={{ color: fontColor }}>
+                                {filteredKeys.map(key => (
+                                    <div key={key}>
+                                        {firstLetter2UpperCase(key)}: {entryPayload[key]}
+                                    </div>
+                                ))}
+                            </li>
+                        );
                     })}
                 </ul>
             </div>
@@ -233,7 +240,7 @@ const StackedAreaChart: React.FC<StackedAreaChartProps> = (props) => {
                     <XAxis dataKey={dataKey} />
                     <YAxis tickFormatter={tickFormatter} ticks={dynamicTicks} />
                     <Legend formatter={legendFormatter} iconType={'triangle'} />
-                    <Tooltip content={renderTooltipContent} />
+                    <Tooltip  />
                     {attributeNames.map((item, index) => (
                         <Area
                             key={item}

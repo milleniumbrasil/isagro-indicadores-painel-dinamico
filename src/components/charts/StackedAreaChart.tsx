@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { AreaChart as RechatsStackedAreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
-import { greenPalette, whiteBackgroundColor } from '../colors';
+import { whiteBackgroundColor, palettes } from '../colors';
 import { IStackedAreaChart } from './IStackedAreaChart';
 
 export interface INormalizedData {
@@ -149,16 +149,15 @@ const StackedAreaChart: React.FC<StackedAreaChartProps> = (props) => {
     const [internalData, setInternalData] = useState<INormalizedData[]>([]);
     const [internalWidth, setInternalWidth] = useState<number>(800);
     const [internalHeight, setInternalHeight] = useState<number>(1200);
-    const [internalStrokeColor, setInternalStrockeColor] = useState<string[]>(greenPalette);
-    const [internalFillColor, setInternalFillColor] = useState<string[]>(greenPalette);
     const [attributeNames, setAttributeNames] = useState<string[]>([]);
     const [loading, setLoading] = useState(true);
     const [dynamicTicks, setDynamicTicks] = useState<number[]>([0]);
-    const [defaultPalette, setDefaultPalette] = useState<string[]>(greenPalette);
+    const [defaultPalette, setDefaultPalette] = useState<string[]>(
+        palettes.find(palette => palette.value === 'greenLight')?.colors.map(color => color.color) || []
+    );
 
     useEffect(() => {
         try {
-            // console.log(`[StackedAreaChart] props: ${JSON.stringify(props, null, 2)}`);
             if (!props.data || props.data.length === 0) {
                 console.warn('[StackedAreaChart]: data is required at first useEffect stage! It should be loaded from props.data.');
                 setLoading(false);
@@ -166,17 +165,16 @@ const StackedAreaChart: React.FC<StackedAreaChartProps> = (props) => {
             } else {
                 const data = Array.from(props.data);
                 const normalizedData = normalizeData(data);
-                // console.log(`[StackedAreaChart] useEffect data: ${JSON.stringify(data?.slice(0, 2), null, 2)}`);
-                // console.log(`[StackedAreaChart] useEffect normalizedData: ${JSON.stringify(normalizedData?.slice(0, 2), null, 2)}`);
                 setInternalData(normalizedData);
                 if (props.width) setInternalWidth(props.width);
-                // console.log(`[StackedAreaChart] internalWidth: ${internalWidth}`);
                 if (props.height) setInternalHeight(props.height);
-                // console.log(`[StackedAreaChart] internalHeight: ${internalHeight}`);
-                if (props.defaultPalette) setDefaultPalette(props.defaultPalette);
-                // console.log(`[StackedAreaChart] defaultPalette: ${defaultPalette}`);
+
+                // Atualize a lógica para definir a paleta correta
+                if (props.defaultPalette) {
+                    setDefaultPalette(props.defaultPalette.map(color => color)); // Use apenas os valores de cor
+                }
+
                 const attrNames = extractAttibutesNames(normalizedData);
-                // console.log(`[StackedAreaChart] Final attribute names: ${JSON.stringify(attrNames)}`);
                 setAttributeNames(attrNames);
             }
         } catch (error) {

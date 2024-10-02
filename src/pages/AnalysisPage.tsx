@@ -31,22 +31,15 @@ import { buildUrl } from '../pages/AnalysisHelper';
 
 import {
     greenBackgroundColor,
-    yellowPalette,
-    bluePalette,
-    brownPalette,
     brownBackgroundColor,
     redBackgroundColor,
     grayBackgroundColor,
     blueBackgroundColor,
     blueColors,
-    purplePalette,
     yellowBackgroundColor,
-    greenPalette,
-    redPalette,
-    brownColors,
-    whiteBackgroundColor,
     palettes,
     backgroundColors,
+    brownColors,
 } from '../components/colors';
 
 import AreaChart from '../components/charts/AreaChart';
@@ -107,15 +100,21 @@ const AnalysisPage: FC = () => {
     const [selectedPalette, setSelectedPalette] = useState<string>('green');
     const [selectedBackgroundColor, setSelectedBackgroundColor] = useState<string>('brown');
 
-    const [selectedChartDefaultPalette, setSelectedChartDefaultPalette] = useState<string[]>(greenPalette);
+    // Inicializar o palette com o verde claro, médio ou escuro
+    const [selectedChartDefaultPalette, setSelectedChartDefaultPalette] = useState<string[]>(
+        palettes.find(palette => palette.value === 'greenLight')?.colors.map(color => color.color) || []
+    );
     const [selectedChartDefaultBackgroundColor, setSelectedChartDefaultBackgroundColor] = useState<string>(brownBackgroundColor);
 
     const handlePaletteChange = (event: SelectChangeEvent) => {
-      setSelectedPalette(event.target.value as string);
-      const colors = palettes.find(palette => palette.value === selectedPalette)?.colors;
-      if (colors) {
-        setSelectedChartDefaultPalette(colors);
-      }
+        const selectedPaletteValue = event.target.value as string;
+        setSelectedPalette(selectedPaletteValue);
+
+        // Extrair apenas as cores da paleta selecionada
+        const colors = palettes.find(palette => palette.value === selectedPaletteValue)?.colors.map(color => color.color);
+        if (colors) {
+            setSelectedChartDefaultPalette(colors);
+        }
     };
 
     const handleBackgroundColors = (event: SelectChangeEvent) => {
@@ -609,8 +608,8 @@ const AnalysisPage: FC = () => {
                                 height={250}
                                 data={selectedPercentualData}
                                 valueLabel="Área"
-                                fillColor={brownColors.sandyBrown}
-                                strokeColor={brownColors.chocolate}
+                                fillColor={brownColors.medium.find(color => color.value === 'sandyBrown')?.color || '#F4A460'} // Usar o valor correto da cor
+                                strokeColor={brownColors.medium.find(color => color.value === 'chocolate')?.color || '#D2691E'} // Usar o valor correto da cor
                             />
                         </CardContent>
                     </Card>

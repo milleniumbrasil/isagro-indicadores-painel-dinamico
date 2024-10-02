@@ -2,7 +2,7 @@
 
 import { PureComponent } from 'react';
 import { AreaChart as RechatsAreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
-import { greenPalette } from '../colors';
+
 import { IStackedAreaChart } from './IStackedAreaChart';
 
 interface PercentualAreaChartProps {
@@ -22,10 +22,10 @@ export default class AreaChart extends PureComponent<PercentualAreaChartProps> {
     private dataKey = '';
     private valueLabel = 'Valor';
     private data: object[] = [];
-    private strokeColor: string[] = greenPalette;
-    private fillColor: string[] = greenPalette;
+    private strokeColor: string[] = [];
+    private fillColor: string[] = [];
     private dynamicTicks: number[] = [0];
-    private defaultPalette: string[] = greenPalette;
+    private defaultPalette: string[] = [];
 
     constructor(props: PercentualAreaChartProps) {
         super(props);
@@ -36,7 +36,7 @@ export default class AreaChart extends PureComponent<PercentualAreaChartProps> {
         this.dataKey = this.props.dataKey ?? 'period';
         this.valueLabel = this.props.valueLabel ?? 'Valor';
         this.data = this.props.data ?? [];
-        this.defaultPalette = this.props.defaultPalette ?? greenPalette;
+        this.defaultPalette = this.props.defaultPalette ?? [];
     }
 
     tickFormatter(decimal = 0, fixed = 1): string {
@@ -127,8 +127,8 @@ export default class AreaChart extends PureComponent<PercentualAreaChartProps> {
     render() {
         this.width = this.props.width ?? 800;
         this.height = this.props.height ?? 1200;
-        this.strokeColor = this.props.defaultPalette ?? greenPalette;
-        this.fillColor = this.props.defaultPalette ?? greenPalette;
+        this.strokeColor = this.props.defaultPalette ?? [];
+        this.fillColor = this.props.defaultPalette ?? [];
         this.dataKey = this.props.dataKey ?? 'period';
         this.data = this.normalizeData(this.props.data ?? []);
         this.valueLabel = this.props.valueLabel ?? 'Valor';

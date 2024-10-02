@@ -203,3 +203,24 @@ export const brownPalette = [
     brownColors.saddleBrown,
     brownColors.darkBrown
 ];
+
+export const palettes = [
+	{ label: "Cinza", value: "gray", colors: grayPalette },
+	{ label: "Roxo", value: "purple", colors: purplePalette },
+	{ label: "Marrom", value: "brown", colors: brownPalette },
+	{ label: "Vermelho", value: "red", colors: redPalette },
+	{ label: "Amarelo", value: "yellow", colors: yellowPalette },
+	{ label: "Azul", value: "blue", colors: bluePalette },
+	{ label: "Verde", value: "green", colors: greenPalette },
+  ];
+
+export const backgroundColors = [
+	{ label: "Verde", value: "green", bg: greenBackgroundColor },
+	{ label: "Azul", value: "blue", bg: blueBackgroundColor },
+	{ label: "Amarelo", value: "yellow", bg: yellowBackgroundColor },
+	{ label: "Roxo", value: "purple", bg: purpleBackgroundColor },
+	{ label: "Cinza", value: "gray", bg: grayBackgroundColor },
+	{ label: "Vermelho", value: "red", bg: redBackgroundColor },
+	{ label: "Marrom", value: "brown", bg: brownBackgroundColor },
+	{ label: "Branco", value: "white", bg: whiteBackgroundColor },
+]

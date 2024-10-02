@@ -45,6 +45,8 @@ import {
     redPalette,
     brownColors,
     whiteBackgroundColor,
+    palettes,
+    backgroundColors,
 } from '../components/colors';
 
 import AreaChart from '../components/charts/AreaChart';
@@ -101,6 +103,31 @@ const AnalysisPage: FC = () => {
     const [selectedZoom, setSelectedZoom] = useState(selectedMapState.zoom);
     const [selectedBbox, setSelectedBbox] = useState<string>(Constants.initialConfig.bbox);
     const [selectedCenter, setSelectedCenter] = useState<string>();
+
+    const [selectedPalette, setSelectedPalette] = useState<string>('green');
+    const [selectedBackgroundColor, setSelectedBackgroundColor] = useState<string>('brown');
+
+    const [selectedChartDefaultPalette, setSelectedChartDefaultPalette] = useState<string[]>(greenPalette);
+    const [selectedChartDefaultBackgroundColor, setSelectedChartDefaultBackgroundColor] = useState<string>(brownBackgroundColor);
+
+    const handlePaletteChange = (event: SelectChangeEvent) => {
+      setSelectedPalette(event.target.value as string);
+      const colors = palettes.find(palette => palette.value === selectedPalette)?.colors;
+      if (colors) {
+        setSelectedChartDefaultPalette(colors);
+      }
+    };
+
+    const handleBackgroundColors = (event: SelectChangeEvent) => {
+        const selectedBgColorValue = event.target.value as string;
+        setSelectedBackgroundColor(selectedBgColorValue);
+
+        // Encontrar a cor de fundo com base na seleção do usuário
+        const bgColor = backgroundColors.find(bgColor => bgColor.value === selectedBgColorValue)?.bg;
+        if (bgColor) {
+            setSelectedChartDefaultBackgroundColor(bgColor); // Definir a cor de fundo no estado
+        }
+      };
 
     const handleStateChange = (event: SelectChangeEvent) => {
         const stateValue = event.target.value as string;
@@ -410,11 +437,53 @@ const AnalysisPage: FC = () => {
                                         </FormControl>
                                     </AccordionDetails>
                                 </Accordion>
-
-                                <Typography variant="h6" sx={{ padding: '15px' }}></Typography>
-                                <Typography variant="body2" sx={{ padding: '35px', width: '550px' }}></Typography>
-
-                                <Typography variant="body2"></Typography>
+                                <Accordion>
+                                    <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="palettes-content" id="palettes-header">
+                                        <Typography>
+                                            Paleta Selecionada: {palettes.find(palette => palette.value === selectedPalette)?.label}, cor de fundo: {backgroundColors.find(bgColor => bgColor.value === selectedBackgroundColor)?.label}
+                                            </Typography>
+                                    </AccordionSummary>
+                                    <AccordionDetails>
+                                        <Divider variant="middle" sx={{ margin: '15px' }} />
+                                        <Typography>Ao selecionar uma paleta, os gráficos devem exibir as cores correspondentes.</Typography>
+                                        <FormControl fullWidth>
+                                            <Select
+                                                id="palettes-select"
+                                                value={selectedPalette}
+                                                onChange={handlePaletteChange} >
+                                                <MenuItem value="">
+                                                <em>Não informado</em>
+                                                </MenuItem>
+                                                {palettes.map((palette) => (
+                                                <MenuItem
+                                                    id={`${palette.value}-menu-item-palette`}
+                                                    value={palette.value}
+                                                    key={palette.value} >
+                                                    {palette.label}
+                                                </MenuItem>
+                                                ))}
+                                            </Select>
+                                            <Divider variant="middle" sx={{ margin: '15px' }} />
+                                            <Typography>Ao selecionar uma cor de fundo, os gráficos devem exibir a core correspondente.</Typography>
+                                            <Select
+                                                id="palettes-select"
+                                                value={selectedBackgroundColor}
+                                                onChange={handleBackgroundColors} >
+                                                <MenuItem value="">
+                                                <em>Não informado</em>
+                                                </MenuItem>
+                                                {backgroundColors.map((bgColors) => (
+                                                <MenuItem
+                                                    id={`${bgColors.value}-menu-item-palette`}
+                                                    value={bgColors.value}
+                                                    key={bgColors.value} >
+                                                    {bgColors.label}
+                                                </MenuItem>
+                                                ))}
+                                            </Select>
+                                        </FormControl>
+                                    </AccordionDetails>
+                                    </Accordion>
                             </Box>
                         </Box>
                     </AccordionDetails>
@@ -459,7 +528,7 @@ const AnalysisPage: FC = () => {
 
                     <Card
                         variant="outlined"
-                        sx={{ alignItems: 'center', width: '98%', backgroundColor: brownBackgroundColor, margin: '10px' }}
+                        sx={{ alignItems: 'center', width: '98%', backgroundColor: selectedChartDefaultBackgroundColor, margin: '10px' }}
                     >
                         <CardContent>
                             <Typography variant="h6" sx={{ padding: '15px' }}>
@@ -470,7 +539,7 @@ const AnalysisPage: FC = () => {
                                 {currentAnalysisDescription?.description}
                             </Typography>
 
-                            <StackedAreaChart width={400} height={250} data={selectedSumData} defaultPalette={brownPalette} />
+                            <StackedAreaChart width={400} height={250} data={selectedSumData} defaultPalette={selectedChartDefaultPalette} />
                         </CardContent>
                     </Card>
 
@@ -492,7 +561,7 @@ const AnalysisPage: FC = () => {
 
                     <Card
                         variant="outlined"
-                        sx={{ alignItems: 'center', width: '98%', backgroundColor: brownBackgroundColor, margin: '10px' }}
+                        sx={{ alignItems: 'center', width: '98%', backgroundColor: selectedChartDefaultBackgroundColor, margin: '10px' }}
                     >
                         <CardContent>
                             <Typography variant="h6" sx={{ padding: '15px' }}>
@@ -503,7 +572,7 @@ const AnalysisPage: FC = () => {
                                 {currentAnalysisDescription?.description}
                             </Typography>
 
-                            <StackedAreaChart width={400} height={250} data={selectedSmaData} defaultPalette={brownPalette} />
+                            <StackedAreaChart width={400} height={250} data={selectedSmaData} defaultPalette={selectedChartDefaultPalette} />
                         </CardContent>
                     </Card>
 
@@ -525,7 +594,7 @@ const AnalysisPage: FC = () => {
 
                     <Card
                         variant="outlined"
-                        sx={{ alignItems: 'center', width: '98%', backgroundColor: brownBackgroundColor, margin: '10px' }}
+                        sx={{ alignItems: 'center', width: '98%', backgroundColor: selectedChartDefaultBackgroundColor, margin: '10px' }}
                     >
                         <CardContent>
                             <Typography variant="h6" sx={{ padding: '15px' }}>

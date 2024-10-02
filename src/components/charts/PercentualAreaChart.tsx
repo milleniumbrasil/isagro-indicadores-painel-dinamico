@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { IPercentualAreaChart } from './IPercentualAreaChart';
 
-import { greenPalette } from '../colors';
+import { greenPalette, whiteBackgroundColor } from '../colors';
 
 interface PercentualAreaChartProps {
     data: IPercentualAreaChart[];
@@ -47,6 +47,10 @@ const PercentualAreaChart: React.FC<PercentualAreaChartProps> = (props) => {
         return result;
     };
 
+    const firstLetter2UpperCase = (value: any): string => {
+        return `${value.charAt(0).toUpperCase()}${value.slice(1)}`;
+    };
+
     const legendFormatter = (value: any, entry: any, index: any): string => {
         const legend = internalValueLabel ? internalValueLabel : value;
         return `${legend.charAt(0).toUpperCase()}${legend.slice(1)}`;
@@ -86,34 +90,28 @@ const PercentualAreaChart: React.FC<PercentualAreaChartProps> = (props) => {
         fetchData();
     }, [props.data, props.valueLabel, props.width, props.height, props.strokeColor, props.fillColor]);
 
-    const renderTooltipContent = (o: any) => {
-        const { payload = [] } = o;
-        console.log(`[PercentualAreaChart] Tooltip payload: ${JSON.stringify(payload?.slice(0, 2), null, 2)}}`);
-        return (
-            <div
-                className="customized-tooltip-content"
-                style={{
-                    backgroundColor: 'rgba(0, 0, 0, 0.1)',
-                    padding: '10px',
-                    borderRadius: '5px',
-                    fontFamily: 'Arial, sans-serif',
-                }}
-            >
-                <ul className="list" style={{ listStyleType: 'none', padding: 0, fontSize: '12px' }}>
-                    {payload.map((entry: any, index: number) => {
-                        if (entry.name !== 'payload') {
-                            console.log(`[PercentualAreaChart] Tooltip entry: ${JSON.stringify(entry)}`);
-                            return (
-                                <li key={`item-${index}`} style={{ color: 'black' }}>
-                                    {internalValueLabel} {entry.value}%
-                                </li>
-                            );
-                        }
-                        return null;
-                    })}
-                </ul>
-            </div>
-        );
+
+
+    const CustomTooltip = ({ active, payload, label }: any) => {
+        if (active && payload && payload.length) {
+            const filteredPayload = Object.entries(payload[0].payload)
+                .filter(([key]) => key !== 'period')
+                .map(([key, value]) => ({ label: key, value }));
+
+            return (
+                <div
+                    className="custom-tooltip"
+                    style={{ backgroundColor: whiteBackgroundColor, padding: '10px', borderRadius: '5px', fontFamily: 'Arial, sans-serif' }}
+                >
+                    <p className="label">{`Período: ${label}`}</p>
+                    {filteredPayload.map((item: any, index: number) => (
+                        <p key={index}>{`${firstLetter2UpperCase(item.label)}: ${item.value}`}</p>
+                    ))}
+                </div>
+            );
+        }
+
+        return null;
     };
 
     return (
@@ -138,7 +136,7 @@ const PercentualAreaChart: React.FC<PercentualAreaChartProps> = (props) => {
                         <XAxis dataKey={'period'} />
                         <YAxis tickFormatter={tickFormatter} ticks={[0, 25, 50, 75, 100]} />
                         <Legend formatter={legendFormatter} iconType={'triangle'}/>
-                        <Tooltip />
+                        <Tooltip content={<CustomTooltip />} />
                         <Area
                             key={'value'}
                             type="monotone"
@@ -150,7 +148,7 @@ const PercentualAreaChart: React.FC<PercentualAreaChartProps> = (props) => {
                     </AreaChart>
                 </ResponsiveContainer>
             ) : (
-                <Loading /> // Caso os dados estejam vazios, exibe um fallback de "Loading"
+                <Loading />
             )}
         </div>
     );

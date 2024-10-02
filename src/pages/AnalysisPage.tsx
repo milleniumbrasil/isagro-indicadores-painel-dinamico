@@ -30,19 +30,11 @@ import { iEstado, estados as mapStates, Map } from 'isagro-map';
 import { buildUrl } from '../pages/AnalysisHelper';
 
 import {
-    greenBackgroundColor,
     brownBackgroundColor,
-    redBackgroundColor,
     grayBackgroundColor,
-    blueBackgroundColor,
-    blueColors,
-    yellowBackgroundColor,
     palettes,
     backgroundColors,
-    brownColors,
 } from '../components/colors';
-
-import AreaChart from '../components/charts/AreaChart';
 
 import { DateRangePicker } from 'rsuite';
 import { BsCalendar2MonthFill } from 'react-icons/bs';
@@ -54,7 +46,6 @@ import { IPercentualAreaChart } from '../components/charts/IPercentualAreaChart'
 import PercentualAreaChart from '../components/charts/PercentualAreaChart';
 import { AnalysisProvider } from '../components/AnalysisProvider';
 import Constants, { analysisDescriptions, getValidLabelsByAnalysis, Label } from './AnalysisConstants';
-import { useAnalysisContext } from '../components/AnalysisContext';
 import { IAnalysisInfo } from './IAnalysisInfo';
 import { findAnalysisDescription } from './AnalysisHelper';
 import StackedAreaChart from '../components/charts/StackedAreaChart';

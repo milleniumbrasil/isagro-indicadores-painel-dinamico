@@ -42,22 +42,25 @@ const StackedAreaChart: React.FC<StackedAreaChartProps> = (props) => {
 
     const CustomTooltip = ({ active, payload, label }: any) => {
         if (active && payload && payload.length) {
-          const filteredPayload = Object.entries(payload[0].payload)
-            .filter(([key]) => key !== 'period')
-            .map(([key, value]) => ({ label: key, value }));
+            const filteredPayload = Object.entries(payload[0].payload)
+                .filter(([key]) => key !== 'period')
+                .map(([key, value]) => ({ label: key, value }));
 
-          return (
-            <div className="custom-tooltip" style={{ backgroundColor: whiteBackgroundColor, padding: '10px', borderRadius: '5px', fontFamily: 'Arial, sans-serif' }} >
-              <p className="label">{`Período: ${label}`}</p>
-              {filteredPayload.map((item: any, index: number) => (
-                <p key={index}>{`${firstLetter2UpperCase(item.label)}: ${item.value}`}</p>
-              ))}
-            </div>
-          );
+            return (
+                <div
+                    className="custom-tooltip"
+                    style={{ backgroundColor: whiteBackgroundColor, padding: '10px', borderRadius: '5px', fontFamily: 'Arial, sans-serif' }}
+                >
+                    <p className="label">{`Período: ${label}`}</p>
+                    {filteredPayload.map((item: any, index: number) => (
+                        <p key={index}>{`${firstLetter2UpperCase(item.label)}: ${item.value}`}</p>
+                    ))}
+                </div>
+            );
         }
 
         return null;
-      };
+    };
 
     const renderTooltipContent = (obj: any) => {
         const { payload = [] } = obj;
@@ -74,11 +77,11 @@ const StackedAreaChart: React.FC<StackedAreaChartProps> = (props) => {
                         const entryPayload = entry.payload || {};
 
                         // Filtrar todas as chaves que não são 'period'
-                        const filteredKeys = Object.keys(entryPayload).filter(key => key !== 'period');
+                        const filteredKeys = Object.keys(entryPayload).filter((key) => key !== 'period');
 
                         return (
                             <li key={`item-${index}`} style={{ color: fontColor }}>
-                                {filteredKeys.map(key => (
+                                {filteredKeys.map((key) => (
                                     <div key={key}>
                                         {firstLetter2UpperCase(key)}: {entryPayload[key]}
                                     </div>
@@ -194,7 +197,7 @@ const StackedAreaChart: React.FC<StackedAreaChartProps> = (props) => {
             console.log('[StackedAreaChart] extractAttibutesNames: normalizedData is empty or undefined');
         }
         return result;
-    }
+    };
 
     const [internalValueLabel, setInternalInternalValueLabel] = useState<string>('Valor');
     const [dataKey, setDataKey] = useState<string>('period');
@@ -259,7 +262,7 @@ const StackedAreaChart: React.FC<StackedAreaChartProps> = (props) => {
                     <XAxis dataKey={dataKey} />
                     <YAxis tickFormatter={tickFormatter} ticks={dynamicTicks} />
                     <Legend formatter={legendFormatter} iconType={'triangle'} />
-                    <Tooltip  content={<CustomTooltip />} />
+                    <Tooltip content={<CustomTooltip />} />
                     {attributeNames.map((item, index) => (
                         <Area
                             key={item}

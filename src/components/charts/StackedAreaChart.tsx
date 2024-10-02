@@ -42,7 +42,7 @@ const StackedAreaChart: React.FC<StackedAreaChartProps> = (props) => {
 
     const renderTooltipContent = (obj: any) => {
         const { payload = [] } = obj;
-        console.log(`[StackedAreaChart] renderTooltipContent payload: ${JSON.stringify(payload?.slice(0, 2), null, 2)}}`);
+        console.log(`[StackedAreaChart] renderTooltipContent obj: ${JSON.stringify(obj, null, 2)}}`);
         return (
             <div
                 className="customized-tooltip-content"

@@ -97,12 +97,12 @@ const AnalysisPage: FC = () => {
     const [selectedBbox, setSelectedBbox] = useState<string>(Constants.initialConfig.bbox);
     const [selectedCenter, setSelectedCenter] = useState<string>();
 
-    const [selectedPalette, setSelectedPalette] = useState<string>('green');
+    const [selectedPalette, setSelectedPalette] = useState<string>('greenDark');
     const [selectedBackgroundColor, setSelectedBackgroundColor] = useState<string>('brown');
 
     // Inicializar o palette com o verde claro, médio ou escuro
     const [selectedChartDefaultPalette, setSelectedChartDefaultPalette] = useState<string[]>(
-        palettes.find(palette => palette.value === 'greenLight')?.colors.map(color => color.color) || []
+        palettes.find(palette => palette.value === 'greenDark')?.colors.map(color => color.color) || []
     );
     const [selectedChartDefaultBackgroundColor, setSelectedChartDefaultBackgroundColor] = useState<string>(brownBackgroundColor);
 

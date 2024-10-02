@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { AreaChart as RechatsStackedAreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
-import { greenPalette } from '../colors';
+import { greenPalette, whiteBackgroundColor } from '../colors';
 import { IStackedAreaChart } from './IStackedAreaChart';
 
 export interface INormalizedData {
@@ -39,6 +39,25 @@ const StackedAreaChart: React.FC<StackedAreaChartProps> = (props) => {
     const legendFormatter = (value: any, entry: any, index: any): string => {
         return firstLetter2UpperCase(value);
     };
+
+    const CustomTooltip = ({ active, payload, label }: any) => {
+        if (active && payload && payload.length) {
+          const filteredPayload = Object.entries(payload[0].payload)
+            .filter(([key]) => key !== 'period')
+            .map(([key, value]) => ({ label: key, value }));
+
+          return (
+            <div className="custom-tooltip" style={{ backgroundColor: whiteBackgroundColor, padding: '10px', borderRadius: '5px', fontFamily: 'Arial, sans-serif' }} >
+              <p className="label">{`Período: ${label}`}</p>
+              {filteredPayload.map((item: any, index: number) => (
+                <p key={index}>{`${firstLetter2UpperCase(item.label)}: ${item.value}`}</p>
+              ))}
+            </div>
+          );
+        }
+
+        return null;
+      };
 
     const renderTooltipContent = (obj: any) => {
         const { payload = [] } = obj;
@@ -240,7 +259,7 @@ const StackedAreaChart: React.FC<StackedAreaChartProps> = (props) => {
                     <XAxis dataKey={dataKey} />
                     <YAxis tickFormatter={tickFormatter} ticks={dynamicTicks} />
                     <Legend formatter={legendFormatter} iconType={'triangle'} />
-                    <Tooltip  />
+                    <Tooltip  content={<CustomTooltip />} />
                     {attributeNames.map((item, index) => (
                         <Area
                             key={item}

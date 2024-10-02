@@ -108,12 +108,12 @@ export const brownColors = {
 };
 // Paleta de verde do mais claro para o mais escuro
 export const greenPalette = [
-    // greenColors.honeydew,
-    // greenColors.lightGreen,
-    // greenColors.paleGreen,
-    // greenColors.mediumAquamarine,
-    // greenColors.limeGreen,
-    // greenColors.seaGreen,
+    greenColors.honeydew,
+    greenColors.lightGreen,
+    greenColors.paleGreen,
+    greenColors.mediumAquamarine,
+    greenColors.limeGreen,
+    greenColors.seaGreen,
     greenColors.forestGreen,
     greenColors.green,
     greenColors.darkGreen,
@@ -136,11 +136,11 @@ export const redPalette = [
 
 // Paleta de amarelo do mais claro para o mais escuro
 export const yellowPalette = [
-    // yellowColors.lightYellow,
-    // yellowColors.lemonChiffon,
-    // yellowColors.cornsilk,
-    // yellowColors.moccasin,
-    // yellowColors.papayaWhip,
+    yellowColors.lightYellow,
+    yellowColors.lemonChiffon,
+    yellowColors.cornsilk,
+    yellowColors.moccasin,
+    yellowColors.papayaWhip,
     yellowColors.gold,
     yellowColors.khaki,
     yellowColors.darkKhaki,
@@ -150,10 +150,10 @@ export const yellowPalette = [
 
 // Paleta de azul do mais claro para o mais escuro
 export const bluePalette = [
-    // blueColors.aliceBlue,
-    // blueColors.lightBlue,
-    // blueColors.powderBlue,
-    // blueColors.skyBlue,
+    blueColors.aliceBlue,
+    blueColors.lightBlue,
+    blueColors.powderBlue,
+    blueColors.skyBlue,
     blueColors.lightSkyBlue,
     blueColors.steelBlue,
     blueColors.dodgerBlue,
@@ -192,10 +192,10 @@ export const purplePalette = [
 
 // Paleta de marrom do mais claro para o mais escuro
 export const brownPalette = [
-    // brownColors.wheat,
-    // brownColors.navajoWhite,
-    // brownColors.burlyWood,
-    // brownColors.tan,
+    brownColors.wheat,
+    brownColors.navajoWhite,
+    brownColors.burlyWood,
+    brownColors.tan,
     brownColors.sandyBrown,
     brownColors.chocolate,
     brownColors.peru,

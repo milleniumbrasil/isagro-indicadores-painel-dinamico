@@ -108,12 +108,12 @@ export const brownColors = {
 };
 // Paleta de verde do mais claro para o mais escuro
 export const greenPalette = [
-    greenColors.honeydew,
-    greenColors.lightGreen,
-    greenColors.paleGreen,
-    greenColors.mediumAquamarine,
-    greenColors.limeGreen,
-    greenColors.seaGreen,
+    // greenColors.honeydew,
+    // greenColors.lightGreen,
+    // greenColors.paleGreen,
+    // greenColors.mediumAquamarine,
+    // greenColors.limeGreen,
+    // greenColors.seaGreen,
     greenColors.forestGreen,
     greenColors.green,
     greenColors.darkGreen,

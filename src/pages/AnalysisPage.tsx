@@ -43,6 +43,7 @@ import {
     yellowBackgroundColor,
     greenPalette,
     redPalette,
+    brownColors,
 } from '../components/colors';
 
 import AreaChart from '../components/charts/AreaChart';
@@ -165,16 +166,16 @@ const AnalysisPage: FC = () => {
 
     useEffect(() => {
 
-        // buildUrl('sma', selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval).then((smaUrl) => {
-        //     requestStackedData(smaUrl).then(
-        //         (stackedObjects) => {
-        //             console.log(`[AnalysisPage] useEffect url: ${smaUrl}`);
-        //             console.log(`[AnalysisPage] useEffect sma result: ${stackedObjects.length}`);
-        //             console.log(`[AnalysisPage] useEffect sma sample: ${JSON.stringify(stackedObjects?.slice(0, 2), null, 2)}`);
-        //             setSelectedSmaData(stackedObjects);
-        //         },
-        //     );
-        // });
+        buildUrl('sma', selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval).then((smaUrl) => {
+            requestStackedData(smaUrl).then(
+                (stackedObjects) => {
+                    console.log(`[AnalysisPage] useEffect url: ${smaUrl}`);
+                    console.log(`[AnalysisPage] useEffect sma result: ${stackedObjects.length}`);
+                    console.log(`[AnalysisPage] useEffect sma sample: ${JSON.stringify(stackedObjects?.slice(0, 2), null, 2)}`);
+                    setSelectedSmaData(stackedObjects);
+                },
+            );
+        });
 
         buildUrl('sum', selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval).then((sumUrl) => {
             requestStackedData(sumUrl).then(
@@ -187,21 +188,21 @@ const AnalysisPage: FC = () => {
             );
         });
 
-        // buildUrl('percentage', selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval).then((percentageUrl) => {
-        //     requestStackedData(percentageUrl).then(
-        //         (stackedObjects) => {
-        //             console.log(`[AnalysisPage] useEffect url: ${percentageUrl}`);
-        //             console.log(`[AnalysisPage] useEffect percentage result: ${stackedObjects.length}`);
-        //             console.log(`[AnalysisPage] useEffect percentage sample: ${JSON.stringify(stackedObjects?.slice(0, 2), null, 2)}`);
-        //             // Transformando de IStackedAreaChart para IPercentualAreaChart
-        //             const percentualObjects: IPercentualAreaChart[] = stackedObjects.map((item) => ({
-        //                 period: item.period,
-        //                 value: parseFloat(item.entry[1].toString()), // Pega diretamente o valor de entry[1] como percentual
-        //             }));
-        //             setSelectedPercentualData(percentualObjects);
-        //         },
-        //     );
-        // });
+        buildUrl('percentage', selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval).then((percentageUrl) => {
+            requestStackedData(percentageUrl).then(
+                (stackedObjects) => {
+                    console.log(`[AnalysisPage] useEffect url: ${percentageUrl}`);
+                    console.log(`[AnalysisPage] useEffect percentage result: ${stackedObjects.length}`);
+                    console.log(`[AnalysisPage] useEffect percentage sample: ${JSON.stringify(stackedObjects?.slice(0, 2), null, 2)}`);
+                    // Transformando de IStackedAreaChart para IPercentualAreaChart
+                    const percentualObjects: IPercentualAreaChart[] = stackedObjects.map((item) => ({
+                        period: item.period,
+                        value: parseFloat(item.entry[1].toString()), // Pega diretamente o valor de entry[1] como percentual
+                    }));
+                    setSelectedPercentualData(percentualObjects);
+                },
+            );
+        });
 
         const analysisInfos = analysisDescriptions(selectedStartDate, selectedEndDate);
         const initialAnalysisDescription = findAnalysisDescription(selectedAnalysis, selectedStartDate, selectedEndDate, analysisInfos);
@@ -454,7 +455,7 @@ const AnalysisPage: FC = () => {
 
                     <Card
                         variant="outlined"
-                        sx={{ alignItems: 'center', width: '98%', backgroundColor: greenBackgroundColor, margin: '10px' }}
+                        sx={{ alignItems: 'center', width: '98%', backgroundColor: brownBackgroundColor, margin: '10px' }}
                     >
                         <CardContent>
                             <Typography variant="h6" sx={{ padding: '15px' }}>
@@ -465,10 +466,10 @@ const AnalysisPage: FC = () => {
                                 {currentAnalysisDescription?.description}
                             </Typography>
 
-                            <StackedAreaChart width={400} height={250} data={selectedSumData} defaultPalette={bluePalette} />
+                            <StackedAreaChart width={400} height={250} data={selectedSumData} defaultPalette={brownPalette} />
                         </CardContent>
                     </Card>
-{/*
+
                     <Typography variant="h6" sx={{ padding: '15px', marginTop: '15px' }}>
                         Como interpretar o gráfico de Média Móvel Simples
                     </Typography>
@@ -487,7 +488,7 @@ const AnalysisPage: FC = () => {
 
                     <Card
                         variant="outlined"
-                        sx={{ alignItems: 'center', width: '98%', backgroundColor: yellowBackgroundColor, margin: '10px' }}
+                        sx={{ alignItems: 'center', width: '98%', backgroundColor: brownBackgroundColor, margin: '10px' }}
                     >
                         <CardContent>
                             <Typography variant="h6" sx={{ padding: '15px' }}>
@@ -498,7 +499,7 @@ const AnalysisPage: FC = () => {
                                 {currentAnalysisDescription?.description}
                             </Typography>
 
-                            <StackedAreaChart width={400} height={250} data={selectedSmaData} defaultPalette={purplePalette} />
+                            <StackedAreaChart width={400} height={250} data={selectedSmaData} defaultPalette={brownPalette} />
                         </CardContent>
                     </Card>
 
@@ -520,7 +521,7 @@ const AnalysisPage: FC = () => {
 
                     <Card
                         variant="outlined"
-                        sx={{ alignItems: 'center', width: '98%', backgroundColor: blueBackgroundColor, margin: '10px' }}
+                        sx={{ alignItems: 'center', width: '98%', backgroundColor: brownBackgroundColor, margin: '10px' }}
                     >
                         <CardContent>
                             <Typography variant="h6" sx={{ padding: '15px' }}>
@@ -535,11 +536,11 @@ const AnalysisPage: FC = () => {
                                 height={250}
                                 data={selectedPercentualData}
                                 valueLabel="Área"
-                                fillColor={blueColors.lightSkyBlue}
-                                strokeColor={blueColors.lightBlue}
+                                fillColor={brownColors.sandyBrown}
+                                strokeColor={brownColors.chocolate}
                             />
                         </CardContent>
-                    </Card> */}
+                    </Card>
                 </Paper>
             </div>
         </AnalysisProvider>

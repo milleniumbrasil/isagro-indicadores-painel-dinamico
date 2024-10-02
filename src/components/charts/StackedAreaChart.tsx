@@ -7,7 +7,7 @@ import { IStackedAreaChart } from './IStackedAreaChart';
 
 export interface INormalizedData {
     period: string;
-    value: number;
+    [label: string]: number | string;
 }
 
 interface StackedAreaChartProps {
@@ -28,20 +28,19 @@ export function Loading() {
 }
 
 const StackedAreaChart: React.FC<StackedAreaChartProps> = (props) => {
-
     const tickFormatter = (decimal = 0, fixed = 1): string => {
         return `${Math.round(decimal as number)}`;
-    }
+    };
 
-    const firstLetter2UpperCase = (value: any): string  => {
+    const firstLetter2UpperCase = (value: any): string => {
         return `${value.charAt(0).toUpperCase()}${value.slice(1)}`;
-    }
+    };
 
-    const legendFormatter = (value: any, entry: any, index: any): string  => {
+    const legendFormatter = (value: any, entry: any, index: any): string => {
         return firstLetter2UpperCase(value);
-    }
+    };
 
-    const renderTooltipContent = (obj: any)  => {
+    const renderTooltipContent = (obj: any) => {
         const { payload = [] } = obj;
         console.log(`[StackedAreaChart] renderTooltipContent payload: ${JSON.stringify(payload?.slice(0, 2), null, 2)}}`);
         return (
@@ -64,32 +63,67 @@ const StackedAreaChart: React.FC<StackedAreaChartProps> = (props) => {
                 </ul>
             </div>
         );
+    };
+
+    // Função de validação para detectar duplicatas
+    function validateData(data: IStackedAreaChart[]): void {
+        const groupedData: Record<string, Record<string, number[]>> = {};
+
+        data.forEach(({ period, entry }) => {
+            const [label, value] = entry;
+
+            // Inicializa a estrutura se o período ainda não existir
+            if (!groupedData[period]) {
+                groupedData[period] = {};
+            }
+
+            // Se o label já existir para esse período, armazena os valores duplicados
+            if (groupedData[period][label]) {
+                groupedData[period][label].push(value);
+            } else {
+                groupedData[period][label] = [value];
+            }
+        });
+
+        // Verifica se existem duplicatas e lança um erro com detalhes, se for o caso
+        const duplicates: string[] = [];
+        Object.keys(groupedData).forEach((period) => {
+            Object.keys(groupedData[period]).forEach((label) => {
+                if (groupedData[period][label].length > 1) {
+                    const values = groupedData[period][label].join(', ');
+                    duplicates.push(`Período '${period}' tem labels duplicados: ${label}, ${values}`);
+                }
+            });
+        });
+
+        if (duplicates.length > 0) {
+            throw new Error(`Erro: Duplicidade detectada. Corrija os dados. Detalhes: ${duplicates.join('; ')}`);
+        }
     }
 
     // Função para normalizar os dados
-    const normalizeData = (entries: IStackedAreaChart[]): INormalizedData[] => {
-        const normalizedDataSet: any[] = [];
+    function normalizeData(data: IStackedAreaChart[]): INormalizedData[] {
+        // Chama a função de validação para verificar duplicatas
+        validateData(data);
 
-        entries.forEach((entry) => {
-            const { period, entry: dataEntry } = entry;
-            const [label, value] = dataEntry;
+        const groupedData: Record<string, INormalizedData> = {};
 
-            // buscar a última entry para o periodo e o label
-            let normalized;
-            normalized = normalizedDataSet.find(
-                (item) => item.period === period && !Object.keys(item).find((labelTarget) => labelTarget === label),
-            );
+        data.forEach(({ period, entry }) => {
+            const [label, value] = entry;
 
-            // se já existe uma entry para o periodo e label
-            if (normalized) {
-                normalized[label] = value;
-            } else {
-                const newNormalized: { [key: string]: any } = { period: period };
-                newNormalized[label] = value;
-                normalizedDataSet.push(newNormalized);
+            // Inicializa o período, se necessário
+            if (!groupedData[period]) {
+                groupedData[period] = { period } as INormalizedData;
             }
+
+            // Atribui o valor ao label correspondente
+            groupedData[period][label] = value;
         });
-        return normalizedDataSet;
+
+        // Retorna os dados normalizados como um array de INormalizedData
+        const result = Object.values(groupedData);
+        console.log(`[StackedAreaChart] normalizeData: ${JSON.stringify(result, null, 2)}`);
+        return result;
     }
 
     // Função para calcular os steps
@@ -112,7 +146,7 @@ const StackedAreaChart: React.FC<StackedAreaChartProps> = (props) => {
 
         const step = Math.ceil(maxTotal / 4);
         return [0, step, step * 2, step * 3, step * 4]; // Ticks dinâmicos
-    }
+    };
 
     const [internalValueLabel, setInternalInternalValueLabel] = useState<string>('Valor');
     const [dataKey, setDataKey] = useState<string>('period');
@@ -136,11 +170,17 @@ const StackedAreaChart: React.FC<StackedAreaChartProps> = (props) => {
             } else {
                 const data = Array.from(props.data);
                 const normalizedData = normalizeData(data);
+                console.log(`[StackedAreaChart] useEffect data: ${JSON.stringify(data?.slice(0, 2), null, 2)}`);
+                console.log(`[StackedAreaChart] useEffect normalizedData: ${JSON.stringify(normalizedData?.slice(0, 2), null, 2)}`);
                 setInternalData(normalizedData);
                 if (props.valueLabel) setInternalInternalValueLabel(props.valueLabel);
+                console.log(`[StackedAreaChart] internalValueLabel: ${internalValueLabel}`);
                 if (props.width) setInternalWidth(props.width);
+                console.log(`[StackedAreaChart] internalWidth: ${internalWidth}`);
                 if (props.height) setInternalHeight(props.height);
+                console.log(`[StackedAreaChart] internalHeight: ${internalHeight}`);
                 if (props.defaultPalette) setDefaultPalette(props.defaultPalette);
+                console.log(`[StackedAreaChart] defaultPalette: ${defaultPalette}`);
                 if (internalData) {
                     const attrNames = data.flatMap((item) => Object.keys(item).filter((key) => key !== dataKey));
                     setAttributeNames(attrNames);
@@ -152,47 +192,41 @@ const StackedAreaChart: React.FC<StackedAreaChartProps> = (props) => {
         } finally {
             setLoading(false);
         }
-    }, [props.data,
-        props.dataKey,
-        props.valueLabel,
-        props.width,
-        props.height,
-        props.defaultPalette]);
+    }, [props.data, props.dataKey, props.valueLabel, props.width, props.height, props.defaultPalette]);
 
-        return (
-            <div style={{ width: '100%', height: internalHeight }}>
-                <ResponsiveContainer>
-                    <RechatsStackedAreaChart
-                        width={internalWidth}
-                        height={internalHeight}
-                        data={internalData}
-                        margin={{
-                            top: 10,
-                            right: 50,
-                            left: 10,
-                            bottom: 10,
-                        }}
-                        style={{ fontSize: 8 }}
-                    >
-                        <CartesianGrid strokeDasharray="0" />
-                        <XAxis dataKey={dataKey} />
-                        <YAxis tickFormatter={tickFormatter} ticks={dynamicTicks} />
-                        <Legend formatter={legendFormatter} iconType={'triangle'} />
-                        <Tooltip content={renderTooltipContent} />
-                        {attributeNames.map((item, index) => (
-                            <Area
-                                key={item}
-                                type="monotone"
-                                dataKey={item}
-                                stackId={`${index}`}
-                                stroke={internalStrokeColor[index % internalStrokeColor.length]}
-                                fill={internalFillColor[index % internalFillColor.length]}
-                            />
-                        ))}
-                    </RechatsStackedAreaChart>
-                </ResponsiveContainer>
-            </div>
-        );
-
-}
+    return (
+        <div style={{ width: '100%', height: internalHeight }}>
+            <ResponsiveContainer>
+                <RechatsStackedAreaChart
+                    width={internalWidth}
+                    height={internalHeight}
+                    data={internalData}
+                    margin={{
+                        top: 10,
+                        right: 50,
+                        left: 10,
+                        bottom: 10,
+                    }}
+                    style={{ fontSize: 8 }}
+                >
+                    <CartesianGrid strokeDasharray="0" />
+                    <XAxis dataKey={dataKey} />
+                    <YAxis tickFormatter={tickFormatter} ticks={dynamicTicks} />
+                    <Legend formatter={legendFormatter} iconType={'triangle'} />
+                    <Tooltip content={renderTooltipContent} />
+                    {attributeNames.map((item, index) => (
+                        <Area
+                            key={item}
+                            type="monotone"
+                            dataKey={item}
+                            stackId={`${index}`}
+                            stroke={internalStrokeColor[index % internalStrokeColor.length]}
+                            fill={internalFillColor[index % internalFillColor.length]}
+                        />
+                    ))}
+                </RechatsStackedAreaChart>
+            </ResponsiveContainer>
+        </div>
+    );
+};
 export default StackedAreaChart;

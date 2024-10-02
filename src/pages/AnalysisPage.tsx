@@ -89,9 +89,9 @@ const AnalysisPage: FC = () => {
         ),
     );
     const [selectedInterval, setSelectedInterval] = useState<string>('annual');
-    const [selectedStackedData, setSelectedStackedData] = useState<IStackedAreaChart[]>([]);
-    const [selectedPercentualData, setSelectedPercentualData] = useState<IPercentualAreaChart[]>([]);
+    const [selectedSumData, setSelectedSumData] = useState<IStackedAreaChart[]>([]);
     const [selectedSmaData, setSelectedSmaData] = useState<IStackedAreaChart[]>([]);
+    const [selectedPercentualData, setSelectedPercentualData] = useState<IPercentualAreaChart[]>([]);
 
     const [selectedWidth, setSelectedWidth] = useState(Constants.initialConfig.width);
     const [selectedHeight, setSelectedHeight] = useState(Constants.initialConfig.height);
@@ -180,7 +180,7 @@ const AnalysisPage: FC = () => {
             requestStackedData(sumUrl).then(
                 (stackedObjects) => {
                     console.log(`[AnalysisPage] useEffect sum result: ${stackedObjects.length}`);
-                    setSelectedStackedData(stackedObjects);
+                    setSelectedSumData(stackedObjects);
                 },
             );
         });
@@ -462,7 +462,7 @@ const AnalysisPage: FC = () => {
                                 {currentAnalysisDescription?.description}
                             </Typography>
 
-                            <AreaChart width={400} height={250} data={selectedStackedData} defaultPalette={bluePalette} />
+                            <AreaChart width={400} height={250} data={selectedSumData} defaultPalette={bluePalette} />
                         </CardContent>
                     </Card>
 

@@ -24,7 +24,16 @@ import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import FormatColorFillIcon from '@mui/icons-material/FormatColorFill';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import ScienceIcon from '@mui/icons-material/Science';
+import PaletteIcon from '@mui/icons-material/Palette';
+import DateRangeIcon from '@mui/icons-material/DateRange';
+import BiotechIcon from '@mui/icons-material/Biotech';
+import MapIcon from '@mui/icons-material/Map';
+import LabelIcon from '@mui/icons-material/Label';
 import Divider from '@mui/material/Divider';
+
 import { iEstado, estados as mapStates, Map } from 'isagro-map';
 
 import { buildUrl } from '../pages/AnalysisHelper';
@@ -301,9 +310,16 @@ const AnalysisPage: FC = () => {
                             <Box sx={{ width: '50%', alignItems: 'center', padding: '5px', margin: '5px' }}>
                                 <Accordion>
                                     <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="period-content" id="period-header">
-                                        <Typography>
-                                            Período selecionado de {selectedStartDate.getFullYear()} até {selectedEndDate.getFullYear()}
-                                        </Typography>
+                                        <List dense>
+                                            <ListItem>
+                                                <ListItemAvatar>
+                                                    <Avatar>
+                                                        <CalendarMonthIcon />
+                                                    </Avatar>
+                                                </ListItemAvatar>
+                                                <ListItemText primary="Período" secondary={`${selectedStartDate.getFullYear()} até ${selectedEndDate.getFullYear()}`} />
+                                            </ListItem>
+                                        </List>
                                     </AccordionSummary>
                                     <AccordionDetails>
                                         <Typography>Ao selecionar um período, os gráficos devem exibir os dados correspondentes.</Typography>
@@ -322,7 +338,16 @@ const AnalysisPage: FC = () => {
 
                                 <Accordion>
                                     <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="estado-content" id="estado-header">
-                                        <Typography>Estado selecionado {selectedState}</Typography>
+                                    <List dense>
+                                        <ListItem>
+                                            <ListItemAvatar>
+                                                <Avatar>
+                                                    <MapIcon />
+                                                </Avatar>
+                                            </ListItemAvatar>
+                                            <ListItemText primary="Estado" secondary={`${selectedState}`} />
+                                        </ListItem>
+                                    </List>
                                     </AccordionSummary>
                                     <AccordionDetails>
                                         <Typography>Ao selecionar um estado, o mapa deve exibir a imagem correspondente.</Typography>
@@ -344,7 +369,16 @@ const AnalysisPage: FC = () => {
 
                                 <Accordion>
                                     <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="analysis-content" id="analysis-header">
-                                        <Typography>Análise selecionada {selectedAnalysis}</Typography>
+                                        <List dense>
+                                            <ListItem>
+                                                <ListItemAvatar>
+                                                    <Avatar>
+                                                        <BiotechIcon />
+                                                    </Avatar>
+                                                </ListItemAvatar>
+                                                <ListItemText primary="Indicador" secondary={`${selectedAnalysis}`} />
+                                            </ListItem>
+                                        </List>
                                     </AccordionSummary>
                                     <AccordionDetails>
                                         <Typography>Ao selecionar uma análise, os gráficos devem exibir os dados correspondentes.</Typography>
@@ -367,7 +401,16 @@ const AnalysisPage: FC = () => {
 
                                 <Accordion>
                                     <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="label-content" id="label-header">
-                                        <Typography>Rótulo selecionado {selectedLabel}</Typography>
+                                        <List dense>
+                                            <ListItem>
+                                                <ListItemAvatar>
+                                                    <Avatar>
+                                                        <LabelIcon />
+                                                    </Avatar>
+                                                </ListItemAvatar>
+                                                <ListItemText primary="Rótulo" secondary={`${selectedLabel}`} />
+                                            </ListItem>
+                                        </List>
                                     </AccordionSummary>
                                     <AccordionDetails>
                                         <Typography>Ao selecionar um rótulo, os gráficos devem exibir os dados correspondentes.</Typography>
@@ -389,7 +432,16 @@ const AnalysisPage: FC = () => {
 
                                 <Accordion>
                                     <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="source-content" id="source-header">
-                                        <Typography>Fonte selecionada {selectedSource}</Typography>
+                                        <List dense>
+                                            <ListItem>
+                                                <ListItemAvatar>
+                                                    <Avatar>
+                                                        <ScienceIcon />
+                                                    </Avatar>
+                                                </ListItemAvatar>
+                                                <ListItemText primary="Fonte" secondary={`${selectedSource}`} />
+                                            </ListItem>
+                                        </List>
                                     </AccordionSummary>
                                     <AccordionDetails>
                                         <Typography>Ao selecionar uma fonte, os gráficos devem exibir os dados correspondentes.</Typography>
@@ -411,7 +463,16 @@ const AnalysisPage: FC = () => {
 
                                 <Accordion>
                                     <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="interval-content" id="interval-header">
-                                        <Typography>Intervalo selecionado {selectedInterval}</Typography>
+                                        <List dense>
+                                            <ListItem>
+                                                <ListItemAvatar>
+                                                    <Avatar>
+                                                        <DateRangeIcon />
+                                                    </Avatar>
+                                                </ListItemAvatar>
+                                                <ListItemText primary="Intervalo" secondary={`${selectedInterval}`} />
+                                            </ListItem>
+                                        </List>
                                     </AccordionSummary>
                                     <AccordionDetails>
                                         <Typography>Selecione o intervalo para a análise (anual, bienal, etc.).</Typography>
@@ -427,11 +488,58 @@ const AnalysisPage: FC = () => {
                                         </FormControl>
                                     </AccordionDetails>
                                 </Accordion>
+
                                 <Accordion>
                                     <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="palettes-content" id="palettes-header">
-                                        <Typography>
-                                            Paleta Selecionada: {palettes.find(palette => palette.value === selectedPalette)?.label}, cor de fundo: {backgroundColors.find(bgColor => bgColor.value === selectedBackgroundColor)?.label}
-                                            </Typography>
+                                        <List dense>
+                                            <ListItem>
+                                                <ListItemAvatar>
+                                                    <Avatar>
+                                                        <PaletteIcon />
+                                                    </Avatar>
+                                                </ListItemAvatar>
+                                                <ListItemText primary="Cor de fundo" secondary={backgroundColors.find(bgColor => bgColor.value === selectedBackgroundColor)?.label} />
+                                            </ListItem>
+                                        </List>
+                                    </AccordionSummary>
+                                    <AccordionDetails>
+                                        <Typography>Ao selecionar uma paleta, os gráficos devem exibir as cores correspondentes.</Typography>
+                                        <Divider variant="middle" sx={{ margin: '15px' }} />
+                                        <FormControl fullWidth>
+                                            <Divider variant="middle" sx={{ margin: '15px' }} />
+                                            <Typography>Ao selecionar uma cor de fundo, os gráficos devem exibir a core correspondente.</Typography>
+                                            <Select
+                                                id="palettes-select"
+                                                value={selectedBackgroundColor}
+                                                onChange={handleBackgroundColors} >
+                                                <MenuItem value="">
+                                                <em>Não informado</em>
+                                                </MenuItem>
+                                                {backgroundColors.map((bgColors) => (
+                                                <MenuItem
+                                                    id={`${bgColors.value}-menu-item-palette`}
+                                                    value={bgColors.value}
+                                                    key={bgColors.value} >
+                                                    {bgColors.label}
+                                                </MenuItem>
+                                                ))}
+                                            </Select>
+                                        </FormControl>
+                                    </AccordionDetails>
+                                </Accordion>
+
+                                <Accordion>
+                                    <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="palettes-content" id="palettes-header">
+                                        <List dense>
+                                            <ListItem>
+                                                <ListItemAvatar>
+                                                    <Avatar>
+                                                        <FormatColorFillIcon />
+                                                    </Avatar>
+                                                </ListItemAvatar>
+                                                <ListItemText primary="Paleta" secondary={palettes.find(palette => palette.value === selectedPalette)?.label} />
+                                            </ListItem>
+                                        </List>
                                     </AccordionSummary>
                                     <AccordionDetails>
                                         <Divider variant="middle" sx={{ margin: '15px' }} />
@@ -453,27 +561,9 @@ const AnalysisPage: FC = () => {
                                                 </MenuItem>
                                                 ))}
                                             </Select>
-                                            <Divider variant="middle" sx={{ margin: '15px' }} />
-                                            <Typography>Ao selecionar uma cor de fundo, os gráficos devem exibir a core correspondente.</Typography>
-                                            <Select
-                                                id="palettes-select"
-                                                value={selectedBackgroundColor}
-                                                onChange={handleBackgroundColors} >
-                                                <MenuItem value="">
-                                                <em>Não informado</em>
-                                                </MenuItem>
-                                                {backgroundColors.map((bgColors) => (
-                                                <MenuItem
-                                                    id={`${bgColors.value}-menu-item-palette`}
-                                                    value={bgColors.value}
-                                                    key={bgColors.value} >
-                                                    {bgColors.label}
-                                                </MenuItem>
-                                                ))}
-                                            </Select>
                                         </FormControl>
                                     </AccordionDetails>
-                                    </Accordion>
+                                </Accordion>
                             </Box>
                         </Box>
                     </AccordionDetails>

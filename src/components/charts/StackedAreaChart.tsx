@@ -42,7 +42,7 @@ const StackedAreaChart: React.FC<StackedAreaChartProps> = (props) => {
 
     const renderTooltipContent = (obj: any) => {
         const { payload = [] } = obj;
-        // console.log(`[StackedAreaChart] renderTooltipContent payload: ${JSON.stringify(payload?.slice(0, 2), null, 2)}}`);
+        console.log(`[StackedAreaChart] renderTooltipContent payload: ${JSON.stringify(payload?.slice(0, 2), null, 2)}}`);
         return (
             <div
                 className="customized-tooltip-content"
@@ -105,7 +105,7 @@ const StackedAreaChart: React.FC<StackedAreaChartProps> = (props) => {
     function normalizeData(data: IStackedAreaChart[]): INormalizedData[] {
         // Chama a função de validação para verificar duplicatas
         validateData(data);
-        console.log(`[StackedAreaChart] normalizeData input: ${JSON.stringify(data?.slice(0, 2), null, 2)}`);
+        // console.log(`[StackedAreaChart] normalizeData input: ${JSON.stringify(data?.slice(0, 2), null, 2)}`);
 
         const groupedData: Record<string, INormalizedData> = {};
 
@@ -123,7 +123,7 @@ const StackedAreaChart: React.FC<StackedAreaChartProps> = (props) => {
 
         // Retorna os dados normalizados como um array de INormalizedData
         const result = Object.values(groupedData);
-        console.log(`[StackedAreaChart] normalizeData result: ${JSON.stringify(result?.slice(0, 2), null, 2)}`);
+        // console.log(`[StackedAreaChart] normalizeData result: ${JSON.stringify(result?.slice(0, 2), null, 2)}`);
         return result;
     }
 
@@ -152,7 +152,7 @@ const StackedAreaChart: React.FC<StackedAreaChartProps> = (props) => {
     const extractAttibutesNames = (normalizedData: INormalizedData[]): string[] => {
         let result: string[] = [];
         if (normalizedData && normalizedData.length > 0) {
-            console.log('[StackedAreaChart] extractAttibutesNames:', JSON.stringify(normalizedData, null, 2));
+            // console.log('[StackedAreaChart] extractAttibutesNames:', JSON.stringify(normalizedData, null, 2));
             const attrNamesSet = new Set<string>();
             normalizedData.forEach((item) => {
                 Object.keys(item).forEach((key) => {
@@ -192,7 +192,7 @@ const StackedAreaChart: React.FC<StackedAreaChartProps> = (props) => {
             } else {
                 const data = Array.from(props.data);
                 const normalizedData = normalizeData(data);
-                console.log(`[StackedAreaChart] useEffect data: ${JSON.stringify(data?.slice(0, 2), null, 2)}`);
+                // console.log(`[StackedAreaChart] useEffect data: ${JSON.stringify(data?.slice(0, 2), null, 2)}`);
                 console.log(`[StackedAreaChart] useEffect normalizedData: ${JSON.stringify(normalizedData?.slice(0, 2), null, 2)}`);
                 setInternalData(normalizedData);
                 if (props.valueLabel) setInternalInternalValueLabel(props.valueLabel);

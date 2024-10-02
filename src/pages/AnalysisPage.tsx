@@ -44,6 +44,7 @@ import {
     greenPalette,
     redPalette,
     brownColors,
+    whiteBackgroundColor,
 } from '../components/colors';
 
 import AreaChart from '../components/charts/AreaChart';
@@ -420,9 +421,8 @@ const AnalysisPage: FC = () => {
                 </Accordion>
 
                 <Box sx={{ display: 'flex', '& > :not(style)': { m: 1 } }}>
-                    <Box sx={{ margin: '15px' }}></Box>
 
-                    <Box sx={{ flexGrow: 1 }}>
+                    <Box sx={{ flexGrow: 1, margin: '30px', padding: '30px', border: 5, borderColor: grayBackgroundColor }}>
                         <Map
                             estado={selectedMapState}
                             width={selectedWidth}

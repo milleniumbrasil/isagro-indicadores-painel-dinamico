@@ -220,7 +220,7 @@ const StackedAreaChart: React.FC<StackedAreaChartProps> = (props) => {
                             key={item}
                             type="monotone"
                             dataKey={item}
-                            stackId={`${index}`}
+                            stackId="1"
                             stroke={internalStrokeColor[index % internalStrokeColor.length]}
                             fill={internalFillColor[index % internalFillColor.length]}
                         />

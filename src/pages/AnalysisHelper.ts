@@ -11,13 +11,15 @@ export const buildUrl = async (
     endDate: Date,
     analysis: string,
     interval: string,
-    stateName?: string,
+    state?: string,
+    city?: string,
+    country?: string,
     source?: string,
     label?: string
 ): Promise<string> => {
     const startDateFormatted = startDate ? startDate.toISOString().split('T')[0] : null;
     const endDateFormatted = endDate ? endDate.toISOString().split('T')[0] : null;
-    const selectedStateIsoCode = stateName ? Constants.stateToIsoCodeMap[stateName] || stateName : null;
+    const selectedStateIsoCode = state ? Constants.stateToIsoCodeMap[state] || state : null;
     const encodedSource = source ? encodeURIComponent(source) : null;
     const encodedLabel = label ? encodeURIComponent(label) : null;
 
@@ -40,9 +42,12 @@ export const buildUrl = async (
     if (encodedSource) {
         url += `&source=${encodedSource}`;
     }
-
-    // Adiciona país e cidade como valores fixos
-    url += `&country=BR&city=Brasília`;
+    if (country) {
+        url += `&source=${country}`;
+    }
+    if (city) {
+        url += `&source=${city}`;
+    }
 
     return url;
 };

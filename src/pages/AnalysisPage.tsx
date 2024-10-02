@@ -608,8 +608,9 @@ const AnalysisPage: FC = () => {
                                 height={250}
                                 data={selectedPercentualData}
                                 valueLabel="Área"
-                                fillColor={brownColors.medium.find(color => color.value === 'sandyBrown')?.color || '#F4A460'} // Usar o valor correto da cor
-                                strokeColor={brownColors.medium.find(color => color.value === 'chocolate')?.color || '#D2691E'} // Usar o valor correto da cor
+
+                                fillColor={selectedChartDefaultPalette[selectedChartDefaultPalette.length % selectedChartDefaultPalette.length]}
+                                strokeColor={selectedChartDefaultPalette[selectedChartDefaultPalette.length % selectedChartDefaultPalette.length]}
                             />
                         </CardContent>
                     </Card>

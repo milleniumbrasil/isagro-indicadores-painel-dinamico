@@ -223,61 +223,198 @@ const AnalysisPage: FC = () => {
                         <Typography sx={{ ml: 'auto', marginRight: '10px' }}>Sobre o painel de análise de {selectedAnalysis}</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
-                        <Box sx={{ flexGrow: 1, maxWidth: 752 }}>
-                            <Typography variant="h6" sx={{ padding: '15px' }}>
-                                {currentAnalysisDescription?.title || 'Informações Detalhadas da Análise'}
-                            </Typography>
+                        <Box sx={{ display: 'flex', '& > :not(style)': { m: 1 } }}>
+                            <Box sx={{ flexGrow: 1, maxWidth: 752 }}>
+                                <Typography variant="h6" sx={{ padding: '15px' }}>
+                                    {currentAnalysisDescription?.title || 'Informações Detalhadas da Análise'}
+                                </Typography>
 
-                            <Typography variant="body1" sx={{ padding: '10px' }}>
-                                {currentAnalysisDescription?.description || 'Descrição não disponível para esta análise.'}
-                            </Typography>
+                                <Typography variant="body1" sx={{ padding: '10px' }}>
+                                    {currentAnalysisDescription?.description || 'Descrição não disponível para esta análise.'}
+                                </Typography>
 
-                            <List dense>
-                                <ListItem>
-                                    <ListItemAvatar>
-                                        <Avatar>
-                                            <InfoIcon />
-                                        </Avatar>
-                                    </ListItemAvatar>
-                                    <ListItemText primary="Fonte" secondary={currentAnalysisDescription?.source || selectedSource} />
-                                </ListItem>
-                                <Divider variant="inset" component="li" />
+                                <List dense>
+                                    <ListItem>
+                                        <ListItemAvatar>
+                                            <Avatar>
+                                                <InfoIcon />
+                                            </Avatar>
+                                        </ListItemAvatar>
+                                        <ListItemText primary="Fonte" secondary={currentAnalysisDescription?.source || selectedSource} />
+                                    </ListItem>
+                                    <Divider variant="inset" component="li" />
 
-                                <ListItem>
-                                    <ListItemAvatar>
-                                        <Avatar>
-                                            <FolderIcon />
-                                        </Avatar>
-                                    </ListItemAvatar>
-                                    <ListItemText primary="Rótulo" secondary={currentAnalysisDescription?.labels || selectedLabel} />
-                                </ListItem>
-                                <Divider variant="inset" component="li" />
+                                    <ListItem>
+                                        <ListItemAvatar>
+                                            <Avatar>
+                                                <FolderIcon />
+                                            </Avatar>
+                                        </ListItemAvatar>
+                                        <ListItemText primary="Rótulo" secondary={currentAnalysisDescription?.labels || selectedLabel} />
+                                    </ListItem>
+                                    <Divider variant="inset" component="li" />
 
-                                <ListItem>
-                                    <ListItemAvatar>
-                                        <Avatar>
-                                            <FolderIcon />
-                                        </Avatar>
-                                    </ListItemAvatar>
-                                    <ListItemText
-                                        primary="Período"
-                                        secondary={`De ${selectedStartDate.getFullYear()} até ${selectedEndDate.getFullYear()}`}
-                                    />
-                                </ListItem>
-                                <Divider variant="inset" component="li" />
+                                    <ListItem>
+                                        <ListItemAvatar>
+                                            <Avatar>
+                                                <FolderIcon />
+                                            </Avatar>
+                                        </ListItemAvatar>
+                                        <ListItemText
+                                            primary="Período"
+                                            secondary={`De ${selectedStartDate.getFullYear()} até ${selectedEndDate.getFullYear()}`}
+                                        />
+                                    </ListItem>
+                                    <Divider variant="inset" component="li" />
 
-                                <ListItem>
-                                    <ListItemAvatar>
-                                        <Avatar>
-                                            <FolderIcon />
-                                        </Avatar>
-                                    </ListItemAvatar>
-                                    <ListItemText
-                                        primary="Gráficos disponíveis"
-                                        secondary={currentAnalysisDescription?.charts || 'Média Móvel Simples, Soma Agregada, Percentual'}
-                                    />
-                                </ListItem>
-                            </List>
+                                    <ListItem>
+                                        <ListItemAvatar>
+                                            <Avatar>
+                                                <FolderIcon />
+                                            </Avatar>
+                                        </ListItemAvatar>
+                                        <ListItemText
+                                            primary="Gráficos disponíveis"
+                                            secondary={currentAnalysisDescription?.charts || 'Média Móvel Simples, Soma Agregada, Percentual'}
+                                        />
+                                    </ListItem>
+                                </List>
+                            </Box>
+                            <Box sx={{ width: '50%', alignItems: 'center', padding: '5px', margin: '5px' }}>
+                                <Accordion>
+                                    <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="period-content" id="period-header">
+                                        <Typography>
+                                            Período selecionado de {selectedStartDate.getFullYear()} até {selectedEndDate.getFullYear()}
+                                        </Typography>
+                                    </AccordionSummary>
+                                    <AccordionDetails>
+                                        <Typography>Ao selecionar um período, os gráficos devem exibir os dados correspondentes.</Typography>
+                                        <Divider variant="middle" sx={{ margin: '15px' }} />
+                                        <FormControl fullWidth>
+                                            <DateRangePicker
+                                                format="MMM yyyy"
+                                                caretAs={BsCalendar2MonthFill}
+                                                limitEndYear={1900}
+                                                limitStartYear={new Date().getFullYear()}
+                                                onChange={handleChangeRangeDates}
+                                            />
+                                        </FormControl>
+                                    </AccordionDetails>
+                                </Accordion>
+
+                                <Accordion>
+                                    <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="estado-content" id="estado-header">
+                                        <Typography>Estado selecionado {selectedState}</Typography>
+                                    </AccordionSummary>
+                                    <AccordionDetails>
+                                        <Typography>Ao selecionar um estado, o mapa deve exibir a imagem correspondente.</Typography>
+                                        <Divider variant="middle" sx={{ margin: '15px' }} />
+                                        <FormControl fullWidth>
+                                            <Select id="state-select" value={selectedState} onChange={handleStateChange}>
+                                                <MenuItem value="">
+                                                    <em>Não informado</em>
+                                                </MenuItem>
+                                                {Object.keys(mapStates).map((e, index) => (
+                                                    <MenuItem id={`${index}-menu-item-estado`} value={e} key={e}>
+                                                        {e}
+                                                    </MenuItem>
+                                                ))}
+                                            </Select>
+                                        </FormControl>
+                                    </AccordionDetails>
+                                </Accordion>
+
+                                <Accordion>
+                                    <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="analysis-content" id="analysis-header">
+                                        <Typography>Análise selecionada {selectedAnalysis}</Typography>
+                                    </AccordionSummary>
+                                    <AccordionDetails>
+                                        <Typography>Ao selecionar uma análise, os gráficos devem exibir os dados correspondentes.</Typography>
+                                        <Divider variant="middle" sx={{ margin: '15px' }} />
+                                        <FormControl fullWidth>
+                                            <Select id="analysis-select" value={selectedAnalysis} onChange={handleAnalysisChange}>
+                                                {Constants.availableAnalysis.map((analysis: Label) => (
+                                                    <MenuItem
+                                                        id={`${analysis.value}-menu-item-analysis`}
+                                                        value={analysis.value}
+                                                        key={analysis.value}
+                                                    >
+                                                        {analysis.label}
+                                                    </MenuItem>
+                                                ))}
+                                            </Select>
+                                        </FormControl>
+                                    </AccordionDetails>
+                                </Accordion>
+
+                                <Accordion>
+                                    <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="label-content" id="label-header">
+                                        <Typography>Rótulo selecionado {selectedLabel}</Typography>
+                                    </AccordionSummary>
+                                    <AccordionDetails>
+                                        <Typography>Ao selecionar um rótulo, os gráficos devem exibir os dados correspondentes.</Typography>
+                                        <Divider variant="middle" sx={{ margin: '15px' }} />
+                                        <FormControl fullWidth>
+                                            <Select id="analysis-select" value={selectedLabel} onChange={handleLabelChange}>
+                                                <MenuItem value="">
+                                                    <em>Não informado</em>
+                                                </MenuItem>
+                                                {labels.map((labelItem, index) => (
+                                                    <MenuItem id={`${index}-menu-item-label`} value={labelItem.value} key={index}>
+                                                        {labelItem.label}
+                                                    </MenuItem>
+                                                ))}
+                                            </Select>
+                                        </FormControl>
+                                    </AccordionDetails>
+                                </Accordion>
+
+                                <Accordion>
+                                    <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="source-content" id="source-header">
+                                        <Typography>Fonte selecionada {selectedSource}</Typography>
+                                    </AccordionSummary>
+                                    <AccordionDetails>
+                                        <Typography>Ao selecionar uma fonte, os gráficos devem exibir os dados correspondentes.</Typography>
+                                        <Divider variant="middle" sx={{ margin: '15px' }} />
+                                        <FormControl fullWidth>
+                                            <Select id="source-select" value={selectedSource} onChange={handleSourceChange}>
+                                                <MenuItem value="">
+                                                    <em>Não informado</em>
+                                                </MenuItem>
+                                                {Constants.availableSources.map((source: Label) => (
+                                                    <MenuItem id={`${source.value}-menu-item-source`} value={source.value} key={source.value}>
+                                                        {source.label}
+                                                    </MenuItem>
+                                                ))}
+                                            </Select>
+                                        </FormControl>
+                                    </AccordionDetails>
+                                </Accordion>
+
+                                <Accordion>
+                                    <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="interval-content" id="interval-header">
+                                        <Typography>Intervalo selecionado {selectedInterval}</Typography>
+                                    </AccordionSummary>
+                                    <AccordionDetails>
+                                        <Typography>Selecione o intervalo para a análise (anual, bienal, etc.).</Typography>
+                                        <Divider variant="middle" sx={{ margin: '15px' }} />
+                                        <FormControl fullWidth>
+                                            <Select id="interval-select" value={selectedInterval} onChange={handleIntervalChange}>
+                                                <MenuItem value="annual">Anual</MenuItem>
+                                                <MenuItem value="biennial">Bienal</MenuItem>
+                                                <MenuItem value="triennial">Trienal</MenuItem>
+                                                <MenuItem value="quadrennial">Quadrienal</MenuItem>
+                                                <MenuItem value="quinquennial">Quinquenal</MenuItem>
+                                            </Select>
+                                        </FormControl>
+                                    </AccordionDetails>
+                                </Accordion>
+
+                                <Typography variant="h6" sx={{ padding: '15px' }}></Typography>
+                                <Typography variant="body2" sx={{ padding: '35px', width: '550px' }}></Typography>
+
+                                <Typography variant="body2"></Typography>
+                            </Box>
                         </Box>
                     </AccordionDetails>
                 </Accordion>
@@ -304,139 +441,6 @@ const AnalysisPage: FC = () => {
                         />
                     </Box>
 
-                    <Box sx={{ width: '50%', alignItems: 'center', padding: '5px', margin: '5px' }}>
-                        <Accordion>
-                            <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="period-content" id="period-header">
-                                <Typography>
-                                    Período selecionado de {selectedStartDate.getFullYear()} até {selectedEndDate.getFullYear()}
-                                </Typography>
-                            </AccordionSummary>
-                            <AccordionDetails>
-                                <Typography>Ao selecionar um período, os gráficos devem exibir os dados correspondentes.</Typography>
-                                <Divider variant="middle" sx={{ margin: '15px' }} />
-                                <FormControl fullWidth>
-                                    <DateRangePicker
-                                        format="MMM yyyy"
-                                        caretAs={BsCalendar2MonthFill}
-                                        limitEndYear={1900}
-                                        limitStartYear={new Date().getFullYear()}
-                                        onChange={handleChangeRangeDates}
-                                    />
-                                </FormControl>
-                            </AccordionDetails>
-                        </Accordion>
-
-                        <Accordion>
-                            <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="estado-content" id="estado-header">
-                                <Typography>Estado selecionado {selectedState}</Typography>
-                            </AccordionSummary>
-                            <AccordionDetails>
-                                <Typography>Ao selecionar um estado, o mapa deve exibir a imagem correspondente.</Typography>
-                                <Divider variant="middle" sx={{ margin: '15px' }} />
-                                <FormControl fullWidth>
-                                    <Select id="state-select" value={selectedState} onChange={handleStateChange}>
-                                        <MenuItem value="">
-                                            <em>Não informado</em>
-                                        </MenuItem>
-                                        {Object.keys(mapStates).map((e, index) => (
-                                            <MenuItem id={`${index}-menu-item-estado`} value={e} key={e}>
-                                                {e}
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                </FormControl>
-                            </AccordionDetails>
-                        </Accordion>
-
-                        <Accordion>
-                            <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="analysis-content" id="analysis-header">
-                                <Typography>Análise selecionada {selectedAnalysis}</Typography>
-                            </AccordionSummary>
-                            <AccordionDetails>
-                                <Typography>Ao selecionar uma análise, os gráficos devem exibir os dados correspondentes.</Typography>
-                                <Divider variant="middle" sx={{ margin: '15px' }} />
-                                <FormControl fullWidth>
-                                    <Select id="analysis-select" value={selectedAnalysis} onChange={handleAnalysisChange}>
-                                        {Constants.availableAnalysis.map((analysis: Label) => (
-                                            <MenuItem
-                                                id={`${analysis.value}-menu-item-analysis`}
-                                                value={analysis.value}
-                                                key={analysis.value}
-                                            >
-                                                {analysis.label}
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                </FormControl>
-                            </AccordionDetails>
-                        </Accordion>
-
-                        <Accordion>
-                            <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="label-content" id="label-header">
-                                <Typography>Rótulo selecionado {selectedLabel}</Typography>
-                            </AccordionSummary>
-                            <AccordionDetails>
-                                <Typography>Ao selecionar um rótulo, os gráficos devem exibir os dados correspondentes.</Typography>
-                                <Divider variant="middle" sx={{ margin: '15px' }} />
-                                <FormControl fullWidth>
-                                    <Select id="analysis-select" value={selectedLabel} onChange={handleLabelChange}>
-                                        <MenuItem value="">
-                                            <em>Não informado</em>
-                                        </MenuItem>
-                                        {labels.map((labelItem, index) => (
-                                            <MenuItem id={`${index}-menu-item-label`} value={labelItem.value} key={index}>
-                                                {labelItem.label}
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                </FormControl>
-                            </AccordionDetails>
-                        </Accordion>
-
-                        <Accordion>
-                            <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="source-content" id="source-header">
-                                <Typography>Fonte selecionada {selectedSource}</Typography>
-                            </AccordionSummary>
-                            <AccordionDetails>
-                                <Typography>Ao selecionar uma fonte, os gráficos devem exibir os dados correspondentes.</Typography>
-                                <Divider variant="middle" sx={{ margin: '15px' }} />
-                                <FormControl fullWidth>
-                                    <Select id="source-select" value={selectedSource} onChange={handleSourceChange}>
-                                        <MenuItem value="">
-                                            <em>Não informado</em>
-                                        </MenuItem>
-                                        {Constants.availableSources.map((source: Label) => (
-                                            <MenuItem id={`${source.value}-menu-item-source`} value={source.value} key={source.value}>
-                                                {source.label}
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                </FormControl>
-                            </AccordionDetails>
-                        </Accordion>
-                        <Accordion>
-                            <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="interval-content" id="interval-header">
-                                <Typography>Intervalo selecionado {selectedInterval}</Typography>
-                            </AccordionSummary>
-                            <AccordionDetails>
-                                <Typography>Selecione o intervalo para a análise (anual, bienal, etc.).</Typography>
-                                <Divider variant="middle" sx={{ margin: '15px' }} />
-                                <FormControl fullWidth>
-                                    <Select id="interval-select" value={selectedInterval} onChange={handleIntervalChange}>
-                                        <MenuItem value="annual">Anual</MenuItem>
-                                        <MenuItem value="biennial">Bienal</MenuItem>
-                                        <MenuItem value="triennial">Trienal</MenuItem>
-                                        <MenuItem value="quadrennial">Quadrienal</MenuItem>
-                                        <MenuItem value="quinquennial">Quinquenal</MenuItem>
-                                    </Select>
-                                </FormControl>
-                            </AccordionDetails>
-                        </Accordion>
-                        <Typography variant="h6" sx={{ padding: '15px' }}></Typography>
-                        <Typography variant="body2" sx={{ padding: '35px', width: '550px' }}></Typography>
-
-                        <Typography variant="body2"></Typography>
-                    </Box>
                 </Box>
                 <Paper sx={{ width: '100%', alignItems: 'center', padding: '5px', margin: '5px', marginRight: '30px' }}>
                     <Typography variant="h6" sx={{ padding: '15px', marginTop: '15px' }}>

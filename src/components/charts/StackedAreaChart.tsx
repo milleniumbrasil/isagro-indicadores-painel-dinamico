@@ -62,38 +62,6 @@ const StackedAreaChart: React.FC<StackedAreaChartProps> = (props) => {
         return null;
     };
 
-    const renderTooltipContent = (obj: any) => {
-        const { payload = [] } = obj;
-        console.log(`[StackedAreaChart] renderTooltipContent obj: ${JSON.stringify(obj, null, 2)}`);
-
-        return (
-            <div
-                className="customized-tooltip-content"
-                style={{ backgroundColor: 'rgba(0, 0, 0, 0.1)', padding: '10px', borderRadius: '5px', fontFamily: 'Arial, sans-serif' }}
-            >
-                <ul className="list" style={{ listStyleType: 'none', padding: 0, fontSize: '12px' }}>
-                    {payload.map((entry: any, index: number) => {
-                        const fontColor = 'black';
-                        const entryPayload = entry.payload || {};
-
-                        // Filtrar todas as chaves que não são 'period'
-                        const filteredKeys = Object.keys(entryPayload).filter((key) => key !== 'period');
-
-                        return (
-                            <li key={`item-${index}`} style={{ color: fontColor }}>
-                                {filteredKeys.map((key) => (
-                                    <div key={key}>
-                                        {firstLetter2UpperCase(key)}: {entryPayload[key]}
-                                    </div>
-                                ))}
-                            </li>
-                        );
-                    })}
-                </ul>
-            </div>
-        );
-    };
-
     // Função de validação para detectar duplicatas
     function validateData(data: IStackedAreaChart[]): void {
         const groupedData: Record<string, Record<string, number[]>> = {};
@@ -191,10 +159,10 @@ const StackedAreaChart: React.FC<StackedAreaChartProps> = (props) => {
                 });
             });
             const attrNames = Array.from(attrNamesSet);
-            console.log(`[StackedAreaChart] extractAttibutesNames Final attribute names: ${JSON.stringify(attrNames, null, 2)}`);
+            // console.log(`[StackedAreaChart] extractAttibutesNames Final attribute names: ${JSON.stringify(attrNames, null, 2)}`);
             result = attrNames;
         } else {
-            console.log('[StackedAreaChart] extractAttibutesNames: normalizedData is empty or undefined');
+            console.warn('[StackedAreaChart] extractAttibutesNames: normalizedData is empty or undefined');
         }
         return result;
     };
@@ -212,7 +180,7 @@ const StackedAreaChart: React.FC<StackedAreaChartProps> = (props) => {
 
     useEffect(() => {
         try {
-            console.log(`[StackedAreaChart] props: ${JSON.stringify(props, null, 2)}`);
+            // console.log(`[StackedAreaChart] props: ${JSON.stringify(props, null, 2)}`);
             if (!props.data || props.data.length === 0) {
                 console.warn('[StackedAreaChart]: data is required at first useEffect stage! It should be loaded from props.data.');
                 setLoading(false);
@@ -221,16 +189,16 @@ const StackedAreaChart: React.FC<StackedAreaChartProps> = (props) => {
                 const data = Array.from(props.data);
                 const normalizedData = normalizeData(data);
                 // console.log(`[StackedAreaChart] useEffect data: ${JSON.stringify(data?.slice(0, 2), null, 2)}`);
-                console.log(`[StackedAreaChart] useEffect normalizedData: ${JSON.stringify(normalizedData?.slice(0, 2), null, 2)}`);
+                // console.log(`[StackedAreaChart] useEffect normalizedData: ${JSON.stringify(normalizedData?.slice(0, 2), null, 2)}`);
                 setInternalData(normalizedData);
                 if (props.width) setInternalWidth(props.width);
-                console.log(`[StackedAreaChart] internalWidth: ${internalWidth}`);
+                // console.log(`[StackedAreaChart] internalWidth: ${internalWidth}`);
                 if (props.height) setInternalHeight(props.height);
-                console.log(`[StackedAreaChart] internalHeight: ${internalHeight}`);
+                // console.log(`[StackedAreaChart] internalHeight: ${internalHeight}`);
                 if (props.defaultPalette) setDefaultPalette(props.defaultPalette);
-                console.log(`[StackedAreaChart] defaultPalette: ${defaultPalette}`);
+                // console.log(`[StackedAreaChart] defaultPalette: ${defaultPalette}`);
                 const attrNames = extractAttibutesNames(normalizedData);
-                console.log(`[StackedAreaChart] Final attribute names: ${JSON.stringify(attrNames)}`);
+                // console.log(`[StackedAreaChart] Final attribute names: ${JSON.stringify(attrNames)}`);
                 setAttributeNames(attrNames);
             }
         } catch (error) {

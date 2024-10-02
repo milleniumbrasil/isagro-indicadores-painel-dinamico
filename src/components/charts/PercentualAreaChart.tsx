@@ -37,13 +37,13 @@ const PercentualAreaChart: React.FC<PercentualAreaChartProps> = (props) => {
         if (!_data || _data.length === 0) {
             throw new Error('[PercentualAreaChart] Data is undefined for normalizing data!');
         }
-        console.log(`[PercentualAreaChart] Data to normalize: ${JSON.stringify(_data)}`);
+        // console.log(`[PercentualAreaChart] Data to normalize: ${JSON.stringify(_data)}`);
         const maxArea = Math.max(..._data.map((i) => i.value)); // Identifica o valor máximo
         const result = _data.map((e) => ({
             ...e,
             value: Math.round((e.value / maxArea) * 100), // Normaliza os valores de 'area' para percentuais
         }));
-        console.log(`[PercentualAreaChart] Normalized data: ${JSON.stringify(result)}`);
+        // console.log(`[PercentualAreaChart] Normalized data: ${JSON.stringify(result)}`);
         return result;
     };
 
@@ -63,7 +63,7 @@ const PercentualAreaChart: React.FC<PercentualAreaChartProps> = (props) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                console.log(`[PercentualAreaChart] data: ${JSON.stringify(props.data)}`);
+                // console.log(`[PercentualAreaChart] data: ${JSON.stringify(props.data)}`);
                 if (!props.data || props.data.length === 0) {
                     console.warn('[PercentualAreaChart]: data is required at first useEffect stage! It should be loaded from props.data.');
                     setLoading(false);
@@ -79,7 +79,7 @@ const PercentualAreaChart: React.FC<PercentualAreaChartProps> = (props) => {
                     if (internalData) {
                         setAttributeNames(Array.from(new Set(internalData?.flatMap(Object.keys))).filter((key) => key !== 'period'));
                     }
-                    console.log('[PercentualAreaChart] Attribute names:', JSON.stringify(attributeNames));
+                    // console.log('[PercentualAreaChart] Attribute names:', JSON.stringify(attributeNames));
                 }
             } catch (error) {
                 console.error(error);

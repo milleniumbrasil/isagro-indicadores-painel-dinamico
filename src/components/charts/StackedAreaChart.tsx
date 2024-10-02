@@ -199,7 +199,6 @@ const StackedAreaChart: React.FC<StackedAreaChartProps> = (props) => {
         return result;
     };
 
-    const [internalValueLabel, setInternalInternalValueLabel] = useState<string>('Valor');
     const [dataKey, setDataKey] = useState<string>('period');
     const [internalData, setInternalData] = useState<INormalizedData[]>([]);
     const [internalWidth, setInternalWidth] = useState<number>(800);
@@ -224,8 +223,6 @@ const StackedAreaChart: React.FC<StackedAreaChartProps> = (props) => {
                 // console.log(`[StackedAreaChart] useEffect data: ${JSON.stringify(data?.slice(0, 2), null, 2)}`);
                 console.log(`[StackedAreaChart] useEffect normalizedData: ${JSON.stringify(normalizedData?.slice(0, 2), null, 2)}`);
                 setInternalData(normalizedData);
-                if (props.valueLabel) setInternalInternalValueLabel(props.valueLabel);
-                console.log(`[StackedAreaChart] internalValueLabel: ${internalValueLabel}`);
                 if (props.width) setInternalWidth(props.width);
                 console.log(`[StackedAreaChart] internalWidth: ${internalWidth}`);
                 if (props.height) setInternalHeight(props.height);

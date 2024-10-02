@@ -60,6 +60,7 @@ import Constants, { analysisDescriptions, getValidLabelsByAnalysis, Label } from
 import { useAnalysisContext } from '../components/AnalysisContext';
 import { IAnalysisInfo } from './IAnalysisInfo';
 import { findAnalysisDescription } from './AnalysisHelper';
+import StackedAreaChart from '../components/charts/StackedAreaChart';
 
 export function Loading() {
     return (
@@ -494,7 +495,7 @@ const AnalysisPage: FC = () => {
                                 {currentAnalysisDescription?.description}
                             </Typography>
 
-                            <AreaChart width={400} height={250} data={selectedSmaData} defaultPalette={purplePalette} />
+                            <StackedAreaChart width={400} height={250} data={selectedSmaData} defaultPalette={purplePalette} />
                         </CardContent>
                     </Card>
 

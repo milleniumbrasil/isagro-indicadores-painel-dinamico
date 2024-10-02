@@ -5,6 +5,11 @@ import { AreaChart as RechatsStackedAreaChart, Area, XAxis, YAxis, CartesianGrid
 import { greenPalette } from '../colors';
 import { IStackedAreaChart } from './IStackedAreaChart';
 
+export interface INormalizedData {
+    period: string;
+    value: number;
+}
+
 interface StackedAreaChartProps {
     data: IStackedAreaChart[];
     dataKey?: string;
@@ -62,7 +67,7 @@ const StackedAreaChart: React.FC<StackedAreaChartProps> = (props) => {
     }
 
     // Função para normalizar os dados
-    const normalizeData = (entries: IStackedAreaChart[]): { [key: string]: any }[] => {
+    const normalizeData = (entries: IStackedAreaChart[]): INormalizedData[] => {
         const normalizedDataSet: any[] = [];
 
         entries.forEach((entry) => {
@@ -111,7 +116,7 @@ const StackedAreaChart: React.FC<StackedAreaChartProps> = (props) => {
 
     const [internalValueLabel, setInternalInternalValueLabel] = useState<string>('Valor');
     const [dataKey, setDataKey] = useState<string>('period');
-    const [internalData, setInternalData] = useState<{ [key: string]: any }[]|null>(null);
+    const [internalData, setInternalData] = useState<INormalizedData[]>([]);
     const [internalWidth, setInternalWidth] = useState<number>(800);
     const [internalHeight, setInternalHeight] = useState<number>(1200);
     const [internalStrokeColor, setInternalStrockeColor] = useState<string[]>(greenPalette);

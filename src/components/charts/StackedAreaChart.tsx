@@ -105,6 +105,7 @@ const StackedAreaChart: React.FC<StackedAreaChartProps> = (props) => {
     function normalizeData(data: IStackedAreaChart[]): INormalizedData[] {
         // Chama a função de validação para verificar duplicatas
         validateData(data);
+        console.log(`[StackedAreaChart] normalizeData input: ${JSON.stringify(data, null, 2)}`);
 
         const groupedData: Record<string, INormalizedData> = {};
 
@@ -122,7 +123,7 @@ const StackedAreaChart: React.FC<StackedAreaChartProps> = (props) => {
 
         // Retorna os dados normalizados como um array de INormalizedData
         const result = Object.values(groupedData);
-        console.log(`[StackedAreaChart] normalizeData: ${JSON.stringify(result, null, 2)}`);
+        console.log(`[StackedAreaChart] normalizeData result: ${JSON.stringify(result, null, 2)}`);
         return result;
     }
 

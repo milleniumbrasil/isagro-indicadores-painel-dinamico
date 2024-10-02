@@ -149,6 +149,27 @@ const StackedAreaChart: React.FC<StackedAreaChartProps> = (props) => {
         return [0, step, step * 2, step * 3, step * 4]; // Ticks dinâmicos
     };
 
+    const extractAttibutesNames = (normalizedData: INormalizedData[]): string[] => {
+        let result: string[] = [];
+        if (normalizedData && normalizedData.length > 0) {
+            console.log('[StackedAreaChart] extractAttibutesNames:', JSON.stringify(normalizedData, null, 2));
+            const attrNamesSet = new Set<string>();
+            normalizedData.forEach((item) => {
+                Object.keys(item).forEach((key) => {
+                    if (key !== 'period') {
+                        attrNamesSet.add(key);
+                    }
+                });
+            });
+            const attrNames = Array.from(attrNamesSet);
+            console.log(`[StackedAreaChart] extractAttibutesNames Final attribute names: ${JSON.stringify(attrNames, null, 2)}`);
+            result = attrNames;
+        } else {
+            console.log('[StackedAreaChart] extractAttibutesNames: normalizedData is empty or undefined');
+        }
+        return result;
+    }
+
     const [internalValueLabel, setInternalInternalValueLabel] = useState<string>('Valor');
     const [dataKey, setDataKey] = useState<string>('period');
     const [internalData, setInternalData] = useState<INormalizedData[]>([]);
@@ -174,7 +195,6 @@ const StackedAreaChart: React.FC<StackedAreaChartProps> = (props) => {
                 console.log(`[StackedAreaChart] useEffect data: ${JSON.stringify(data?.slice(0, 2), null, 2)}`);
                 console.log(`[StackedAreaChart] useEffect normalizedData: ${JSON.stringify(normalizedData?.slice(0, 2), null, 2)}`);
                 setInternalData(normalizedData);
-
                 if (props.valueLabel) setInternalInternalValueLabel(props.valueLabel);
                 console.log(`[StackedAreaChart] internalValueLabel: ${internalValueLabel}`);
                 if (props.width) setInternalWidth(props.width);
@@ -183,28 +203,9 @@ const StackedAreaChart: React.FC<StackedAreaChartProps> = (props) => {
                 console.log(`[StackedAreaChart] internalHeight: ${internalHeight}`);
                 if (props.defaultPalette) setDefaultPalette(props.defaultPalette);
                 console.log(`[StackedAreaChart] defaultPalette: ${defaultPalette}`);
-
-                if (normalizedData && normalizedData.length > 0) {
-                    console.log('[StackedAreaChart] normalizedData:', JSON.stringify(normalizedData, null, 2));
-
-                    const attrNamesSet = new Set<string>();
-
-                    normalizedData.forEach((item) => {
-                        // Itera sobre as chaves do objeto e exclui o campo "period"
-                        Object.keys(item).forEach((key) => {
-                            if (key !== 'period') {
-                                console.log(`[StackedAreaChart] Adding attribute name: ${key}`); // Log para depuração
-                                attrNamesSet.add(key);
-                            }
-                        });
-                    });
-
-                    const attrNames = Array.from(attrNamesSet); // Converte de Set para Array
-                    console.log(`[StackedAreaChart] Final attribute names: ${JSON.stringify(attrNames)}`);
-                    setAttributeNames(attrNames);
-                } else {
-                    console.log('[StackedAreaChart] normalizedData is empty or undefined');
-                }
+                const attrNames = extractAttibutesNames(normalizedData);
+                console.log(`[StackedAreaChart] Final attribute names: ${JSON.stringify(attrNames)}`);
+                setAttributeNames(attrNames);
             }
         } catch (error) {
             console.error(error);
@@ -212,7 +213,7 @@ const StackedAreaChart: React.FC<StackedAreaChartProps> = (props) => {
             setLoading(false);
         }
     }, [props.data, props.dataKey, props.valueLabel, props.width, props.height, props.defaultPalette]);
-    
+
     return (
         <div style={{ width: '100%', height: internalHeight }}>
             <ResponsiveContainer>

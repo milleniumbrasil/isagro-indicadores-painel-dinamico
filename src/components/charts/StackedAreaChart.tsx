@@ -212,7 +212,7 @@ const StackedAreaChart: React.FC<StackedAreaChartProps> = (props) => {
 
     useEffect(() => {
         try {
-            console.log(`[StackedAreaChart] data: ${JSON.stringify(props.data)}`);
+            console.log(`[StackedAreaChart] props: ${JSON.stringify(props, null, 2)}`);
             if (!props.data || props.data.length === 0) {
                 console.warn('[StackedAreaChart]: data is required at first useEffect stage! It should be loaded from props.data.');
                 setLoading(false);
@@ -266,8 +266,8 @@ const StackedAreaChart: React.FC<StackedAreaChartProps> = (props) => {
                             type="monotone"
                             dataKey={item}
                             stackId="1"
-                            stroke={internalStrokeColor[index % internalStrokeColor.length]}
-                            fill={internalFillColor[index % internalFillColor.length]}
+                            stroke={defaultPalette[index % defaultPalette.length]}
+                            fill={defaultPalette[index % defaultPalette.length]}
                         />
                     ))}
                 </RechatsStackedAreaChart>

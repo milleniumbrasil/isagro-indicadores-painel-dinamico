@@ -76,7 +76,7 @@ const PercentualAreaChart: React.FC<PercentualAreaChartProps> = (props) => {
                     if (props.valueLabel) setInternalInternalValueLabel(props.valueLabel);
                     if (props.width) setInternalWidth(props.width);
                     if (props.height) setInternalHeight(props.height);
-                    if (props.strokeColor) setInternalStrockeColor(props.strokeColor);
+                    if (props.strokeColor) setInternalStrokeColor(props.strokeColor);
                     if (props.fillColor) setInternalFillColor(props.fillColor);
                     if (internalData) {
                         setAttributeNames(Array.from(new Set(internalData?.flatMap(Object.keys))).filter((key) => key !== 'period'));

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { IPercentualAreaChart } from './IPercentualAreaChart';
 
-import { whiteBackgroundColor } from '../colors';
+import { greenColors, whiteBackgroundColor } from '../colors';
 
 interface PercentualAreaChartProps {
     data: IPercentualAreaChart[];
@@ -28,8 +28,10 @@ const PercentualAreaChart: React.FC<PercentualAreaChartProps> = (props) => {
     const [internalData, setInternalData] = useState<IPercentualAreaChart[] | null>(null);
     const [internalWidth, setInternalWidth] = useState<number>(800);
     const [internalHeight, setInternalHeight] = useState<number>(1200);
-    const [internalStrokeColor, setInternalStrockeColor] = useState<string>(props.strokeColor || '#4CAF50'); // Cor padrão verde
-    const [internalFillColor, setInternalFillColor] = useState<string>(props.fillColor || '#81C784'); // Cor padrão verde claro
+
+    const [internalStrokeColor, setInternalStrokeColor] = useState<string>(props.strokeColor || greenColors.dark[0].color); // Verde
+    const [internalFillColor, setInternalFillColor] = useState<string>(props.fillColor || greenColors.dark[1].color); // Verde Escuro
+
     const [attributeNames, setAttributeNames] = useState<string[]>([]);
     const [loading, setLoading] = useState(true);
 

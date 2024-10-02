@@ -182,7 +182,7 @@ const StackedAreaChart: React.FC<StackedAreaChartProps> = (props) => {
                 if (props.defaultPalette) setDefaultPalette(props.defaultPalette);
                 console.log(`[StackedAreaChart] defaultPalette: ${defaultPalette}`);
                 if (internalData) {
-                    const attrNames = data.flatMap((item) => Object.keys(item).filter((key) => key !== dataKey));
+                    const attrNames = normalizedData.flatMap((item) => Object.keys(item).filter((key) => key !== dataKey));
                     setAttributeNames(attrNames);
                 }
                 console.log('[StackedAreaChart] Attribute names:', JSON.stringify(attributeNames));

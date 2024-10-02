@@ -42,7 +42,7 @@ const StackedAreaChart: React.FC<StackedAreaChartProps> = (props) => {
 
     const renderTooltipContent = (obj: any) => {
         const { payload = [] } = obj;
-        console.log(`[StackedAreaChart] renderTooltipContent payload: ${JSON.stringify(payload?.slice(0, 2), null, 2)}}`);
+        // console.log(`[StackedAreaChart] renderTooltipContent payload: ${JSON.stringify(payload?.slice(0, 2), null, 2)}}`);
         return (
             <div
                 className="customized-tooltip-content"
@@ -174,6 +174,7 @@ const StackedAreaChart: React.FC<StackedAreaChartProps> = (props) => {
                 console.log(`[StackedAreaChart] useEffect data: ${JSON.stringify(data?.slice(0, 2), null, 2)}`);
                 console.log(`[StackedAreaChart] useEffect normalizedData: ${JSON.stringify(normalizedData?.slice(0, 2), null, 2)}`);
                 setInternalData(normalizedData);
+
                 if (props.valueLabel) setInternalInternalValueLabel(props.valueLabel);
                 console.log(`[StackedAreaChart] internalValueLabel: ${internalValueLabel}`);
                 if (props.width) setInternalWidth(props.width);
@@ -182,11 +183,28 @@ const StackedAreaChart: React.FC<StackedAreaChartProps> = (props) => {
                 console.log(`[StackedAreaChart] internalHeight: ${internalHeight}`);
                 if (props.defaultPalette) setDefaultPalette(props.defaultPalette);
                 console.log(`[StackedAreaChart] defaultPalette: ${defaultPalette}`);
-                if (internalData) {
-                    const attrNames = normalizedData.flatMap((item) => Object.keys(item).filter((key) => key !== dataKey));
+
+                if (normalizedData && normalizedData.length > 0) {
+                    console.log('[StackedAreaChart] normalizedData:', JSON.stringify(normalizedData, null, 2));
+
+                    const attrNamesSet = new Set<string>();
+
+                    normalizedData.forEach((item) => {
+                        // Itera sobre as chaves do objeto e exclui o campo "period"
+                        Object.keys(item).forEach((key) => {
+                            if (key !== 'period') {
+                                console.log(`[StackedAreaChart] Adding attribute name: ${key}`); // Log para depuração
+                                attrNamesSet.add(key);
+                            }
+                        });
+                    });
+
+                    const attrNames = Array.from(attrNamesSet); // Converte de Set para Array
+                    console.log(`[StackedAreaChart] Final attribute names: ${JSON.stringify(attrNames)}`);
                     setAttributeNames(attrNames);
+                } else {
+                    console.log('[StackedAreaChart] normalizedData is empty or undefined');
                 }
-                console.log('[StackedAreaChart] Attribute names:', JSON.stringify(attributeNames));
             }
         } catch (error) {
             console.error(error);
@@ -194,7 +212,7 @@ const StackedAreaChart: React.FC<StackedAreaChartProps> = (props) => {
             setLoading(false);
         }
     }, [props.data, props.dataKey, props.valueLabel, props.width, props.height, props.defaultPalette]);
-
+    
     return (
         <div style={{ width: '100%', height: internalHeight }}>
             <ResponsiveContainer>

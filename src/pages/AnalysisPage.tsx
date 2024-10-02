@@ -608,7 +608,6 @@ const AnalysisPage: FC = () => {
                                 height={250}
                                 data={selectedPercentualData}
                                 valueLabel="Área"
-
                                 fillColor={selectedChartDefaultPalette[selectedChartDefaultPalette.length % selectedChartDefaultPalette.length]}
                                 strokeColor={selectedChartDefaultPalette[selectedChartDefaultPalette.length % selectedChartDefaultPalette.length]}
                             />

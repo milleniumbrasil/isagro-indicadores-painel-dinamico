@@ -124,28 +124,6 @@ const StackedAreaChart: React.FC<StackedAreaChartProps> = (props) => {
         return result;
     }
 
-    // Função para calcular os steps
-    const calculateSteps = (data: { [key: string]: any }[]): number[] => {
-        // Verifica se o array não está vazio
-        if (data.length === 0) return [0, 0, 0, 0, 0];
-
-        const maxTotal = Math.max(
-            ...data.map((d: { [key: string]: any }) => {
-                const total = Object.values(d).reduce((sum: number, value: any) => {
-                    if (typeof value === 'number') return sum + value;
-                    else return sum;
-                }, 0);
-                return total;
-            }),
-        );
-
-        // Se maxTotal for 0, retorna steps com valores iniciais
-        if (maxTotal === 0) return [0, 0, 0, 0, 0];
-
-        const step = Math.ceil(maxTotal / 4);
-        return [0, step, step * 2, step * 3, step * 4]; // Ticks dinâmicos
-    };
-
     const extractAttibutesNames = (normalizedData: INormalizedData[]): string[] => {
         let result: string[] = [];
         if (normalizedData && normalizedData.length > 0) {

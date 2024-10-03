@@ -62,6 +62,7 @@ import { IAnalysisInfo } from './IAnalysisInfo';
 import { findAnalysisDescription } from './AnalysisHelper';
 import StackedAreaChart from '../components/charts/StackedAreaChart';
 import BarChart from '../components/charts/BarChart';
+import BarLineAreaComposedChart from '../components/charts/BarLineAreaComposedChart';
 
 export function Loading() {
     return (
@@ -591,6 +592,13 @@ const AnalysisPage: FC = () => {
                                 data={selectedSumData}
                                 defaultPalette={selectedChartDefaultPalette}
                             />
+
+                            {/* <BarLineAreaComposedChart
+                                width={400}
+                                height={250}
+                                data={selectedSumData}
+                                defaultPalette={selectedChartDefaultPalette}
+                            /> */}
                         </CardContent>
                     </Card>
 

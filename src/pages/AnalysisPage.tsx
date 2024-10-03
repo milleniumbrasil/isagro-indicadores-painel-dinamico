@@ -61,6 +61,7 @@ import Constants, { analysisDescriptions, getValidLabelsByAnalysis, Label } from
 import { IAnalysisInfo } from './IAnalysisInfo';
 import { findAnalysisDescription } from './AnalysisHelper';
 import StackedAreaChart from '../components/charts/StackedAreaChart';
+import BarChart from '../components/charts/BarChart';
 
 export function Loading() {
     return (
@@ -583,6 +584,13 @@ const AnalysisPage: FC = () => {
                                 data={selectedSumData}
                                 defaultPalette={selectedChartDefaultPalette}
                             />
+
+                            <BarChart
+                                width={400}
+                                height={250}
+                                data={selectedSumData}
+                                defaultPalette={selectedChartDefaultPalette}
+                            />
                         </CardContent>
                     </Card>
 
@@ -616,6 +624,13 @@ const AnalysisPage: FC = () => {
                             </Typography>
 
                             <StackedAreaChart
+                                width={400}
+                                height={250}
+                                data={selectedSmaData}
+                                defaultPalette={selectedChartDefaultPalette}
+                            />
+
+                            <BarChart
                                 width={400}
                                 height={250}
                                 data={selectedSmaData}

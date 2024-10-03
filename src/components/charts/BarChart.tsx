@@ -210,6 +210,7 @@ const BarChart: React.FC<BarChartProps> = (props) => {
                             type="monotone"
                             dataKey={item}
                             stackId="1"
+                            barSize={20}
                             stroke={defaultPalette[index % defaultPalette.length]}
                             fill={defaultPalette[index % defaultPalette.length]}
                         />

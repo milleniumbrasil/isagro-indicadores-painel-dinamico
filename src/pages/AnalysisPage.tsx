@@ -237,7 +237,13 @@ const AnalysisPage: FC = () => {
 
     return (
         <AnalysisProvider>
-            <Button onClick={toggleDrawer(true)}>
+            <Button
+                onClick={toggleDrawer(true)}
+                sx={{
+                position: 'absolute',
+                top: '10px', // Ajuste conforme a posição desejada
+                right: '10px', // Pode ajustar para 'left' se quiser que fique à esquerda
+                }} >
                 <MoreVertIcon />
             </Button>
             <SwipeableDrawer
@@ -245,10 +251,6 @@ const AnalysisPage: FC = () => {
             open={drawerOpen}
             onClose={toggleDrawer(false)}
             onOpen={toggleDrawer(true)}>
-                <Button onClick={toggleDrawer(false)}>
-                    <CloseIcon />
-                </Button>
-                <Typography sx={{ ml: 'auto', marginRight: '10px' }}>Parâmetros do painel</Typography>
                 <Box sx={{ alignItems: 'center' }}>
                     <Accordion>
                         <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="period-content" id="period-header">

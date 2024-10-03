@@ -63,6 +63,7 @@ import { findAnalysisDescription } from './AnalysisHelper';
 import StackedAreaChart from '../components/charts/StackedAreaChart';
 import BarChart from '../components/charts/BarChart';
 import BarLineAreaComposedChart from '../components/charts/BarLineAreaComposedChart';
+import PieChart from '../components/charts/PieChart';
 
 export function Loading() {
     return (
@@ -586,19 +587,6 @@ const AnalysisPage: FC = () => {
                                 defaultPalette={selectedChartDefaultPalette}
                             />
 
-                            <BarChart
-                                width={400}
-                                height={250}
-                                data={selectedSumData}
-                                defaultPalette={selectedChartDefaultPalette}
-                            />
-
-                            {/* <BarLineAreaComposedChart
-                                width={400}
-                                height={250}
-                                data={selectedSumData}
-                                defaultPalette={selectedChartDefaultPalette}
-                            /> */}
                         </CardContent>
                     </Card>
 
@@ -676,6 +664,18 @@ const AnalysisPage: FC = () => {
                                 {currentAnalysisDescription?.description}
                             </Typography>
                             <PercentualAreaChart
+                                width={400}
+                                height={250}
+                                data={selectedPercentualData}
+                                valueLabel="Área"
+                                fillColor={
+                                    selectedChartDefaultPalette[selectedChartDefaultPalette.length % selectedChartDefaultPalette.length]
+                                }
+                                strokeColor={
+                                    selectedChartDefaultPalette[selectedChartDefaultPalette.length % selectedChartDefaultPalette.length]
+                                }
+                            />
+                            <PieChart
                                 width={400}
                                 height={250}
                                 data={selectedPercentualData}

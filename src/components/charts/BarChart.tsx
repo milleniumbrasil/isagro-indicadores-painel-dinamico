@@ -146,6 +146,7 @@ const BarChart: React.FC<BarChartProps> = (props) => {
     };
 
     const [dataKey, setDataKey] = useState<string>('period');
+    const [valueLabel, setValueLabel] = useState<string>('');
     const [internalData, setInternalData] = useState<INormalizedData[]>([]);
     const [internalWidth, setInternalWidth] = useState<number>(800);
     const [internalHeight, setInternalHeight] = useState<number>(1200);
@@ -168,6 +169,8 @@ const BarChart: React.FC<BarChartProps> = (props) => {
                 setInternalData(normalizedData);
                 if (props.width) setInternalWidth(props.width);
                 if (props.height) setInternalHeight(props.height);
+                if (props.dataKey) setDataKey(props.dataKey);
+                if (props.valueLabel) setValueLabel(props.valueLabel);
 
                 // Atualize a lógica para definir a paleta correta
                 if (props.defaultPalette) {

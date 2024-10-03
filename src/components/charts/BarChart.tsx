@@ -202,8 +202,8 @@ const BarChart: React.FC<BarChartProps> = (props) => {
                     <CartesianGrid strokeDasharray="0" />
                     <XAxis dataKey={dataKey} />
                     <YAxis tickFormatter={tickFormatter} ticks={dynamicTicks} />
-                    <Legend formatter={legendFormatter} iconType={'triangle'} />
                     <Tooltip content={<CustomTooltip />} />
+                    <Legend formatter={legendFormatter} iconType={'triangle'} />
                     {attributeNames.map((item, index) => (
                         <Bar
                             key={item}

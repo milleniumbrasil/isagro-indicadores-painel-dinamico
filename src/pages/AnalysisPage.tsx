@@ -241,11 +241,12 @@ const AnalysisPage: FC = () => {
                 onClick={toggleDrawer(true)}
                 sx={{
                 position: 'absolute',
-                top: '10px', // Ajuste conforme a posição desejada
-                right: '10px', // Pode ajustar para 'left' se quiser que fique à esquerda
+                top: '10px',
+                right: '10px', 
                 }} >
                 <MoreVertIcon />
             </Button>
+            <img src="/logo-isagro.png" alt="Logo Isagro" style={{ width: '100px', height: 'auto', margin: '15px' }} />
             <SwipeableDrawer
             anchor={'right'}
             open={drawerOpen}

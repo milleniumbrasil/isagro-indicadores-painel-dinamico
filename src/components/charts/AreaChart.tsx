@@ -134,8 +134,8 @@ export default class AreaChart extends PureComponent<PercentualAreaChartProps> {
         this.valueLabel = this.props.valueLabel ?? 'Valor';
         this.attributeNames = Array.from(new Set(this.data.flatMap(Object.keys))).filter((key) => key !== this.dataKey);
         return (
-            <div style={{ width: '100%', height: this.height }}>
-                <ResponsiveContainer>
+            <div style={{ width: '100%', height: '100%' }}>
+                <ResponsiveContainer width="100%" height="100%">
                     <RechatsAreaChart
                         width={this.width}
                         height={this.height}

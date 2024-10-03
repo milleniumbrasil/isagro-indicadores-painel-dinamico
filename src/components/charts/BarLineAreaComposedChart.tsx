@@ -185,8 +185,8 @@ const BarLineAreaComposedChart: React.FC<BarLineAreaComposedChartProps> = (props
     }, [props.data, props.dataKey, props.valueLabel, props.width, props.height, props.defaultPalette]);
 
     return (
-        <div style={{ width: '100%', height: internalHeight }}>
-            <ResponsiveContainer>
+        <div style={{ width: '100%', height: '100%' }}>
+            <ResponsiveContainer width="100%" height="100%">
                 <ComposedChart
                     width={internalWidth}
                     height={internalHeight}

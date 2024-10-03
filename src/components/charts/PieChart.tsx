@@ -127,14 +127,12 @@ const PieChart: React.FC<PieChartProps> = (props) => {
     };
 
     return (
-        <div style={{ width: '100%', height: internalHeight }}>
+        <div style={{ width: '100%', height: '100%' }}>
             {loading ? ( // Se ainda estiver carregando, exibe o fallback
                 <Loading />
             ) : internalData && internalData.length > 0 ? ( // Se os dados estiverem prontos
-                <ResponsiveContainer>
-
+                <ResponsiveContainer width="100%" height="100%">
                     <RechartsPieChart width={internalWidth} height={internalHeight} >
-                        <Tooltip content={<CustomTooltip />} />
                         <Pie
                             type="monotone"
                             dataKey={"period"}
@@ -148,9 +146,9 @@ const PieChart: React.FC<PieChartProps> = (props) => {
                             // label={renderCustomizedLabel}
                             outerRadius={80}
                         >
-                        {attributeNames.map((item, index) => (
-                            <Cell key={`cell-${index}`} fill={internalFillColor} />
-                        ))}
+                            {attributeNames.map((item, index) => (
+                                <Cell key={`cell-${index}`} fill={internalFillColor} />
+                            ))}
                         </Pie>
                         <CartesianGrid strokeDasharray="0" />
                     </RechartsPieChart>

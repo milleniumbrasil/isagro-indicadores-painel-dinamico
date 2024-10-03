@@ -242,11 +242,10 @@ const AnalysisPage: FC = () => {
                 sx={{
                 position: 'absolute',
                 top: '10px',
-                right: '10px', 
+                right: '10px',
                 }} >
                 <MoreVertIcon />
             </Button>
-            <img src="/logo-isagro.png" alt="Logo Isagro" style={{ width: '100px', height: 'auto', margin: '15px' }} />
             <SwipeableDrawer
             anchor={'right'}
             open={drawerOpen}
@@ -517,12 +516,18 @@ const AnalysisPage: FC = () => {
 
                     <Box sx={{ flexGrow: 1, margin: '30px', padding: '30px', border: 5, borderColor: grayBackgroundColor }}>
 
-                        <Typography variant="h3" sx={{ padding: '15px' }}>
-                            {currentAnalysisDescription?.title || 'Informações Detalhadas da Análise'}
+
+                        <Typography variant="h2" sx={{ padding: '15px' }}>
+                            <img src="/logo-isagro.png" alt="Logo Isagro" style={{ width: '150px', height: 'auto', margin: '15px' }} />
+                            Indicadores agro-socioambientais do Brasil
                         </Typography>
 
-                        <Typography variant="body1" sx={{ padding: '10px' }}>
-                            {currentAnalysisDescription?.description || 'Descrição não disponível para esta análise.'}
+                        <Typography variant="h4" sx={{ padding: '15px' }}>
+                            Inteligência estratégica para a sustentabilidade da agropecuária nacional
+                        </Typography>
+
+                        <Typography variant="h5" sx={{ padding: '10px' }}>
+                            {currentAnalysisDescription?.title || 'Informações Detalhadas da Análise'}
                         </Typography>
                         <Map
                             estado={selectedMapState}

@@ -251,7 +251,8 @@ const AnalysisPage: FC = () => {
                     </AccordionSummary>
                     <AccordionDetails>
                         <Box sx={{ display: 'flex', '& > :not(style)': { m: 1 } }}>
-                            <Box sx={{ flexGrow: 1, maxWidth: 752 }}>
+                            <Box sx={{ width: '50%', alignItems: 'center', padding: '5px', margin: '5px' }}>
+
                                 <Typography variant="h6" sx={{ padding: '15px' }}>
                                     {currentAnalysisDescription?.title || 'Informações Detalhadas da Análise'}
                                 </Typography>
@@ -260,54 +261,6 @@ const AnalysisPage: FC = () => {
                                     {currentAnalysisDescription?.description || 'Descrição não disponível para esta análise.'}
                                 </Typography>
 
-                                <List dense>
-                                    <ListItem>
-                                        <ListItemAvatar>
-                                            <Avatar>
-                                                <InfoIcon />
-                                            </Avatar>
-                                        </ListItemAvatar>
-                                        <ListItemText primary="Fonte" secondary={currentAnalysisDescription?.source || selectedSource} />
-                                    </ListItem>
-                                    <Divider variant="inset" component="li" />
-
-                                    <ListItem>
-                                        <ListItemAvatar>
-                                            <Avatar>
-                                                <FolderIcon />
-                                            </Avatar>
-                                        </ListItemAvatar>
-                                        <ListItemText primary="Rótulo" secondary={currentAnalysisDescription?.labels || selectedLabel} />
-                                    </ListItem>
-                                    <Divider variant="inset" component="li" />
-
-                                    <ListItem>
-                                        <ListItemAvatar>
-                                            <Avatar>
-                                                <FolderIcon />
-                                            </Avatar>
-                                        </ListItemAvatar>
-                                        <ListItemText
-                                            primary="Período"
-                                            secondary={`De ${selectedStartDate.getFullYear()} até ${selectedEndDate.getFullYear()}`}
-                                        />
-                                    </ListItem>
-                                    <Divider variant="inset" component="li" />
-
-                                    <ListItem>
-                                        <ListItemAvatar>
-                                            <Avatar>
-                                                <FolderIcon />
-                                            </Avatar>
-                                        </ListItemAvatar>
-                                        <ListItemText
-                                            primary="Gráficos disponíveis"
-                                            secondary={currentAnalysisDescription?.charts || 'Média Móvel Simples, Soma Agregada, Percentual'}
-                                        />
-                                    </ListItem>
-                                </List>
-                            </Box>
-                            <Box sx={{ width: '50%', alignItems: 'center', padding: '5px', margin: '5px' }}>
                                 <Accordion>
                                     <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="period-content" id="period-header">
                                         <List dense>

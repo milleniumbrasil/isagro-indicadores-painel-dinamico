@@ -519,7 +519,6 @@ const AnalysisPage: FC = () => {
 
                     <Box sx={{ flexGrow: 1, margin: '30px', padding: '30px'}}>
 
-
                         <Typography variant="h2" sx={{ padding: '15px' }}>
                             <img src="/logo-isagro.png" alt="Logo Isagro" style={{ width: '150px', height: 'auto', margin: '15px' }} />
                             Indicadores agro-socioambientais do Brasil
@@ -553,8 +552,8 @@ const AnalysisPage: FC = () => {
                     </Box>
                 </Box>
                 <Paper sx={{ width: '98%', alignItems: 'center', padding: '5px', margin: '5px', marginRight: '30px' }}>
-                    <Typography variant="h6" sx={{ padding: '15px', marginTop: '15px' }}>
-                        Como interpretar o gráfico de soma agregada
+                    <Typography variant="h3" sx={{ padding: '15px', marginTop: '15px' }}>
+                        Soma agregada na linha do tempo
                     </Typography>
                     <Typography variant="body2" sx={{ padding: '10px' }}>
                         Este gráfico de soma agregada apresenta o total acumulado de dados ao longo do período selecionado. Ele exibe o
@@ -590,8 +589,8 @@ const AnalysisPage: FC = () => {
                         </CardContent>
                     </Card>
 
-                    <Typography variant="h6" sx={{ padding: '15px', marginTop: '15px' }}>
-                        Como interpretar o gráfico de Média Móvel Simples
+                    <Typography variant="h3" sx={{ padding: '15px', marginTop: '15px' }}>
+                        Média Móvel Simples
                     </Typography>
                     <Typography variant="body2" sx={{ padding: '10px' }}>
                         Este gráfico de Média Móvel Simples utiliza uma técnica estatística para suavizar as variações dos dados ao longo do
@@ -625,18 +624,11 @@ const AnalysisPage: FC = () => {
                                 data={selectedSmaData}
                                 defaultPalette={selectedChartDefaultPalette}
                             />
-
-                            <BarChart
-                                width={400}
-                                height={250}
-                                data={selectedSmaData}
-                                defaultPalette={selectedChartDefaultPalette}
-                            />
                         </CardContent>
                     </Card>
 
-                    <Typography variant="h6" sx={{ padding: '15px', marginTop: '15px' }}>
-                        Como interpretar o gráfico de percentual
+                    <Typography variant="h3" sx={{ padding: '15px', marginTop: '15px' }}>
+                        Percentuais na linha do tempo
                     </Typography>
                     <Typography variant="body2" sx={{ padding: '10px' }}>
                         Este gráfico de percentual utiliza uma técnica de visualização que exibe os dados como uma proporção em relação ao

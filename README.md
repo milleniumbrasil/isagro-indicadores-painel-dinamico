@@ -1,5 +1,12 @@
 # IS-Agro Indicadores Painel Dinâmico
 
+![React](https://img.shields.io/badge/React-17.x-blue)
+![JavaScript](https://img.shields.io/badge/JavaScript-ES6-yellow)
+![CSS3](https://img.shields.io/badge/CSS3-blue)
+![HTML5](https://img.shields.io/badge/HTML5-red)
+![Leaflet](https://img.shields.io/badge/Leaflet-1.7.1-green)
+![NPM](https://img.shields.io/badge/NPM-7.x-red)
+
 ![IS-Agro Indicadores Painel Dinâmico](public/02-isagro-painel-menu-parametros-2024-10-04-11_44_06.png)
 
 ## Visão Geral

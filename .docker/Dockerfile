@@ -1,24 +1,29 @@
-# Etapa de construção
-FROM node:16 as build
+# Etapa 1: Build da aplicação React usando Node.js
+FROM node:18-alpine AS build
 
+# Cria um diretório de trabalho
 WORKDIR /app
 
-COPY package.json ./
-COPY package-lock.json ./
+# Copia os arquivos de dependências
+COPY package.json package-lock.json ./
 
+# Instala as dependências
 RUN npm install
 
-COPY . ./
+# Copia o restante do código da aplicação
+COPY . .
 
-ARG REACT_APP_API_BASE_URL
-ENV REACT_APP_API_BASE_URL=$REACT_APP_API_BASE_URL
-
+# Executa o build da aplicação
 RUN npm run build
 
-# Etapa de produção
+# Etapa 2: Servindo os arquivos com Nginx
 FROM nginx:alpine
+
+# Copia os arquivos de build da etapa anterior
 COPY --from=build /app/build /usr/share/nginx/html
 
+# Expõe a porta 80 para o Nginx
 EXPOSE 80
 
+# Inicia o servidor Nginx
 CMD ["nginx", "-g", "daemon off;"]

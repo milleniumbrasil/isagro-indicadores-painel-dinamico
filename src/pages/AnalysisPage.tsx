@@ -1,8 +1,8 @@
 // src/pages/AnalysisPage.tsx
 
 import './AnalysisPage.css';
-import 'rsuite/SelectPicker/styles/index.css';
-import 'rsuite/DateRangePicker/styles/index.css';
+// import 'rsuite/SelectPicker/styles/index.css';
+// import 'rsuite/DateRangePicker/styles/index.css';
 import 'rsuite/dist/rsuite.min.css';
 
 import { FC, useEffect, useState, SyntheticEvent } from 'react';
@@ -83,7 +83,7 @@ const AnalysisPage: FC = () => {
     const [selectedState, setSelectedState] = useState<string>('Distrito Federal');
     const [selectedMapState, setSelectedMapState] = useState<iEstado>(mapStates['Distrito Federal']);
     const [selectedStartDate, setSelectedStartDate] = useState<Date>(new Date('1990-01-01'));
-    const [selectedEndDate, setSelectedEndDate] = useState<Date>(new Date('1995-12-31'));
+    const [selectedEndDate, setSelectedEndDate] = useState<Date>(new Date('2024-01-31'));
     const [currentAnalysisDescription, setCurrentAnalysisDescription] = useState<IAnalysisInfo>(
         findAnalysisDescription(
             selectedAnalysis,

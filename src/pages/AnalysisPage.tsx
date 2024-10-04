@@ -675,18 +675,6 @@ const AnalysisPage: FC = () => {
                                     selectedChartDefaultPalette[selectedChartDefaultPalette.length % selectedChartDefaultPalette.length]
                                 }
                             />
-                            <PieChart
-                                width={400}
-                                height={250}
-                                data={selectedPercentualData}
-                                valueLabel="Área"
-                                fillColor={
-                                    selectedChartDefaultPalette[selectedChartDefaultPalette.length % selectedChartDefaultPalette.length]
-                                }
-                                strokeColor={
-                                    selectedChartDefaultPalette[selectedChartDefaultPalette.length % selectedChartDefaultPalette.length]
-                                }
-                            />
                         </CardContent>
                     </Card>
                 </Paper>

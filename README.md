@@ -1,50 +1,54 @@
-
+# IS-Agro Indicadores Painel Dinâmico
 
 ![IS-Agro Indicadores Painel Dinâmico](public/02-isagro-painel-menu-parametros-2024-10-04-11_44_06.png)
 
-# Getting Started with Create React App
+## Visão Geral
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Este projeto é um painel dinâmico de indicadores agro-socioambientais desenvolvido para o projeto IS-Agro. O painel exibe dados interativos sobre diversas áreas como erosões, GEE, NPK, NH3, áreas orgânicas, pesticidas e poluições, relacionados ao território brasileiro. Os usuários podem explorar esses indicadores por diferentes estados e períodos de tempo, utilizando o mapa e os gráficos apresentados na interface.
 
-## Available Scripts
+O painel foi desenvolvido em React e inclui funcionalidades como a seleção de parâmetros (indicadores, rótulos, cores e intervalos), exibição de gráficos dinâmicos e interação com o mapa do Brasil. Este painel tem como objetivo facilitar a análise de dados agro-socioambientais por meio de uma interface intuitiva e interativa.
 
-In the project directory, you can run:
+ - Para subir o banco de dados e a API, execute o comando abaixo:
+
+```bash
+cd .docker
+docker-compose up --build
+```
+
+## Funcionalidades
+
+- **Mapa Interativo:** Inicialmente exibe o mapa do Brasil e permite selecionar diferentes estados para filtrar os dados apresentados nos gráficos.
+- **Gráficos Dinâmicos:** Exibe gráficos de soma agregada, média móvel e percentuais, atualizados com base nos parâmetros escolhidos pelo usuário.
+- **Menu de Parâmetros:** Permite a escolha de diferentes indicadores, rótulos, intervalos de tempo e cores para personalizar a visualização dos dados.
+- **Customização Visual:** O usuário pode ajustar as cores de fundo e escolher diferentes paletas para exibição dos gráficos e do mapa.
+
+## Requisitos
+
+Este projeto foi iniciado com [Create React App](https://github.com/facebook/create-react-app).
+
+### Scripts Disponíveis
+
+No diretório do projeto, você pode executar os seguintes comandos:
 
 ### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Executa o aplicativo em modo de desenvolvimento.\
+Abra [http://localhost:3000](http://localhost:3000) para visualizar no navegador.
 
 ### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Compila o aplicativo para produção na pasta `build`.\
+O React será otimizado para o melhor desempenho.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Como Contribuir
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. Faça um fork do projeto.
+2. Crie um branch para a sua funcionalidade (`git checkout -b minha-funcionalidade`).
+3. Faça o commit das suas mudanças (`git commit -m 'Adiciona nova funcionalidade'`).
+4. Faça o push para o branch (`git push origin minha-funcionalidade`).
+5. Crie um Pull Request.
 
-### `npm run eject`
+## Imagens do Painel
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+As imagens acima foram capturadas durante a apresentação do painel com o menu de parâmetros aberto e a visualização dos gráficos interativos.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).

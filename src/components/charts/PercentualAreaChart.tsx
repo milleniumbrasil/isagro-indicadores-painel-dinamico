@@ -117,11 +117,11 @@ const PercentualAreaChart: React.FC<PercentualAreaChartProps> = (props) => {
     };
 
     return (
-        <div style={{ width: '100%', height: '100%' }}>
+        <div style={{ width: '100%', height: internalHeight }}>
             {loading ? ( // Se ainda estiver carregando, exibe o fallback
                 <Loading />
             ) : internalData && internalData.length > 0 ? ( // Se os dados estiverem prontos
-                <ResponsiveContainer width="100%" height="100%">
+                <ResponsiveContainer>
                     <AreaChart
                         width={internalWidth}
                         height={internalHeight}

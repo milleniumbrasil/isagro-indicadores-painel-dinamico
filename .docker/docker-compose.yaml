@@ -1,0 +1,18 @@
+version: '3'
+services:
+  frontend:
+    build:
+      context: ../  # Isso irá apontar para a raiz do projeto
+      dockerfile: .docker/Dockerfile
+      args:
+        - REACT_APP_API_BASE_URL=http://api-seu-ambiente:3000
+    environment:
+      - REACT_APP_API_BASE_URL=http://api-seu-ambiente:3000
+    ports:
+      - "3000:80"
+    networks:
+      - frontend-network
+
+networks:
+  frontend-network:
+    driver: bridge

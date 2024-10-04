@@ -29,8 +29,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "REACT_APP_API_BASE_URL=http://localhost:3000 react-scripts start",
-    "build": "REACT_APP_API_BASE_URL=http://localhost:3000 react-scripts build",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
     "format": "npx prettier --write \"**/*.ts*\" --ignore-path .prettierignore",
     "lint": "eslint --fix 'src/**/*.{ts,tsx}'",
     "test": "react-scripts test",

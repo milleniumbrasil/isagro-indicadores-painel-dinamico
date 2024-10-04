@@ -1,3 +1,7 @@
+
+
+![IS-Agro Indicadores Painel Dinâmico](public/02-isagro-painel-menu-parametros-2024-10-04-11_44_06.png)
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

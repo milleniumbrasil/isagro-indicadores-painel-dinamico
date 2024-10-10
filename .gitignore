@@ -131,3 +131,34 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# Ambiente virtual
+venv/
+.env/
+
+# Arquivos temporários e cache
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.tmp
+
+# Arquivos de configuração específicos do sistema
+*.env
+*.DS_Store
+
+# Logs
+*.log
+
+# Arquivos de cache do Jupyter Notebook
+.ipynb_checkpoints/
+
+# Arquivos criados por ferramentas de build
+build/
+dist/
+*.egg-info/
+
+# Arquivos gerados pelo editor
+.vscode/
+.idea/
+*.swp

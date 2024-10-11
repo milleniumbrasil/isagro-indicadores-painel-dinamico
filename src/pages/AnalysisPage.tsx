@@ -44,7 +44,7 @@ import CloseIcon from '@mui/icons-material/Close';
 
 import { iEstado, estados as mapStates, Map } from 'isagro-map';
 
-import { buildUrl } from '../pages/AnalysisHelper';
+import { buildAnalysisUrl, buildLabelsUrl, buildParamsUrl, buildSourceUrl, buildUrl } from '../pages/AnalysisHelper';
 
 import { brownBackgroundColor, grayBackgroundColor, palettes, backgroundColors } from '../components/colors';
 
@@ -57,7 +57,7 @@ import { IStackedAreaChart } from '../components/charts/IStackedAreaChart';
 import { IPercentualAreaChart } from '../components/charts/IPercentualAreaChart';
 import PercentualAreaChart from '../components/charts/PercentualAreaChart';
 import { AnalysisProvider } from '../components/AnalysisProvider';
-import Constants, { analysisDescriptions, getValidLabelsByAnalysis, Label } from './AnalysisConstants';
+import Constants, { analysisDescriptions, Label } from './AnalysisConstants';
 import { IAnalysisInfo } from './IAnalysisInfo';
 import { findAnalysisDescription } from './AnalysisHelper';
 import StackedAreaChart from '../components/charts/StackedAreaChart';
@@ -77,9 +77,15 @@ const AnalysisPage: FC = () => {
     const [drawerOpen, setDrawerOpen] = useState(false);
 
     const [selectedSource, setSelectedSource] = useState<string>('');
-    const [selectedAnalysis, setSelectedAnalysis] = useState<string>('orgânicas');
+    const [availableSources, setAvailableSources] = useState<[]>([]);
+
+    const [availableAnalysis, setAvailableAnalysis] = useState<[]>([]);
+    const [selectedAnalysis, setSelectedAnalysis] = useState<string>('GEE');
+
     const [labels, setLabels] = useState<Label[]>([]);
     const [selectedLabel, setSelectedLabel] = useState<string>('');
+    const [availableLabels, setAvailableLabels] = useState<[]>([]);
+
     const [selectedState, setSelectedState] = useState<string>('Distrito Federal');
     const [selectedMapState, setSelectedMapState] = useState<iEstado>(mapStates['Distrito Federal']);
     const [selectedStartDate, setSelectedStartDate] = useState<Date>(new Date('1990-01-01'));
@@ -163,12 +169,14 @@ const AnalysisPage: FC = () => {
     const handleAnalysisChange = (event: SelectChangeEvent<string>) => {
         const selectedValue = event.target.value as string;
         setSelectedAnalysis(selectedValue);
+        console.log('[AnalysisPage] Análise selecionada:', selectedValue);
 
         // Busca os rótulos válidos com base na análise e mapeia-os para a exibição correta
-        const validLabelValues: string[] = getValidLabelsByAnalysis(selectedValue);
-        const validLabelsForDisplay = Constants.availableLabels.filter((labelItem: Label) => validLabelValues.includes(labelItem.value));
+        const validLabelValues: string[] = availableLabels
+        console.log('[AnalysisPage] Rótulos válidos:', validLabelValues);
+
+        const validLabelsForDisplay = availableLabels.filter((labelItem: string) => validLabelValues.includes(labelItem));
         setLabels(validLabelsForDisplay);
-        console.log('[AnalysisPage] Análise selecionada:', selectedValue);
     };
 
     const handleLabelChange = (event: SelectChangeEvent<string>) => {
@@ -196,7 +204,36 @@ const AnalysisPage: FC = () => {
             });
     };
 
+    const requestMenu = async (url: string): Promise<[]> => {
+        console.log(`[AnalysisPage] requestMenu ${url}`);
+        return fetch(url)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('[AnalysisPage] requestMenu Falha ao buscar os dados!');
+                }
+                return response.json(); // Convertendo a resposta para JSON
+            })
+            .then((items: []) => {
+                console.log(`[AnalysisPage] requestMenu result: ${items.length}`);
+                return items; // Retornando os dados para a função chamadora
+            })
+            .catch((error) => {
+                console.error('[AnalysisPage] requestMenu Erro ao buscar os dados:', error);
+                return []; // Em caso de erro, retornar array vazio para evitar falhas
+            });
+    };
+
     useEffect(() => {
+
+        buildLabelsUrl(selectedAnalysis).then((url) => {
+            requestMenu(url).then((objects) => {
+                console.log(`[AnalysisPage] useEffect availableLabels: ${url}`);
+                console.log(`[AnalysisPage] useEffect availableLabels result: ${objects.length}`);
+                console.log(`[AnalysisPage] useEffect availableLabels sample: ${JSON.stringify(objects?.slice(0, 2), null, 2)}`);
+                setAvailableLabels(objects);
+            });
+        });
+
         buildUrl('sma', selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval).then((smaUrl) => {
             requestStackedData(smaUrl).then((stackedObjects) => {
                 console.log(`[AnalysisPage] useEffect url: ${smaUrl}`);
@@ -233,6 +270,28 @@ const AnalysisPage: FC = () => {
         const initialAnalysisDescription = findAnalysisDescription(selectedAnalysis, selectedStartDate, selectedEndDate, analysisInfos);
         setCurrentAnalysisDescription(initialAnalysisDescription);
     }, [selectedAnalysis, selectedLabel, selectedStartDate, selectedEndDate, selectedState, selectedSource, selectedInterval]);
+
+    useEffect(() => {
+
+        buildAnalysisUrl().then((url) => {
+            requestMenu(url).then((objects) => {
+                console.log(`[AnalysisPage] useEffect availableAnalysis: ${url}`);
+                console.log(`[AnalysisPage] useEffect availableAnalysis result: ${objects.length}`);
+                console.log(`[AnalysisPage] useEffect availableAnalysis sample: ${JSON.stringify(objects?.slice(0, 2), null, 2)}`);
+                setAvailableAnalysis(objects);
+            });
+        });
+
+        buildSourceUrl().then((url) => {
+            requestMenu(url).then((objects) => {
+                console.log(`[AnalysisPage] useEffect availableSources: ${url}`);
+                console.log(`[AnalysisPage] useEffect availableSources result: ${objects.length}`);
+                console.log(`[AnalysisPage] useEffect availableSources sample: ${JSON.stringify(objects?.slice(0, 2), null, 2)}`);
+                setAvailableSources(objects);
+            });
+        });
+
+    }, []);
 
     const toggleDrawer = (newOpen: boolean) => () => {
         setDrawerOpen(newOpen);
@@ -335,13 +394,13 @@ const AnalysisPage: FC = () => {
                             <Divider variant="middle" sx={{ margin: '15px' }} />
                             <FormControl fullWidth>
                                 <Select id="analysis-select" value={selectedAnalysis} onChange={handleAnalysisChange}>
-                                    {Constants.availableAnalysis.map((analysis: Label) => (
+                                    {availableAnalysis?.map((analysis: string) => (
                                         <MenuItem
-                                            id={`${analysis.value}-menu-item-analysis`}
-                                            value={analysis.value}
-                                            key={analysis.value}
+                                            id={`${analysis}-menu-item-analysis`}
+                                            value={analysis}
+                                            key={analysis}
                                         >
-                                            {analysis.label}
+                                            {analysis}
                                         </MenuItem>
                                     ))}
                                 </Select>
@@ -370,9 +429,9 @@ const AnalysisPage: FC = () => {
                                     <MenuItem value="">
                                         <em>Não informado</em>
                                     </MenuItem>
-                                    {labels.map((labelItem, index) => (
-                                        <MenuItem id={`${index}-menu-item-label`} value={labelItem.value} key={index}>
-                                            {labelItem.label}
+                                    {availableLabels.map((labelItem, index) => (
+                                        <MenuItem id={`${index}-menu-item-label`} value={labelItem} key={index}>
+                                            {labelItem}
                                         </MenuItem>
                                     ))}
                                 </Select>
@@ -401,9 +460,9 @@ const AnalysisPage: FC = () => {
                                     <MenuItem value="">
                                         <em>Não informado</em>
                                     </MenuItem>
-                                    {Constants.availableSources.map((source: Label) => (
-                                        <MenuItem id={`${source.value}-menu-item-source`} value={source.value} key={source.value}>
-                                            {source.label}
+                                    {availableSources.map((source: string) => (
+                                        <MenuItem id={`${source}-menu-item-source`} value={source} key={source}>
+                                            {source}
                                         </MenuItem>
                                     ))}
                                 </Select>

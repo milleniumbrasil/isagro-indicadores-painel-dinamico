@@ -3,7 +3,116 @@
 
 import Constants from "./AnalysisConstants";
 import { IAnalysisInfo } from "./IAnalysisInfo";
-// src/pages/AnalysisHelper.ts
+
+export const buildLabelsUrl = async (
+    analysis?: string
+): Promise<string> => {
+    const encodedAnalysis = analysis ? encodeURIComponent(analysis) : null;
+
+    // Base URL usando o caminho fornecido
+    let url = `http://localhost:3001/menu/labels`;
+
+    // Array para armazenar os parâmetros de consulta
+    const queryParams = [];
+
+    // Adiciona parâmetros opcionais à lista de parâmetros de consulta
+    if (encodedAnalysis) {
+        queryParams.push(`analysis=${encodedAnalysis}`);
+    }
+
+    // Anexa os parâmetros de consulta à URL, se existirem
+    if (queryParams.length > 0) {
+        url += `?${queryParams.join('&')}`;
+    }
+
+    return url;
+};
+
+export const buildParamsUrl = async (
+    analysis?: boolean,
+    country?: boolean,
+    state?: boolean,
+    city?: boolean,
+    source?: boolean,
+    label?: boolean
+): Promise<string> => {
+    const encodedAnalysis = analysis ? encodeURIComponent(analysis) : null;
+    const encodedLabel = label ? encodeURIComponent(label) : null;
+
+    // Base URL usando o caminho fornecido
+    let url = `http://localhost:3001/menu`;
+
+    if (analysis) {
+        url += `/analysis`;
+    }
+    if (state) {
+        url += `/states`;
+    }
+    if (city) {
+        url += `/cities`;
+    }
+    if (country) {
+        url += `/countries`;
+    }
+    if (source) {
+        url += `/sources`;
+    }
+
+    // Array para armazenar os parâmetros de consulta
+    const queryParams = [];
+
+    // Adiciona parâmetros opcionais à lista de parâmetros de consulta
+    if (encodedAnalysis && encodedLabel) {
+        queryParams.push(`analysis=${encodedAnalysis}`);
+    }
+
+    // Anexa os parâmetros de consulta à URL, se existirem
+    if (queryParams.length > 0) {
+        url += `?${queryParams.join('&')}`;
+    }
+
+    return url;
+};
+
+export const buildAnalysisUrl = async (): Promise<string> => {
+
+    // Base URL usando o caminho fornecido
+    let url = `http://localhost:3001/menu/analysis`;
+
+    return url;
+};
+
+export const buildSourceUrl = async (): Promise<string> => {
+
+    // Base URL usando o caminho fornecido
+    let url = `http://localhost:3001/menu/sources`;
+
+    return url;
+};
+
+export const buildStateUrl = async (): Promise<string> => {
+
+    // Base URL usando o caminho fornecido
+    let url = `http://localhost:3001/menu/states`;
+
+    return url;
+};
+
+export const buildCityUrl = async (): Promise<string> => {
+
+    // Base URL usando o caminho fornecido
+    let url = `http://localhost:3001/menu/cities`;
+
+    return url;
+};
+
+export const buildCountryUrl = async (): Promise<string> => {
+
+    // Base URL usando o caminho fornecido
+    let url = `http://localhost:3001/menu/countries`;
+
+    return url;
+};
 
 export const buildUrl = async (
     path: string,

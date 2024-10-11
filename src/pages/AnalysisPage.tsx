@@ -234,46 +234,37 @@ const AnalysisPage: FC = () => {
             });
         });
 
-        // buildParamsUrl(selectedAnalysis, undefined, selectedState, undefined, selectedSource, selectedLabel).then((url) => {
-        //     requestMenu(url).then((objects) => {
-        //         console.log(`[AnalysisPage] useEffect url: ${url}`);
-        //         console.log(`[AnalysisPage] useEffect url result: ${objects.length}`);
-        //         console.log(`[AnalysisPage] useEffect url sample: ${JSON.stringify(objects?.slice(0, 2), null, 2)}`);
-        //         // setAvailableAnalysis(objects);
-        //     });
-        // });
+        buildUrl('sma', selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval).then((smaUrl) => {
+            requestStackedData(smaUrl).then((stackedObjects) => {
+                console.log(`[AnalysisPage] useEffect url: ${smaUrl}`);
+                console.log(`[AnalysisPage] useEffect sma result: ${stackedObjects.length}`);
+                console.log(`[AnalysisPage] useEffect sma sample: ${JSON.stringify(stackedObjects?.slice(0, 2), null, 2)}`);
+                setSelectedSmaData(stackedObjects);
+            });
+        });
 
-        // buildUrl('sma', selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval).then((smaUrl) => {
-        //     requestStackedData(smaUrl).then((stackedObjects) => {
-        //         console.log(`[AnalysisPage] useEffect url: ${smaUrl}`);
-        //         console.log(`[AnalysisPage] useEffect sma result: ${stackedObjects.length}`);
-        //         console.log(`[AnalysisPage] useEffect sma sample: ${JSON.stringify(stackedObjects?.slice(0, 2), null, 2)}`);
-        //         setSelectedSmaData(stackedObjects);
-        //     });
-        // });
+        buildUrl('sum', selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval).then((sumUrl) => {
+            requestStackedData(sumUrl).then((stackedObjects) => {
+                console.log(`[AnalysisPage] useEffect url: ${sumUrl}`);
+                console.log(`[AnalysisPage] useEffect sum result: ${stackedObjects.length}`);
+                console.log(`[AnalysisPage] useEffect sum sample: ${JSON.stringify(stackedObjects?.slice(0, 2), null, 2)}`);
+                setSelectedSumData(stackedObjects);
+            });
+        });
 
-        // buildUrl('sum', selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval).then((sumUrl) => {
-        //     requestStackedData(sumUrl).then((stackedObjects) => {
-        //         console.log(`[AnalysisPage] useEffect url: ${sumUrl}`);
-        //         console.log(`[AnalysisPage] useEffect sum result: ${stackedObjects.length}`);
-        //         console.log(`[AnalysisPage] useEffect sum sample: ${JSON.stringify(stackedObjects?.slice(0, 2), null, 2)}`);
-        //         setSelectedSumData(stackedObjects);
-        //     });
-        // });
-
-        // buildUrl('percentage', selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval).then((percentageUrl) => {
-        //     requestStackedData(percentageUrl).then((stackedObjects) => {
-        //         console.log(`[AnalysisPage] useEffect url: ${percentageUrl}`);
-        //         console.log(`[AnalysisPage] useEffect percentage result: ${stackedObjects.length}`);
-        //         console.log(`[AnalysisPage] useEffect percentage sample: ${JSON.stringify(stackedObjects?.slice(0, 2), null, 2)}`);
-        //         // Transformando de IStackedAreaChart para IPercentualAreaChart
-        //         const percentualObjects: IPercentualAreaChart[] = stackedObjects.map((item) => ({
-        //             period: item.period,
-        //             value: parseFloat(item.entry[1].toString()), // Pega diretamente o valor de entry[1] como percentual
-        //         }));
-        //         setSelectedPercentualData(percentualObjects);
-        //     });
-        // });
+        buildUrl('percentage', selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval).then((percentageUrl) => {
+            requestStackedData(percentageUrl).then((stackedObjects) => {
+                console.log(`[AnalysisPage] useEffect url: ${percentageUrl}`);
+                console.log(`[AnalysisPage] useEffect percentage result: ${stackedObjects.length}`);
+                console.log(`[AnalysisPage] useEffect percentage sample: ${JSON.stringify(stackedObjects?.slice(0, 2), null, 2)}`);
+                // Transformando de IStackedAreaChart para IPercentualAreaChart
+                const percentualObjects: IPercentualAreaChart[] = stackedObjects.map((item) => ({
+                    period: item.period,
+                    value: parseFloat(item.entry[1].toString()), // Pega diretamente o valor de entry[1] como percentual
+                }));
+                setSelectedPercentualData(percentualObjects);
+            });
+        });
 
         const analysisInfos = analysisDescriptions(selectedStartDate, selectedEndDate);
         const initialAnalysisDescription = findAnalysisDescription(selectedAnalysis, selectedStartDate, selectedEndDate, analysisInfos);

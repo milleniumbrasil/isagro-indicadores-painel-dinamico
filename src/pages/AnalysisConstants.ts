@@ -21,46 +21,6 @@ export interface TileLayerConfig {
 
 export type Label = { label: string; value: string };
 
-
-export function getValidLabelsByAnalysis (analysis: string): string[] {
-	switch (analysis.toLowerCase()) {
-		case 'erosão':
-			return ['pastagem', 'cultura'];
-		case 'gee':
-			return ['tecnologia2', 'tecnologia1', 'tecnologia3', 'tecnologia4'];
-		case 'nh3':
-			return [
-				'fertilizantes químicos',
-				'fertilizantes orgânicos',
-				'manejo de esterco',
-				'deposição de extretas',
-				'queimas de resíduos de culturas',
-			];
-		case 'npk':
-			return [
-				'dejetos animais',
-				'deposição atmosférica',
-				'fertilizantes minerais',
-				'fertilizantes orgânicos',
-				'fixação biológica de nitrogênio',
-				'resíduos culturais',
-				'resíduos industriais',
-				'resíduos urbanos',
-				'produção carne bovina',
-				'produção agrícola',
-				'área agropecuária',
-			];
-		case 'orgânicas':
-			return ['grão', 'hortaliças', 'fruticultura', 'pastagem'];
-		case 'pesticidas':
-			return ['herbicidas', 'fungicidas', 'inseticitas', 'outros'];
-		case 'poluição':
-			return ['nitrato', 'fosfato', 'cations', 'anions'];
-		default:
-			return [];
-	}
-}
-
 export function analysisDescriptions(startDate: Date, endDate: Date): Record<string, IAnalysisInfo> {
 	const period = `${startDate.getFullYear()} até ${endDate.getFullYear()}`;
 	const commonCharts = 'Média Móvel Simples, Soma Agregada, Percentual';
@@ -153,41 +113,6 @@ export default class Contants {
 		zoom: 6,
 		customParams: {},
 	};
-
-	public static readonly availableLabels: Label[] = [
-		{ label: 'Pastagem', value: 'pastagem' },
-		{ label: 'Cultura', value: 'cultura' },
-		{ label: 'Tecnologia 1', value: 'tecnologia1' },
-		{ label: 'Tecnologia 2', value: 'tecnologia2' },
-		{ label: 'Tecnologia 3', value: 'tecnologia3' },
-		{ label: 'Tecnologia 4', value: 'tecnologia4' },
-		{ label: 'Fertilizantes Químicos', value: 'fertilizantes químicos' },
-		{ label: 'Fertilizantes Orgânicos', value: 'fertilizantes orgânicos' },
-		{ label: 'Manejo de Esterco', value: 'manejo de esterco' },
-		{ label: 'Deposição de Extretas', value: 'deposição de extretas' },
-		{ label: 'Queimas de Resíduos de Culturas', value: 'queimas de resíduos de culturas' },
-		{ label: 'Dejetos Animais', value: 'dejetos animais' },
-		{ label: 'Deposição Atmosférica', value: 'deposição atmosférica' },
-		{ label: 'Fertilizantes Minerais', value: 'fertilizantes minerais' },
-		{ label: 'Fixação Biológica de Nitrogênio', value: 'fixação biológica de nitrogênio' },
-		{ label: 'Resíduos Culturais', value: 'resíduos culturais' },
-		{ label: 'Resíduos Industriais', value: 'resíduos industriais' },
-		{ label: 'Resíduos Urbanos', value: 'resíduos urbanos' },
-		{ label: 'Produção Carne Bovina', value: 'produção carne bovina' },
-		{ label: 'Produção Agrícola', value: 'produção agrícola' },
-		{ label: 'Área Agropecuária', value: 'área agropecuária' },
-		{ label: 'Grão', value: 'grão' },
-		{ label: 'Hortaliças', value: 'hortaliças' },
-		{ label: 'Fruticultura', value: 'fruticultura' },
-		{ label: 'Herbicidas', value: 'herbicidas' },
-		{ label: 'Fungicidas', value: 'fungicidas' },
-		{ label: 'Inseticidas', value: 'inseticitas' },
-		{ label: 'Outros', value: 'outros' },
-		{ label: 'Nitrato', value: 'nitrato' },
-		{ label: 'Fosfato', value: 'fosfato' },
-		{ label: 'Cations', value: 'cations' },
-		{ label: 'Ânions', value: 'anions' },
-	];
 
 	public static readonly availableSources = [
 		{ label: 'Organização para a Cooperação e Desenvolvimento Econômico', value: 'OCDE' },

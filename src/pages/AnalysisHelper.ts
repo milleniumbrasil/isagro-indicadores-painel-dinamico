@@ -4,6 +4,30 @@
 import Constants from "./AnalysisConstants";
 import { IAnalysisInfo } from "./IAnalysisInfo";
 
+export const buildLabelsUrl = async (
+    analysis?: string
+): Promise<string> => {
+    const encodedAnalysis = analysis ? encodeURIComponent(analysis) : null;
+
+    // Base URL usando o caminho fornecido
+    let url = `http://localhost:3001/menu/labels`;
+
+    // Array para armazenar os parâmetros de consulta
+    const queryParams = [];
+
+    // Adiciona parâmetros opcionais à lista de parâmetros de consulta
+    if (encodedAnalysis) {
+        queryParams.push(`analysis=${encodedAnalysis}`);
+    }
+
+    // Anexa os parâmetros de consulta à URL, se existirem
+    if (queryParams.length > 0) {
+        url += `?${queryParams.join('&')}`;
+    }
+
+    return url;
+};
+
 export const buildParamsUrl = async (
     analysis?: boolean,
     country?: boolean,
@@ -33,9 +57,6 @@ export const buildParamsUrl = async (
     if (source) {
         url += `/sources`;
     }
-    if (label) {
-        url += `/labels`;
-    }
 
     // Array para armazenar os parâmetros de consulta
     const queryParams = [];
@@ -49,6 +70,22 @@ export const buildParamsUrl = async (
     if (queryParams.length > 0) {
         url += `?${queryParams.join('&')}`;
     }
+
+    return url;
+};
+
+export const buildAnalysisUrl = async (): Promise<string> => {
+
+    // Base URL usando o caminho fornecido
+    let url = `http://localhost:3001/menu/analysis`;
+
+    return url;
+};
+
+export const buildSourceUrl = async (): Promise<string> => {
+
+    // Base URL usando o caminho fornecido
+    let url = `http://localhost:3001/menu/sources`;
 
     return url;
 };

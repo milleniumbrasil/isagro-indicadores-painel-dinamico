@@ -44,7 +44,7 @@ import CloseIcon from '@mui/icons-material/Close';
 
 import { iEstado, estados as mapStates, Map } from 'isagro-map';
 
-import { buildUrl } from '../pages/AnalysisHelper';
+import { buildParamsUrl, buildUrl } from '../pages/AnalysisHelper';
 
 import { brownBackgroundColor, grayBackgroundColor, palettes, backgroundColors } from '../components/colors';
 
@@ -77,6 +77,7 @@ const AnalysisPage: FC = () => {
     const [drawerOpen, setDrawerOpen] = useState(false);
 
     const [selectedSource, setSelectedSource] = useState<string>('');
+    const [availableAnalysis, setAvailableAnalysis] = useState<[]>([]);
     const [selectedAnalysis, setSelectedAnalysis] = useState<string>('orgânicas');
     const [labels, setLabels] = useState<Label[]>([]);
     const [selectedLabel, setSelectedLabel] = useState<string>('');
@@ -196,43 +197,85 @@ const AnalysisPage: FC = () => {
             });
     };
 
+    const requestMenu = async (url: string): Promise<[]> => {
+        console.log(`[AnalysisPage] requestMenu ${url}`);
+        return fetch(url)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('[AnalysisPage] requestMenu Falha ao buscar os dados!');
+                }
+                return response.json(); // Convertendo a resposta para JSON
+            })
+            .then((items: []) => {
+                console.log(`[AnalysisPage] requestMenu result: ${items.length}`);
+                return items; // Retornando os dados para a função chamadora
+            })
+            .catch((error) => {
+                console.error('[AnalysisPage] requestMenu Erro ao buscar os dados:', error);
+                return []; // Em caso de erro, retornar array vazio para evitar falhas
+            });
+    };
+
     useEffect(() => {
-        buildUrl('sma', selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval).then((smaUrl) => {
-            requestStackedData(smaUrl).then((stackedObjects) => {
-                console.log(`[AnalysisPage] useEffect url: ${smaUrl}`);
-                console.log(`[AnalysisPage] useEffect sma result: ${stackedObjects.length}`);
-                console.log(`[AnalysisPage] useEffect sma sample: ${JSON.stringify(stackedObjects?.slice(0, 2), null, 2)}`);
-                setSelectedSmaData(stackedObjects);
-            });
-        });
 
-        buildUrl('sum', selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval).then((sumUrl) => {
-            requestStackedData(sumUrl).then((stackedObjects) => {
-                console.log(`[AnalysisPage] useEffect url: ${sumUrl}`);
-                console.log(`[AnalysisPage] useEffect sum result: ${stackedObjects.length}`);
-                console.log(`[AnalysisPage] useEffect sum sample: ${JSON.stringify(stackedObjects?.slice(0, 2), null, 2)}`);
-                setSelectedSumData(stackedObjects);
-            });
-        });
+        // buildParamsUrl(selectedAnalysis, undefined, selectedState, undefined, selectedSource, selectedLabel).then((url) => {
+        //     requestMenu(url).then((objects) => {
+        //         console.log(`[AnalysisPage] useEffect url: ${url}`);
+        //         console.log(`[AnalysisPage] useEffect url result: ${objects.length}`);
+        //         console.log(`[AnalysisPage] useEffect url sample: ${JSON.stringify(objects?.slice(0, 2), null, 2)}`);
+        //         // setAvailableAnalysis(objects);
+        //     });
+        // });
 
-        buildUrl('percentage', selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval).then((percentageUrl) => {
-            requestStackedData(percentageUrl).then((stackedObjects) => {
-                console.log(`[AnalysisPage] useEffect url: ${percentageUrl}`);
-                console.log(`[AnalysisPage] useEffect percentage result: ${stackedObjects.length}`);
-                console.log(`[AnalysisPage] useEffect percentage sample: ${JSON.stringify(stackedObjects?.slice(0, 2), null, 2)}`);
-                // Transformando de IStackedAreaChart para IPercentualAreaChart
-                const percentualObjects: IPercentualAreaChart[] = stackedObjects.map((item) => ({
-                    period: item.period,
-                    value: parseFloat(item.entry[1].toString()), // Pega diretamente o valor de entry[1] como percentual
-                }));
-                setSelectedPercentualData(percentualObjects);
-            });
-        });
+        // buildUrl('sma', selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval).then((smaUrl) => {
+        //     requestStackedData(smaUrl).then((stackedObjects) => {
+        //         console.log(`[AnalysisPage] useEffect url: ${smaUrl}`);
+        //         console.log(`[AnalysisPage] useEffect sma result: ${stackedObjects.length}`);
+        //         console.log(`[AnalysisPage] useEffect sma sample: ${JSON.stringify(stackedObjects?.slice(0, 2), null, 2)}`);
+        //         setSelectedSmaData(stackedObjects);
+        //     });
+        // });
+
+        // buildUrl('sum', selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval).then((sumUrl) => {
+        //     requestStackedData(sumUrl).then((stackedObjects) => {
+        //         console.log(`[AnalysisPage] useEffect url: ${sumUrl}`);
+        //         console.log(`[AnalysisPage] useEffect sum result: ${stackedObjects.length}`);
+        //         console.log(`[AnalysisPage] useEffect sum sample: ${JSON.stringify(stackedObjects?.slice(0, 2), null, 2)}`);
+        //         setSelectedSumData(stackedObjects);
+        //     });
+        // });
+
+        // buildUrl('percentage', selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval).then((percentageUrl) => {
+        //     requestStackedData(percentageUrl).then((stackedObjects) => {
+        //         console.log(`[AnalysisPage] useEffect url: ${percentageUrl}`);
+        //         console.log(`[AnalysisPage] useEffect percentage result: ${stackedObjects.length}`);
+        //         console.log(`[AnalysisPage] useEffect percentage sample: ${JSON.stringify(stackedObjects?.slice(0, 2), null, 2)}`);
+        //         // Transformando de IStackedAreaChart para IPercentualAreaChart
+        //         const percentualObjects: IPercentualAreaChart[] = stackedObjects.map((item) => ({
+        //             period: item.period,
+        //             value: parseFloat(item.entry[1].toString()), // Pega diretamente o valor de entry[1] como percentual
+        //         }));
+        //         setSelectedPercentualData(percentualObjects);
+        //     });
+        // });
 
         const analysisInfos = analysisDescriptions(selectedStartDate, selectedEndDate);
         const initialAnalysisDescription = findAnalysisDescription(selectedAnalysis, selectedStartDate, selectedEndDate, analysisInfos);
         setCurrentAnalysisDescription(initialAnalysisDescription);
     }, [selectedAnalysis, selectedLabel, selectedStartDate, selectedEndDate, selectedState, selectedSource, selectedInterval]);
+
+    useEffect(() => {
+
+        buildParamsUrl(true, undefined, undefined, undefined, undefined, undefined).then((url) => {
+            requestMenu(url).then((objects) => {
+                console.log(`[AnalysisPage] useEffect availableAnalysis: ${url}`);
+                console.log(`[AnalysisPage] useEffect availableAnalysis result: ${objects.length}`);
+                console.log(`[AnalysisPage] useEffect availableAnalysis sample: ${JSON.stringify(objects?.slice(0, 2), null, 2)}`);
+                setAvailableAnalysis(objects);
+            });
+        });
+
+    }, []);
 
     const toggleDrawer = (newOpen: boolean) => () => {
         setDrawerOpen(newOpen);
@@ -335,13 +378,13 @@ const AnalysisPage: FC = () => {
                             <Divider variant="middle" sx={{ margin: '15px' }} />
                             <FormControl fullWidth>
                                 <Select id="analysis-select" value={selectedAnalysis} onChange={handleAnalysisChange}>
-                                    {Constants.availableAnalysis.map((analysis: Label) => (
+                                    {availableAnalysis?.map((analysis: string) => (
                                         <MenuItem
-                                            id={`${analysis.value}-menu-item-analysis`}
-                                            value={analysis.value}
-                                            key={analysis.value}
+                                            id={`${analysis}-menu-item-analysis`}
+                                            value={analysis}
+                                            key={analysis}
                                         >
-                                            {analysis.label}
+                                            {analysis}
                                         </MenuItem>
                                     ))}
                                 </Select>

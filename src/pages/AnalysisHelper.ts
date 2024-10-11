@@ -3,7 +3,55 @@
 
 import Constants from "./AnalysisConstants";
 import { IAnalysisInfo } from "./IAnalysisInfo";
-// src/pages/AnalysisHelper.ts
+
+export const buildParamsUrl = async (
+    analysis?: boolean,
+    country?: boolean,
+    state?: boolean,
+    city?: boolean,
+    source?: boolean,
+    label?: boolean
+): Promise<string> => {
+    const encodedAnalysis = analysis ? encodeURIComponent(analysis) : null;
+    const encodedLabel = label ? encodeURIComponent(label) : null;
+
+    // Base URL usando o caminho fornecido
+    let url = `http://localhost:3001/menu`;
+
+    if (analysis) {
+        url += `/analysis`;
+    }
+    if (state) {
+        url += `/states`;
+    }
+    if (city) {
+        url += `/cities`;
+    }
+    if (country) {
+        url += `/countries`;
+    }
+    if (source) {
+        url += `/sources`;
+    }
+    if (label) {
+        url += `/labels`;
+    }
+
+    // Array para armazenar os parâmetros de consulta
+    const queryParams = [];
+
+    // Adiciona parâmetros opcionais à lista de parâmetros de consulta
+    if (encodedAnalysis && encodedLabel) {
+        queryParams.push(`analysis=${encodedAnalysis}`);
+    }
+
+    // Anexa os parâmetros de consulta à URL, se existirem
+    if (queryParams.length > 0) {
+        url += `?${queryParams.join('&')}`;
+    }
+
+    return url;
+};
 
 export const buildUrl = async (
     path: string,

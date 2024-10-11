@@ -154,16 +154,6 @@ export default class Contants {
 		customParams: {},
 	};
 
-	public static readonly availableAnalysis: Label[] = [
-		{ label: 'Erosões', value: 'erosão' },
-		{ label: 'GEE', value: 'GEE' },
-		{ label: 'NH3', value: 'NH3' },
-		{ label: 'NPK', value: 'NPK' },
-		{ label: 'Orgânicas', value: 'orgânicas' },
-		{ label: 'Pesticidas', value: 'pesticidas' },
-		{ label: 'Poluições', value: 'poluição' },
-	];
-
 	public static readonly availableLabels: Label[] = [
 		{ label: 'Pastagem', value: 'pastagem' },
 		{ label: 'Cultura', value: 'cultura' },

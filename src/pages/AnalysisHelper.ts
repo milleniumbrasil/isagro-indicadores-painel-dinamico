@@ -90,6 +90,30 @@ export const buildSourceUrl = async (): Promise<string> => {
     return url;
 };
 
+export const buildStateUrl = async (): Promise<string> => {
+
+    // Base URL usando o caminho fornecido
+    let url = `http://localhost:3001/menu/states`;
+
+    return url;
+};
+
+export const buildCityUrl = async (): Promise<string> => {
+
+    // Base URL usando o caminho fornecido
+    let url = `http://localhost:3001/menu/cities`;
+
+    return url;
+};
+
+export const buildCountryUrl = async (): Promise<string> => {
+
+    // Base URL usando o caminho fornecido
+    let url = `http://localhost:3001/menu/countries`;
+
+    return url;
+};
+
 export const buildUrl = async (
     path: string,
     startDate: Date,

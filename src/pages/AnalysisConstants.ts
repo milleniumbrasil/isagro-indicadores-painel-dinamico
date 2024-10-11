@@ -114,12 +114,6 @@ export default class Contants {
 		customParams: {},
 	};
 
-	public static readonly availableSources = [
-		{ label: 'Organização para a Cooperação e Desenvolvimento Econômico', value: 'OCDE' },
-		{ label: 'Instituto Agronômico de Campinas', value: 'IAC' },
-		{ label: 'Universidade de Brasília', value: 'UNB' },
-	];
-
 	// Mapeamento do nome do estado para o código ISO
 	public static readonly stateToIsoCodeMap: { [key: string]: string } = {
 		Acre: 'AC',

@@ -310,7 +310,16 @@ const AnalysisPage: FC = () => {
             </Button>
             {Params()}
             <div>
-                {MapBox()}
+
+            {MapBox(selectedMapState,
+                        selectedWidth,
+                        selectedHeight,
+                        currentAnalysisDescription,
+                        (zoom: number) => setSelectedZoom(zoom),
+                        (b: Array<number>) => setSelectedBbox(b.join(', ')),
+                        (c: Array<number>) => setSelectedCenter(c.join(', '))
+            )}
+
                 <Paper sx={{ width: '98%', alignItems: 'center', padding: '5px', margin: '5px', marginRight: '30px' }}>
                     <Typography variant="h3" sx={{ padding: '15px', marginTop: '15px' }}>
                         Soma agregada na linha do tempo
@@ -367,40 +376,6 @@ const AnalysisPage: FC = () => {
             </div>
         </AnalysisProvider>
     );
-
-    function MapBox() {
-        return <Box sx={{ display: 'flex', '& > :not(style)': { m: 1 } }}>
-            <Box sx={{ flexGrow: 1, margin: '30px', padding: '30px' }}>
-                <Typography variant="h2" sx={{ padding: '15px' }}>
-                    <img src="/logo-isagro.png" alt="Logo Isagro" style={{ width: '150px', height: 'auto', margin: '15px' }} />
-                    Indicadores agro-socioambientais do Brasil
-                </Typography>
-                <Typography variant="h4" sx={{ padding: '15px' }}>
-                    Inteligência estratégica para a sustentabilidade da agropecuária nacional
-                </Typography>
-                <div style={{ border: 5, borderColor: grayBackgroundColor }}>
-                    <Map
-                        estado={selectedMapState}
-                        width={selectedWidth}
-                        height={selectedHeight}
-                        coordinateOnClick={(coordinate: Array<number>) => alert(`Coordenada do clique: ${coordinate}`)}
-                        onZoomChange={(zoom: number) => setSelectedZoom(zoom)}
-                        onBboxChange={(b: Array<number>) => setSelectedBbox(b.join(', '))}
-                        onCenterChange={(c: Array<number>) => setSelectedCenter(c.join(', '))}
-                        version="1.3.0"
-                        request="GetMap"
-                        srs="EPSG:4326"
-                        layers="CCAR:BCIM_Unidade_Federacao_A"
-                        format="image/jpeg"
-                        transparent={false}
-                        bgcolor="0xFFFFFF" />
-                </div>
-                <Typography variant="h3" sx={{ padding: '10px' }}>
-                    {currentAnalysisDescription?.title || 'Informações Detalhadas da Análise'}
-                </Typography>
-            </Box>
-        </Box>;
-    }
 
     function Params() {
         return <SwipeableDrawer anchor={'right'}
@@ -660,6 +635,47 @@ const AnalysisPage: FC = () => {
 };
 
 export default AnalysisPage;
+
+function MapBox(selectedMapState: iEstado,
+                    selectedWidth: number,
+                    selectedHeight: number,
+                    currentAnalysisDescription: IAnalysisInfo,
+                    _setSelectedZoom: (zoom: number) => void|undefined,
+                    _setSelectedBbox: (b: Array<number>) => void|undefined,
+                    _setSelectedCenter: (c: Array<number>) => void|undefined
+                ) {
+    return (<Box sx={{ display: 'flex', '& > :not(style)': { m: 1 } }}>
+                <Box sx={{ flexGrow: 1, margin: '30px', padding: '30px' }}>
+                    <Typography variant="h2" sx={{ padding: '15px' }}>
+                        <img src="/logo-isagro.png" alt="Logo Isagro" style={{ width: '150px', height: 'auto', margin: '15px' }} />
+                        Indicadores agro-socioambientais do Brasil
+                    </Typography>
+                    <Typography variant="h4" sx={{ padding: '15px' }}>
+                        Inteligência estratégica para a sustentabilidade da agropecuária nacional
+                    </Typography>
+                    <div style={{ border: 5, borderColor: grayBackgroundColor }}>
+                        <Map
+                            estado={selectedMapState}
+                            width={selectedWidth}
+                            height={selectedHeight}
+                            coordinateOnClick={(coordinate: Array<number>) => alert(`Coordenada do clique: ${coordinate}`)}
+                            onZoomChange={_setSelectedZoom}
+                            onBboxChange={_setSelectedBbox}
+                            onCenterChange={_setSelectedCenter}
+                            version="1.3.0"
+                            request="GetMap"
+                            srs="EPSG:4326"
+                            layers="CCAR:BCIM_Unidade_Federacao_A"
+                            format="image/jpeg"
+                            transparent={false}
+                            bgcolor="0xFFFFFF" />
+                    </div>
+                    <Typography variant="h3" sx={{ padding: '10px' }}>
+                        {currentAnalysisDescription?.title || 'Informações Detalhadas da Análise'}
+                    </Typography>
+                </Box>
+            </Box>);
+}
 
 function PercentualAreaChartCard(_defaultBackgroundColor: string, _indicatorDescription: IAnalysisInfo, _indicator: string, _startDate: Date, _endDate: Date, _data: IPercentualAreaChart[], _defaultPalette: string[]) {
     return <Card

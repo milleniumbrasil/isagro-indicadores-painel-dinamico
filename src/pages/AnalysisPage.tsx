@@ -321,57 +321,38 @@ const AnalysisPage: FC = () => {
             )}
 
                 <Paper sx={{ width: '98%', alignItems: 'center', padding: '5px', margin: '5px', marginRight: '30px' }}>
-                    <Typography variant="h3" sx={{ padding: '15px', marginTop: '15px' }}>
-                        Soma agregada na linha do tempo
-                    </Typography>
-                    <Typography variant="body2" sx={{ padding: '10px' }}>
-                        Este gráfico de soma agregada apresenta o total acumulado de dados ao longo do período selecionado. Ele exibe o
-                        volume ou a soma dos valores de cada rótulo em diferentes períodos, permitindo a visualização de tendências e
-                        comparações entre as categorias ao longo do tempo.
-                    </Typography>
-                    <Typography variant="body2" sx={{ padding: '10px' }}>
-                        Para analisá-lo corretamente, observe a altura de cada camada no gráfico, que representa a contribuição de um rótulo
-                        específico em relação ao total acumulado. A soma de todas as camadas em um determinado período reflete o valor total
-                        acumulado até aquele momento.
-                    </Typography>
 
-                    {StackedAreaChartCard(selectedChartDefaultBackgroundColor, currentAnalysisDescription, selectedStartDate, selectedEndDate, selectedSumData, selectedChartDefaultPalette)}
+                    {StackedAreaChartCard("Soma agregada na linha do tempo",
+                        "Este gráfico de soma agregada apresenta o total acumulado de dados ao longo do período selecionado. Ele exibe o volume ou a soma dos valores de cada rótulo em diferentes períodos, permitindo a visualização de tendências e comparações entre as categorias ao longo do tempo.",
+                        "Para analisá-lo corretamente, observe a altura de cada camada no gráfico, que representa a contribuição de um rótulo específico em relação ao total acumulado. A soma de todas as camadas em um determinado período reflete o valor total acumulado até aquele momento.",
+                        selectedChartDefaultBackgroundColor,
+                        currentAnalysisDescription,
+                        selectedStartDate,
+                        selectedEndDate,
+                        selectedSumData,
+                        selectedChartDefaultPalette)}
 
-                    <Typography variant="h3" sx={{ padding: '15px', marginTop: '15px' }}>
-                        Média Móvel Simples
-                    </Typography>
-                    <Typography variant="body2" sx={{ padding: '10px' }}>
-                        Este gráfico de Média Móvel Simples utiliza uma técnica estatística para suavizar as variações dos dados ao longo do
-                        tempo, calculando a média dos valores de um conjunto de períodos consecutivos. A principal vantagem desta abordagem
-                        é eliminar flutuações de curto prazo, revelando tendências mais estáveis e padrões que poderiam ser obscurecidos
-                        pelas variações naturais dos dados.
-                    </Typography>
-                    <Typography variant="body2" sx={{ padding: '10px' }}>
-                        Para analisá-lo corretamente, observe que cada ponto do gráfico representa a média dos valores de um número fixo de
-                        períodos anteriores. Dessa forma, ele suaviza os picos e vales dos dados brutos, proporcionando uma visão mais clara
-                        da direção geral e das tendências de longo prazo. Esse tipo de análise é ideal para identificar se uma variável está
-                        aumentando ou diminuindo ao longo do tempo de forma mais consistente, ao invés de seguir um comportamento errático.
-                    </Typography>
+                    {StackedAreaChartCard("Média Móvel Simples",
+                        "Este gráfico de Média Móvel Simples utiliza uma técnica estatística para suavizar as variações dos dados ao longo do tempo, calculando a média dos valores de um conjunto de períodos consecutivos. A principal vantagem desta abordagem é eliminar flutuações de curto prazo, revelando tendências mais estáveis e padrões que poderiam ser obscurecidos pelas variações naturais dos dados.",
+                        "Para analisá-lo corretamente, observe que cada ponto do gráfico representa a média dos valores de um número fixo de períodos anteriores. Dessa forma, ele suaviza os picos e vales dos dados brutos, proporcionando uma visão mais clara da direção geral e das tendências de longo prazo. Esse tipo de análise é ideal para identificar se uma variável está aumentando ou diminuindo ao longo do tempo de forma mais consistente, ao invés de seguir um comportamento errático.",
+                        selectedChartDefaultBackgroundColor,
+                        currentAnalysisDescription,
+                        selectedStartDate,
+                        selectedEndDate,
+                        selectedSmaData,
+                        selectedChartDefaultPalette)}
 
-                    {StackedAreaChartCard(selectedChartDefaultBackgroundColor, currentAnalysisDescription, selectedStartDate, selectedEndDate, selectedSmaData, selectedChartDefaultPalette)}
-
-                    <Typography variant="h3" sx={{ padding: '15px', marginTop: '15px' }}>
-                        Percentuais na linha do tempo
-                    </Typography>
-                    <Typography variant="body2" sx={{ padding: '10px' }}>
-                        Este gráfico de percentual utiliza uma técnica de visualização que exibe os dados como uma proporção em relação ao
-                        valor total, facilitando a análise das variações relativas ao longo do tempo. Ele é útil para identificar mudanças
-                        na composição percentual de um dado conjunto, permitindo verificar, por exemplo, como diferentes categorias (como
-                        áreas cultivadas) contribuem para o todo.
-                    </Typography>
-                    <Typography variant="body2" sx={{ padding: '10px' }}>
-                        Para analisá-lo corretamente, observe as mudanças no valor percentual entre os períodos selecionados. A tendência de
-                        aumento ou diminuição indica a variação da importância relativa de cada categoria ao longo do tempo. Este tipo de
-                        gráfico é particularmente útil para comparações de categorias em diferentes períodos, ajudando a entender a dinâmica
-                        de crescimento ou redução em termos proporcionais.
-                    </Typography>
-
-                    {PercentualAreaChartCard(selectedChartDefaultBackgroundColor, currentAnalysisDescription, selectedAnalysis, selectedStartDate, selectedEndDate, selectedPercentualData, selectedChartDefaultPalette)}
+                    {PercentualAreaChartCard(
+                        "Percentuais na linha do tempo",
+                        "Este gráfico de percentual utiliza uma técnica de visualização que exibe os dados como uma proporção em relação ao valor total, facilitando a análise das variações relativas ao longo do tempo. Ele é útil para identificar mudanças na composição percentual de um dado conjunto, permitindo verificar, por exemplo, como diferentes categorias (como áreas cultivadas) contribuem para o todo.",
+                        "Para analisá-lo corretamente, observe as mudanças no valor percentual entre os períodos selecionados. A tendência de aumento ou diminuição indica a variação da importância relativa de cada categoria ao longo do tempo. Este tipo de gráfico é particularmente útil para comparações de categorias em diferentes períodos, ajudando a entender a dinâmica de crescimento ou redução em termos proporcionais.",
+                        selectedChartDefaultBackgroundColor,
+                        currentAnalysisDescription,
+                        selectedAnalysis,
+                        selectedStartDate,
+                        selectedEndDate,
+                        selectedPercentualData,
+                        selectedChartDefaultPalette)}
                 </Paper>
             </div>
         </AnalysisProvider>
@@ -700,54 +681,93 @@ function MapBox(selectedMapState: iEstado,
             </Box>);
 }
 
-function PercentualAreaChartCard(_defaultBackgroundColor: string, _indicatorDescription: IAnalysisInfo, _indicator: string, _startDate: Date, _endDate: Date, _data: IPercentualAreaChart[], _defaultPalette: string[]) {
-    return <Card
-        variant="outlined"
-        sx={{ alignItems: 'center', width: '98%', backgroundColor: _defaultBackgroundColor, margin: '10px' }}
-    >
-        <CardContent>
-            <Typography variant="h6" sx={{ padding: '15px' }}>
-                {_indicatorDescription?.title || _indicator} por período{' '}
-                {`${_startDate.getFullYear()} à ${_endDate.getFullYear()}`}
+function PercentualAreaChartCard(   _title:string,
+                                    _description: string,
+                                    _body: string,
+                                    _defaultBackgroundColor: string,
+                                    _indicatorDescription: IAnalysisInfo,
+                                    _indicator: string,
+                                    _startDate: Date,
+                                    _endDate: Date,
+                                    _data: IPercentualAreaChart[],
+                                    _defaultPalette: string[]
+                                ) {
+    return (
+        <>
+            <Typography variant="h3" sx={{ padding: '15px', marginTop: '15px' }}>
+            {_title}
             </Typography>
             <Typography variant="body2" sx={{ padding: '10px' }}>
-                {_indicatorDescription?.description}
+                {_description}
             </Typography>
-            <PercentualAreaChart
-                width={400}
-                height={250}
-                data={_data}
-                valueLabel="Área"
-                fillColor={_defaultPalette[_defaultPalette.length % _defaultPalette.length]}
-                strokeColor={_defaultPalette[_defaultPalette.length % _defaultPalette.length]} />
-        </CardContent>
-    </Card>;
+            <Typography variant="body2" sx={{ padding: '10px' }}>
+                {_body}
+            </Typography>
+            <Card
+                variant="outlined"
+                sx={{ alignItems: 'center', width: '98%', backgroundColor: _defaultBackgroundColor, margin: '10px' }}
+            >
+                <CardContent>
+                    <Typography variant="h6" sx={{ padding: '15px' }}>
+                        {_indicatorDescription?.title || _indicator} por período{' '}
+                        {`${_startDate.getFullYear()} à ${_endDate.getFullYear()}`}
+                    </Typography>
+                    <Typography variant="body2" sx={{ padding: '10px' }}>
+                        {_indicatorDescription?.description}
+                    </Typography>
+                    <PercentualAreaChart
+                        width={400}
+                        height={250}
+                        data={_data}
+                        valueLabel="Área"
+                        fillColor={_defaultPalette[_defaultPalette.length % _defaultPalette.length]}
+                        strokeColor={_defaultPalette[_defaultPalette.length % _defaultPalette.length]} />
+                </CardContent>
+            </Card>
+        </>
+    );
 }
 
-function StackedAreaChartCard(_defaultBackgroundColor: string,
-                        _indicatorDescription: IAnalysisInfo,
-                        _startDate: Date, selectedEndDate: Date,
-                        _data: IStackedAreaChart[],
-                        _chartDefaultPalette: string[]) {
-    return <Card
-        variant="outlined"
-        sx={{ alignItems: 'center', width: '98%', backgroundColor: _defaultBackgroundColor, margin: '10px' }}
-    >
-        <CardContent>
-            <Typography variant="h6" sx={{ padding: '15px' }}>
-                {_indicatorDescription?.title} por período{' '}
-                {`${_startDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
+function StackedAreaChartCard(  _title:string,
+                                _description: string,
+                                _body: string,
+                                _defaultBackgroundColor: string,
+                                _indicatorDescription: IAnalysisInfo,
+                                _startDate: Date, selectedEndDate: Date,
+                                _data: IStackedAreaChart[],
+                                _chartDefaultPalette: string[]) {
+    return (
+        <>
+            <Typography variant="h3" sx={{ padding: '15px', marginTop: '15px' }}>
+                {_title}
             </Typography>
             <Typography variant="body2" sx={{ padding: '10px' }}>
-                {_indicatorDescription?.description}
+                {_description}
             </Typography>
+            <Typography variant="body2" sx={{ padding: '10px' }}>
+                {_body}
+            </Typography>
+            <Card
+                variant="outlined"
+                sx={{ alignItems: 'center', width: '98%', backgroundColor: _defaultBackgroundColor, margin: '10px' }}
+            >
+                <CardContent>
+                    <Typography variant="h6" sx={{ padding: '15px' }}>
+                        {_indicatorDescription?.title} por período{' '}
+                        {`${_startDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
+                    </Typography>
+                    <Typography variant="body2" sx={{ padding: '10px' }}>
+                        {_indicatorDescription?.description}
+                    </Typography>
 
-            <StackedAreaChart
-                width={400}
-                height={250}
-                data={_data}
-                defaultPalette={_chartDefaultPalette} />
-        </CardContent>
-    </Card>;
+                    <StackedAreaChart
+                        width={400}
+                        height={250}
+                        data={_data}
+                        defaultPalette={_chartDefaultPalette} />
+                </CardContent>
+            </Card>
+        </>
+    );
 }
 

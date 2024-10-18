@@ -371,13 +371,13 @@ const AnalysisPage: FC = () => {
                     </Typography>
                 </Box>
             </Box>
-                <Paper sx={{ width: '98%', alignItems: 'center', padding: '5px', margin: '5px', marginRight: '30px' }}>
+                <Paper sx={{ width: '98%', alignItems: 'center', padding: '10px', margin: '5px', marginRight: '30px', marginLeft: '30px' }}>
                     <Box sx={{ display: 'flex', '& > :not(style)': { m: 1 } }}>
                         <Box sx={{ flexGrow: 1, width: '50%' }}>
                         {StackedAreaChartCard("Soma agregada na linha do tempo",
                                 "Este gráfico de soma agregada apresenta o total acumulado de dados ao longo do período selecionado. Ele exibe o volume ou a soma dos valores de cada rótulo em diferentes períodos, permitindo a visualização de tendências e comparações entre as categorias ao longo do tempo.",
                                 "Para analisá-lo corretamente, observe a altura de cada camada no gráfico, que representa a contribuição de um rótulo específico em relação ao total acumulado. A soma de todas as camadas em um determinado período reflete o valor total acumulado até aquele momento.",
-                                '10px', 200, 200,
+                                '10px', 150, 200,
                                 selectedChartDefaultBackgroundColor,
                                 currentAnalysisDescription,
                                 selectedStartDate,
@@ -389,7 +389,7 @@ const AnalysisPage: FC = () => {
                         {StackedAreaChartCard("Média Móvel Simples",
                                 "Este gráfico de Média Móvel Simples utiliza uma técnica estatística para suavizar as variações dos dados ao longo do tempo, calculando a média dos valores de um conjunto de períodos consecutivos. A principal vantagem desta abordagem é eliminar flutuações de curto prazo, revelando tendências mais estáveis e padrões que poderiam ser obscurecidos pelas variações naturais dos dados.",
                                 "Para analisá-lo corretamente, observe que cada ponto do gráfico representa a média dos valores de um número fixo de períodos anteriores. Dessa forma, ele suaviza os picos e vales dos dados brutos, proporcionando uma visão mais clara da direção geral e das tendências de longo prazo. Esse tipo de análise é ideal para identificar se uma variável está aumentando ou diminuindo ao longo do tempo de forma mais consistente, ao invés de seguir um comportamento errático.",
-                                '10px', 200, 200,
+                                '10px', 150, 200,
                                 selectedChartDefaultBackgroundColor,
                                 currentAnalysisDescription,
                                 selectedStartDate,
@@ -539,14 +539,8 @@ function StackedAreaChartCard(  _title:string,
                                 _chartDefaultPalette: string[]) {
     return (
         <>
-            <Typography variant="h3" sx={{ padding: _padding, marginTop: '10px' }}>
+            <Typography variant="h5" sx={{ padding: _padding, marginTop: '10px' }}>
                 {_title}
-            </Typography>
-            <Typography variant="body2" sx={{ padding: _padding }}>
-                {_description}
-            </Typography>
-            <Typography variant="body2" sx={{ padding: _padding }}>
-                {_body}
             </Typography>
             <Card
                 variant="outlined"

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { AreaChart as RechatsStackedAreaChart, BarChart as RechartsBarChart, ComposedChart, Bar, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, Line } from 'recharts';
 import { whiteBackgroundColor, palettes } from '../colors';
 import { IStackedAreaChart } from './IStackedAreaChart';
+import { Padding } from '@mui/icons-material';
 
 export interface INormalizedData {
     period: string;
@@ -197,12 +198,12 @@ const BarLineAreaComposedChart: React.FC<BarLineAreaComposedChartProps> = (props
                         left: 20,
                         bottom: 10,
                     }}
-                    style={{ fontSize: 10 }}
+                    style={{ fontSize: 10, padding: '15px' }}
                 >
                     <CartesianGrid strokeDasharray="0" />
                     <XAxis dataKey={dataKey} />
                     <YAxis tickFormatter={tickFormatter} ticks={dynamicTicks} />
-                    <Legend formatter={legendFormatter} iconType={'triangle'} layout="vertical" verticalAlign="middle" align='left' margin={{ top: 10, right: 20, bottom: 10, left: 20 }} />
+                    <Legend formatter={legendFormatter} iconType={'triangle'} layout="vertical" verticalAlign="middle" align='left' />
                     <Tooltip content={<CustomTooltip />} />
                     {attributeNames.map((item, index) => (
                         <Bar

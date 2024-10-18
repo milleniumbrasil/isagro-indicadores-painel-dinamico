@@ -353,9 +353,9 @@ const AnalysisPage: FC = () => {
                         (zoom: number) => setSelectedZoom(zoom),
                         (bbox: Array<number>) => setSelectedBbox(bbox.join(', ')),
                         (center: Array<number>) => setSelectedCenter(center.join(', ')) )}
-                {SearchParamsBox(   selectedState,
-                                    selectedStartDate.toISOString(),
-                                    selectedEndDate.toISOString(),
+                {DashboardParamsBox(selectedState,
+                                    selectedStartDate.getFullYear().toString(),
+                                    selectedEndDate.getFullYear().toString(),
                                     selectedAnalysis,
                                     selectedLabel,
                                     selectedSource,
@@ -371,38 +371,35 @@ const AnalysisPage: FC = () => {
                     </Typography>
                 </Box>
             </Box>
-                <Paper sx={{ width: '98%', alignItems: 'center', padding: '10px', margin: '5px', marginRight: '30px', marginLeft: '30px' }}>
-                    <Box sx={{ display: 'flex', '& > :not(style)': { m: 1 } }}>
-                        <Box sx={{ flexGrow: 1, width: '50%' }}>
-                        {StackedAreaChartCard("Soma agregada na linha do tempo",
-                                "Este gráfico de soma agregada apresenta o total acumulado de dados ao longo do período selecionado. Ele exibe o volume ou a soma dos valores de cada rótulo em diferentes períodos, permitindo a visualização de tendências e comparações entre as categorias ao longo do tempo.",
-                                "Para analisá-lo corretamente, observe a altura de cada camada no gráfico, que representa a contribuição de um rótulo específico em relação ao total acumulado. A soma de todas as camadas em um determinado período reflete o valor total acumulado até aquele momento.",
-                                '10px', 150, 200,
-                                selectedChartDefaultBackgroundColor,
-                                currentAnalysisDescription,
-                                selectedStartDate,
-                                selectedEndDate,
-                                selectedSumData,
-                                selectedChartDefaultPalette)}
-                        </Box>
-                        <Box sx={{ flexGrow: 1, width: '50%' }}>
-                        {StackedAreaChartCard("Média Móvel Simples",
-                                "Este gráfico de Média Móvel Simples utiliza uma técnica estatística para suavizar as variações dos dados ao longo do tempo, calculando a média dos valores de um conjunto de períodos consecutivos. A principal vantagem desta abordagem é eliminar flutuações de curto prazo, revelando tendências mais estáveis e padrões que poderiam ser obscurecidos pelas variações naturais dos dados.",
-                                "Para analisá-lo corretamente, observe que cada ponto do gráfico representa a média dos valores de um número fixo de períodos anteriores. Dessa forma, ele suaviza os picos e vales dos dados brutos, proporcionando uma visão mais clara da direção geral e das tendências de longo prazo. Esse tipo de análise é ideal para identificar se uma variável está aumentando ou diminuindo ao longo do tempo de forma mais consistente, ao invés de seguir um comportamento errático.",
-                                '10px', 150, 200,
-                                selectedChartDefaultBackgroundColor,
-                                currentAnalysisDescription,
-                                selectedStartDate,
-                                selectedEndDate,
-                                selectedSmaData,
-                                selectedChartDefaultPalette)}
-                        </Box>
+            <Paper sx={{ width: '98%', alignItems: 'center', padding: '10px', margin: '5px', marginRight: '30px', marginLeft: '30px' }}>
+                <Box sx={{ display: 'flex', '& > :not(style)': { m: 1 } }}>
+                    <Box sx={{ flexGrow: 1, width: '50%' }}>
+                    {StackedAreaChartCard("Soma agregada na linha do tempo",
+                            '10px', 150, 200,
+                            selectedChartDefaultBackgroundColor,
+                            currentAnalysisDescription,
+                            selectedStartDate,
+                            selectedEndDate,
+                            selectedSumData,
+                            selectedChartDefaultPalette)}
                     </Box>
-                </Paper>
+                    <Box sx={{ flexGrow: 1, width: '50%' }}>
+                    {StackedAreaChartCard("Média Móvel Simples na linha do tempo",
+                            '10px', 150, 200,
+                            selectedChartDefaultBackgroundColor,
+                            currentAnalysisDescription,
+                            selectedStartDate,
+                            selectedEndDate,
+                            selectedSmaData,
+                            selectedChartDefaultPalette)}
+                    </Box>
+                </Box>
+            </Paper>
+            <Paper sx={{ width: '98%', alignItems: 'center', padding: '10px', margin: '5px', marginRight: '30px', marginLeft: '30px' }}>
+                <Box sx={{ display: 'flex', '& > :not(style)': { m: 1 } }}>
+                    <Box sx={{ flexGrow: 1, width: '50%' }}>
                     {PercentualAreaChartCard(
                         "Percentuais na linha do tempo",
-                        "Este gráfico de percentual utiliza uma técnica de visualização que exibe os dados como uma proporção em relação ao valor total, facilitando a análise das variações relativas ao longo do tempo. Ele é útil para identificar mudanças na composição percentual de um dado conjunto, permitindo verificar, por exemplo, como diferentes categorias (como áreas cultivadas) contribuem para o todo.",
-                        "Para analisá-lo corretamente, observe as mudanças no valor percentual entre os períodos selecionados. A tendência de aumento ou diminuição indica a variação da importância relativa de cada categoria ao longo do tempo. Este tipo de gráfico é particularmente útil para comparações de categorias em diferentes períodos, ajudando a entender a dinâmica de crescimento ou redução em termos proporcionais.",
                         selectedChartDefaultBackgroundColor,
                         currentAnalysisDescription,
                         selectedAnalysis,
@@ -410,6 +407,20 @@ const AnalysisPage: FC = () => {
                         selectedEndDate,
                         selectedPercentualData,
                         selectedChartDefaultPalette)}
+                    </Box>
+                    <Box sx={{ flexGrow: 1, width: '50%' }}>
+                    {StackedAreaChartCard("Média Móvel Simples na linha do tempo",
+                            '10px', 150, 200,
+                            selectedChartDefaultBackgroundColor,
+                            currentAnalysisDescription,
+                            selectedStartDate,
+                            selectedEndDate,
+                            selectedSmaData,
+                            selectedChartDefaultPalette)}
+                    </Box>
+                </Box>
+            </Paper>
+
             </div>
         </AnalysisProvider>
     );
@@ -446,7 +457,7 @@ function MapBox(    _mapState: iEstado,
     );
 }
 
-function SearchParamsBox(
+function DashboardParamsBox(
                     _stateName: string,
                     _startDate: string,
                     _endDate: string,
@@ -468,11 +479,11 @@ function SearchParamsBox(
                             <li><b>Início:</b> {_startDate}</li>
                             <li><b>Fim:</b> {_endDate}</li>
                             <li><b>Indicador:</b> {_indicator}</li>
-                            <li><b>Rótulo:</b> {_label?_label:'Não selecionado.'}</li>
-                            <li><b>Fonte:</b> {_source?_source:'Não selecionado.'}</li>
-                            <li><b>Intervalo:</b> {_interval?_interval:'Não selecionado.'}</li>
-                            <li><b>Fundo:</b> {_backgroundColor}</li>
-                            <li><b>Paleta:</b> {_palette}</li>
+                            {_label ?? <li><b>Rótulo:</b> {_label}</li>}
+                            {_source ?? <li><b>Fonte:</b> {_source}</li>}
+                            {_interval ?? <li><b>Intervalo:</b> {_interval}</li>}
+                            {_backgroundColor ?? <li><b>Fundo:</b> {_backgroundColor}</li>}
+                            {_palette ?? <li><b>Paleta:</b> {_palette}</li>}
                         </ul>
                     </Typography>
                 </Box>
@@ -480,8 +491,6 @@ function SearchParamsBox(
 }
 
 function PercentualAreaChartCard(   _title:string,
-                                    _description: string,
-                                    _body: string,
                                     _defaultBackgroundColor: string,
                                     _indicatorDescription: IAnalysisInfo,
                                     _indicator: string,
@@ -492,14 +501,8 @@ function PercentualAreaChartCard(   _title:string,
                                 ) {
     return (
         <>
-            <Typography variant="h3" sx={{ padding: '15px', marginTop: '15px' }}>
+            <Typography variant="h5" sx={{ padding: '15px', marginTop: '15px' }}>
             {_title}
-            </Typography>
-            <Typography variant="body2" sx={{ padding: '10px' }}>
-                {_description}
-            </Typography>
-            <Typography variant="body2" sx={{ padding: '10px' }}>
-                {_body}
             </Typography>
             <Card
                 variant="outlined"
@@ -527,8 +530,6 @@ function PercentualAreaChartCard(   _title:string,
 }
 
 function StackedAreaChartCard(  _title:string,
-                                _description: string,
-                                _body: string,
                                 _padding: string,
                                 _width: number,
                                 _height: number,
@@ -562,6 +563,7 @@ function StackedAreaChartCard(  _title:string,
                         defaultPalette={_chartDefaultPalette} />
                 </CardContent>
             </Card>
+
         </>
     );
 }

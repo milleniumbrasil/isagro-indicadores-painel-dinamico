@@ -193,16 +193,16 @@ const StackedAreaChart: React.FC<StackedAreaChartProps> = (props) => {
                     data={internalData}
                     margin={{
                         top: 10,
-                        right: 50,
-                        left: 10,
+                        right: 20,
+                        left: 20,
                         bottom: 10,
                     }}
-                    style={{ fontSize: 8 }}
+                    style={{ fontSize: 10 }}
                 >
                     <CartesianGrid strokeDasharray="0" />
                     <XAxis dataKey={dataKey} />
                     <YAxis tickFormatter={tickFormatter} ticks={dynamicTicks} />
-                    <Legend formatter={legendFormatter} iconType={'triangle'} />
+                    <Legend formatter={legendFormatter} iconType={'triangle'} layout="vertical" verticalAlign="middle" align='left' margin={{ top: 10, right: 20, bottom: 10, left: 20 }} />
                     <Tooltip content={<CustomTooltip />} />
                     {attributeNames.map((item, index) => (
                         <Area

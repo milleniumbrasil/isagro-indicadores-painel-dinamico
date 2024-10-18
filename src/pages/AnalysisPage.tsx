@@ -372,34 +372,10 @@ const AnalysisPage: FC = () => {
                 </Box>
             </Box>
 
-            <Paper sx={{ width: '96%', alignItems: 'center', padding: '10px', margin: '15px', marginRight: '30px', marginLeft: '30px' }}>
+            <Paper sx={{ width: '96%', alignItems: 'center', margin: '15px' }}>
                 <Box sx={{ display: 'flex', '& > :not(style)': { m: 1 } }}>
-                    <Box sx={{ flexGrow: 1, width: '50%' }}>
-                    {StackedAreaChartCard("",
-                            '10px', 150, 200,
-                            selectedChartDefaultBackgroundColor,
-                            currentAnalysisDescription,
-                            selectedStartDate,
-                            selectedEndDate,
-                            selectedSumData,
-                            selectedChartDefaultPalette)}
-                    </Box>
-                    <Box sx={{ flexGrow: 1, width: '50%' }}>
                     {BarChartCard("",
-                                '10px', 150, 200,
-                                selectedChartDefaultBackgroundColor,
-                                currentAnalysisDescription,
-                                selectedStartDate,
-                                selectedEndDate,
-                                selectedSumData,
-                                selectedChartDefaultPalette)}
-                    </Box>
-                </Box>
-            </Paper>
-            <Paper sx={{ width: '96%', alignItems: 'center', padding: '10px', margin: '15px', marginRight: '30px', marginLeft: '30px' }}>
-                <Box sx={{ display: 'flex', '& > :not(style)': { m: 1 } }}>
-                    {StackedAreaChartCard("",
-                                '10px', 150, 200,
+                                150, 200,
                                 selectedChartDefaultBackgroundColor,
                                 currentAnalysisDescription,
                                 selectedStartDate,
@@ -408,10 +384,10 @@ const AnalysisPage: FC = () => {
                                 selectedChartDefaultPalette)}
                 </Box>
             </Paper>
-            <Paper sx={{ width: '96%', alignItems: 'center', padding: '10px', margin: '15px', marginRight: '30px', marginLeft: '30px' }}>
+            <Paper sx={{ width: '96%', alignItems: 'center', margin: '15px' }}>
                 <Box sx={{ display: 'flex', '& > :not(style)': { m: 1 } }}>
                     {BarChartCard("",
-                                '10px', 150, 200,
+                                150, 200,
                                 selectedChartDefaultBackgroundColor,
                                 currentAnalysisDescription,
                                 selectedStartDate,
@@ -569,29 +545,26 @@ function StackedAreaChartCard(  _title:string,
 }
 
 function BarChartCard(  _title:string,
-                                _padding: string,
-                                _width: number,
-                                _height: number,
-                                _defaultBackgroundColor: string,
-                                _indicatorDescription: IAnalysisInfo,
-                                _startDate: Date, selectedEndDate: Date,
-                                _data: IStackedAreaChart[],
-                                _chartDefaultPalette: string[]) {
+                        _width: number,
+                        _height: number,
+                        _defaultBackgroundColor: string,
+                        _indicatorDescription: IAnalysisInfo,
+                        _startDate: Date,
+                        _endDate: Date,
+                        _data: IStackedAreaChart[],
+                        _palette: string[]) {
     return (
         <>
-            <Typography variant="h5" sx={{ padding: _padding, marginTop: '10px' }}>
+            <Typography variant="h5">
                 {_title}
             </Typography>
-            <Card
-                variant="outlined"
-                sx={{ alignItems: 'center', width: '100%', backgroundColor: _defaultBackgroundColor, margin: '10px' }}
-            >
+            <Card variant="outlined" sx={{ alignItems: 'center', width: '100%', backgroundColor: _defaultBackgroundColor }} >
                 <CardContent>
-                    <Typography variant="h6" sx={{ padding: _padding }}>
+                    <Typography variant="h6">
                         {_indicatorDescription?.title} por período{' '}
-                        {`${_startDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
+                        {`${_startDate.getFullYear()} à ${_endDate.getFullYear()}`}
                     </Typography>
-                    <Typography variant="body2" sx={{ padding: _padding }}>
+                    <Typography variant="body2">
                         {_indicatorDescription?.description}
                     </Typography>
 
@@ -599,10 +572,9 @@ function BarChartCard(  _title:string,
                         width={_width}
                         height={_height}
                         data={_data}
-                        defaultPalette={_chartDefaultPalette} />
+                        defaultPalette={_palette} />
                 </CardContent>
             </Card>
-
         </>
     );
 }

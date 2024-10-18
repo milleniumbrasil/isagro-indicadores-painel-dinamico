@@ -49,8 +49,8 @@ import { buildAnalysisUrl, buildLabelsUrl, buildParamsUrl, buildSourceUrl, build
 import { brownBackgroundColor, grayBackgroundColor, palettes, backgroundColors } from '../components/colors';
 
 import { DateRangePicker } from 'rsuite';
-import { Loader } from 'rsuite';
 import { BsCalendar2MonthFill } from 'react-icons/bs';
+import { Loader } from 'rsuite';
 import { DateRange } from 'rsuite/esm/DateRangePicker';
 
 import { IStackedAreaChart } from '../components/charts/IStackedAreaChart';
@@ -64,6 +64,7 @@ import StackedAreaChart from '../components/charts/StackedAreaChart';
 import BarChart from '../components/charts/BarChart';
 import BarLineAreaComposedChart from '../components/charts/BarLineAreaComposedChart';
 import PieChart from '../components/charts/PieChart';
+import ParamsSwipeableDrawer from '../components/ParamsSwipeableDrawer';
 
 export function Loading() {
     return (
@@ -308,7 +309,29 @@ const AnalysisPage: FC = () => {
                 }} >
                 <MoreVertIcon />
             </Button>
-            {ParamsSwipeableDrawer(drawerOpen, toggleDrawer, selectedStartDate, selectedEndDate, handleChangeRangeDates, selectedState, handleStateChange, selectedAnalysis, handleAnalysisChange, availableAnalysis, selectedLabel, handleLabelChange, availableLabels, selectedSource, handleSourceChange, availableSources, selectedInterval, handleIntervalChange, selectedBackgroundColor, handleBackgroundColors, selectedPalette, handlePaletteChange)}
+            <ParamsSwipeableDrawer
+                    _drawerOpen={drawerOpen}
+                    _toggleDrawer={toggleDrawer}
+                    _startDate={selectedStartDate}
+                    _endDate={selectedEndDate}
+                    _handleChangeRangeDates={handleChangeRangeDates}
+                    _state={selectedState}
+                    _handleStateChange={handleStateChange}
+                    _indicator={selectedAnalysis}
+                    _handleAnalysisChange={handleAnalysisChange}
+                    _availableIndicators={availableAnalysis}
+                    _label={selectedLabel}
+                    _handleLabelChange={handleLabelChange}
+                    _availableLabels={availableLabels}
+                    _source={selectedSource}
+                    _handleSourceChange={handleSourceChange}
+                    _availableSources={availableSources}
+                    _interval={selectedInterval}
+                    _handleIntervalChange={handleIntervalChange}
+                    _backgroundColor={selectedBackgroundColor}
+                    _handleBackgroundColors={handleBackgroundColors}
+                    _palette={selectedPalette}
+                    _handlePaletteChange={handlePaletteChange} />
             <div>
 
             {MapBox(selectedMapState,
@@ -361,284 +384,6 @@ const AnalysisPage: FC = () => {
 
 export default AnalysisPage;
 
-function ParamsSwipeableDrawer(_drawerOpen: boolean,
-                                _toggleDrawer: (newOpen: boolean) => () => void,
-                                _startDate: Date,
-                                _endDate: Date,
-                                _handleChangeRangeDates: (rangeDates: DateRange | null, event: SyntheticEvent<Element, Event>) => void,
-                                _state: string,
-                                _handleStateChange: (event: SelectChangeEvent) => void,
-                                _indicator: string,
-                                _handleAnalysisChange: (event: SelectChangeEvent<string>) => void,
-                                _availableIndicators: [],
-                                _label: string,
-                                _handleLabelChange: (event: SelectChangeEvent<string>) => void,
-                                _availableLabels: [],
-                                _source: string,
-                                _handleSourceChange: (event: SelectChangeEvent) => void,
-                                _availableSources: [],
-                                _interval: string,
-                                _handleIntervalChange: (event: SelectChangeEvent) => void,
-                                _backgroundColor: string,
-                                _handleBackgroundColors: (event: SelectChangeEvent) => void,
-                                _palette: string,
-                                _handlePaletteChange: (event: SelectChangeEvent) => void) {
-    return (
-            <SwipeableDrawer anchor={'right'}
-                open={_drawerOpen}
-                onClose={_toggleDrawer(false)}
-                onOpen={_toggleDrawer(true)}>
-                <Box sx={{ alignItems: 'center' }}>
-                    <Accordion>
-                        <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="period-content" id="period-header">
-                            <List dense>
-                                <ListItem>
-                                    <ListItemAvatar>
-                                        <Avatar>
-                                            <CalendarMonthIcon />
-                                        </Avatar>
-                                    </ListItemAvatar>
-                                    <ListItemText
-                                        primary="Período"
-                                        secondary={`${_startDate.getFullYear()} até ${_endDate.getFullYear()}`} />
-                                </ListItem>
-                            </List>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                            <Typography>Ao selecionar um período, os gráficos devem exibir os dados correspondentes.</Typography>
-                            <Divider variant="middle" sx={{ margin: '15px' }} />
-                            <FormControl fullWidth>
-                                <DateRangePicker
-                                    format="MMM yyyy"
-                                    caretAs={BsCalendar2MonthFill}
-                                    limitEndYear={1900}
-                                    limitStartYear={new Date().getFullYear()}
-                                    onChange={_handleChangeRangeDates} />
-                            </FormControl>
-                        </AccordionDetails>
-                    </Accordion>
-                    <Accordion>
-                        <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="estado-content" id="estado-header">
-                            <List dense>
-                                <ListItem>
-                                    <ListItemAvatar>
-                                        <Avatar>
-                                            <MapIcon />
-                                        </Avatar>
-                                    </ListItemAvatar>
-                                    <ListItemText primary="Estado" secondary={`${_state}`} />
-                                </ListItem>
-                            </List>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                            <Typography>Ao selecionar um estado, o mapa deve exibir a imagem correspondente.</Typography>
-                            <Divider variant="middle" sx={{ margin: '15px' }} />
-                            <FormControl fullWidth>
-                                <Select id="state-select" value={_state} onChange={_handleStateChange}>
-                                    <MenuItem value="">
-                                        <em>Não informado</em>
-                                    </MenuItem>
-                                    {Object.keys(mapStates).map((e, index) => (
-                                        <MenuItem id={`${index}-menu-item-estado`} value={e} key={e}>
-                                            {e}
-                                        </MenuItem>
-                                    ))}
-                                </Select>
-                            </FormControl>
-                        </AccordionDetails>
-                    </Accordion>
-                    <Accordion>
-                        <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="analysis-content" id="analysis-header">
-                            <List dense>
-                                <ListItem>
-                                    <ListItemAvatar>
-                                        <Avatar>
-                                            <BiotechIcon />
-                                        </Avatar>
-                                    </ListItemAvatar>
-                                    <ListItemText primary="Indicador" secondary={`${_indicator}`} />
-                                </ListItem>
-                            </List>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                            <Typography>Ao selecionar uma análise, os gráficos devem exibir os dados correspondentes.</Typography>
-                            <Divider variant="middle" sx={{ margin: '15px' }} />
-                            <FormControl fullWidth>
-                                <Select id="analysis-select" value={_indicator} onChange={_handleAnalysisChange}>
-                                    {_availableIndicators?.map((analysis: string) => (
-                                        <MenuItem
-                                            id={`${analysis}-menu-item-analysis`}
-                                            value={analysis}
-                                            key={analysis}
-                                        >
-                                            {analysis}
-                                        </MenuItem>
-                                    ))}
-                                </Select>
-                            </FormControl>
-                        </AccordionDetails>
-                    </Accordion>
-                    <Accordion>
-                        <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="label-content" id="label-header">
-                            <List dense>
-                                <ListItem>
-                                    <ListItemAvatar>
-                                        <Avatar>
-                                            <LabelIcon />
-                                        </Avatar>
-                                    </ListItemAvatar>
-                                    <ListItemText primary="Rótulo" secondary={`${_label}`} />
-                                </ListItem>
-                            </List>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                            <Typography>Ao selecionar um rótulo, os gráficos devem exibir os dados correspondentes.</Typography>
-                            <Divider variant="middle" sx={{ margin: '15px' }} />
-                            <FormControl fullWidth>
-                                <Select id="analysis-select" value={_label} onChange={_handleLabelChange}>
-                                    <MenuItem value="">
-                                        <em>Não informado</em>
-                                    </MenuItem>
-                                    {_availableLabels.map((labelItem: string, index: number) => (
-                                        <MenuItem id={`${index}-menu-item-label`} value={labelItem} key={index}>
-                                            {labelItem}
-                                        </MenuItem>
-                                    ))}
-                                </Select>
-                            </FormControl>
-                        </AccordionDetails>
-                    </Accordion>
-                    <Accordion>
-                        <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="source-content" id="source-header">
-                            <List dense>
-                                <ListItem>
-                                    <ListItemAvatar>
-                                        <Avatar>
-                                            <ScienceIcon />
-                                        </Avatar>
-                                    </ListItemAvatar>
-                                    <ListItemText primary="Fonte" secondary={`${_source}`} />
-                                </ListItem>
-                            </List>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                            <Typography>Ao selecionar uma fonte, os gráficos devem exibir os dados correspondentes.</Typography>
-                            <Divider variant="middle" sx={{ margin: '15px' }} />
-                            <FormControl fullWidth>
-                                <Select id="source-select" value={_source} onChange={_handleSourceChange}>
-                                    <MenuItem value="">
-                                        <em>Não informado</em>
-                                    </MenuItem>
-                                    {_availableSources.map((source: string) => (
-                                        <MenuItem id={`${source}-menu-item-source`} value={source} key={source}>
-                                            {source}
-                                        </MenuItem>
-                                    ))}
-                                </Select>
-                            </FormControl>
-                        </AccordionDetails>
-                    </Accordion>
-                    <Accordion>
-                        <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="interval-content" id="interval-header">
-                            <List dense>
-                                <ListItem>
-                                    <ListItemAvatar>
-                                        <Avatar>
-                                            <DateRangeIcon />
-                                        </Avatar>
-                                    </ListItemAvatar>
-                                    <ListItemText primary="Intervalo" secondary={`${_interval}`} />
-                                </ListItem>
-                            </List>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                            <Typography>Selecione o intervalo para a análise (anual, bienal, etc.).</Typography>
-                            <Divider variant="middle" sx={{ margin: '15px' }} />
-                            <FormControl fullWidth>
-                                <Select id="interval-select" value={_interval} onChange={_handleIntervalChange}>
-                                    <MenuItem value="annual">Anual</MenuItem>
-                                    <MenuItem value="biennial">Bienal</MenuItem>
-                                    <MenuItem value="triennial">Trienal</MenuItem>
-                                    <MenuItem value="quadrennial">Quadrienal</MenuItem>
-                                    <MenuItem value="quinquennial">Quinquenal</MenuItem>
-                                </Select>
-                            </FormControl>
-                        </AccordionDetails>
-                    </Accordion>
-                    <Accordion>
-                        <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="palettes-content" id="palettes-header">
-                            <List dense>
-                                <ListItem>
-                                    <ListItemAvatar>
-                                        <Avatar>
-                                            <PaletteIcon />
-                                        </Avatar>
-                                    </ListItemAvatar>
-                                    <ListItemText
-                                        primary="Cor de fundo"
-                                        secondary={backgroundColors.find((bgColor) => bgColor.value === _backgroundColor)?.label} />
-                                </ListItem>
-                            </List>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                            <Typography>Ao selecionar uma paleta, os gráficos devem exibir as cores correspondentes.</Typography>
-                            <Divider variant="middle" sx={{ margin: '15px' }} />
-                            <FormControl fullWidth>
-                                <Divider variant="middle" sx={{ margin: '15px' }} />
-                                <Typography>Ao selecionar uma cor de fundo, os gráficos devem exibir a core correspondente.</Typography>
-                                <Select id="palettes-select" value={_backgroundColor} onChange={_handleBackgroundColors}>
-                                    <MenuItem value="">
-                                        <em>Não informado</em>
-                                    </MenuItem>
-                                    {backgroundColors.map((bgColors) => (
-                                        <MenuItem
-                                            id={`${bgColors.value}-menu-item-palette`}
-                                            value={bgColors.value}
-                                            key={bgColors.value}
-                                        >
-                                            {bgColors.label}
-                                        </MenuItem>
-                                    ))}
-                                </Select>
-                            </FormControl>
-                        </AccordionDetails>
-                    </Accordion>
-                    <Accordion>
-                        <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="palettes-content" id="palettes-header">
-                            <List dense>
-                                <ListItem>
-                                    <ListItemAvatar>
-                                        <Avatar>
-                                            <FormatColorFillIcon />
-                                        </Avatar>
-                                    </ListItemAvatar>
-                                    <ListItemText
-                                        primary="Paleta"
-                                        secondary={palettes.find((palette) => palette.value === _palette)?.label} />
-                                </ListItem>
-                            </List>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                            <Divider variant="middle" sx={{ margin: '15px' }} />
-                            <Typography>Ao selecionar uma paleta, os gráficos devem exibir as cores correspondentes.</Typography>
-                            <FormControl fullWidth>
-                                <Select id="palettes-select" value={_palette} onChange={_handlePaletteChange}>
-                                    <MenuItem value="">
-                                        <em>Não informado</em>
-                                    </MenuItem>
-                                    {palettes.map((palette) => (
-                                        <MenuItem id={`${palette.value}-menu-item-palette`} value={palette.value} key={palette.value}>
-                                            {palette.label}
-                                        </MenuItem>
-                                    ))}
-                                </Select>
-                            </FormControl>
-                        </AccordionDetails>
-                    </Accordion>
-                </Box>
-            </SwipeableDrawer>
-    );
-}
 
 function MapBox(selectedMapState: iEstado,
                     selectedWidth: number,

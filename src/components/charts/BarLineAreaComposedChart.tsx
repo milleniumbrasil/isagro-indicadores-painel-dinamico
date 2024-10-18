@@ -102,7 +102,7 @@ const BarLineAreaComposedChart: React.FC<BarLineAreaComposedChartProps> = (props
     function normalizeData(data: IStackedAreaChart[]): INormalizedData[] {
         // Chama a função de validação para verificar duplicatas
         validateData(data);
-        // console.log(`[BarLineAreaComposedChart] normalizeData input: ${JSON.stringify(data?.slice(0, 2), null, 2)}`);
+        // console.log(`[StackedAreaChart] normalizeData input: ${JSON.stringify(data?.slice(0, 2), null, 2)}`);
 
         const groupedData: Record<string, INormalizedData> = {};
 
@@ -120,14 +120,14 @@ const BarLineAreaComposedChart: React.FC<BarLineAreaComposedChartProps> = (props
 
         // Retorna os dados normalizados como um array de INormalizedData
         const result = Object.values(groupedData);
-        // console.log(`[BarLineAreaComposedChart] normalizeData result: ${JSON.stringify(result?.slice(0, 2), null, 2)}`);
+        // console.log(`[StackedAreaChart] normalizeData result: ${JSON.stringify(result?.slice(0, 2), null, 2)}`);
         return result;
     }
 
     const extractAttibutesNames = (normalizedData: INormalizedData[]): string[] => {
         let result: string[] = [];
         if (normalizedData && normalizedData.length > 0) {
-            // console.log('[BarLineAreaComposedChart] extractAttibutesNames:', JSON.stringify(normalizedData, null, 2));
+            // console.log('[StackedAreaChart] extractAttibutesNames:', JSON.stringify(normalizedData, null, 2));
             const attrNamesSet = new Set<string>();
             normalizedData.forEach((item) => {
                 Object.keys(item).forEach((key) => {
@@ -137,10 +137,10 @@ const BarLineAreaComposedChart: React.FC<BarLineAreaComposedChartProps> = (props
                 });
             });
             const attrNames = Array.from(attrNamesSet);
-            // console.log(`[BarLineAreaComposedChart] extractAttibutesNames Final attribute names: ${JSON.stringify(attrNames, null, 2)}`);
+            // console.log(`[StackedAreaChart] extractAttibutesNames Final attribute names: ${JSON.stringify(attrNames, null, 2)}`);
             result = attrNames;
         } else {
-            console.warn('[BarLineAreaComposedChart] extractAttibutesNames: normalizedData is empty or undefined');
+            console.warn('[StackedAreaChart] extractAttibutesNames: normalizedData is empty or undefined');
         }
         return result;
     };
@@ -159,7 +159,7 @@ const BarLineAreaComposedChart: React.FC<BarLineAreaComposedChartProps> = (props
     useEffect(() => {
         try {
             if (!props.data || props.data.length === 0) {
-                console.warn('[BarLineAreaComposedChart]: data is required at first useEffect stage! It should be loaded from props.data.');
+                console.warn('[StackedAreaChart]: data is required at first useEffect stage! It should be loaded from props.data.');
                 setLoading(false);
                 return;
             } else {
@@ -185,43 +185,40 @@ const BarLineAreaComposedChart: React.FC<BarLineAreaComposedChartProps> = (props
     }, [props.data, props.dataKey, props.valueLabel, props.width, props.height, props.defaultPalette]);
 
     return (
-        <div style={{ width: '100%', height: '100%' }}>
+        <div style={{ width: '100%', height: internalHeight }}>
             <ResponsiveContainer>
-                <ComposedChart
+                <RechartsBarChart
                     width={internalWidth}
                     height={internalHeight}
                     data={internalData}
                     margin={{
                         top: 10,
-                        right: 50,
-                        left: 10,
+                        right: 20,
+                        left: 20,
                         bottom: 10,
                     }}
-                    style={{ fontSize: 8 }}
+                    style={{ fontSize: 10 }}
                 >
                     <CartesianGrid strokeDasharray="0" />
                     <XAxis dataKey={dataKey} />
                     <YAxis tickFormatter={tickFormatter} ticks={dynamicTicks} />
+                    <Legend formatter={legendFormatter} iconType={'triangle'} layout="vertical" verticalAlign="middle" align='left' margin={{ top: 10, right: 20, bottom: 10, left: 20 }} />
                     <Tooltip content={<CustomTooltip />} />
-                    <Legend formatter={legendFormatter} iconType={'triangle'} />
                     {attributeNames.map((item, index) => (
-                        <>
-                            <Area type="monotone" dataKey={item} fill='#FFFFE0' stroke='#FFFFE0' />
-                            <Bar
-                                key={item}
-                                type="monotone"
-                                dataKey={item}
-                                stackId="1"
-                                barSize={20}
-                                stroke={defaultPalette[index % defaultPalette.length]}
-                                fill={defaultPalette[index % defaultPalette.length]}
-                            />
-                            {/* <Line type="monotone" dataKey={item} stroke="#000000" /> */}
-                        </>
+                        <Bar
+                            key={item}
+                            type="monotone"
+                            dataKey={item}
+                            stackId="1"
+                            stroke={defaultPalette[index % defaultPalette.length]}
+                            fill={defaultPalette[index % defaultPalette.length]}
+                        />
                     ))}
-                </ComposedChart>
+                </RechartsBarChart>
             </ResponsiveContainer>
         </div>
     );
+
+
 };
 export default BarLineAreaComposedChart;

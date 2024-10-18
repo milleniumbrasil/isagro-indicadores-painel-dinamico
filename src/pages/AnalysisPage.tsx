@@ -371,10 +371,11 @@ const AnalysisPage: FC = () => {
                     </Typography>
                 </Box>
             </Box>
-            <Paper sx={{ width: '98%', alignItems: 'center', padding: '10px', margin: '5px', marginRight: '30px', marginLeft: '30px' }}>
+
+            <Paper sx={{ width: '96%', alignItems: 'center', padding: '10px', margin: '15px', marginRight: '30px', marginLeft: '30px' }}>
                 <Box sx={{ display: 'flex', '& > :not(style)': { m: 1 } }}>
                     <Box sx={{ flexGrow: 1, width: '50%' }}>
-                    {StackedAreaChartCard("Soma agregada na linha do tempo",
+                    {StackedAreaChartCard("",
                             '10px', 150, 200,
                             selectedChartDefaultBackgroundColor,
                             currentAnalysisDescription,
@@ -384,40 +385,39 @@ const AnalysisPage: FC = () => {
                             selectedChartDefaultPalette)}
                     </Box>
                     <Box sx={{ flexGrow: 1, width: '50%' }}>
-                    {StackedAreaChartCard("Média Móvel Simples na linha do tempo",
-                            '10px', 150, 200,
-                            selectedChartDefaultBackgroundColor,
-                            currentAnalysisDescription,
-                            selectedStartDate,
-                            selectedEndDate,
-                            selectedSmaData,
-                            selectedChartDefaultPalette)}
+                    {BarChartCard("",
+                                '10px', 150, 200,
+                                selectedChartDefaultBackgroundColor,
+                                currentAnalysisDescription,
+                                selectedStartDate,
+                                selectedEndDate,
+                                selectedSumData,
+                                selectedChartDefaultPalette)}
                     </Box>
                 </Box>
             </Paper>
-            <Paper sx={{ width: '98%', alignItems: 'center', padding: '10px', margin: '5px', marginRight: '30px', marginLeft: '30px' }}>
+            <Paper sx={{ width: '96%', alignItems: 'center', padding: '10px', margin: '15px', marginRight: '30px', marginLeft: '30px' }}>
                 <Box sx={{ display: 'flex', '& > :not(style)': { m: 1 } }}>
-                    <Box sx={{ flexGrow: 1, width: '50%' }}>
-                    {PercentualAreaChartCard(
-                        "Percentuais na linha do tempo",
-                        selectedChartDefaultBackgroundColor,
-                        currentAnalysisDescription,
-                        selectedAnalysis,
-                        selectedStartDate,
-                        selectedEndDate,
-                        selectedPercentualData,
-                        selectedChartDefaultPalette)}
-                    </Box>
-                    <Box sx={{ flexGrow: 1, width: '50%' }}>
-                    {StackedAreaChartCard("Média Móvel Simples na linha do tempo",
-                            '10px', 150, 200,
-                            selectedChartDefaultBackgroundColor,
-                            currentAnalysisDescription,
-                            selectedStartDate,
-                            selectedEndDate,
-                            selectedSmaData,
-                            selectedChartDefaultPalette)}
-                    </Box>
+                    {StackedAreaChartCard("",
+                                '10px', 150, 200,
+                                selectedChartDefaultBackgroundColor,
+                                currentAnalysisDescription,
+                                selectedStartDate,
+                                selectedEndDate,
+                                selectedSumData,
+                                selectedChartDefaultPalette)}
+                </Box>
+            </Paper>
+            <Paper sx={{ width: '96%', alignItems: 'center', padding: '10px', margin: '15px', marginRight: '30px', marginLeft: '30px' }}>
+                <Box sx={{ display: 'flex', '& > :not(style)': { m: 1 } }}>
+                    {BarChartCard("",
+                                '10px', 150, 200,
+                                selectedChartDefaultBackgroundColor,
+                                currentAnalysisDescription,
+                                selectedStartDate,
+                                selectedEndDate,
+                                selectedSumData,
+                                selectedChartDefaultPalette)}
                 </Box>
             </Paper>
 
@@ -557,6 +557,45 @@ function StackedAreaChartCard(  _title:string,
                     </Typography>
 
                     <StackedAreaChart
+                        width={_width}
+                        height={_height}
+                        data={_data}
+                        defaultPalette={_chartDefaultPalette} />
+                </CardContent>
+            </Card>
+
+        </>
+    );
+}
+
+function BarChartCard(  _title:string,
+                                _padding: string,
+                                _width: number,
+                                _height: number,
+                                _defaultBackgroundColor: string,
+                                _indicatorDescription: IAnalysisInfo,
+                                _startDate: Date, selectedEndDate: Date,
+                                _data: IStackedAreaChart[],
+                                _chartDefaultPalette: string[]) {
+    return (
+        <>
+            <Typography variant="h5" sx={{ padding: _padding, marginTop: '10px' }}>
+                {_title}
+            </Typography>
+            <Card
+                variant="outlined"
+                sx={{ alignItems: 'center', width: '100%', backgroundColor: _defaultBackgroundColor, margin: '10px' }}
+            >
+                <CardContent>
+                    <Typography variant="h6" sx={{ padding: _padding }}>
+                        {_indicatorDescription?.title} por período{' '}
+                        {`${_startDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
+                    </Typography>
+                    <Typography variant="body2" sx={{ padding: _padding }}>
+                        {_indicatorDescription?.description}
+                    </Typography>
+
+                    <BarLineAreaComposedChart
                         width={_width}
                         height={_height}
                         data={_data}

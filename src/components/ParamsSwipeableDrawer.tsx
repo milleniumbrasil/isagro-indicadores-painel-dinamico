@@ -39,51 +39,51 @@ import { DateRange } from 'rsuite/esm/DateRangePicker';
 
 interface ParamsSwipeableDrawerProps {
     _drawerOpen: boolean;
-    _toggleDrawer: (newOpen: boolean) => () => void;
     _startDate: Date;
     _endDate: Date;
-    _handleChangeRangeDates: (rangeDates: DateRange | null, event: SyntheticEvent<Element, Event>) => void;
     _state: string;
-    _handleStateChange: (event: SelectChangeEvent) => void;
     _indicator: string;
-    _handleAnalysisChange: (event: SelectChangeEvent<string>) => void;
     _availableIndicators: string[];
     _label: string;
-    _handleLabelChange: (event: SelectChangeEvent<string>) => void;
     _availableLabels: string[];
     _source: string;
-    _handleSourceChange: (event: SelectChangeEvent) => void;
     _availableSources: string[];
     _interval: string;
-    _handleIntervalChange: (event: SelectChangeEvent) => void;
     _backgroundColor: string;
-    _handleBackgroundColors: (event: SelectChangeEvent) => void;
     _palette: string;
+    _toggleDrawer: (newOpen: boolean) => () => void;
+    _handleChangeRangeDates: (rangeDates: DateRange | null, event: SyntheticEvent<Element, Event>) => void;
+    _handleStateChange: (event: SelectChangeEvent) => void;
+    _handleAnalysisChange: (event: SelectChangeEvent<string>) => void;
+    _handleLabelChange: (event: SelectChangeEvent<string>) => void;
+    _handleSourceChange: (event: SelectChangeEvent) => void;
+    _handleIntervalChange: (event: SelectChangeEvent) => void;
+    _handleBackgroundColors: (event: SelectChangeEvent) => void;
     _handlePaletteChange: (event: SelectChangeEvent) => void;
 }
 
 const ParamsSwipeableDrawer: FC<ParamsSwipeableDrawerProps> = ({
     _drawerOpen,
-    _toggleDrawer,
     _startDate,
     _endDate,
-    _handleChangeRangeDates,
     _state,
-    _handleStateChange,
     _indicator,
-    _handleAnalysisChange,
     _availableIndicators,
     _label,
-    _handleLabelChange,
     _availableLabels,
     _source,
-    _handleSourceChange,
     _availableSources,
     _interval,
-    _handleIntervalChange,
     _backgroundColor,
-    _handleBackgroundColors,
     _palette,
+    _toggleDrawer,
+    _handleChangeRangeDates,
+    _handleStateChange,
+    _handleAnalysisChange,
+    _handleLabelChange,
+    _handleSourceChange,
+    _handleIntervalChange,
+    _handleBackgroundColors,
     _handlePaletteChange,
 }) => {
     return (

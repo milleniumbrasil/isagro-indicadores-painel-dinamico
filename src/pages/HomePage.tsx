@@ -3,6 +3,7 @@
 import 'rsuite/dist/rsuite.min.css';
 
 import { FC, useEffect, useState, SyntheticEvent } from 'react';
+import { Link } from 'react-router-dom';
 
 import {
     Box,
@@ -73,11 +74,13 @@ const Media: FC<MediaProps> = (props: MediaProps) => {
                         <Grid key={index} size={{ xs: 12, sm: 6, md: 4 }} >
                             <Box key={index} sx={{ width: '100%', marginRight: 0.5, my: 5 }} style={{ textAlign: 'center' }}>
                                 {item ? (
-                                <img
-                                    style={{ width: '100%', height: 'auto' }}
-                                    alt={item.title}
-                                    src={item.src}
-                                />
+                                    <Link to={item.target}>
+                                        <img
+                                            style={{ width: '100%', height: 'auto' }}
+                                            alt={item.title}
+                                            src={item.img}
+                                        />
+                                    </Link>
                                 ) : (
                                 <Skeleton variant="rectangular" width="100%" height={118} />
                                 )}

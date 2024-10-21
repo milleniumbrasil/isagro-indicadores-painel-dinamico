@@ -1,13 +1,20 @@
 // src/App.tsx
 
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-import Media from './pages/HomePage';
+import AnoniaPage from './pages/AnoniaPage'; // Importa a página Anonia
+import HomePage from './pages/HomePage';
 
 const App: React.FC = () => {
     return (
         <>
-        <Media />
+            <Router>
+                <Routes>
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/anonia-page" element={<AnoniaPage />} />
+                </Routes>
+            </Router>
         </>
     );
 };

@@ -225,7 +225,7 @@ const AnalysisPage: FC = () => {
     };
 
     useEffect(() => {
-
+        if (selectedStartDate && selectedEndDate)
         buildUrl('sum', selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval).then((sumUrl) => {
             requestStackedData(sumUrl).then((stackedObjects) => {
                 console.log(`[AnalysisPage] useEffect url: ${sumUrl}`);
@@ -274,6 +274,20 @@ const AnalysisPage: FC = () => {
         });
     }, [selectedAnalysis]);
 
+    useEffect(() => {
+        // obtém os dados descritivos para as datas selecionadas
+        if (selectedStartDate && selectedEndDate) {
+            const analysisInfos = analysisDescriptions(selectedStartDate, selectedEndDate);
+            const initialAnalysisDescription = findAnalysisDescription(
+                selectedAnalysis,
+                selectedStartDate,
+                selectedEndDate,
+                analysisInfos
+            );
+            setCurrentAnalysisDescription(initialAnalysisDescription);
+        }
+    }, [selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval]);
+
     const toggleDrawer = (newOpen: boolean) => () => {
         setDrawerOpen(newOpen);
     };
@@ -289,7 +303,7 @@ const AnalysisPage: FC = () => {
                 }} >
                 <MoreVertIcon />
             </Button>
-            <ParamsSwipeableDrawer
+            {/* <ParamsSwipeableDrawer
                     _drawerOpen={drawerOpen}
                     _toggleDrawer={toggleDrawer}
                     _startDate={selectedStartDate}
@@ -311,7 +325,7 @@ const AnalysisPage: FC = () => {
                     _handleSourceChange={handleSourceChange}
                     _handleIntervalChange={handleIntervalChange}
                     _handleBackgroundColors={handleBackgroundColors}
-                    _handlePaletteChange={handlePaletteChange} />
+                    _handlePaletteChange={handlePaletteChange} /> */}
             <div>
 
             <Box sx={{ display: 'flex', '& > :not(style)': { m: 1 } }}>
@@ -347,23 +361,11 @@ const AnalysisPage: FC = () => {
             <Box sx={{ display: 'flex', '& > :not(style)': { m: 1 } }}>
                 <Box sx={{ flexGrow: 1, margin: '30px', padding: '30px' }}>
                     <Typography variant="h3" sx={{ padding: '10px' }}>
-                        {currentAnalysisDescription?.title || 'Informações Detalhadas da Análise'}
+                        NH3 Amônia
                     </Typography>
                 </Box>
             </Box>
 
-            <Paper sx={{ width: '96%', alignItems: 'center', margin: '15px' }}>
-                <Box sx={{ display: 'flex', '& > :not(style)': { m: 1 } }}>
-                    {BarChartCard("",
-                                150, 200,
-                                selectedChartDefaultBackgroundColor,
-                                currentAnalysisDescription,
-                                selectedStartDate,
-                                selectedEndDate,
-                                selectedSumData,
-                                selectedChartDefaultPalette)}
-                </Box>
-            </Paper>
             <Paper sx={{ width: '96%', alignItems: 'center', margin: '15px' }}>
                 <Box sx={{ display: 'flex', '& > :not(style)': { m: 1 } }}>
                     {BarChartCard("",
@@ -535,17 +537,17 @@ function BarChartCard(  _title:string,
                         _palette: string[]) {
     return (
         <>
-            <Typography variant="h5">
-                {_title}
-            </Typography>
             <Card variant="outlined" sx={{ alignItems: 'center', width: '100%', backgroundColor: _defaultBackgroundColor }} >
                 <CardContent>
-                    <Typography variant="h6">
-                        {_indicatorDescription?.title} por período{' '}
-                        {`${_startDate.getFullYear()} à ${_endDate.getFullYear()}`}
+                    <Typography variant="h6" style={{ padding: '15px' }}>
+                    "O uso de fertilizantes e adubos para suprir as plantas com nitrogênio, assim como a urina e as fezes de bovinos, suínos, aves, entre outros integrantes de rebanho, são fontes de amônia, um gás que polui a atmosfera e traz impactos negativos para áreas naturais e para o homem. A amônia que é emitida para a atmosfera pode retornar aos ambientes naturais, como florestas e corpos d’água, provocando perda de biodiversidade e eutrofização, assim como produzir material particulado capaz de afetar fortemente a saúde da população. A agropecuária é a fonte de amônia mais importante para a maioria dos países, inclusive o Brasil, e o monitoramento das emissões deve ser realizado visando identificar os principais gargalos e mitigar o problema.
+                    Com o IS_Agro, a emissão de amônia no Brasil será quantificada em diferentes escalas territoriais, utilizando dados disponíveis e também pelo levantamento de novos dados e informações que serão consumidas automaticamente para os cálculos de acordo com critérios ajustados às condições tropicais. Estudos adicionais vem sendo realizados considerando a alta complexidade encontrada no procedimento metodológico, que requer a validação para então ser proposto em fóruns globais.
+                    O inventário da emissão de NH3 para a agricultura, seguindo as diretrizes da EMEP de 2019 e do IPCC de 2006 e 2019, utilizadas juntamente com os dados da ANDA para fertilizantes, e do IBGE para rebanhos, além de várias outras fontes, como a literatura científica, foram usados para complementar informações para elaborar um inventário usando uma abordagem mais avançada. Esses números vêm sendo atualizados periodicamente.
+                    As emissões de amônia no Brasil aumentaram de 2,28 milhões de toneladas em 1990 para 3,89 milhões de toneladas em 2021. Seguiram uma tendência crescente de 1990 a 2015, e desde então seguem uma tendência de estabilização. A pecuária foi responsável por cerca de dois terços do total das emissões. Uma nota técnica (ALVES et al., 2023a) foi formulada e submetida pela Embrapa/DEPI ao MAPA para endosso e encaminhamento a OCDE em setembro de 2023. Atividade executada por Bruno Alves (Embrapa Agrobiologia) atualizado para o período 1990-2021."
                     </Typography>
-                    <Typography variant="body2">
-                        {_indicatorDescription?.description}
+                    <Typography variant="body2" style={{ padding: '15px' }}>
+                    "ALVES, B.J.R.; URQUIAGA, S.  POLIDORO, J.C.; FREITAS, P.L.de. Ammonia Emissions from Brazilian Agriculture - 1990 – 2021.  Technical Note. 7 pag. Setembro 2023.
+                    https://drive.google.com/file/d/15tZSBHiGKUn1a2uoI4MfTYAWt9pFIZa8/view?usp=drive_link"
                     </Typography>
 
                     <BarLineAreaComposedChart

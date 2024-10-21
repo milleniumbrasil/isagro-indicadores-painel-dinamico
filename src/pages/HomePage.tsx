@@ -43,17 +43,19 @@ const Media: FC<MediaProps> = (props: MediaProps) => {
 
     return (
         <>
-            <Box sx={{ display: 'flex', '& > :not(style)': { m: 1 } }}>
-                <Box sx={{ flexGrow: 1, margin: '30px', padding: '30px' }}>
-                    <img src="/logo-isagro.png" alt="Logo Isagro" style={{ width: '150px', height: 'auto', margin: '15px' }} />
-                    <Typography variant="h2" sx={{ textAlign: 'center', padding: '15px', margin: '15px' }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', '& > :not(style)': { m: 1 }, alignItems: 'center' }}>
+                <Box sx={{ width: { xs: '100%', sm: '80%', md: '70%', lg: '60%' }, margin: '30px', padding: { xs: '15px', sm: '30px' } }}>
+                    <Box sx={{ textAlign: 'center' }}>
+                        <img src="/logo-isagro.png" alt="Logo Isagro" style={{ width: '150px', height: 'auto', margin: '15px' }} />
+                    </Box>
+                    <Typography variant="h2" sx={{ textAlign: 'center', padding: '15px', margin: { xs: '10px', md: '15px' } }}>
                         Indicadores Agro-socioambientais do Brasil
                     </Typography>
-                    <Typography variant="subtitle1" gutterBottom style={{ height: 'auto', margin: '30px' }}>
-                    Os indicadores agro-sociombientais constituem um conjunto de informações quantitativas capazes de identificar, avaliar e monitorar os impactos ambientais, sociais e econômicos relacionados às atividades agropecuárias.  Métricas e Indicadores subsidiam a tomada de decisão por parte de agentes governamentais e da iniciativa privada, estabelecendo informações de grande valor estratégico e auxiliando nos processos de planejamento agroambiental e de gestão de políticas públicas. Isso permite identificar aspectos sensíveis e pontos fortes, modelar cenários e traçar tendências, contribuindo para a avaliação da sustentabilidade e resiliencia da agropecuária brasileira. Esse ambiente digital disponibiliza indices e indicadores agro-socioambientais calculados após ajustes técnicos realizados pela equipe do Projeto IS_Agro (proposição do Ministério da Agricultura e Pecuária (MAPA), execução da Embrapa - Embrapa Solos, Embrapa Agrobiologia, Embrapa Meio Ambiente e a Assessoria Internacional da Embrapa em parceria com o Serviço Geológico do Brasil (SGB/CPRM).
+                    <Typography variant="subtitle1" gutterBottom sx={{ height: 'auto', margin: { xs: '15px', sm: '30px' }, textAlign: 'justify' }}>
+                        Os indicadores agro-sociombientais constituem um conjunto de informações quantitativas capazes de identificar, avaliar e monitorar os impactos ambientais, sociais e econômicos relacionados às atividades agropecuárias. Métricas e Indicadores subsidiam a tomada de decisão por parte de agentes governamentais e da iniciativa privada, estabelecendo informações de grande valor estratégico e auxiliando nos processos de planejamento agroambiental e de gestão de políticas públicas. Isso permite identificar aspectos sensíveis e pontos fortes, modelar cenários e traçar tendências, contribuindo para a avaliação da sustentabilidade e resiliência da agropecuária brasileira. Esse ambiente digital disponibiliza índices e indicadores agro-socioambientais calculados após ajustes técnicos realizados pela equipe do Projeto IS_Agro (proposição do Ministério da Agricultura e Pecuária (MAPA), execução da Embrapa - Embrapa Solos, Embrapa Agrobiologia, Embrapa Meio Ambiente e a Assessoria Internacional da Embrapa em parceria com o Serviço Geológico do Brasil (SGB/CPRM).
                     </Typography>
                     <Box sx={{ display: 'flex', justifyContent: 'center', margin: '50px' }}>
-                        <img src="/MAPA_EMBRAPA_SGB_CPRM.jpeg" alt="MAPA e da EMBRAPA E SGB/CPRM" style={{ width: '700px', height: 'auto' }} />
+                        <img src="/MAPA_EMBRAPA_SGB_CPRM.jpeg" alt="MAPA e da EMBRAPA E SGB/CPRM" style={{ width: '100%', maxWidth: '700px', height: 'auto' }} />
                     </Box>
                 </Box>
             </Box>

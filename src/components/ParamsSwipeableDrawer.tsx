@@ -112,6 +112,7 @@ const ParamsSwipeableDrawer: FC<ParamsSwipeableDrawerProps> = ({
                                 limitEndYear={1900}
                                 limitStartYear={new Date().getFullYear()}
                                 onChange={_handleChangeRangeDates}
+                                value={[_startDate, _endDate]}
                             />
                         </FormControl>
                     </AccordionDetails>

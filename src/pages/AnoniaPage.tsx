@@ -155,7 +155,7 @@ const AnalysisPage: FC = () => {
         setSelectedInterval(event.target.value); // Atualiza o intervalo selecionado
     };
 
-    const handleChangeRangeDates = (rangeDates: DateRange | null, event: SyntheticEvent<Element, Event>) => {
+    const handleChangeRangeDates = (rangeDates: DateRange | null) => {
         if (rangeDates) {
             setSelectedStartDate(rangeDates[0]);
             setSelectedEndDate(rangeDates[1]);
@@ -226,24 +226,6 @@ const AnalysisPage: FC = () => {
 
     useEffect(() => {
 
-        buildLabelsUrl(selectedAnalysis).then((url) => {
-            requestMenu(url).then((objects) => {
-                console.log(`[AnalysisPage] useEffect availableLabels: ${url}`);
-                console.log(`[AnalysisPage] useEffect availableLabels result: ${objects.length}`);
-                console.log(`[AnalysisPage] useEffect availableLabels sample: ${JSON.stringify(objects?.slice(0, 2), null, 2)}`);
-                setAvailableLabels(objects);
-            });
-        });
-
-        buildUrl('sma', selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval).then((smaUrl) => {
-            requestStackedData(smaUrl).then((stackedObjects) => {
-                console.log(`[AnalysisPage] useEffect url: ${smaUrl}`);
-                console.log(`[AnalysisPage] useEffect sma result: ${stackedObjects.length}`);
-                console.log(`[AnalysisPage] useEffect sma sample: ${JSON.stringify(stackedObjects?.slice(0, 2), null, 2)}`);
-                setSelectedSmaData(stackedObjects);
-            });
-        });
-
         buildUrl('sum', selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval).then((sumUrl) => {
             requestStackedData(sumUrl).then((stackedObjects) => {
                 console.log(`[AnalysisPage] useEffect url: ${sumUrl}`);
@@ -253,27 +235,13 @@ const AnalysisPage: FC = () => {
             });
         });
 
-        buildUrl('percentage', selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval).then((percentageUrl) => {
-            requestStackedData(percentageUrl).then((stackedObjects) => {
-                console.log(`[AnalysisPage] useEffect url: ${percentageUrl}`);
-                console.log(`[AnalysisPage] useEffect percentage result: ${stackedObjects.length}`);
-                console.log(`[AnalysisPage] useEffect percentage sample: ${JSON.stringify(stackedObjects?.slice(0, 2), null, 2)}`);
-                // Transformando de IStackedAreaChart para IPercentualAreaChart
-                const percentualObjects: IPercentualAreaChart[] = stackedObjects.map((item) => ({
-                    period: item.period,
-                    value: parseFloat(item.entry[1].toString()), // Pega diretamente o valor de entry[1] como percentual
-                }));
-                setSelectedPercentualData(percentualObjects);
-            });
-        });
-
         const analysisInfos = analysisDescriptions(selectedStartDate, selectedEndDate);
         const initialAnalysisDescription = findAnalysisDescription(selectedAnalysis, selectedStartDate, selectedEndDate, analysisInfos);
         setCurrentAnalysisDescription(initialAnalysisDescription);
-    }, [selectedAnalysis, selectedLabel, selectedStartDate, selectedEndDate, selectedState, selectedSource, selectedInterval]);
+    }, [selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval]);
 
     useEffect(() => {
-
+        // recupera os itens de menû para os estados e as indicadores
         buildAnalysisUrl().then((url) => {
             requestMenu(url).then((objects) => {
                 console.log(`[AnalysisPage] useEffect availableAnalysis: ${url}`);
@@ -293,6 +261,18 @@ const AnalysisPage: FC = () => {
         });
 
     }, []);
+
+    useEffect(() => {
+        // recupera os rotulos disponíveis para o indicador selecionado
+        buildLabelsUrl(selectedAnalysis).then((url) => {
+            requestMenu(url).then((objects) => {
+                console.log(`[AnalysisPage] useEffect availableLabels: ${url}`);
+                console.log(`[AnalysisPage] useEffect availableLabels result: ${objects.length}`);
+                console.log(`[AnalysisPage] useEffect availableLabels sample: ${JSON.stringify(objects?.slice(0, 2), null, 2)}`);
+                setAvailableLabels(objects);
+            });
+        });
+    }, [selectedAnalysis]);
 
     const toggleDrawer = (newOpen: boolean) => () => {
         setDrawerOpen(newOpen);

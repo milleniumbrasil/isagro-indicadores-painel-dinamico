@@ -146,7 +146,7 @@ const ParamsSwipeableDrawer: FC<ParamsSwipeableDrawerProps> = ({
                         </FormControl>
                     </AccordionDetails>
                 </Accordion>
-                <Accordion>
+                {/* <Accordion>
                     <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="analysis-content" id="analysis-header">
                         <List dense>
                             <ListItem>
@@ -160,7 +160,7 @@ const ParamsSwipeableDrawer: FC<ParamsSwipeableDrawerProps> = ({
                         </List>
                     </AccordionSummary>
                     <AccordionDetails>
-                        <Typography>Ao selecionar uma análise, os gráficos devem exibir os dados correspondentes.</Typography>
+                        <Typography>Ao selecionar um indicador, os gráficos devem exibir os dados correspondentes.</Typography>
                         <Divider variant="middle" sx={{ margin: '15px' }} />
                         <FormControl fullWidth>
                             <Select id="analysis-select" value={_indicator} onChange={_handleAnalysisChange}>
@@ -172,7 +172,7 @@ const ParamsSwipeableDrawer: FC<ParamsSwipeableDrawerProps> = ({
                             </Select>
                         </FormControl>
                     </AccordionDetails>
-                </Accordion>
+                </Accordion> */}
                 <Accordion>
                     <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="label-content" id="label-header">
                         <List dense>

@@ -81,7 +81,7 @@ const AnalysisPage: FC = () => {
     const [availableSources, setAvailableSources] = useState<[]>([]);
 
     const [availableAnalysis, setAvailableAnalysis] = useState<[]>([]);
-    const [selectedAnalysis, setSelectedAnalysis] = useState<string>('GEE');
+    const [selectedAnalysis, setSelectedAnalysis] = useState<string>('NH3');
 
     const [labels, setLabels] = useState<Label[]>([]);
     const [selectedLabel, setSelectedLabel] = useState<string>('');
@@ -89,8 +89,8 @@ const AnalysisPage: FC = () => {
 
     const [selectedState, setSelectedState] = useState<string>('Distrito Federal');
     const [selectedMapState, setSelectedMapState] = useState<iEstado>(mapStates['Distrito Federal']);
-    const [selectedStartDate, setSelectedStartDate] = useState<Date>(new Date('1990-01-01'));
-    const [selectedEndDate, setSelectedEndDate] = useState<Date>(new Date('2024-01-31'));
+    const [selectedStartDate, setSelectedStartDate] = useState<Date>(new Date('2000-01-01'));
+    const [selectedEndDate, setSelectedEndDate] = useState<Date>(new Date('2024-12-31'));
     const [currentAnalysisDescription, setCurrentAnalysisDescription] = useState<IAnalysisInfo>(
         findAnalysisDescription(
             selectedAnalysis,

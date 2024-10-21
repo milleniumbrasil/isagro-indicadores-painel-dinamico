@@ -2,12 +2,12 @@
 
 import React from 'react';
 
-import AnalysisPage from './pages/AnalysisPage';
+import Media from './pages/HomePage';
 
 const App: React.FC = () => {
     return (
         <>
-        <AnalysisPage />
+        <Media />
         </>
     );
 };

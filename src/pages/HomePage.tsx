@@ -62,7 +62,6 @@ const Media: FC<MediaProps> = (props: MediaProps) => {
             </Box>
             {/* CONTENT */}
             <Container maxWidth="lg"   sx={{
-                                            border: '1px solid #ccc',
                                             display: 'flex',
                                             justifyContent: 'center',
                                             alignItems: 'center',
@@ -71,8 +70,8 @@ const Media: FC<MediaProps> = (props: MediaProps) => {
 
                 <Grid container spacing={3} justifyContent="center">
                     {(loading ? Array.from(new Array(3)) : data).map((item, index) => (
-                        <Grid key={index} size={{ xs: 12, sm: 6, md: 4 }} style={{ border: '1px solid #ccc' }}>
-                            <Box key={index} sx={{ width: '100%', marginRight: 0.5, my: 5 }} style={{ border: '1px solid #ccc', textAlign: 'center' }}>
+                        <Grid key={index} size={{ xs: 12, sm: 6, md: 4 }} >
+                            <Box key={index} sx={{ width: '100%', marginRight: 0.5, my: 5 }} style={{ textAlign: 'center' }}>
                                 {item ? (
                                 <img
                                     style={{ width: '100%', height: 'auto' }}

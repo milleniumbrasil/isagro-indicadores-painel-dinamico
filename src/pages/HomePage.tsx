@@ -30,7 +30,7 @@ interface MediaProps {
   }
 
 const Media: FC<MediaProps> = (props: MediaProps) => {
-    const TEXT_MAX_HEIGHT = 80;
+    const TEXT_MAX_HEIGHT = 60;
     const { loading = false } = props;
 
     // Estado para armazenar se o texto está expandido ou não
@@ -83,11 +83,11 @@ const Media: FC<MediaProps> = (props: MediaProps) => {
                                 )}
                                 {item ? (
                                 <Box sx={{ pr: 2 }}>
-                                    <Typography gutterBottom variant="body2">
+                                    <Typography gutterBottom variant="h6">
                                     {item.title}
                                     </Typography>
                                     <Typography
-                                    variant="caption"
+                                    variant="subtitle2"
                                     sx={{ display: 'block', color: 'text.secondary' }}
                                     >
                                     {item.sub}

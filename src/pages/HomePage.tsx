@@ -43,6 +43,7 @@ const Media: FC<MediaProps> = (props: MediaProps) => {
 
     return (
         <>
+            {/* HEADER */}
             <Box sx={{ display: 'flex', flexDirection: 'column', '& > :not(style)': { m: 1 }, alignItems: 'center' }}>
                 <Box sx={{ width: { xs: '100%', sm: '80%', md: '70%', lg: '60%' }, margin: '30px', padding: { xs: '15px', sm: '30px' } }}>
                     <Box sx={{ textAlign: 'center' }}>
@@ -59,20 +60,27 @@ const Media: FC<MediaProps> = (props: MediaProps) => {
                     </Box>
                 </Box>
             </Box>
+            {/* CONTENT */}
+            <Container maxWidth="lg"   sx={{
+                                            border: '1px solid #ccc',
+                                            display: 'flex',
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                            minHeight: '100vh',  /* Centralização vertical */
+                                        }}>
 
-            <Container maxWidth="sm">
-                <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+                <Grid container spacing={3} justifyContent="center">
                     {(loading ? Array.from(new Array(3)) : data).map((item, index) => (
-                        <Grid key={index} size={{ xs: 2, sm: 4, md: 4 }}>
-                            <Box key={index} sx={{ width: 210, marginRight: 0.5, my: 5 }}>
+                        <Grid key={index} size={{ xs: 12, sm: 6, md: 4 }} style={{ border: '1px solid #ccc' }}>
+                            <Box key={index} sx={{ width: '100%', marginRight: 0.5, my: 5 }} style={{ border: '1px solid #ccc', textAlign: 'center' }}>
                                 {item ? (
                                 <img
-                                    style={{ width: 210, height: 118 }}
+                                    style={{ width: '100%', height: 'auto' }}
                                     alt={item.title}
                                     src={item.src}
                                 />
                                 ) : (
-                                <Skeleton variant="rectangular" width={210} height={118} />
+                                <Skeleton variant="rectangular" width="100%" height={118} />
                                 )}
                                 {item ? (
                                 <Box sx={{ pr: 2 }}>
@@ -95,6 +103,7 @@ const Media: FC<MediaProps> = (props: MediaProps) => {
                                         textOverflow: 'ellipsis',
                                         transition: 'max-height 0.3s ease',
                                     }}
+                                    style={{ textAlign: 'justify' }}
                                     >
                                     {item.desc}
                                     </Typography>
@@ -108,13 +117,15 @@ const Media: FC<MediaProps> = (props: MediaProps) => {
                                         textOverflow: 'ellipsis',
                                         transition: 'max-height 0.3s ease',
                                     }}
+                                    style={{ textAlign: 'justify' }}
                                     >
                                     {item.obs}
                                     </Typography>
-                                    <Button size="small">Share</Button>
-                                    <Button size="small" onClick={() => handleToggleExpand(index)}>
-                                        {expanded[index] ? 'Voltar' : 'Saiba mais'}
-                                    </Button>
+                                    <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>  {/* Alinhando os botões à direita */}
+                                        <Button size="small" onClick={() => handleToggleExpand(index)}>
+                                            {expanded[index] ? 'Voltar' : 'Saiba mais'}
+                                        </Button>
+                                    </Box>
                                 </Box>
                                 ) : (
                                 <Box sx={{ pt: 0.5 }}>

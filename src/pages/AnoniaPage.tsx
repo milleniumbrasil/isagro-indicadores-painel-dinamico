@@ -434,8 +434,8 @@ function DashboardParamsBox(
                     <Typography variant="body2" sx={{ padding: '15px', width: '350px' }}>
                         <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
                             <li><b>Estado:</b> {_stateName}</li>
-                            <li><b>Início:</b> {_startDate}</li>
-                            <li><b>Fim:</b> {_endDate}</li>
+                            {/* <li><b>Início:</b> {_startDate}</li>
+                            <li><b>Fim:</b> {_endDate}</li> */}
                             <li><b>Indicador:</b> {_indicator}</li>
                             {_label ?? <li><b>Rótulo:</b> {_label}</li>}
                             {_source ?? <li><b>Fonte:</b> {_source}</li>}

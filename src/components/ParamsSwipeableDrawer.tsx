@@ -114,12 +114,12 @@ const ParamsSwipeableDrawer: FC<ParamsSwipeableDrawerProps> = ({
                         <Typography>Ao selecionar um período, os gráficos devem exibir os dados correspondentes.</Typography>
                         <Divider variant="middle" sx={{ margin: '15px' }} />
                         <FormControl fullWidth sx={{ display: 'flex', gap: '10px', flexDirection: 'row', alignItems: 'center', marginTop: '20px' }}>
-                        <Select
-                            id="period-start-select"
-                            value={_startDate.getFullYear().toString()}
-                            onChange={_handleStartDateChange}
-                            sx={{ flex: 1 }}
-                        >
+                            <Select
+                                id="period-start-select"
+                                value={_startDate.getFullYear().toString()} 
+                                onChange={_handleStartDateChange}
+                                sx={{ flex: 1 }}
+                            >
                                 {generateYearOptions(2000, new Date().getFullYear()).map((startYear: string, index: number) => (
                                     <MenuItem id={`${index}-menu-item-period-start`} value={startYear} key={index}>
                                         {startYear}

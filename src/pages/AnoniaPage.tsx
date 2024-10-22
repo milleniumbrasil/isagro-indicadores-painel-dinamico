@@ -84,8 +84,10 @@ const AnalysisPage: FC = () => {
 
     const [selectedState, setSelectedState] = useState<string>('Distrito Federal');
     const [selectedMapState, setSelectedMapState] = useState<iEstado>(mapStates['Distrito Federal']);
-    const [selectedStartDate, setSelectedStartDate] = useState<Date>(new Date('2000-01-01'));
+
+    const [selectedStartDate, setSelectedStartDate] = useState<Date>(new Date(2000, 0, 1)); // Janeiro é o mês 0
     const [selectedEndDate, setSelectedEndDate] = useState<Date>(new Date('2024-12-31'));
+    
     const [currentAnalysisDescription, setCurrentAnalysisDescription] = useState<IAnalysisInfo>(
         findAnalysisDescription(
             selectedAnalysis,
@@ -183,13 +185,17 @@ const AnalysisPage: FC = () => {
 
     const handleStartDateChange = (event: SelectChangeEvent<string>) => {
         const selectedValue = event.target.value as string;
-        setSelectedStartDate(new Date(selectedValue)); // Atualiza o estado da data inicial selecionada
-        console.log('[AnalysisPage] Data Inicial selecionada:', selectedValue);
+        const updatedStartDate = new Date(selectedStartDate);
+        updatedStartDate.setFullYear(parseInt(selectedValue));
+        setSelectedStartDate(updatedStartDate); // Atualiza o estado da data inicial selecionada
+        console.log('[AnalysisPage] Data Inicial selecionada:', updatedStartDate);
     };
 
     const handleEndDateChange = (event: SelectChangeEvent<string>) => {
         const selectedValue = event.target.value as string;
-        setSelectedEndDate(new Date(selectedValue)); // Atualiza o estado da data final selecionada
+        const updatedEndDate = new Date(selectedEndDate);
+        updatedEndDate.setFullYear(parseInt(selectedValue));
+        setSelectedEndDate(new Date(updatedEndDate)); // Atualiza o estado da data final selecionada
         console.log('[AnalysisPage] Data Final selecionada', selectedValue);
     };
 

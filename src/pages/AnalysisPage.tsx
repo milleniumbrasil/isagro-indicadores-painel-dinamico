@@ -324,10 +324,11 @@ const AnalysisPage: FC = () => {
                     _interval={selectedInterval}
                     _backgroundColor={selectedBackgroundColor}
                     _palette={selectedPalette}
-                    _handleChangeRangeDates={handleChangeRangeDates}
                     _handleStateChange={handleStateChange}
                     _handleAnalysisChange={handleAnalysisChange}
                     _handleLabelChange={handleLabelChange}
+                    _handleStartDateChange={handleLabelChange}
+                    _handleEndDateChange={handleLabelChange}
                     _handleSourceChange={handleSourceChange}
                     _handleIntervalChange={handleIntervalChange}
                     _handleBackgroundColors={handleBackgroundColors}

@@ -1,10 +1,5 @@
 // src/pages/AnoniaPage.tsx
 
-import './AnalysisPage.css';
-// import 'rsuite/SelectPicker/styles/index.css';
-// import 'rsuite/DateRangePicker/styles/index.css';
-import 'rsuite/dist/rsuite.min.css';
-
 import { FC, useEffect, useState, SyntheticEvent } from 'react';
 
 import {
@@ -303,7 +298,7 @@ const AnalysisPage: FC = () => {
                 }} >
                 <MoreVertIcon />
             </Button>
-            {/* <ParamsSwipeableDrawer
+            { <ParamsSwipeableDrawer
                     _drawerOpen={drawerOpen}
                     _toggleDrawer={toggleDrawer}
                     _startDate={selectedStartDate}
@@ -318,14 +313,15 @@ const AnalysisPage: FC = () => {
                     _interval={selectedInterval}
                     _backgroundColor={selectedBackgroundColor}
                     _palette={selectedPalette}
-                    _handleChangeRangeDates={handleChangeRangeDates}
                     _handleStateChange={handleStateChange}
                     _handleAnalysisChange={handleAnalysisChange}
                     _handleLabelChange={handleLabelChange}
+                    _handleStartDateChange={handleLabelChange}
+                    _handleEndDateChange={handleLabelChange}
                     _handleSourceChange={handleSourceChange}
                     _handleIntervalChange={handleIntervalChange}
                     _handleBackgroundColors={handleBackgroundColors}
-                    _handlePaletteChange={handlePaletteChange} /> */}
+                    _handlePaletteChange={handlePaletteChange} /> }
             <div>
 
             <Box sx={{ display: 'flex', '& > :not(style)': { m: 1 } }}>
@@ -448,84 +444,6 @@ function DashboardParamsBox(
     );
 }
 
-function PercentualAreaChartCard(   _title:string,
-                                    _defaultBackgroundColor: string,
-                                    _indicatorDescription: IAnalysisInfo,
-                                    _indicator: string,
-                                    _startDate: Date,
-                                    _endDate: Date,
-                                    _data: IPercentualAreaChart[],
-                                    _defaultPalette: string[]
-                                ) {
-    return (
-        <>
-            <Typography variant="h5" sx={{ padding: '15px', marginTop: '15px' }}>
-            {_title}
-            </Typography>
-            <Card
-                variant="outlined"
-                sx={{ alignItems: 'center', width: '98%', backgroundColor: _defaultBackgroundColor, margin: '10px' }}
-            >
-                <CardContent>
-                    <Typography variant="h6" sx={{ padding: '15px' }}>
-                        {_indicatorDescription?.title || _indicator} por período{' '}
-                        {`${_startDate.getFullYear()} à ${_endDate.getFullYear()}`}
-                    </Typography>
-                    <Typography variant="body2" sx={{ padding: '10px' }}>
-                        {_indicatorDescription?.description}
-                    </Typography>
-                    <PercentualAreaChart
-                        width={400}
-                        height={250}
-                        data={_data}
-                        valueLabel="Área"
-                        fillColor={_defaultPalette[_defaultPalette.length % _defaultPalette.length]}
-                        strokeColor={_defaultPalette[_defaultPalette.length % _defaultPalette.length]} />
-                </CardContent>
-            </Card>
-        </>
-    );
-}
-
-function StackedAreaChartCard(  _title:string,
-                                _padding: string,
-                                _width: number,
-                                _height: number,
-                                _defaultBackgroundColor: string,
-                                _indicatorDescription: IAnalysisInfo,
-                                _startDate: Date, selectedEndDate: Date,
-                                _data: IStackedAreaChart[],
-                                _chartDefaultPalette: string[]) {
-    return (
-        <>
-            <Typography variant="h5" sx={{ padding: _padding, marginTop: '10px' }}>
-                {_title}
-            </Typography>
-            <Card
-                variant="outlined"
-                sx={{ alignItems: 'center', width: '100%', backgroundColor: _defaultBackgroundColor, margin: '10px' }}
-            >
-                <CardContent>
-                    <Typography variant="h6" sx={{ padding: _padding }}>
-                        {_indicatorDescription?.title} por período{' '}
-                        {`${_startDate.getFullYear()} à ${selectedEndDate.getFullYear()}`}
-                    </Typography>
-                    <Typography variant="body2" sx={{ padding: _padding }}>
-                        {_indicatorDescription?.description}
-                    </Typography>
-
-                    <StackedAreaChart
-                        width={_width}
-                        height={_height}
-                        data={_data}
-                        defaultPalette={_chartDefaultPalette} />
-                </CardContent>
-            </Card>
-
-        </>
-    );
-}
-
 function BarChartCard(  _title:string,
                         _width: number,
                         _height: number,
@@ -539,11 +457,11 @@ function BarChartCard(  _title:string,
         <>
             <Card variant="outlined" sx={{ alignItems: 'center', width: '100%', backgroundColor: _defaultBackgroundColor }} >
                 <CardContent>
-                    <Typography variant="h6" style={{ padding: '15px' }}>
-                    "O uso de fertilizantes e adubos para suprir as plantas com nitrogênio, assim como a urina e as fezes de bovinos, suínos, aves, entre outros integrantes de rebanho, são fontes de amônia, um gás que polui a atmosfera e traz impactos negativos para áreas naturais e para o homem. A amônia que é emitida para a atmosfera pode retornar aos ambientes naturais, como florestas e corpos d’água, provocando perda de biodiversidade e eutrofização, assim como produzir material particulado capaz de afetar fortemente a saúde da população. A agropecuária é a fonte de amônia mais importante para a maioria dos países, inclusive o Brasil, e o monitoramento das emissões deve ser realizado visando identificar os principais gargalos e mitigar o problema.
+                    <Typography variant="body1" style={{ padding: '15px' }}>
+                    O uso de fertilizantes e adubos para suprir as plantas com nitrogênio, assim como a urina e as fezes de bovinos, suínos, aves, entre outros integrantes de rebanho, são fontes de amônia, um gás que polui a atmosfera e traz impactos negativos para áreas naturais e para o homem. A amônia que é emitida para a atmosfera pode retornar aos ambientes naturais, como florestas e corpos d’água, provocando perda de biodiversidade e eutrofização, assim como produzir material particulado capaz de afetar fortemente a saúde da população. A agropecuária é a fonte de amônia mais importante para a maioria dos países, inclusive o Brasil, e o monitoramento das emissões deve ser realizado visando identificar os principais gargalos e mitigar o problema.
                     Com o IS_Agro, a emissão de amônia no Brasil será quantificada em diferentes escalas territoriais, utilizando dados disponíveis e também pelo levantamento de novos dados e informações que serão consumidas automaticamente para os cálculos de acordo com critérios ajustados às condições tropicais. Estudos adicionais vem sendo realizados considerando a alta complexidade encontrada no procedimento metodológico, que requer a validação para então ser proposto em fóruns globais.
                     O inventário da emissão de NH3 para a agricultura, seguindo as diretrizes da EMEP de 2019 e do IPCC de 2006 e 2019, utilizadas juntamente com os dados da ANDA para fertilizantes, e do IBGE para rebanhos, além de várias outras fontes, como a literatura científica, foram usados para complementar informações para elaborar um inventário usando uma abordagem mais avançada. Esses números vêm sendo atualizados periodicamente.
-                    As emissões de amônia no Brasil aumentaram de 2,28 milhões de toneladas em 1990 para 3,89 milhões de toneladas em 2021. Seguiram uma tendência crescente de 1990 a 2015, e desde então seguem uma tendência de estabilização. A pecuária foi responsável por cerca de dois terços do total das emissões. Uma nota técnica (ALVES et al., 2023a) foi formulada e submetida pela Embrapa/DEPI ao MAPA para endosso e encaminhamento a OCDE em setembro de 2023. Atividade executada por Bruno Alves (Embrapa Agrobiologia) atualizado para o período 1990-2021."
+                    As emissões de amônia no Brasil aumentaram de 2,28 milhões de toneladas em 1990 para 3,89 milhões de toneladas em 2021. Seguiram uma tendência crescente de 1990 a 2015, e desde então seguem uma tendência de estabilização. A pecuária foi responsável por cerca de dois terços do total das emissões. Uma nota técnica (ALVES et al., 2023a) foi formulada e submetida pela Embrapa/DEPI ao MAPA para endosso e encaminhamento a OCDE em setembro de 2023. Atividade executada por Bruno Alves (Embrapa Agrobiologia) atualizado para o período 1990-2021.
                     </Typography>
                     <Typography variant="body2" style={{ padding: '15px' }}>
                     "ALVES, B.J.R.; URQUIAGA, S.  POLIDORO, J.C.; FREITAS, P.L.de. Ammonia Emissions from Brazilian Agriculture - 1990 – 2021.  Technical Note. 7 pag. Setembro 2023.

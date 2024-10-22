@@ -25,17 +25,11 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import ScienceIcon from '@mui/icons-material/Science';
 import PaletteIcon from '@mui/icons-material/Palette';
 import DateRangeIcon from '@mui/icons-material/DateRange';
-import BiotechIcon from '@mui/icons-material/Biotech';
 import MapIcon from '@mui/icons-material/Map';
 import LabelIcon from '@mui/icons-material/Label';
 
 import { estados as mapStates } from 'isagro-map';
-
 import { palettes, backgroundColors } from '../components/colors';
-
-import { DateRangePicker } from 'rsuite';
-import { BsCalendar2MonthFill } from 'react-icons/bs';
-import { DateRange } from 'rsuite/esm/DateRangePicker';
 
 interface ParamsSwipeableDrawerProps {
     _drawerOpen: boolean;
@@ -52,10 +46,11 @@ interface ParamsSwipeableDrawerProps {
     _backgroundColor: string;
     _palette: string;
     _toggleDrawer: (newOpen: boolean) => () => void;
-    _handleChangeRangeDates: (rangeDates: DateRange | null, event: SyntheticEvent<Element, Event>) => void;
     _handleStateChange: (event: SelectChangeEvent) => void;
     _handleAnalysisChange: (event: SelectChangeEvent<string>) => void;
     _handleLabelChange: (event: SelectChangeEvent<string>) => void;
+    _handleStartDateChange: (event: SelectChangeEvent<string>) => void;
+    _handleEndDateChange: (event: SelectChangeEvent<string>) => void;
     _handleSourceChange: (event: SelectChangeEvent) => void;
     _handleIntervalChange: (event: SelectChangeEvent) => void;
     _handleBackgroundColors: (event: SelectChangeEvent) => void;
@@ -77,15 +72,28 @@ const ParamsSwipeableDrawer: FC<ParamsSwipeableDrawerProps> = ({
     _backgroundColor,
     _palette,
     _toggleDrawer,
-    _handleChangeRangeDates,
+    // _handleChangeRangeDates,
     _handleStateChange,
     _handleAnalysisChange,
     _handleLabelChange,
+    _handleStartDateChange,
+    _handleEndDateChange,
     _handleSourceChange,
     _handleIntervalChange,
     _handleBackgroundColors,
     _handlePaletteChange,
 }) => {
+
+    const currentYear = new Date().getFullYear();
+
+    const generateYearOptions = (startYear: number, endYear: number): string[] => {
+        const years: string[] = [];
+        for (let year = startYear; year <= endYear; year++) {
+            years.push(year.toString());
+        }
+        return years;
+    };
+
     return (
         <SwipeableDrawer anchor={'right'} open={_drawerOpen} onClose={_toggleDrawer(false)} onOpen={_toggleDrawer(true)}>
             <Box sx={{ alignItems: 'center' }}>
@@ -105,15 +113,31 @@ const ParamsSwipeableDrawer: FC<ParamsSwipeableDrawerProps> = ({
                     <AccordionDetails>
                         <Typography>Ao selecionar um período, os gráficos devem exibir os dados correspondentes.</Typography>
                         <Divider variant="middle" sx={{ margin: '15px' }} />
-                        <FormControl fullWidth>
-                            <DateRangePicker
-                                format="MMM yyyy"
-                                caretAs={BsCalendar2MonthFill}
-                                limitEndYear={1900}
-                                limitStartYear={new Date().getFullYear()}
-                                onChange={_handleChangeRangeDates}
-                                value={[_startDate, _endDate]}
-                            />
+                        <FormControl fullWidth sx={{ display: 'flex', gap: '10px', flexDirection: 'row', alignItems: 'center', marginTop: '20px' }}>
+                        <Select
+                            id="period-start-select"
+                            value={_startDate.getFullYear().toString()}
+                            onChange={_handleStartDateChange}
+                            sx={{ flex: 1 }}
+                        >
+                                {generateYearOptions(2000, new Date().getFullYear()).map((startYear: string, index: number) => (
+                                    <MenuItem id={`${index}-menu-item-period-start`} value={startYear} key={index}>
+                                        {startYear}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                            <Select
+                                id="period-end-select"
+                                value={_endDate.getFullYear().toString()}
+                                onChange={_handleEndDateChange}
+                                sx={{ flex: 1 }}
+                            >
+                                {generateYearOptions(2000, new Date().getFullYear()).map((endYear: string, index: number) => (
+                                    <MenuItem id={`${index}-menu-item-period-end`} value={endYear} key={index}>
+                                        {endYear}
+                                    </MenuItem>
+                                ))}
+                            </Select>
                         </FormControl>
                     </AccordionDetails>
                 </Accordion>

@@ -186,6 +186,18 @@ const AnalysisPage: FC = () => {
         console.log('[AnalysisPage] Rótulo selecionado:', selectedValue);
     };
 
+    const handleStartDateChange = (event: SelectChangeEvent<string>) => {
+        const selectedValue = event.target.value as string;
+        setSelectedStartDate(new Date(selectedValue)); // Atualiza o estado da data inicial selecionada
+        console.log('[AnalysisPage] Data Inicial selecionada:', selectedValue);
+    };
+
+    const handleEndDateChange = (event: SelectChangeEvent<string>) => {
+        const selectedValue = event.target.value as string;
+        setSelectedEndDate(new Date(selectedValue)); // Atualiza o estado da data final selecionada
+        console.log('[AnalysisPage] Data Final selecionada', selectedValue);
+    };
+
     const requestStackedData = async (url: string): Promise<IStackedAreaChart[]> => {
         console.log(`[AnalysisPage] requestStackedData ${url}`);
         return fetch(url)
@@ -327,8 +339,8 @@ const AnalysisPage: FC = () => {
                     _handleStateChange={handleStateChange}
                     _handleAnalysisChange={handleAnalysisChange}
                     _handleLabelChange={handleLabelChange}
-                    _handleStartDateChange={handleLabelChange}
-                    _handleEndDateChange={handleLabelChange}
+                    _handleStartDateChange={handleStartDateChange}
+                    _handleEndDateChange={handleEndDateChange}
                     _handleSourceChange={handleSourceChange}
                     _handleIntervalChange={handleIntervalChange}
                     _handleBackgroundColors={handleBackgroundColors}

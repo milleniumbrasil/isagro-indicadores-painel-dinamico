@@ -241,7 +241,8 @@ const AnalysisPage: FC = () => {
     };
 
     useEffect(() => {
-        if (selectedStartDate && selectedEndDate)
+        if (selectedStartDate && selectedEndDate){
+
         buildUrl('sum', selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval).then((sumUrl) => {
             requestStackedData(sumUrl).then((stackedObjects) => {
                 console.log(`[AnalysisPage] useEffect url: ${sumUrl}`);
@@ -250,7 +251,15 @@ const AnalysisPage: FC = () => {
                 setSelectedSumData(stackedObjects);
             });
         });
-
+        buildUrl('sma', selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval).then((smaUrl) => {
+            requestStackedData(smaUrl).then((stackedObjects) => {
+                console.log(`[AnalysisPage] useEffect url: ${smaUrl}`);
+                console.log(`[AnalysisPage] useEffect sma result: ${stackedObjects.length}`);
+                console.log(`[AnalysisPage] useEffect sma sample: ${JSON.stringify(stackedObjects?.slice(0, 2), null, 2)}`);
+                setSelectedSmaData(stackedObjects);
+            });
+        });
+        }
         const analysisInfos = analysisDescriptions(selectedStartDate, selectedEndDate);
         const initialAnalysisDescription = findAnalysisDescription(selectedAnalysis, selectedStartDate, selectedEndDate, analysisInfos);
         setCurrentAnalysisDescription(initialAnalysisDescription);
@@ -387,7 +396,7 @@ const AnalysisPage: FC = () => {
                                 selectedChartDefaultBackgroundColor,
                                 selectedStartDate,
                                 selectedEndDate,
-                                selectedSumData,
+                                selectedSmaData,
                                 selectedChartDefaultPalette)
                                 }
                 </Box>

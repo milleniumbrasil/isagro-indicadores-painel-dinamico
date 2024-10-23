@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { AreaChart as RechatsStackedAreaChart, BarChart as RechartsBarChart, ComposedChart, Bar, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, Line } from 'recharts';
 import { whiteBackgroundColor, palettes } from '../colors';
 import { IStackedAreaChart } from './IStackedAreaChart';
-import { Padding } from '@mui/icons-material';
+
 
 export interface INormalizedData {
     period: string;
@@ -13,11 +13,11 @@ export interface INormalizedData {
 
 interface BarLineAreaComposedChartProps {
     data: IStackedAreaChart[];
+    tendencyData: IStackedAreaChart[];
     dataKey?: string;
     valueLabel?: string;
     width?: number;
     height?: number;
-    defaultPalette?: string[];
 }
 
 export function Loading() {
@@ -103,7 +103,7 @@ const BarLineAreaComposedChart: React.FC<BarLineAreaComposedChartProps> = (props
     function normalizeData(data: IStackedAreaChart[]): INormalizedData[] {
         // Chama a função de validação para verificar duplicatas
         validateData(data);
-        // console.log(`[StackedAreaChart] normalizeData input: ${JSON.stringify(data?.slice(0, 2), null, 2)}`);
+        // console.log(`[BarLineAreaComposedChart] normalizeData input: ${JSON.stringify(data?.slice(0, 2), null, 2)}`);
 
         const groupedData: Record<string, INormalizedData> = {};
 
@@ -121,14 +121,63 @@ const BarLineAreaComposedChart: React.FC<BarLineAreaComposedChartProps> = (props
 
         // Retorna os dados normalizados como um array de INormalizedData
         const result = Object.values(groupedData);
-        // console.log(`[StackedAreaChart] normalizeData result: ${JSON.stringify(result?.slice(0, 2), null, 2)}`);
+        // console.log(`[BarLineAreaComposedChart] normalizeData result: ${JSON.stringify(result?.slice(0, 2), null, 2)}`);
         return result;
+    }
+
+    // Função para normalizar os dados
+    function normalizeTendencyData(data: IStackedAreaChart[]): INormalizedData[] {
+        // Chama a função de validação para verificar duplicatas
+        validateData(data);
+        // console.log(`[BarLineAreaComposedChart] normalizeTendencyData input: ${JSON.stringify(data?.slice(0, 2), null, 2)}`);
+
+        const groupedData: Record<string, INormalizedData> = {};
+
+        data.forEach(({ period, entry }) => {
+            const [label, value] = entry;
+
+            // Inicializa o período, se necessário
+            if (!groupedData[period]) {
+                groupedData[period] = { period } as INormalizedData;
+            }
+
+            // Atribui o valor ao label correspondente
+            groupedData[period][`≈ ${label}`] = value;
+        });
+
+        // Retorna os dados normalizados como um array de INormalizedData
+        const result = Object.values(groupedData);
+        // console.log(`[BarLineAreaComposedChart] normalizeTendencyData result: ${JSON.stringify(result?.slice(0, 2), null, 2)}`);
+        return result;
+    }
+
+    // Função para normalizar os dados
+    function consolidateData(_data: INormalizedData[], _tendencyData: INormalizedData[]): INormalizedData[] {
+        const consolidatedDate: INormalizedData[] = [..._data];
+        const groupedData: Record<string, INormalizedData> = {};
+
+        _tendencyData.forEach((tendency) => {
+            let entry = consolidatedDate.find((e: INormalizedData) => e.period === tendency.period);
+
+            // Se a entrada não existir, cria uma nova entrada
+            if (!entry) {
+                entry = { period: tendency.period } as INormalizedData;
+                consolidatedDate.push(entry);
+            }
+
+            // Copia todos os atributos filhos de tendency para a entry
+            Object.assign(entry, tendency);
+
+        });
+
+        // console.log(`[BarLineAreaComposedChart] consolidateData result: ${JSON.stringify(consolidatedDate?.slice(0, 2), null, 2)}`);
+        return consolidatedDate;
     }
 
     const extractAttibutesNames = (normalizedData: INormalizedData[]): string[] => {
         let result: string[] = [];
         if (normalizedData && normalizedData.length > 0) {
-            // console.log('[StackedAreaChart] extractAttibutesNames:', JSON.stringify(normalizedData, null, 2));
+            // console.log('[BarLineAreaComposedChart] extractAttibutesNames:', JSON.stringify(normalizedData, null, 2));
             const attrNamesSet = new Set<string>();
             normalizedData.forEach((item) => {
                 Object.keys(item).forEach((key) => {
@@ -138,57 +187,70 @@ const BarLineAreaComposedChart: React.FC<BarLineAreaComposedChartProps> = (props
                 });
             });
             const attrNames = Array.from(attrNamesSet);
-            // console.log(`[StackedAreaChart] extractAttibutesNames Final attribute names: ${JSON.stringify(attrNames, null, 2)}`);
+            // console.log(`[BarLineAreaComposedChart] extractAttibutesNames Final attribute names: ${JSON.stringify(attrNames, null, 2)}`);
             result = attrNames;
         } else {
-            console.warn('[StackedAreaChart] extractAttibutesNames: normalizedData is empty or undefined');
+            console.warn('[BarLineAreaComposedChart] extractAttibutesNames: normalizedData is empty or undefined');
         }
         return result;
     };
 
     const [dataKey, setDataKey] = useState<string>('period');
     const [internalData, setInternalData] = useState<INormalizedData[]>([]);
+    const [internalTendencyData, setInternalTendencyData] = useState<INormalizedData[]>([]);
     const [internalWidth, setInternalWidth] = useState<number>(800);
     const [internalHeight, setInternalHeight] = useState<number>(1200);
     const [attributeNames, setAttributeNames] = useState<string[]>([]);
+    const [tendencyAttributeNames, setTendencyAttributeNames] = useState<string[]>([]);
     const [loading, setLoading] = useState(true);
     const [dynamicTicks, setDynamicTicks] = useState<number[]>([0]);
     const [defaultPalette, setDefaultPalette] = useState<string[]>(
-        palettes.find(palette => palette.value === 'greenLight')?.colors.map(color => color.color) || []
+        palettes.find(palette => palette.value === 'greenDark')?.colors.map(color => color.color) || []
+    );
+    const [internalTendencyPalette, setInternalTendencyPalette] = useState<string[]>(
+        palettes.find(palette => palette.value === 'redDark')?.colors.map(color => color.color) || []
     );
 
     useEffect(() => {
         try {
             if (!props.data || props.data.length === 0) {
-                console.warn('[StackedAreaChart]: data is required at first useEffect stage! It should be loaded from props.data.');
+                console.warn('[BarLineAreaComposedChart]: data is required at first useEffect stage! It should be loaded from props.data.');
                 setLoading(false);
                 return;
             } else {
                 const data = Array.from(props.data);
                 const normalizedData = normalizeData(data);
-                setInternalData(normalizedData);
-                if (props.width) setInternalWidth(props.width);
-                if (props.height) setInternalHeight(props.height);
-
-                // Atualize a lógica para definir a paleta correta
-                if (props.defaultPalette) {
-                    setDefaultPalette(props.defaultPalette.map(color => color)); // Use apenas os valores de cor
-                }
-
                 const attrNames = extractAttibutesNames(normalizedData);
                 setAttributeNames(attrNames);
+                if (props.tendencyData && props.tendencyData.length > 0) {
+                    const tendencyData = Array.from(props.tendencyData);
+                    const normalizedTendencyData = normalizeTendencyData(tendencyData);
+                    setInternalTendencyData(normalizedTendencyData);
+                    const tendencyAttrNames = extractAttibutesNames(normalizedTendencyData);
+                    setTendencyAttributeNames(tendencyAttrNames);
+                    const consolidatedDate = consolidateData(normalizedData, normalizedTendencyData);
+                    // console.log(`[BarLineAreaComposedChart] useEffect consolidatedDate: ${JSON.stringify(consolidatedDate.slice(2), null, 2)}`);
+                    setInternalData(consolidatedDate);
+                    // console.log(`[BarLineAreaComposedChart] useEffect internalData: ${JSON.stringify(internalData.slice(2), null, 2)}`);
+                }
+
+                if (props.width) setInternalWidth(props.width);
+                if (props.height) setInternalHeight(props.height);
             }
         } catch (error) {
             console.error(error);
         } finally {
             setLoading(false);
         }
-    }, [props.data, props.dataKey, props.valueLabel, props.width, props.height, props.defaultPalette]);
+    }, [props.data, props.tendencyData, props.dataKey, props.valueLabel, props.width, props.height]);
 
+    useEffect(() => {
+        console.log(`[BarLineAreaComposedChart] useEffect internalData: ${JSON.stringify(internalData.slice(0, 2), null, 2)}`);
+    }, [internalData]);
     return (
         <div style={{ width: '100%', height: internalHeight }}>
             <ResponsiveContainer>
-                <RechartsBarChart
+                <ComposedChart
                     width={internalWidth}
                     height={internalHeight}
                     data={internalData}
@@ -205,17 +267,26 @@ const BarLineAreaComposedChart: React.FC<BarLineAreaComposedChartProps> = (props
                     <YAxis tickFormatter={tickFormatter} ticks={dynamicTicks} />
                     <Legend formatter={legendFormatter} iconType={'triangle'} layout="vertical" verticalAlign="middle" align='left' />
                     <Tooltip content={<CustomTooltip />} />
-                    {attributeNames.map((item, index) => (
+                    {attributeNames.map((_className, indexClass) => (
                         <Bar
-                            key={item}
+                            key={_className}
                             type="monotone"
-                            dataKey={item}
+                            dataKey={_className}
                             stackId="1"
-                            stroke={defaultPalette[index % defaultPalette.length]}
-                            fill={defaultPalette[index % defaultPalette.length]}
+                            stroke={defaultPalette[indexClass % defaultPalette.length]}
+                            fill={defaultPalette[indexClass % defaultPalette.length]}
                         />
                     ))}
-                </RechartsBarChart>
+                    {tendencyAttributeNames.map((_tendencyName, indexTendency) => (
+                        <Line
+                            key={_tendencyName}
+                            type="monotone"
+                            dataKey={_tendencyName}
+                            stroke={internalTendencyPalette[indexTendency % internalTendencyPalette.length]}
+                            fill={internalTendencyPalette[indexTendency % internalTendencyPalette.length]}
+                        />
+                    ))}
+                </ComposedChart>
             </ResponsiveContainer>
         </div>
     );

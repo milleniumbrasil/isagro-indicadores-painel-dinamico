@@ -494,7 +494,7 @@ function BarChartCard(  _width: number,
                         width={_width}
                         height={_height}
                         data={_data}
-                        defaultPalette={_palette} />
+                        tendencyData={_data}/>
                 </CardContent>
             </Card>
         </>

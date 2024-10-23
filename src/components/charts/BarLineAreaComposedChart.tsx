@@ -13,7 +13,7 @@ export interface INormalizedData {
 
 interface BarLineAreaComposedChartProps {
     data: IStackedAreaChart[];
-    tendencyData: IStackedAreaChart[];
+    tendencyData?: IStackedAreaChart[];
     dataKey?: string;
     valueLabel?: string;
     width?: number;

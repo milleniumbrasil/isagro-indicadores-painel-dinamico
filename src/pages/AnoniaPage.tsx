@@ -391,6 +391,21 @@ const AnalysisPage: FC = () => {
             <Paper sx={{ width: '96%', alignItems: 'center', margin: '15px' }}>
                 <Box sx={{ display: 'flex', '& > :not(style)': { m: 1 } }}>
 
+                    {BarLineChartCard(
+                                150, 200,
+                                selectedChartDefaultBackgroundColor,
+                                selectedStartDate,
+                                selectedEndDate,
+                                selectedSmaData,
+                                selectedSmaData,
+                                selectedChartDefaultPalette)
+                                }
+                </Box>
+            </Paper>
+
+            <Paper sx={{ width: '96%', alignItems: 'center', margin: '15px' }}>
+                <Box sx={{ display: 'flex', '& > :not(style)': { m: 1 } }}>
+
                     {BarChartCard(
                                 150, 200,
                                 selectedChartDefaultBackgroundColor,
@@ -502,8 +517,29 @@ function BarChartCard(  _width: number,
                     <BarLineAreaComposedChart
                         width={_width}
                         height={_height}
+                        data={_data}/>
+                </CardContent>
+            </Card>
+        </>
+    );
+}
+function BarLineChartCard(  _width: number,
+                        _height: number,
+                        _defaultBackgroundColor: string,
+                        _startDate: Date,
+                        _endDate: Date,
+                        _data: IStackedAreaChart[],
+                        _tendency: IStackedAreaChart[],
+                        _palette: string[]) {
+    return (
+        <>
+            <Card variant="outlined" sx={{ alignItems: 'center', width: '100%', backgroundColor: _defaultBackgroundColor }} >
+                <CardContent>
+                    <BarLineAreaComposedChart
+                        width={_width}
+                        height={_height}
                         data={_data}
-                        tendencyData={_data}/>
+                        tendencyData={_tendency}/>
                 </CardContent>
             </Card>
         </>

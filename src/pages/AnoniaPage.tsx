@@ -61,6 +61,7 @@ import BarLineAreaComposedChart from '../components/charts/BarLineAreaComposedCh
 import PieChart from '../components/charts/PieChart';
 import ParamsSwipeableDrawer from '../components/ParamsSwipeableDrawer';
 import { isEdge } from 'rsuite/esm/internals/utils';
+import ParamsBar from '../components/ParamsBar';
 
 export function Loading() {
     return (
@@ -89,16 +90,6 @@ const AnalysisPage: FC = () => {
     const [selectedStartDate, setSelectedStartDate] = useState<Date>(new Date(2000, 0, 1)); // Janeiro é o mês 0
     const [selectedEndDate, setSelectedEndDate] = useState<Date>(new Date('2024-12-31'));
 
-    const [isTextExpanded, setIsTextExpanded] = useState(false);
-
-    const [currentAnalysisDescription, setCurrentAnalysisDescription] = useState<IAnalysisInfo>(
-        findAnalysisDescription(
-            selectedAnalysis,
-            selectedStartDate,
-            selectedEndDate,
-            analysisDescriptions(selectedStartDate, selectedEndDate),
-        ),
-    );
     const [selectedInterval, setSelectedInterval] = useState<string>('annual');
     const [selectedSumData, setSelectedSumData] = useState<IStackedAreaChart[]>([]);
     const [selectedSmaData, setSelectedSmaData] = useState<IStackedAreaChart[]>([]);
@@ -153,13 +144,6 @@ const AnalysisPage: FC = () => {
 
     const handleIntervalChange = (event: SelectChangeEvent) => {
         setSelectedInterval(event.target.value); // Atualiza o intervalo selecionado
-    };
-
-    const handleChangeRangeDates = (rangeDates: DateRange | null) => {
-        if (rangeDates) {
-            setSelectedStartDate(rangeDates[0]);
-            setSelectedEndDate(rangeDates[1]);
-        }
     };
 
     const handleSourceChange = (event: SelectChangeEvent) => {
@@ -260,9 +244,6 @@ const AnalysisPage: FC = () => {
             });
         });
         }
-        const analysisInfos = analysisDescriptions(selectedStartDate, selectedEndDate);
-        const initialAnalysisDescription = findAnalysisDescription(selectedAnalysis, selectedStartDate, selectedEndDate, analysisInfos);
-        setCurrentAnalysisDescription(initialAnalysisDescription);
     }, [selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval]);
 
     useEffect(() => {
@@ -299,26 +280,8 @@ const AnalysisPage: FC = () => {
         });
     }, [selectedAnalysis]);
 
-    useEffect(() => {
-        // obtém os dados descritivos para as datas selecionadas
-        if (selectedStartDate && selectedEndDate) {
-            const analysisInfos = analysisDescriptions(selectedStartDate, selectedEndDate);
-            const initialAnalysisDescription = findAnalysisDescription(
-                selectedAnalysis,
-                selectedStartDate,
-                selectedEndDate,
-                analysisInfos
-            );
-            setCurrentAnalysisDescription(initialAnalysisDescription);
-        }
-    }, [selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval]);
-
     const toggleDrawer = (newOpen: boolean) => () => {
         setDrawerOpen(newOpen);
-    };
-
-    const toggleTextExpansion = (expand: boolean) => {
-        setIsTextExpanded(expand);
     };
 
     return (
@@ -332,7 +295,7 @@ const AnalysisPage: FC = () => {
                 }} >
                 <MoreVertIcon />
             </Button>
-            { <ParamsSwipeableDrawer
+            <ParamsSwipeableDrawer
                     _drawerOpen={drawerOpen}
                     _toggleDrawer={toggleDrawer}
                     _startDate={selectedStartDate}
@@ -355,7 +318,7 @@ const AnalysisPage: FC = () => {
                     _handleSourceChange={handleSourceChange}
                     _handleIntervalChange={handleIntervalChange}
                     _handleBackgroundColors={handleBackgroundColors}
-                    _handlePaletteChange={handlePaletteChange} /> }
+                    _handlePaletteChange={handlePaletteChange} />
             <div>
 
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', '& > :not(style)': { m: 1 }, margin: '30px', padding: '30px' }}>
@@ -383,10 +346,35 @@ const AnalysisPage: FC = () => {
                                         selectedInterval,
                                         selectedBackgroundColor,
                                         selectedPalette,
-                                        isTextExpanded,
-                                        toggleTextExpansion)}
+                                        true,
+                                        ()=>{})}
                 </Box>
             </Box>
+
+            <ParamsBar
+                    _drawerOpen={drawerOpen}
+                    _toggleDrawer={toggleDrawer}
+                    _startDate={selectedStartDate}
+                    _endDate={selectedEndDate}
+                    _state={selectedState}
+                    _indicator={selectedAnalysis}
+                    _availableIndicators={availableAnalysis}
+                    _label={selectedLabel}
+                    _availableLabels={availableLabels}
+                    _source={selectedSource}
+                    _availableSources={availableSources}
+                    _interval={selectedInterval}
+                    _backgroundColor={selectedBackgroundColor}
+                    _palette={selectedPalette}
+                    _handleStateChange={handleStateChange}
+                    _handleAnalysisChange={handleAnalysisChange}
+                    _handleLabelChange={handleLabelChange}
+                    _handleStartDateChange={handleStartDateChange}
+                    _handleEndDateChange={handleEndDateChange}
+                    _handleSourceChange={handleSourceChange}
+                    _handleIntervalChange={handleIntervalChange}
+                    _handleBackgroundColors={handleBackgroundColors}
+                    _handlePaletteChange={handlePaletteChange} />
 
             <Paper sx={{ width: '96%', alignItems: 'center', margin: '15px' }}>
                 <Box sx={{ display: 'flex', '& > :not(style)': { m: 1 } }}>

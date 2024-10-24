@@ -248,7 +248,7 @@ const BarLineAreaComposedChart: React.FC<BarLineAreaComposedChartProps> = (props
     }, [props.data, props.tendencyData, props.dataKey, props.valueLabel, props.width, props.height]);
 
     useEffect(() => {
-        console.log(`[BarLineAreaComposedChart] useEffect internalData: ${JSON.stringify(internalData.slice(0, 2), null, 2)}`);
+        // console.log(`[BarLineAreaComposedChart] useEffect internalData: ${JSON.stringify(internalData.slice(0, 2), null, 2)}`);
     }, [internalData]);
 
     return (

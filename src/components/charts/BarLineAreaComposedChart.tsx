@@ -232,6 +232,9 @@ const BarLineAreaComposedChart: React.FC<BarLineAreaComposedChartProps> = (props
                     // console.log(`[BarLineAreaComposedChart] useEffect consolidatedDate: ${JSON.stringify(consolidatedDate.slice(2), null, 2)}`);
                     setInternalData(consolidatedDate);
                     // console.log(`[BarLineAreaComposedChart] useEffect internalData: ${JSON.stringify(internalData.slice(2), null, 2)}`);
+                } else {
+                    setInternalData(normalizedData);
+                    // console.log(`[BarLineAreaComposedChart] useEffect internalData: ${JSON.stringify(internalData.slice(2), null, 2)}`);
                 }
 
                 if (props.width) setInternalWidth(props.width);
@@ -247,6 +250,7 @@ const BarLineAreaComposedChart: React.FC<BarLineAreaComposedChartProps> = (props
     useEffect(() => {
         console.log(`[BarLineAreaComposedChart] useEffect internalData: ${JSON.stringify(internalData.slice(0, 2), null, 2)}`);
     }, [internalData]);
+
     return (
         <div style={{ width: '100%', height: internalHeight }}>
             <ResponsiveContainer>

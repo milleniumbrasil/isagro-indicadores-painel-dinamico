@@ -411,7 +411,7 @@ const AnalysisPage: FC = () => {
                                 selectedChartDefaultBackgroundColor,
                                 selectedStartDate,
                                 selectedEndDate,
-                                selectedSmaData,
+                                selectedSumData,
                                 selectedChartDefaultPalette)
                                 }
                 </Box>

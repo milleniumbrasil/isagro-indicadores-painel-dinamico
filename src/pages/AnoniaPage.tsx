@@ -321,13 +321,13 @@ const AnalysisPage: FC = () => {
                     _handlePaletteChange={handlePaletteChange} />
             <div>
 
-            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', '& > :not(style)': { m: 1 }, margin: '30px', padding: '30px' }}>
+            {/* <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', '& > :not(style)': { m: 1 }, margin: '30px', padding: '30px' }}>
                 <Typography variant="h2" sx={{ paddingRight: '15px' }}>
                     Indicadores de NH3 Amônia
                 </Typography>
-            </Box>
+            </Box> */}
 
-            <Box sx={{ display: 'flex', '& > :not(style)': { m: 1 }, width: '100%' }}>
+            {/* <Box sx={{ display: 'flex', '& > :not(style)': { m: 1 }, width: '100%' }}>
                 <Box sx={{ flexGrow: 1, width: '50%', margin: '30px', padding: '30px' }}>
 
                         {MapBox(selectedMapState,
@@ -351,7 +351,7 @@ const AnalysisPage: FC = () => {
                                         true,
                                         ()=>{})}
                 </Box>
-            </Box>
+            </Box> */}
 
             <ParamsBar
                     _drawerOpen={drawerOpen}

@@ -1,155 +1,117 @@
 // src/pages/HomePage.tsx
 
-import 'rsuite/dist/rsuite.min.css';
+import React, { useEffect } from 'react';
+import $ from 'jquery';
+import './HomePage.css';
 
-import { FC, useEffect, useState, SyntheticEvent } from 'react';
-import { Link } from 'react-router-dom';
+const HomePage: React.FC = () => {
+  useEffect(() => {
+    // Carrega conteúdo externo apenas se os elementos não estiverem carregados
+    if (!$('#barragov').children().length) {
+      $("meta").load("/meta.html");
+      $("#barragov").load("/barragov.html");
+      $("#header").load("/header.html");
+      $("#footer").load("/footer.html");
+    }
+  }, []);
 
-import {
-    Box,
-    Typography,
-    Skeleton,
-    Container,
-    Grid2 as Grid,
-    Button,
-} from '@mui/material';
+  return (
+    <>
+      <meta charSet="utf-8" />
+      <title>IS Agro</title>
+      <link rel="stylesheet" href="/estilos.css" />
+      <link rel="shortcut icon" href="/sgbfavicon.ico" />
+      <script src="/jquery.js"></script>
 
-import data from './home.data.json';
-
-import { Loader } from 'rsuite';
-
-export function Loading() {
-    return (
-        <div>
-            <Loader backdrop content="loading..." vertical />
+      {/* Barra do Governo */}
+      <div id="barragov">
+        <div id="barra-brasil">
+          <div className="conteudo-escondido">
+            <a accessKey="1" href="#conteudo">Ir para o conteúdo</a>
+          </div>
+          <div className="conteudo-barra-brasil">
+            {/* Inserir outras divs e navegações conforme o HTML */}
+          </div>
+          <div id="orgaos-governo-barra" className="orgaos-governo-barra">
+            {/* Lista de órgãos governamentais */}
+          </div>
         </div>
-    );
-}
+      </div>
 
-interface MediaProps {
-    loading?: boolean;
-  }
+      {/* Cabeçalho */}
+      <div id="header">
+        <header id="header1">
+          <div className="barra_acess">
+            <a href="https://www.sgb.gov.br/" target="_blank" title="Serviço Geológico do Brasil">
+              <div id="logocprm"></div>
+            </a>
+            <div id="busca">
+              <script async src="https://cse.google.com/cse.js?cx=10c79a2a330e36b93"></script>
+              <div id="___gcse_0">
+                {/* Inclusão de elementos de busca conforme o Google CSE */}
+              </div>
+            </div>
+          </div>
+        </header>
+      </div>
 
-const Media: FC<MediaProps> = (props: MediaProps) => {
-    const TEXT_MAX_HEIGHT = 60;
-    const { loading = false } = props;
+      {/* Imagem de Banner */}
+      <img src="/banner.png" style={{ width: '100%', marginTop: '59px' }} alt="Banner" />
 
-    // Estado para armazenar se o texto está expandido ou não
-    const [expanded, setExpanded] = useState<{ [key: number]: boolean }>({});
+      {/* Conteúdo Principal */}
+      <div className="container resize">
+        <section id="textohome">
+            <div className="flex-container">
+                <div className="flex-item-left">
+                    <h1 className="resize">INTRODUÇÃO</h1>
+                    <p className="resize">
+                    O Brasil é um dos maiores produtores de alimentos e de matérias-primas de origem agrícola do mundo, apresentando ainda um grande potencial de crescimento.
+                    </p>
+                    <p className="resize">
+                    Fóruns globais que avaliam a sustentabilidade da agricultura em âmbito mundial desconsideram que o país protagoniza, a partir da adoção de diferentes tecnologias, uma verdadeira revolução produtiva, baseada na adoção de sistemas sustentáveis de manejo do solo e na intensificação sustentável do uso da terra.
+                    </p>
+                    <p className="resize">
+                    Para contrapor as posições desfavoráveis, o Brasil precisa estar munido de métricas e indicadores gerados a partir de dados técnico-científicos robustos capazes de avaliar o real desempenho de sua agropecuária, capacitando-se assim para negociar em defesa de seus interesses.
+                    </p>
+                </div>
+                <div className="flex-item-right">
+                    <h1 className="resize">PROJETO IS_AGRO</h1>
+                    <p className="resize">
+                    O projeto foi concebido para prover informações precisas e atualizadas sobre os indicadores ambientais e agrícolas, auxiliando na gestão sustentável e na defesa dos interesses do setor agrícola brasileiro no cenário internacional.
+                    </p>
+                    <img src="/card_indicadores_agricultura_organica.jpg" alt="Agricultura Orgânica" className="resize" />
+                </div>
+                </div>
+                <div className="flex-container">
+                <div className="flex-item-left">
+                    <h1 className="resize">DESAFIOS</h1>
+                    <p className="resize">
+                    O desafio é conseguir medir e demonstrar o que é feito no Brasil em termos de sustentabilidade e uso responsável de recursos, de forma a contribuir positivamente para o debate global.
+                    </p>
+                </div>
+                <div className="flex-item-right">
+                    <h1 className="resize">AÇÕES ESTRATÉGICAS</h1>
+                    <p className="resize">
+                    O Brasil tem adotado sistemas de manejo que promovem a conservação de solo, a redução das emissões de gases de efeito estufa e o uso racional de recursos, resultando em uma agricultura mais sustentável.
+                    </p>
+                </div>
+                </div>
+                <div className="flex-container">
+                <div className="flex-item-left">
+                    <h1 className="resize">CONCLUSÃO</h1>
+                    <p className="resize">
+                    É essencial que o Brasil continue a investir em métricas e indicadores de sustentabilidade que reflitam os esforços e os resultados do setor agropecuário, de modo a fortalecer sua posição em fóruns internacionais.
+                    </p>
+                </div>
+            </div>
 
-    // Função para alternar o estado expandido
-    const handleToggleExpand = (index: number) => {
-        setExpanded(prev => ({ ...prev, [index]: !prev[index] }));
-    };
-
-    return (
-        <>
-            {/* HEADER */}
-            <Box sx={{ display: 'flex', flexDirection: 'column', '& > :not(style)': { m: 1 }, alignItems: 'center' }}>
-                <Box sx={{ width: { xs: '100%', sm: '80%', md: '70%', lg: '60%' }, margin: '30px', padding: { xs: '15px', sm: '30px' } }}>
-                    <Box sx={{ textAlign: 'center' }}>
-                        <img src="/logo-isagro.png" alt="Logo Isagro" style={{ width: '150px', height: 'auto', margin: '15px' }} />
-                    </Box>
-                    <Typography variant="h2" sx={{ textAlign: 'center', padding: '15px', margin: { xs: '10px', md: '15px' } }}>
-                        Indicadores Agro-socioambientais do Brasil
-                    </Typography>
-                    <Typography variant="subtitle1" gutterBottom sx={{ height: 'auto', margin: { xs: '15px', sm: '30px' }, textAlign: 'justify' }}>
-                        Os indicadores agro-sociombientais constituem um conjunto de informações quantitativas capazes de identificar, avaliar e monitorar os impactos ambientais, sociais e econômicos relacionados às atividades agropecuárias. Métricas e Indicadores subsidiam a tomada de decisão por parte de agentes governamentais e da iniciativa privada, estabelecendo informações de grande valor estratégico e auxiliando nos processos de planejamento agroambiental e de gestão de políticas públicas. Isso permite identificar aspectos sensíveis e pontos fortes, modelar cenários e traçar tendências, contribuindo para a avaliação da sustentabilidade e resiliência da agropecuária brasileira. Esse ambiente digital disponibiliza índices e indicadores agro-socioambientais calculados após ajustes técnicos realizados pela equipe do Projeto IS_Agro (proposição do Ministério da Agricultura e Pecuária (MAPA), execução da Embrapa - Embrapa Solos, Embrapa Agrobiologia, Embrapa Meio Ambiente e a Assessoria Internacional da Embrapa em parceria com o Serviço Geológico do Brasil (SGB/CPRM).
-                    </Typography>
-                    <Box sx={{ display: 'flex', justifyContent: 'center', margin: '50px' }}>
-                        <img src="/MAPA_EMBRAPA_SGB_CPRM.jpeg" alt="MAPA e da EMBRAPA E SGB/CPRM" style={{ width: '100%', maxWidth: '700px', height: 'auto' }} />
-                    </Box>
-                </Box>
-            </Box>
-            {/* CONTENT */}
-            <Container maxWidth="lg"   sx={{
-                                            display: 'flex',
-                                            justifyContent: 'center',
-                                            alignItems: 'center',
-                                            minHeight: '100vh',  /* Centralização vertical */
-                                        }}>
-
-                <Grid container spacing={3} justifyContent="center">
-                    {(loading ? Array.from(new Array(3)) : data).map((item, index) => (
-                        <Grid key={index} size={{ xs: 12, sm: 6, md: 4 }} >
-                            <Box key={index} sx={{ width: '100%', marginRight: 0.5, my: 5 }} style={{ textAlign: 'center' }}>
-                                {item ? (
-                                    <Link to={item.target}>
-                                        <img
-                                            style={{ width: '100%', height: 'auto' }}
-                                            alt={item.title}
-                                            src={item.img}
-                                        />
-                                    </Link>
-                                ) : (
-                                <Skeleton variant="rectangular" width="100%" height={118} />
-                                )}
-                                {item ? (
-                                <Box sx={{ pr: 2 }}>
-                                    <Typography gutterBottom variant="h6">
-                                    {item.title}
-                                    </Typography>
-                                    <Typography
-                                    variant="subtitle2"
-                                    sx={{ display: 'block', color: 'text.secondary' }}
-                                    >
-                                    {item.sub}
-                                    </Typography>
-                                    <Typography
-                                    variant="caption"
-                                    sx={{
-                                        display: 'block',
-                                        color: 'text.secondary',
-                                        maxHeight: expanded[index] ? 'none' : `${TEXT_MAX_HEIGHT}px`,
-                                        overflow: 'hidden',
-                                        textOverflow: 'ellipsis',
-                                        transition: 'max-height 0.3s ease',
-                                    }}
-                                    style={{ textAlign: 'justify' }}
-                                    >
-                                    {item.desc}
-                                    </Typography>
-                                    <Typography
-                                    variant="caption"
-                                    sx={{
-                                        display: 'block',
-                                        color: 'text.secondary',
-                                        maxHeight: expanded[index] ? 'none' : `${TEXT_MAX_HEIGHT}px`,
-                                        overflow: 'hidden',
-                                        textOverflow: 'ellipsis',
-                                        transition: 'max-height 0.3s ease',
-                                    }}
-                                    style={{ textAlign: 'justify' }}
-                                    >
-                                    {item.obs}
-                                    </Typography>
-                                    <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>  {/* Alinhando os botões à direita */}
-                                        <Button size="small" onClick={() => handleToggleExpand(index)}>
-                                            {expanded[index] ? 'Voltar' : 'Saiba mais'}
-                                        </Button>
-                                    </Box>
-                                </Box>
-                                ) : (
-                                <Box sx={{ pt: 0.5 }}>
-                                    <Skeleton />
-                                    <Skeleton width="60%" />
-                                </Box>
-                                )}
-                            </Box>
-                        </Grid>
-                    ))}
-                </Grid>
-            </Container>
-        </>
-    );
+          {/* Adicione o resto do conteúdo conforme a estrutura HTML */}
+          <img src="/projeto1.png" alt="Projeto 1" />
+          <img src="/projeto2.png" alt="Projeto 2" />
+        </section>
+      </div>
+    </>
+  );
 };
 
-
-const HomePage: FC = () => {
-    return (
-            <Media loading={false} />
-    );
-}
-
 export default HomePage;
-

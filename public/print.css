@@ -1,0 +1,17 @@
+a {
+	text-decoration: none;
+	color: #666
+}
+#barragov, [vw] [vw-access-button] .access-button, .barra, .barra_acess, #contato, #footer, nav, button, .painel h3, .painel p {display: none}
+.painel, .boxes article, .boxes_produtos article {margin-bottom: 50px}
+.texto h1, .texto h2 {text-align: center}
+.texto img {
+	display:block;
+	margin: 0 auto;
+}
+.painel img {
+	display:block; 
+	width: 100%;
+	margin: 0 auto;
+}
+#valorpublico p, #valorpublicoin p {padding: 0 !important;}

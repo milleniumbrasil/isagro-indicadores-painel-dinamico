@@ -329,12 +329,14 @@ const AnalysisPage: FC = () => {
 
             <Box sx={{ display: 'flex', '& > :not(style)': { m: 1 }, width: '100%' }}>
                 <Box sx={{ flexGrow: 1, width: '50%', margin: '30px', padding: '30px' }}>
-                    {MapBox(selectedMapState,
-                            selectedWidth,
-                            selectedHeight,
-                            (zoom: number) => setSelectedZoom(zoom),
-                            (bbox: Array<number>) => setSelectedBbox(bbox.join(', ')),
-                            (center: Array<number>) => setSelectedCenter(center.join(', ')) )}
+
+                        {MapBox(selectedMapState,
+                                selectedWidth,
+                                selectedHeight,
+                                (zoom: number) => setSelectedZoom(zoom),
+                                (bbox: Array<number>) => setSelectedBbox(bbox.join(', ')),
+                                (center: Array<number>) => setSelectedCenter(center.join(', ')) )}
+
                 </Box>
                 <Box sx={{ flexGrow: 1, width: '50%', margin: '30px', padding: '30px' }}>
                     {SideBox(selectedState,
@@ -384,7 +386,7 @@ const AnalysisPage: FC = () => {
                                 selectedChartDefaultBackgroundColor,
                                 selectedStartDate,
                                 selectedEndDate,
-                                selectedSmaData,
+                                selectedSumData,
                                 selectedSmaData,
                                 selectedChartDefaultPalette)
                                 }

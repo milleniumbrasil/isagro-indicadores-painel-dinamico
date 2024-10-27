@@ -159,7 +159,7 @@ const ParamsBar: FC<ParamsBarProps> = ({
             </Box>
 
             {/* Rótulo */}
-            <Box sx={{ minWidth: '200px' }}>
+            {/* <Box sx={{ minWidth: '200px' }}>
                 <Typography variant="h6" sx={{ padding: '10px' }}>Rótulo</Typography>
                 <FormControl fullWidth>
                     <Select id="label-select" value={_label} onChange={_handleLabelChange}>
@@ -173,10 +173,10 @@ const ParamsBar: FC<ParamsBarProps> = ({
                         ))}
                     </Select>
                 </FormControl>
-            </Box>
+            </Box> */}
 
             {/* Fonte */}
-            <Box sx={{ minWidth: '200px' }}>
+            {/* <Box sx={{ minWidth: '200px' }}>
                 <Typography variant="h6" sx={{ padding: '10px' }}>Fonte</Typography>
                 <FormControl fullWidth>
                     <Select id="source-select" value={_source} onChange={_handleSourceChange}>
@@ -190,7 +190,7 @@ const ParamsBar: FC<ParamsBarProps> = ({
                         ))}
                     </Select>
                 </FormControl>
-            </Box>
+            </Box> */}
         </Box>
     );
 }

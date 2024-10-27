@@ -1,0 +1,97 @@
+
+<!DOCTYPE HTML>
+<html lang="pt-br">
+<head>
+<meta charset="utf-8" />
+<script src="jquery.js"></script>
+<link rel="stylesheet" media="screen" href="estilos.css">
+<script>
+$(document).ready(function() {
+  $("meta").load("meta.html");
+  $("#barragov").load("barragov.html");
+  $("#header").load("header.html");
+  $("#footer").load("footer.html");
+});
+</script>
+</head>
+<body>
+<!-- Barra do Governo -->
+<div id="barragov"></div>
+
+<!-- Cabeçalho -->
+<div id="header"></div>
+
+<img id="banner_interno" src="banner_internas.png">
+
+    <div id="intro_header">
+        <h1 class="resize">INDICADORES AGROAMBIENTAIS</h1>
+        <h2 class="resize">Emissão de Amônia e de Gases do Efeito Estufa</h2>
+    </div>
+
+
+<!-- Conteúdo -->
+<div class="container resize" id="texto">
+
+    <!-- Introdução -->
+    <section id="intro">
+
+    <img src="card_indicadores_amonia.jpg">
+
+    <p class="resize">Indicador avaliado e adequado com base nos dados disponíveis e nos parâmetros e fatores da agropecuária visando a melhoria das estimativas nacionais do Brasil incluindo levantamento  das fontes de dados e informações que serão consumidos automaticamente a partir das base nos dados disponíveis e o estabelecimento de parâmetros e critérios ajustados às condições tropicais. <p>
+    <p class="resize">Estudos adicionais foram realizados considerando a alta complexidade encontrada no procedimento metodológico preconizado para o seu cálculo, que requer a validação para então ser proposto em fóruns globais.  O inventário da emissão de NH3 para a agricultura, seguindo as diretrizes da EMEP de 2019 e do IPCC de 2006 e 2019, utilizadas juntamente com os dados da ANDA para fertilizantes e IBGE para rebanho, principalmente, permitiram a estimativa do indicador para o período 1990-2021 .</p><br>
+    <p class="resize">Dados da literatura foram usados para complementar informações para elaborar o inventário de NH3 usando uma abordagem Tier 2 da metodologia do IPCC. As emissões de amônia no Brasil aumentaram de 2,28 milhões de toneladas em 1990 para 3,89 milhões de toneladas em 2021, mas seguindo uma tendência crescente de 1990 a 2015, seguida por um intervalo de cinco anos de aparente estabilização.  A pecuária foi responsável por cerca de dois terços do total das emissões.  Nota técnica (ALVES et al., 2023a) foi formulada e submetida pela Embrapa/DEPI ao MAPA para endosso e encaminhamento ao OCDE em setembro de 2023. Atividade executada por Bruno Alves (Embrapa Agrobiologia) atualizado para o período 1990-2021. </p>
+
+
+    </section>
+
+    <br>
+    <br>
+      <br>
+
+    <!-- Dashboard -->
+    <section>
+
+        <h2 class="resize">Dashboard</h2>
+
+		<iframe src="https://geoportal.sgb.gov.br/portal/apps/dashboards/0172fb2193f3410a849c2a90777412dc"  width="100%" height="600" style="border:1px solid black;"></iframe>
+		<a target="_blank" href="https://geoportal.sgb.gov.br/portal/apps/dashboards/0172fb2193f3410a849c2a90777412dc"><p class="resize">Abrir em nova janela</p></a>
+     </section>
+
+    <!-- Veja também -->
+    <section>
+
+        <h2 class="resize">Veja Também</h2>
+
+     </section>
+
+     <!-- Downloads -->
+    <section>
+
+        <h2 class="resize">Downloads</h2>
+		<p class="resize"><a target="_blank" href="downloads/indicadores_emissao_amonia/tn_05_ammonia_emissions_from_brazilian_agriculture_sep_2023.pdf">
+		ALVES, B.J.R.; URQUIAGA, S.  POLIDORO, J.C.; FREITAS, P.L.de. <u>Ammonia Emissions from Brazilian Agriculture - 1990 – 2021</u>.  Technical Note. 7 pag. Setembro 2023.</p>
+    </section>
+
+
+      <a href="javascript:window.history.go(-1)"><button class="voltar">Página Inicial</button></a>
+
+<!-- Fim Container -->
+</div>
+
+<!-- Rodapé -->
+<div id="footer"></div>
+
+<!-- Libras -->
+<div vw class="enabled">
+<div vw-access-button class="active"></div>
+<div vw-plugin-wrapper>
+<div class="vw-plugin-top-wrapper"></div>
+</div>
+</div>
+<script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+<script>
+new window.VLibras.Widget('https://vlibras.gov.br/app');
+</script>
+
+</body>
+</html>

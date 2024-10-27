@@ -1,0 +1,108 @@
+
+<!DOCTYPE HTML>
+<html lang="pt-br">
+<head>
+<meta charset="utf-8" />
+<script src="jquery.js"></script>
+<link rel="stylesheet" media="screen" href="estilos.css">
+<script>
+$(document).ready(function() {
+  $("meta").load("meta.html");
+  $("#barragov").load("barragov.html");
+  $("#header").load("header.html");
+  $("#footer").load("footer.html");
+});
+</script>
+</head>
+<body>
+<!-- Barra do Governo -->
+<div id="barragov"></div>
+
+<!-- Cabeçalho -->
+<div id="header"></div>
+
+<img id="banner_interno" src="banner_internas.png">
+
+    <div id="intro_header">
+        <h1 class="resize">INDICADORES AGROAMBIENTAIS</h1>
+        <h2 class="resize">Balanço de Nutrientes (nitrogênio e fósforo) e Poluição Causada por Nitrato e Fosfato</h2>
+    </div>
+
+
+<!-- Conteúdo -->
+<div class="container resize" id="texto">
+
+    <!-- Introdução -->
+    <section id="intro">
+
+    <!--<img src="card_indicadores_balanco.jpg">-->
+	<p class="resize">
+
+			<figure style="float: left;">
+			<img style="width: 100%"; src="card_indicadores_balanco.jpg">
+			<figcaption style="width: 100%";>Café com Crotalaria -Sementes Adriana - Campos Altos, MG</figcaption>
+			</figure>
+
+	</p>
+
+    <p class="resize">Balanço de Nitrogênio, Fósforo e Potássio são nutrientes essenciais para a produção agropecuária brasileira.  Avanços no sentido de tropicalizar parâmetros e critérios utilizados para o cálculo do balanço de N, P e K contribuem para melhoras significantes para as estimativas nacionais a partir de fontes de dados e informações puclicas e privadas, nacionais e internacionais, consumidos automaticamente.   A partir de análise minuciosa do procedimento metodológico preconizado pela OCDE, foram mudanças em alguns indicadores/coeficientes para que melhor reflitam a agropecuária brasileira, destacando-se a inclusão da cultura de café, ajuste dos coeficientes da fixação biológica de nitrogênio na cultura da soja, outras leguminosas e em gramíneas, e mudança na metodologia para estimar a saída de NPK em área de pastagens através da produção de carne bovina e seu conteúdo de nutrientes, entre outros. <p>
+    <p class="resize">Especificamente, para o Balanço de Nitrogênio, considerou-se que, em geral, ao redor de 50% do N-fertilizante aplicado é recuperado pelas plantas, do qual deduz-se que seria muito difícil ter, no caso deste nutriente, um balanço próximo de zero, ou que todo o N aplicado no solo seja absorvido pela planta. Saídas de N variaram de 2,51 Mt de N em 1985 para 10,59 Mt de N em 2020, representando um aumento de 322%. Mudanças nos ingressos e saídas de N obedeceram a expansão e intensificação da agricultura, representada fundamentalmente pela cultura da soja, onde o processo da FBN contribui com mais de 80% da demanda de N da cultura. Considerando a totalidade da área agropecuária, o balanço de N aumentou de 9,9 kgN/ha em 1985 para 26 kgN/ha em 2020, um aumento de 163% em 36 anos, refletindo a intensificação e desenvolvimento agrícola nesses anos. O BN de 2020 (26,0 kgN/ha) está muito próximo da média dos dois terços dos países da OCDE, mas muito abaixo dos valores médios dos países desta instituição (63 kgN/ha).</p><br/>
+    <p class="resize">Para o Balanço de Fosforo, nos últimos 10 anos o valor médio do BP de 6,01 kgP/ha é o mesmo que a média dos países membros da OCDE (6 kgP/ha) sendo que o valor de BP estimado pelo método OCDE-2 para o ano 2020 é 58% menor que a estimativa original realizada pela OCDE (OCDE-1), devido principalmente à mudança metodológica na estimativa do P exportado das pastagens, que na nova metodologia (OCDE-2) está baseada nos nutrientes exportados do campo somente através da carne produzida, que reflete melhor a realidade nacional.</p>
+
+
+    </section>
+
+    <br>
+    <br>
+      <br>
+
+    <!-- Dashboard -->
+    <section>
+
+        <h2 class="resize">Dashboard</h2>
+		<iframe src="https://geoportal.sgb.gov.br/portal/apps/dashboards/7b60358c42d54faab8bf77f8c1faf877"  width="100%" height="600" style="border:1px solid black;"></iframe>
+		<a target="_blank" href="https://geoportal.sgb.gov.br/portal/apps/dashboards/7b60358c42d54faab8bf77f8c1faf877"><p class="resize">Abrir em nova janela</p></a>
+
+     </section>
+
+    <!-- Veja também -->
+    <section>
+
+        <h2 class="resize">Veja Também</h2>
+
+     </section>
+
+     <!-- Downloads -->
+    <section>
+
+        <h2 class="resize">Downloads</h2>
+		<p class="resize"><a target="_blank" href="downloads/indicadores_balanco_nutrientes/tn_01_balance_of_n_and_p_1985_2021_15sept2023.pdf">
+		URQUIAGA, S.; ALVES, B.J.R.; CARMO, T.R.L. de; POLIDORO, J.C.; FREITAS, P.L.de   <u>Global Brazilian agriculture and livestock farming balance of nitrogen and phosphorus - based on the methodology proposed by the OECD, with suggested changes in some representative indicators/coefficients. Period 1985-2021</u>.  Seropédica: Embrapa Agrobiologia (Nota Técnica/Position Paper, setembro 2023). 17 pages.</a><p>
+		<!--<p class="resize"><a target="_blank" href="downloads/#/#.pdf">#</a><p>
+		<p class="resize"><a target="_blank" href="downloads/#/#.pdf">#</a><p>-->
+
+     </section>
+
+
+      <a href="javascript:window.history.go(-1)"><button class="voltar">Página Inicial</button></a>
+
+<!-- Fim Container -->
+</div>
+
+<!-- Rodapé -->
+<div id="footer"></div>
+
+<!-- Libras -->
+<div vw class="enabled">
+<div vw-access-button class="active"></div>
+<div vw-plugin-wrapper>
+<div class="vw-plugin-top-wrapper"></div>
+</div>
+</div>
+<script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+<script>
+new window.VLibras.Widget('https://vlibras.gov.br/app');
+</script>
+
+</body>
+</html>

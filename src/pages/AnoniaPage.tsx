@@ -299,16 +299,6 @@ const AnalysisPage: FC = () => {
 
     return (
         <AnalysisProvider>
-            <Button
-                onClick={toggleDrawer(true)}
-                sx={{
-                position: 'absolute',
-                top: '10px',
-                right: '10px',
-                }} >
-                <MoreVertIcon />
-            </Button>
-
             <div>
 
             <ParamsBar

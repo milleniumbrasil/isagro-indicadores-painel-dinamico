@@ -132,11 +132,11 @@ const ParamsBar: FC<ParamsBarProps> = ({
                 <Typography variant="h6" sx={{ padding: '10px' }}>Intervalo</Typography>
                 <FormControl fullWidth>
                     <Select id="interval-select" value={_interval} onChange={_handleIntervalChange}>
-                        <MenuItem value="annual">Anual</MenuItem>
-                        <MenuItem value="biennial">Bienal</MenuItem>
-                        <MenuItem value="triennial">Trienal</MenuItem>
-                        <MenuItem value="quadrennial">Quadrienal</MenuItem>
-                        <MenuItem value="quinquennial">Quinquenal</MenuItem>
+                        <MenuItem id="00-interval-item" value="annual">Anual</MenuItem>
+                        <MenuItem id="01-interval-item" value="biennial">Bienal</MenuItem>
+                        <MenuItem id="02-interval-item" value="triennial">Trienal</MenuItem>
+                        <MenuItem id="03-interval-item" value="quadrennial">Quadrienal</MenuItem>
+                        <MenuItem id="04-interval-item" value="quinquennial">Quinquenal</MenuItem>
                     </Select>
                 </FormControl>
             </Box>
@@ -146,7 +146,7 @@ const ParamsBar: FC<ParamsBarProps> = ({
                 <Typography variant="h6" sx={{ padding: '10px' }}>Estado</Typography>
                 <FormControl fullWidth>
                     <Select id="state-select" value={_state} onChange={_handleStateChange}>
-                        <MenuItem value="">
+                        <MenuItem id="0-menu-item-estado" value="">
                             <em>Não informado</em>
                         </MenuItem>
                         {Object.keys(mapStates).map((e, index) => (

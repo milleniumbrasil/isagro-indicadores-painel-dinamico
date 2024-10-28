@@ -1,67 +1,30 @@
-// src/pages/AnoniaPage.tsx
+// src/pages/DefaultIndicatorPage.tsx
 
-import { FC, useEffect, useState, SyntheticEvent } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 import {
     Box,
-    SwipeableDrawer,
-    FormControl,
-    MenuItem,
     Paper,
-    Select,
     SelectChangeEvent,
-    Typography,
-    List,
-    ListItem,
-    ListItemAvatar,
-    Avatar,
-    ListItemText,
     Card,
     CardContent,
-    Accordion,
-    AccordionSummary,
-    AccordionDetails,
-    Divider,
-    Button,
 } from '@mui/material';
-
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import FormatColorFillIcon from '@mui/icons-material/FormatColorFill';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import ScienceIcon from '@mui/icons-material/Science';
-import PaletteIcon from '@mui/icons-material/Palette';
-import DateRangeIcon from '@mui/icons-material/DateRange';
-import BiotechIcon from '@mui/icons-material/Biotech';
-import MapIcon from '@mui/icons-material/Map';
-import LabelIcon from '@mui/icons-material/Label';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import CloseIcon from '@mui/icons-material/Close';
 
 import { iEstado, estados as mapStates, Map } from 'isagro-map';
 
-import { buildAnalysisUrl, buildLabelsUrl, buildParamsUrl, buildSourceUrl, buildUrl } from './AnalysisHelper';
+import { buildAnalysisUrl, buildLabelsUrl, buildSourceUrl, buildUrl } from './AnalysisHelper';
 
-import { brownBackgroundColor, grayBackgroundColor, palettes, backgroundColors } from '../components/colors';
+import { brownBackgroundColor, palettes, backgroundColors } from '../components/colors';
 
-import { DateRangePicker } from 'rsuite';
-import { BsCalendar2MonthFill } from 'react-icons/bs';
 import { Loader } from 'rsuite';
-import { DateRange } from 'rsuite/esm/DateRangePicker';
 
 import { IStackedAreaChart } from '../components/charts/IStackedAreaChart';
 import { IPercentualAreaChart } from '../components/charts/IPercentualAreaChart';
-import PercentualAreaChart from '../components/charts/PercentualAreaChart';
 import { AnalysisProvider } from '../components/AnalysisProvider';
-import Constants, { analysisDescriptions, Label } from './AnalysisConstants';
-import { IAnalysisInfo } from './IAnalysisInfo';
-import { findAnalysisDescription } from './AnalysisHelper';
-import StackedAreaChart from '../components/charts/StackedAreaChart';
-import BarChart from '../components/charts/BarChart';
+import Constants, { Label } from './AnalysisConstants';
 import BarLineAreaComposedChart from '../components/charts/BarLineAreaComposedChart';
-import PieChart from '../components/charts/PieChart';
-import ParamsSwipeableDrawer from '../components/ParamsSwipeableDrawer';
-import { isEdge } from 'rsuite/esm/internals/utils';
 import ParamsBar from '../components/ParamsBar';
+import { useParams } from 'react-router-dom';
 
 export function Loading() {
     return (
@@ -71,14 +34,16 @@ export function Loading() {
     );
 }
 
-const AnalysisPage: FC = () => {
+const DefaultIndicatorPage: FC = () => {
+
+    const { indicator } = useParams<{ indicator: string }>();
     const [drawerOpen, setDrawerOpen] = useState(false);
 
     const [selectedSource, setSelectedSource] = useState<string>('');
     const [availableSources, setAvailableSources] = useState<[]>([]);
 
     const [availableAnalysis, setAvailableAnalysis] = useState<[]>([]);
-    const [selectedAnalysis, setSelectedAnalysis] = useState<string>('NH3');
+    const [selectedAnalysis, setSelectedAnalysis] = useState<string>(indicator || 'NH3');
 
     const [labels, setLabels] = useState<Label[]>([]);
     const [selectedLabel, setSelectedLabel] = useState<string>('');
@@ -247,6 +212,10 @@ const AnalysisPage: FC = () => {
     }, [selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval]);
 
     useEffect(() => {
+        if (indicator) setSelectedAnalysis(indicator);
+    }, [indicator]);
+
+    useEffect(() => {
         if (selectedStartDate && selectedEndDate) {
             buildUrl('volume', selectedStartDate, selectedEndDate, selectedAnalysis, 'annual').then((sumUrl) => {
                 requestStackedData(sumUrl).then((stackedObjects) => {
@@ -326,7 +295,7 @@ const AnalysisPage: FC = () => {
                     _handleBackgroundColors={handleBackgroundColors}
                     _handlePaletteChange={handlePaletteChange} />
 
-            <Paper sx={{ width: '96%', alignItems: 'center', margin: '15px' }}>
+            {/* <Paper sx={{ width: '96%', alignItems: 'center', margin: '15px' }}>
                 <Box sx={{ display: 'flex', '& > :not(style)': { m: 1 } }}>
 
                     {BarLineChartCard(
@@ -339,7 +308,7 @@ const AnalysisPage: FC = () => {
                                 selectedChartDefaultPalette)
                                 }
                 </Box>
-            </Paper>
+            </Paper> */}
 
             <Paper sx={{ width: '96%', alignItems: 'center', margin: '15px' }}>
                 <Box sx={{ display: 'flex', '& > :not(style)': { m: 1 } }}>
@@ -360,7 +329,7 @@ const AnalysisPage: FC = () => {
     );
 };
 
-export default AnalysisPage;
+export default DefaultIndicatorPage;
 
 function BarChartCard(  _width: number,
                         _height: number,

@@ -91,6 +91,7 @@ const AnalysisPage: FC = () => {
     const [selectedEndDate, setSelectedEndDate] = useState<Date>(new Date('2024-12-31'));
 
     const [selectedInterval, setSelectedInterval] = useState<string>('annual');
+    const [annualSumData, setAnnualSumData] = useState<IStackedAreaChart[]>([]);
     const [selectedSumData, setSelectedSumData] = useState<IStackedAreaChart[]>([]);
     const [selectedSmaData, setSelectedSmaData] = useState<IStackedAreaChart[]>([]);
     const [selectedPercentualData, setSelectedPercentualData] = useState<IPercentualAreaChart[]>([]);
@@ -226,25 +227,37 @@ const AnalysisPage: FC = () => {
 
     useEffect(() => {
         if (selectedStartDate && selectedEndDate){
-
-        buildUrl('sum', selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval).then((sumUrl) => {
-            requestStackedData(sumUrl).then((stackedObjects) => {
-                console.log(`[AnalysisPage] useEffect url: ${sumUrl}`);
-                console.log(`[AnalysisPage] useEffect sum result: ${stackedObjects.length}`);
-                console.log(`[AnalysisPage] useEffect sum sample: ${JSON.stringify(stackedObjects?.slice(0, 2), null, 2)}`);
-                setSelectedSumData(stackedObjects);
+            buildUrl('sum', selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval).then((sumUrl) => {
+                requestStackedData(sumUrl).then((stackedObjects) => {
+                    console.log(`[AnalysisPage] useEffect url: ${sumUrl}`);
+                    console.log(`[AnalysisPage] useEffect sum result: ${stackedObjects.length}`);
+                    console.log(`[AnalysisPage] useEffect sum sample: ${JSON.stringify(stackedObjects?.slice(0, 2), null, 2)}`);
+                    setSelectedSumData(stackedObjects);
+                });
             });
-        });
-        buildUrl('sma', selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval).then((smaUrl) => {
-            requestStackedData(smaUrl).then((stackedObjects) => {
-                console.log(`[AnalysisPage] useEffect url: ${smaUrl}`);
-                console.log(`[AnalysisPage] useEffect sma result: ${stackedObjects.length}`);
-                console.log(`[AnalysisPage] useEffect sma sample: ${JSON.stringify(stackedObjects?.slice(0, 2), null, 2)}`);
-                setSelectedSmaData(stackedObjects);
+            buildUrl('sma', selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval).then((smaUrl) => {
+                requestStackedData(smaUrl).then((stackedObjects) => {
+                    console.log(`[AnalysisPage] useEffect url: ${smaUrl}`);
+                    console.log(`[AnalysisPage] useEffect sma result: ${stackedObjects.length}`);
+                    console.log(`[AnalysisPage] useEffect sma sample: ${JSON.stringify(stackedObjects?.slice(0, 2), null, 2)}`);
+                    setSelectedSmaData(stackedObjects);
+                });
             });
-        });
         }
     }, [selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval]);
+
+    useEffect(() => {
+        if (selectedStartDate && selectedEndDate) {
+            buildUrl('sum', selectedStartDate, selectedEndDate, selectedAnalysis, 'annual').then((sumUrl) => {
+                requestStackedData(sumUrl).then((stackedObjects) => {
+                    console.log(`[AnalysisPage] useEffect url: ${sumUrl}`);
+                    console.log(`[AnalysisPage] useEffect sum result: ${stackedObjects.length}`);
+                    console.log(`[AnalysisPage] useEffect sum sample: ${JSON.stringify(stackedObjects?.slice(0, 2), null, 2)}`);
+                    setAnnualSumData(stackedObjects);
+                });
+            });
+        }
+    }, [selectedStartDate, selectedEndDate]);
 
     useEffect(() => {
         // recupera os itens de menû para os estados e as indicadores
@@ -386,7 +399,7 @@ const AnalysisPage: FC = () => {
                                 selectedChartDefaultBackgroundColor,
                                 selectedStartDate,
                                 selectedEndDate,
-                                selectedSumData,
+                                annualSumData,
                                 selectedSmaData,
                                 selectedChartDefaultPalette)
                                 }

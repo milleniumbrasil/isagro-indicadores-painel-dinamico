@@ -248,11 +248,11 @@ const AnalysisPage: FC = () => {
 
     useEffect(() => {
         if (selectedStartDate && selectedEndDate) {
-            buildUrl('sum', selectedStartDate, selectedEndDate, selectedAnalysis, 'annual').then((sumUrl) => {
+            buildUrl('volume', selectedStartDate, selectedEndDate, selectedAnalysis, 'annual').then((sumUrl) => {
                 requestStackedData(sumUrl).then((stackedObjects) => {
                     console.log(`[AnalysisPage] useEffect url: ${sumUrl}`);
-                    console.log(`[AnalysisPage] useEffect sum result: ${stackedObjects.length}`);
-                    console.log(`[AnalysisPage] useEffect sum sample: ${JSON.stringify(stackedObjects?.slice(0, 2), null, 2)}`);
+                    console.log(`[AnalysisPage] useEffect volume result: ${stackedObjects.length}`);
+                    console.log(`[AnalysisPage] useEffect volume sample: ${JSON.stringify(stackedObjects?.slice(0, 2), null, 2)}`);
                     setAnnualSumData(stackedObjects);
                 });
             });
@@ -308,63 +308,8 @@ const AnalysisPage: FC = () => {
                 }} >
                 <MoreVertIcon />
             </Button>
-            <ParamsSwipeableDrawer
-                    _drawerOpen={drawerOpen}
-                    _toggleDrawer={toggleDrawer}
-                    _startDate={selectedStartDate}
-                    _endDate={selectedEndDate}
-                    _state={selectedState}
-                    _indicator={selectedAnalysis}
-                    _availableIndicators={availableAnalysis}
-                    _label={selectedLabel}
-                    _availableLabels={availableLabels}
-                    _source={selectedSource}
-                    _availableSources={availableSources}
-                    _interval={selectedInterval}
-                    _backgroundColor={selectedBackgroundColor}
-                    _palette={selectedPalette}
-                    _handleStateChange={handleStateChange}
-                    _handleAnalysisChange={handleAnalysisChange}
-                    _handleLabelChange={handleLabelChange}
-                    _handleStartDateChange={handleStartDateChange}
-                    _handleEndDateChange={handleEndDateChange}
-                    _handleSourceChange={handleSourceChange}
-                    _handleIntervalChange={handleIntervalChange}
-                    _handleBackgroundColors={handleBackgroundColors}
-                    _handlePaletteChange={handlePaletteChange} />
+
             <div>
-
-            {/* <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', '& > :not(style)': { m: 1 }, margin: '30px', padding: '30px' }}>
-                <Typography variant="h2" sx={{ paddingRight: '15px' }}>
-                    Indicadores de NH3 Amônia
-                </Typography>
-            </Box> */}
-
-            {/* <Box sx={{ display: 'flex', '& > :not(style)': { m: 1 }, width: '100%' }}>
-                <Box sx={{ flexGrow: 1, width: '50%', margin: '30px', padding: '30px' }}>
-
-                        {MapBox(selectedMapState,
-                                selectedWidth,
-                                selectedHeight,
-                                (zoom: number) => setSelectedZoom(zoom),
-                                (bbox: Array<number>) => setSelectedBbox(bbox.join(', ')),
-                                (center: Array<number>) => setSelectedCenter(center.join(', ')) )}
-
-                </Box>
-                <Box sx={{ flexGrow: 1, width: '50%', margin: '30px', padding: '30px' }}>
-                    {SideBox(selectedState,
-                                        selectedStartDate.getFullYear().toString(),
-                                        selectedEndDate.getFullYear().toString(),
-                                        selectedAnalysis,
-                                        selectedLabel,
-                                        selectedSource,
-                                        selectedInterval,
-                                        selectedBackgroundColor,
-                                        selectedPalette,
-                                        true,
-                                        ()=>{})}
-                </Box>
-            </Box> */}
 
             <ParamsBar
                     _drawerOpen={drawerOpen}
@@ -427,85 +372,6 @@ const AnalysisPage: FC = () => {
 
 export default AnalysisPage;
 
-
-function MapBox(    _mapState: iEstado,
-                    _width: number,
-                    _height: number,
-                    _setSelectedZoom: (zoom: number) => void|undefined,
-                    _setSelectedBbox: (b: Array<number>) => void|undefined,
-                    _setSelectedCenter: (c: Array<number>) => void|undefined
-                ) {
-    return (
-            <Box sx={{ flexGrow: 1 }}>
-                <Map
-                    estado={_mapState}
-                    width={_width}
-                    height={_height}
-                    coordinateOnClick={(coordinate: Array<number>) => alert(`Coordenada do clique: ${coordinate}`)}
-                    onZoomChange={_setSelectedZoom}
-                    onBboxChange={_setSelectedBbox}
-                    onCenterChange={_setSelectedCenter}
-                    version="1.3.0"
-                    request="GetMap"
-                    srs="EPSG:4326"
-                    layers="CCAR:BCIM_Unidade_Federacao_A"
-                    format="image/jpeg"
-                    transparent={false}
-                    bgcolor="0xFFFFFF" />
-            </Box>
-    );
-}
-
-function SideBox(   _stateName: string,
-                    _startDate: string,
-                    _endDate: string,
-                    _indicator: string,
-                    _label: string,
-                    _source: string,
-                    _interval: string,
-                    _backgroundColor: string,
-                    _palette: string,
-                    _isTextExpanded: boolean,
-                    _toggleTextExpansion : (expand: boolean) => void|undefined
-                ) {
-    return (
-                <Box sx={{ margin: '10px' }}>
-                    <Typography
-                            variant="body2"
-                            style={{
-                                padding: '15px',
-                                margin: '15px',
-                                overflow: _isTextExpanded ? 'visible' : 'hidden',
-                                textOverflow: 'ellipsis',
-                                display: '-webkit-box',
-                                WebkitLineClamp: _isTextExpanded ? 'unset' : 15, // Limita o numero de linhas quando não expandido
-                                WebkitBoxOrient: 'vertical',
-                                transition: 'height 0.3s ease'
-                            }}>
-
-                        <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
-                            <li><b>Estado:</b> {_stateName}</li>
-                            <li><b>Indicador:</b> {_indicator}</li>
-                        </ul>
-                        <p>
-                        O uso de fertilizantes e adubos para suprir as plantas com nitrogênio, assim como a urina e as fezes de bovinos, suínos, aves, entre outros integrantes de rebanho, são fontes de amônia, um gás que polui a atmosfera e traz impactos negativos para áreas naturais e para o homem. A amônia que é emitida para a atmosfera pode retornar aos ambientes naturais, como florestas e corpos d’água, provocando perda de biodiversidade e eutrofização, assim como produzir material particulado capaz de afetar fortemente a saúde da população. A agropecuária é a fonte de amônia mais importante para a maioria dos países, inclusive o Brasil, e o monitoramento das emissões deve ser realizado visando identificar os principais gargalos e mitigar o problema.
-                        Com o IS_Agro, a emissão de amônia no Brasil será quantificada em diferentes escalas territoriais, utilizando dados disponíveis e também pelo levantamento de novos dados e informações que serão consumidas automaticamente para os cálculos de acordo com critérios ajustados às condições tropicais. Estudos adicionais vem sendo realizados considerando a alta complexidade encontrada no procedimento metodológico, que requer a validação para então ser proposto em fóruns globais.
-                        O inventário da emissão de NH3 para a agricultura, seguindo as diretrizes da EMEP de 2019 e do IPCC de 2006 e 2019, utilizadas juntamente com os dados da ANDA para fertilizantes, e do IBGE para rebanhos, além de várias outras fontes, como a literatura científica, foram usados para complementar informações para elaborar um inventário usando uma abordagem mais avançada. Esses números vêm sendo atualizados periodicamente.
-                        As emissões de amônia no Brasil aumentaram de 2,28 milhões de toneladas em 1990 para 3,89 milhões de toneladas em 2021. Seguiram uma tendência crescente de 1990 a 2015, e desde então seguem uma tendência de estabilização. A pecuária foi responsável por cerca de dois terços do total das emissões. Uma nota técnica (ALVES et al., 2023a) foi formulada e submetida pela Embrapa/DEPI ao MAPA para endosso e encaminhamento a OCDE em setembro de 2023. Atividade executada por Bruno Alves (Embrapa Agrobiologia) atualizado para o período 1990-2021.
-                        </p>
-                        <p>
-                        "ALVES, B.J.R.; URQUIAGA, S.  POLIDORO, J.C.; FREITAS, P.L.de. Ammonia Emissions from Brazilian Agriculture - 1990 – 2021.  Technical Note. 7 pag. Setembro 2023.
-                        https://drive.google.com/file/d/15tZSBHiGKUn1a2uoI4MfTYAWt9pFIZa8/view?usp=drive_link"
-                        </p>
-                    </Typography>
-                    <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop: '10px' }}>
-                        <Button onClick={() => _toggleTextExpansion(!_isTextExpanded)}>
-                            {_isTextExpanded ? 'Ver menos' : 'Ver mais'}
-                        </Button>
-                    </Box>
-                </Box>
-    );
-}
 function BarChartCard(  _width: number,
                         _height: number,
                         _defaultBackgroundColor: string,

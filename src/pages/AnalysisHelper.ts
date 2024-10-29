@@ -120,11 +120,11 @@ export const buildUrl = async (
     endDate: Date,
     analysis: string,
     interval: string,
+    label?: string,
     state?: string,
     city?: string,
     country?: string,
     source?: string,
-    label?: string
 ): Promise<string> => {
     const startDateFormatted = startDate ? startDate.toISOString().split('T')[0] : null;
     const endDateFormatted = endDate ? endDate.toISOString().split('T')[0] : null;

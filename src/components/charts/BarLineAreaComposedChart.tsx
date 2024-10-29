@@ -1,7 +1,7 @@
 // src/components/charts/BarLineAreaComposedChart.tsx
 
 import { useEffect, useState } from 'react';
-import { AreaChart as RechatsStackedAreaChart, BarChart as RechartsBarChart, ComposedChart, Bar, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, Line } from 'recharts';
+import { ComposedChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, Line } from 'recharts';
 import { whiteBackgroundColor, palettes } from '../colors';
 import { IStackedAreaChart } from './IStackedAreaChart';
 
@@ -14,8 +14,9 @@ export interface INormalizedData {
 interface BarLineAreaComposedChartProps {
     data: IStackedAreaChart[];
     tendencyData?: IStackedAreaChart[];
-    dataKey?: string;
-    valueLabel?: string;
+    onBarClick?: (data: { [x: string]: { period: any; }; }, index: string | number, dataKeyFound: string|null) => void;
+    onLegendClick?: (data: any, index: number, dataKeyFound: string|null) => void;
+    onLabelSelect?: (newLabel: string) => void;
     width?: number;
     height?: number;
 }
@@ -218,6 +219,7 @@ const BarLineAreaComposedChart: React.FC<BarLineAreaComposedChartProps> = (props
     };
 
     const [dataKey, setDataKey] = useState<string>('period');
+    const [internalSelectedLabel, setInternalSelectedLabel] = useState<string|null>(null);
     const [internalData, setInternalData] = useState<INormalizedData[]>([]);
     const [internalTendencyData, setInternalTendencyData] = useState<INormalizedData[]>([]);
     const [internalWidth, setInternalWidth] = useState<number>(800);
@@ -232,6 +234,42 @@ const BarLineAreaComposedChart: React.FC<BarLineAreaComposedChartProps> = (props
     const [internalTendencyPalette, setInternalTendencyPalette] = useState<string[]>(
         palettes.find(palette => palette.value === 'redDark')?.colors.map(color => color.color) || []
     );
+
+  // Função recursiva com tipagem para buscar "dataKey"
+  function findDataKey(obj: any): string | null {
+    // Verifica se o objeto não é nulo e é de fato um objeto
+    if (obj && typeof obj === 'object') {
+      // Se "dataKey" está presente no nível atual, retorna o valor
+      if ('dataKey' in obj) {
+        return obj.dataKey;
+      }
+
+      // Itera recursivamente em cada chave do objeto
+      for (const key in obj) {
+        if (Object.prototype.hasOwnProperty.call(obj, key) && typeof obj[key] === 'object') {
+          const result = findDataKey(obj[key]); // Chamada recursiva
+          if (result) return result; // Retorna o primeiro dataKey encontrado
+        }
+      }
+    }
+
+    // Retorna null se nenhum "dataKey" foi encontrado
+    return null;
+  }
+
+    const handleBarClick = (data: { [x: string]: { period: any; }; }, index: string | number) => {
+        const dataKeyFound = findDataKey(data);
+        if (props.onBarClick && dataKeyFound) props.onBarClick(data, index, dataKeyFound);
+        if (props.onLabelSelect && dataKeyFound) props.onLabelSelect(dataKeyFound);
+        setInternalSelectedLabel(dataKeyFound);
+    };
+
+    function handleLegendClick(data: any, index: number): void {
+        const dataKeyFound = findDataKey(data);
+        if (props.onLegendClick && dataKeyFound) props.onLegendClick(data, index, dataKeyFound);
+        if (props.onLabelSelect && dataKeyFound) props.onLabelSelect(dataKeyFound);
+        setInternalSelectedLabel(dataKeyFound);
+    }
 
     useEffect(() => {
         try {
@@ -271,11 +309,7 @@ const BarLineAreaComposedChart: React.FC<BarLineAreaComposedChartProps> = (props
         } finally {
             setLoading(false);
         }
-    }, [props.data, props.tendencyData, props.dataKey, props.valueLabel, props.width, props.height]);
-
-    // useEffect(() => {
-    //     console.log(`[BarLineAreaComposedChart] useEffect internalData: ${JSON.stringify(internalData.slice(0, 2), null, 2)}`);
-    // }, [internalData]);
+    }, [props.data, props.tendencyData, props.width, props.height]);
 
     return (
         <div style={{ width: '100%', height: internalHeight }}>
@@ -295,14 +329,16 @@ const BarLineAreaComposedChart: React.FC<BarLineAreaComposedChartProps> = (props
                     <CartesianGrid strokeDasharray="4 4" />
                     <XAxis dataKey={dataKey} />
                     <YAxis tickFormatter={tickFormatter}  />
-                    <Legend formatter={legendFormatter} iconType={'triangle'} layout="vertical" verticalAlign="middle" align='left' />
+                    <Legend formatter={legendFormatter}
+                            onClick={handleLegendClick} iconType={'triangle'} layout="vertical" verticalAlign="middle" align='left' />
                     <Tooltip content={<CustomTooltip />} />
                     {attributeNames.map((_className, indexClass) => (
                         <Bar
                             key={_className}
-                            type="monotone"
                             dataKey={_className}
                             stackId="1"
+                            type="monotone"
+                            onClick={handleBarClick}
                             stroke={defaultPalette[indexClass % defaultPalette.length]}
                             fill={defaultPalette[indexClass % defaultPalette.length]}
                         />

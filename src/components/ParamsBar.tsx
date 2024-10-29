@@ -14,55 +14,25 @@ import {
 import { estados as mapStates } from 'isagro-map';
 
 interface ParamsBarProps {
-    _drawerOpen: boolean;
     _startDate: Date;
     _endDate: Date;
     _state: string;
-    _indicator: string;
-    _availableIndicators: string[];
-    _label: string;
-    _availableLabels: string[];
-    _source: string;
-    _availableSources: string[];
     _interval: string;
-    _backgroundColor: string;
-    _palette: string;
-    _toggleDrawer: (newOpen: boolean) => () => void;
     _handleStateChange: (event: SelectChangeEvent) => void;
-    _handleAnalysisChange: (event: SelectChangeEvent<string>) => void;
-    _handleLabelChange: (event: SelectChangeEvent<string>) => void;
     _handleStartDateChange: (event: SelectChangeEvent<string>) => void;
     _handleEndDateChange: (event: SelectChangeEvent<string>) => void;
-    _handleSourceChange: (event: SelectChangeEvent) => void;
     _handleIntervalChange: (event: SelectChangeEvent) => void;
-    _handleBackgroundColors: (event: SelectChangeEvent) => void;
-    _handlePaletteChange: (event: SelectChangeEvent) => void;
 }
 
 const ParamsBar: FC<ParamsBarProps> = ({
-    _drawerOpen,
     _startDate,
     _endDate,
     _state,
-    _indicator,
-    _availableIndicators,
-    _label,
-    _availableLabels,
-    _source,
-    _availableSources,
     _interval,
-    _backgroundColor,
-    _palette,
-    _toggleDrawer,
     _handleStateChange,
-    _handleAnalysisChange,
-    _handleLabelChange,
     _handleStartDateChange,
     _handleEndDateChange,
-    _handleSourceChange,
-    _handleIntervalChange,
-    _handleBackgroundColors,
-    _handlePaletteChange,
+    _handleIntervalChange
 }) => {
 
     const currentYear = new Date().getFullYear();

@@ -25,6 +25,7 @@ import Constants, { Label } from './AnalysisConstants';
 import BarLineAreaComposedChart from '../components/charts/BarLineAreaComposedChart';
 import ParamsBar from '../components/ParamsBar';
 import { useParams } from 'react-router-dom';
+import { on } from 'events';
 
 export function Loading() {
     return (
@@ -120,20 +121,14 @@ const DefaultIndicatorPage: FC = () => {
     const handleAnalysisChange = (event: SelectChangeEvent<string>) => {
         const selectedValue = event.target.value as string;
         setSelectedAnalysis(selectedValue);
-        console.log('[AnalysisPage] Análise selecionada:', selectedValue);
+        console.log('[DefaultIndicatorPage] Análise selecionada:', selectedValue);
 
         // Busca os rótulos válidos com base na análise e mapeia-os para a exibição correta
         const validLabelValues: string[] = availableLabels
-        console.log('[AnalysisPage] Rótulos válidos:', validLabelValues);
+        console.log('[DefaultIndicatorPage] Rótulos válidos:', validLabelValues);
 
         const validLabelsForDisplay = availableLabels.filter((labelItem: string) => validLabelValues.includes(labelItem));
         setLabels(validLabelsForDisplay);
-    };
-
-    const handleLabelChange = (event: SelectChangeEvent<string>) => {
-        const selectedValue = event.target.value as string;
-        setSelectedLabel(selectedValue); // Atualiza o estado do rótulo selecionado
-        console.log('[AnalysisPage] Rótulo selecionado:', selectedValue);
     };
 
     const handleStartDateChange = (event: SelectChangeEvent<string>) => {
@@ -141,7 +136,7 @@ const DefaultIndicatorPage: FC = () => {
         const updatedStartDate = new Date(selectedStartDate);
         updatedStartDate.setFullYear(parseInt(selectedValue));
         setSelectedStartDate(updatedStartDate); // Atualiza o estado da data inicial selecionada
-        console.log('[AnalysisPage] Data Inicial selecionada:', updatedStartDate);
+        console.log('[DefaultIndicatorPage] Data Inicial selecionada:', updatedStartDate);
     };
 
     const handleEndDateChange = (event: SelectChangeEvent<string>) => {
@@ -149,43 +144,47 @@ const DefaultIndicatorPage: FC = () => {
         const updatedEndDate = new Date(selectedEndDate);
         updatedEndDate.setFullYear(parseInt(selectedValue));
         setSelectedEndDate(new Date(updatedEndDate)); // Atualiza o estado da data final selecionada
-        console.log('[AnalysisPage] Data Final selecionada', selectedValue);
+        console.log('[DefaultIndicatorPage] Data Final selecionada', selectedValue);
+    };
+
+    const handleLabelChange = (newLabel: string | null) => {
+        setSelectedLabel(newLabel ?? '');
     };
 
     const requestStackedData = async (url: string): Promise<IStackedAreaChart[]> => {
-        console.log(`[AnalysisPage] requestStackedData ${url}`);
+        console.log(`[DefaultIndicatorPage] requestStackedData ${url}`);
         return fetch(url)
             .then((response) => {
                 if (!response.ok) {
-                    throw new Error('[AnalysisPage] requestStackedData Falha ao buscar os dados!');
+                    throw new Error('[DefaultIndicatorPage] requestStackedData Falha ao buscar os dados!');
                 }
                 return response.json(); // Convertendo a resposta para JSON
             })
             .then((stackedObjects: IStackedAreaChart[]) => {
-                console.log(`[AnalysisPage] requestStackedData result: ${stackedObjects.length}`);
+                console.log(`[DefaultIndicatorPage] requestStackedData result: ${stackedObjects.length}`);
                 return stackedObjects; // Retornando os dados para a função chamadora
             })
             .catch((error) => {
-                console.error('[AnalysisPage] requestStackedData Erro ao buscar os dados:', error);
+                console.error('[DefaultIndicatorPage] requestStackedData Erro ao buscar os dados:', error);
                 return []; // Em caso de erro, retornar array vazio para evitar falhas
             });
     };
 
     const requestMenu = async (url: string): Promise<[]> => {
-        console.log(`[AnalysisPage] requestMenu ${url}`);
+        console.log(`[DefaultIndicatorPage] requestMenu ${url}`);
         return fetch(url)
             .then((response) => {
                 if (!response.ok) {
-                    throw new Error('[AnalysisPage] requestMenu Falha ao buscar os dados!');
+                    throw new Error('[DefaultIndicatorPage] requestMenu Falha ao buscar os dados!');
                 }
                 return response.json(); // Convertendo a resposta para JSON
             })
             .then((items: []) => {
-                console.log(`[AnalysisPage] requestMenu result: ${items.length}`);
+                console.log(`[DefaultIndicatorPage] requestMenu result: ${items.length}`);
                 return items; // Retornando os dados para a função chamadora
             })
             .catch((error) => {
-                console.error('[AnalysisPage] requestMenu Erro ao buscar os dados:', error);
+                console.error('[DefaultIndicatorPage] requestMenu Erro ao buscar os dados:', error);
                 return []; // Em caso de erro, retornar array vazio para evitar falhas
             });
     };
@@ -194,22 +193,36 @@ const DefaultIndicatorPage: FC = () => {
         if (selectedStartDate && selectedEndDate){
             buildUrl('sum', selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval).then((sumUrl) => {
                 requestStackedData(sumUrl).then((stackedObjects) => {
-                    console.log(`[AnalysisPage] useEffect url: ${sumUrl}`);
-                    console.log(`[AnalysisPage] useEffect sum result: ${stackedObjects.length}`);
-                    console.log(`[AnalysisPage] useEffect sum sample: ${JSON.stringify(stackedObjects?.slice(0, 2), null, 2)}`);
+                    console.log(`[DefaultIndicatorPage] useEffect url: ${sumUrl}`);
+                    console.log(`[DefaultIndicatorPage] useEffect sum result: ${stackedObjects.length}`);
+                    console.log(`[DefaultIndicatorPage] useEffect sum sample: ${JSON.stringify(stackedObjects?.slice(0, 2), null, 2)}`);
                     setSelectedSumData(stackedObjects);
                 });
             });
             buildUrl('sma', selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval).then((smaUrl) => {
                 requestStackedData(smaUrl).then((stackedObjects) => {
-                    console.log(`[AnalysisPage] useEffect url: ${smaUrl}`);
-                    console.log(`[AnalysisPage] useEffect sma result: ${stackedObjects.length}`);
-                    console.log(`[AnalysisPage] useEffect sma sample: ${JSON.stringify(stackedObjects?.slice(0, 2), null, 2)}`);
+                    console.log(`[DefaultIndicatorPage] useEffect url: ${smaUrl}`);
+                    console.log(`[DefaultIndicatorPage] useEffect sma result: ${stackedObjects.length}`);
+                    console.log(`[DefaultIndicatorPage] useEffect sma sample: ${JSON.stringify(stackedObjects?.slice(0, 2), null, 2)}`);
                     setSelectedSmaData(stackedObjects);
                 });
             });
         }
     }, [selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval]);
+
+    useEffect(() => {
+        alert(`[DefaultIndicatorPage] useEffect selectedLabel: ${selectedLabel}`);
+        if (selectedLabel && selectedStartDate && selectedEndDate) {
+            buildUrl('sum', selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval, selectedLabel).then((sumUrl) => {
+                requestStackedData(sumUrl).then((stackedObjects) => {
+                    console.log(`[DefaultIndicatorPage] useEffect url: ${sumUrl}`);
+                    console.log(`[DefaultIndicatorPage] useEffect sum result: ${stackedObjects.length}`);
+                    console.log(`[DefaultIndicatorPage] useEffect sum sample: ${JSON.stringify(stackedObjects?.slice(0, 2), null, 2)}`);
+                    setAnnualSumData(stackedObjects);
+                });
+            });
+        }
+    } , [selectedLabel]);
 
     useEffect(() => {
         if (indicator) setSelectedAnalysis(indicator);
@@ -219,9 +232,9 @@ const DefaultIndicatorPage: FC = () => {
         if (selectedStartDate && selectedEndDate) {
             buildUrl('volume', selectedStartDate, selectedEndDate, selectedAnalysis, 'annual').then((sumUrl) => {
                 requestStackedData(sumUrl).then((stackedObjects) => {
-                    console.log(`[AnalysisPage] useEffect url: ${sumUrl}`);
-                    console.log(`[AnalysisPage] useEffect volume result: ${stackedObjects.length}`);
-                    console.log(`[AnalysisPage] useEffect volume sample: ${JSON.stringify(stackedObjects?.slice(0, 2), null, 2)}`);
+                    console.log(`[DefaultIndicatorPage] useEffect url: ${sumUrl}`);
+                    console.log(`[DefaultIndicatorPage] useEffect volume result: ${stackedObjects.length}`);
+                    console.log(`[DefaultIndicatorPage] useEffect volume sample: ${JSON.stringify(stackedObjects?.slice(0, 2), null, 2)}`);
                     setAnnualSumData(stackedObjects);
                 });
             });
@@ -232,18 +245,18 @@ const DefaultIndicatorPage: FC = () => {
         // recupera os itens de menû para os estados e as indicadores
         buildAnalysisUrl().then((url) => {
             requestMenu(url).then((objects) => {
-                console.log(`[AnalysisPage] useEffect availableAnalysis: ${url}`);
-                console.log(`[AnalysisPage] useEffect availableAnalysis result: ${objects.length}`);
-                console.log(`[AnalysisPage] useEffect availableAnalysis sample: ${JSON.stringify(objects?.slice(0, 2), null, 2)}`);
+                console.log(`[DefaultIndicatorPage] useEffect availableAnalysis: ${url}`);
+                console.log(`[DefaultIndicatorPage] useEffect availableAnalysis result: ${objects.length}`);
+                console.log(`[DefaultIndicatorPage] useEffect availableAnalysis sample: ${JSON.stringify(objects?.slice(0, 2), null, 2)}`);
                 setAvailableAnalysis(objects);
             });
         });
 
         buildSourceUrl().then((url) => {
             requestMenu(url).then((objects) => {
-                console.log(`[AnalysisPage] useEffect availableSources: ${url}`);
-                console.log(`[AnalysisPage] useEffect availableSources result: ${objects.length}`);
-                console.log(`[AnalysisPage] useEffect availableSources sample: ${JSON.stringify(objects?.slice(0, 2), null, 2)}`);
+                console.log(`[DefaultIndicatorPage] useEffect availableSources: ${url}`);
+                console.log(`[DefaultIndicatorPage] useEffect availableSources result: ${objects.length}`);
+                console.log(`[DefaultIndicatorPage] useEffect availableSources sample: ${JSON.stringify(objects?.slice(0, 2), null, 2)}`);
                 setAvailableSources(objects);
             });
         });
@@ -254,9 +267,9 @@ const DefaultIndicatorPage: FC = () => {
         // recupera os rotulos disponíveis para o indicador selecionado
         buildLabelsUrl(selectedAnalysis).then((url) => {
             requestMenu(url).then((objects) => {
-                console.log(`[AnalysisPage] useEffect availableLabels: ${url}`);
-                console.log(`[AnalysisPage] useEffect availableLabels result: ${objects.length}`);
-                console.log(`[AnalysisPage] useEffect availableLabels sample: ${JSON.stringify(objects?.slice(0, 2), null, 2)}`);
+                console.log(`[DefaultIndicatorPage] useEffect availableLabels: ${url}`);
+                console.log(`[DefaultIndicatorPage] useEffect availableLabels result: ${objects.length}`);
+                console.log(`[DefaultIndicatorPage] useEffect availableLabels sample: ${JSON.stringify(objects?.slice(0, 2), null, 2)}`);
                 setAvailableLabels(objects);
             });
         });
@@ -271,29 +284,14 @@ const DefaultIndicatorPage: FC = () => {
             <div>
 
             <ParamsBar
-                    _drawerOpen={drawerOpen}
-                    _toggleDrawer={toggleDrawer}
                     _startDate={selectedStartDate}
                     _endDate={selectedEndDate}
                     _state={selectedState}
-                    _indicator={selectedAnalysis}
-                    _availableIndicators={availableAnalysis}
-                    _label={selectedLabel}
-                    _availableLabels={availableLabels}
-                    _source={selectedSource}
-                    _availableSources={availableSources}
                     _interval={selectedInterval}
-                    _backgroundColor={selectedBackgroundColor}
-                    _palette={selectedPalette}
                     _handleStateChange={handleStateChange}
-                    _handleAnalysisChange={handleAnalysisChange}
-                    _handleLabelChange={handleLabelChange}
                     _handleStartDateChange={handleStartDateChange}
                     _handleEndDateChange={handleEndDateChange}
-                    _handleSourceChange={handleSourceChange}
-                    _handleIntervalChange={handleIntervalChange}
-                    _handleBackgroundColors={handleBackgroundColors}
-                    _handlePaletteChange={handlePaletteChange} />
+                    _handleIntervalChange={handleIntervalChange} />
 
             {/* <Paper sx={{ width: '96%', alignItems: 'center', margin: '15px' }}>
                 <Box sx={{ display: 'flex', '& > :not(style)': { m: 1 } }}>
@@ -319,8 +317,8 @@ const DefaultIndicatorPage: FC = () => {
                                 selectedStartDate,
                                 selectedEndDate,
                                 selectedSumData,
-                                selectedChartDefaultPalette)
-                                }
+                                selectedChartDefaultPalette,
+                                handleLabelChange)}
                 </Box>
             </Paper>
 
@@ -337,7 +335,8 @@ function BarChartCard(  _width: number,
                         _startDate: Date,
                         _endDate: Date,
                         _data: IStackedAreaChart[],
-                        _palette: string[]) {
+                        _palette: string[],
+                        _onSelectedLabel: (newLabel: string) => void) {
     return (
         <>
             <Card variant="outlined" sx={{ alignItems: 'center', width: '100%', backgroundColor: _defaultBackgroundColor }} >
@@ -345,7 +344,8 @@ function BarChartCard(  _width: number,
                     <BarLineAreaComposedChart
                         width={_width}
                         height={_height}
-                        data={_data}/>
+                        data={_data}
+                        onLabelSelect={_onSelectedLabel}/>
                 </CardContent>
             </Card>
         </>

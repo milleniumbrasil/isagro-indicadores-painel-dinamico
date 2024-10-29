@@ -129,17 +129,17 @@ const BarLineAreaComposedChart: React.FC<BarLineAreaComposedChartProps> = (props
     function normalizeTicks(_data: IStackedAreaChart[]): number[] {
         let total = 0;
 
-        // Soma o total de valores
+        // Encontra o valor máximo
         _data.forEach(({ period, entry }) => {
             const [label, value] = entry;
-            total += value;
+            if (total < value) total = value;
         });
 
-        // Calcula o incremento
+        // Calcula o incremento e inicializa o array de resultados com zero
         const increment = total / 4;
-        const result = [];
+        const result = [0];
 
-        // Gera o array com os incrementos
+        // Gera os próximos valores até o valor máximo
         for (let i = 1; i <= 4; i++) {
             result.push(increment * i);
         }
@@ -244,7 +244,9 @@ const BarLineAreaComposedChart: React.FC<BarLineAreaComposedChartProps> = (props
                 const normalizedData = normalizeData(data);
                 const attrNames = extractAttibutesNames(normalizedData);
                 setAttributeNames(attrNames);
+                console.log(`[BarLineAreaComposedChart] useEffect data: ${JSON.stringify(data, null, 2)}`);
                 const ticks = normalizeTicks(data);
+                console.log(`[BarLineAreaComposedChart] useEffect ticks: ${JSON.stringify(ticks, null, 2)}`);
                 setDynamicTicks(ticks);
                 if (props.tendencyData && props.tendencyData.length > 0) {
                     const tendencyData = Array.from(props.tendencyData);
@@ -290,9 +292,9 @@ const BarLineAreaComposedChart: React.FC<BarLineAreaComposedChartProps> = (props
                     }}
                     style={{ fontSize: 10, padding: '15px' }}
                 >
-                    <CartesianGrid strokeDasharray="0" />
+                    <CartesianGrid strokeDasharray="4 4" />
                     <XAxis dataKey={dataKey} />
-                    <YAxis tickFormatter={tickFormatter} ticks={dynamicTicks} />
+                    <YAxis tickFormatter={tickFormatter}  />
                     <Legend formatter={legendFormatter} iconType={'triangle'} layout="vertical" verticalAlign="middle" align='left' />
                     <Tooltip content={<CustomTooltip />} />
                     {attributeNames.map((_className, indexClass) => (

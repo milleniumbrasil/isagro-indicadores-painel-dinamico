@@ -14,8 +14,6 @@ export interface INormalizedData {
 interface BarLineAreaComposedChartProps {
     data: IStackedAreaChart[];
     tendencyData?: IStackedAreaChart[];
-    onBarClick?: (data: { [x: string]: { period: any; }; }, index: string | number, dataKeyFound: string|null) => void;
-    onLegendClick?: (data: any, index: number, dataKeyFound: string|null) => void;
     onLabelSelect?: (newLabel: string) => void;
     width?: number;
     height?: number;
@@ -218,7 +216,6 @@ const BarLineAreaComposedChart: React.FC<BarLineAreaComposedChartProps> = (props
         return result;
     };
 
-    const [dataKey, setDataKey] = useState<string>('period');
     const [internalSelectedLabel, setInternalSelectedLabel] = useState<string|null>(null);
     const [internalData, setInternalData] = useState<INormalizedData[]>([]);
     const [internalTendencyData, setInternalTendencyData] = useState<INormalizedData[]>([]);
@@ -235,38 +232,50 @@ const BarLineAreaComposedChart: React.FC<BarLineAreaComposedChartProps> = (props
         palettes.find(palette => palette.value === 'redDark')?.colors.map(color => color.color) || []
     );
 
-  // Função recursiva com tipagem para buscar "dataKey"
-  function findDataKey(obj: any): string | null {
+  // Função recursiva com tipagem para buscar o valor do nome do atributo (_attr)
+  function findValueByKey(_obj: any, _attr: string): string | null {
+    console.log(`[BarLineAreaComposedChart] findValueByKey: Iniciando busca pelo período associado ao token: ${_attr}`);
     // Verifica se o objeto não é nulo e é de fato um objeto
-    if (obj && typeof obj === 'object') {
-      // Se "dataKey" está presente no nível atual, retorna o valor
-      if ('dataKey' in obj) {
-        return obj.dataKey;
+    if (_obj && typeof _obj === 'object') {
+        console.log(`[BarLineAreaComposedChart] findValueByKey: Analisando objeto: ${JSON.stringify(_obj, null, 2)}`);
+      // Se "_attr" está presente no nível atual, retorna o valor
+      if (_attr in _obj) {
+        const value = _obj[_attr];
+        console.log(`[BarLineAreaComposedChart] findValueByKey: Período encontrado na chave ${_attr}: ${value}`);
+        return value;
       }
 
       // Itera recursivamente em cada chave do objeto
-      for (const key in obj) {
-        if (Object.prototype.hasOwnProperty.call(obj, key) && typeof obj[key] === 'object') {
-          const result = findDataKey(obj[key]); // Chamada recursiva
-          if (result) return result; // Retorna o primeiro dataKey encontrado
+      for (const key in _obj) {
+        if (Object.prototype.hasOwnProperty.call(_obj, key) && typeof _obj[key] === 'object') {
+            const result = findValueByKey(_obj[key], _attr); // Chamada recursiva
+            if (result) {
+                return result;
+            }// Retorna o primeiro token encontrado
         }
       }
     }
 
-    // Retorna null se nenhum "dataKey" foi encontrado
+    // Retorna null se nenhum _attr foi encontrado
     return null;
   }
 
     const handleBarClick = (data: { [x: string]: { period: any; }; }, index: string | number) => {
-        const dataKeyFound = findDataKey(data);
-        if (props.onBarClick && dataKeyFound) props.onBarClick(data, index, dataKeyFound);
+        const dataKeyFound = findValueByKey(data, 'dataKey');
+        if (dataKeyFound) {
+            const periodForLabel = findValueByKey(data, 'period');
+            console.log(`[BarLineAreaComposedChart] handleBarClick: Período associado ao rótulo ${dataKeyFound}: ${periodForLabel}`);
+        }
         if (props.onLabelSelect && dataKeyFound) props.onLabelSelect(dataKeyFound);
         setInternalSelectedLabel(dataKeyFound);
     };
 
     function handleLegendClick(data: any, index: number): void {
-        const dataKeyFound = findDataKey(data);
-        if (props.onLegendClick && dataKeyFound) props.onLegendClick(data, index, dataKeyFound);
+        const dataKeyFound = findValueByKey(data, 'dataKey');
+        if (dataKeyFound) {
+            const periodForLabel = findValueByKey(data, 'period');
+            console.log(`[BarLineAreaComposedChart] handleLegendClick: Período associado ao rótulo ${dataKeyFound}: ${periodForLabel}`);
+        }
         if (props.onLabelSelect && dataKeyFound) props.onLabelSelect(dataKeyFound);
         setInternalSelectedLabel(dataKeyFound);
     }
@@ -282,9 +291,7 @@ const BarLineAreaComposedChart: React.FC<BarLineAreaComposedChartProps> = (props
                 const normalizedData = normalizeData(data);
                 const attrNames = extractAttibutesNames(normalizedData);
                 setAttributeNames(attrNames);
-                console.log(`[BarLineAreaComposedChart] useEffect data: ${JSON.stringify(data, null, 2)}`);
                 const ticks = normalizeTicks(data);
-                console.log(`[BarLineAreaComposedChart] useEffect ticks: ${JSON.stringify(ticks, null, 2)}`);
                 setDynamicTicks(ticks);
                 if (props.tendencyData && props.tendencyData.length > 0) {
                     const tendencyData = Array.from(props.tendencyData);
@@ -327,7 +334,7 @@ const BarLineAreaComposedChart: React.FC<BarLineAreaComposedChartProps> = (props
                     style={{ fontSize: 10, padding: '15px' }}
                 >
                     <CartesianGrid strokeDasharray="4 4" />
-                    <XAxis dataKey={dataKey} />
+                    <XAxis dataKey={'period'} />
                     <YAxis tickFormatter={tickFormatter}  />
                     <Legend formatter={legendFormatter}
                             onClick={handleLegendClick} iconType={'triangle'} layout="vertical" verticalAlign="middle" align='left' />

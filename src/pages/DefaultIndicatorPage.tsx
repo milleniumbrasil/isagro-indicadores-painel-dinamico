@@ -79,28 +79,6 @@ const DefaultIndicatorPage: FC = () => {
     );
     const [selectedChartDefaultBackgroundColor, setSelectedChartDefaultBackgroundColor] = useState<string>(brownBackgroundColor);
 
-    const handlePaletteChange = (event: SelectChangeEvent) => {
-        const selectedPaletteValue = event.target.value as string;
-        setSelectedPalette(selectedPaletteValue);
-
-        // Extrair apenas as cores da paleta selecionada
-        const colors = palettes.find((palette) => palette.value === selectedPaletteValue)?.colors.map((color) => color.color);
-        if (colors) {
-            setSelectedChartDefaultPalette(colors);
-        }
-    };
-
-    const handleBackgroundColors = (event: SelectChangeEvent) => {
-        const selectedBgColorValue = event.target.value as string;
-        setSelectedBackgroundColor(selectedBgColorValue);
-
-        // Encontrar a cor de fundo com base na seleção do usuário
-        const bgColor = backgroundColors.find((bgColor) => bgColor.value === selectedBgColorValue)?.bg;
-        if (bgColor) {
-            setSelectedChartDefaultBackgroundColor(bgColor); // Definir a cor de fundo no estado
-        }
-    };
-
     const handleStateChange = (event: SelectChangeEvent) => {
         const stateValue = event.target.value as string;
         setSelectedState(stateValue);
@@ -112,24 +90,6 @@ const DefaultIndicatorPage: FC = () => {
 
     const handleIntervalChange = (event: SelectChangeEvent) => {
         setSelectedInterval(event.target.value); // Atualiza o intervalo selecionado
-    };
-
-    const handleSourceChange = (event: SelectChangeEvent) => {
-        const selectedValue = event.target.value as string;
-        setSelectedSource(selectedValue);
-    };
-
-    const handleAnalysisChange = (event: SelectChangeEvent<string>) => {
-        const selectedValue = event.target.value as string;
-        setSelectedAnalysis(selectedValue);
-        console.log('[DefaultIndicatorPage] Análise selecionada:', selectedValue);
-
-        // Busca os rótulos válidos com base na análise e mapeia-os para a exibição correta
-        const validLabelValues: string[] = availableLabels
-        console.log('[DefaultIndicatorPage] Rótulos válidos:', validLabelValues);
-
-        const validLabelsForDisplay = availableLabels.filter((labelItem: string) => validLabelValues.includes(labelItem));
-        setLabels(validLabelsForDisplay);
     };
 
     const handleStartDateChange = (event: SelectChangeEvent<string>) => {
@@ -212,7 +172,6 @@ const DefaultIndicatorPage: FC = () => {
     }, [selectedStartPeriod, selectedEndPeriod, selectedAnalysis, selectedInterval]);
 
     useEffect(() => {
-        alert(`[DefaultIndicatorPage] useEffect selectedLabel: ${selectedLabel}`);
         if (selectedLabel && selectedStartPeriod && selectedEndPeriod) {
             buildUrl('sum', selectedStartPeriod, selectedEndPeriod, selectedAnalysis, selectedInterval, selectedLabel).then((sumUrl) => {
                 requestStackedData(sumUrl).then((stackedObjects) => {
@@ -275,10 +234,6 @@ const DefaultIndicatorPage: FC = () => {
             });
         });
     }, [selectedAnalysis]);
-
-    const toggleDrawer = (newOpen: boolean) => () => {
-        setDrawerOpen(newOpen);
-    };
 
     return (
         <AnalysisProvider>

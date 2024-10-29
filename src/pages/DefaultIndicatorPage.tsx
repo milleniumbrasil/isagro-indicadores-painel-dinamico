@@ -53,12 +53,13 @@ const DefaultIndicatorPage: FC = () => {
     const [selectedState, setSelectedState] = useState<string>('Distrito Federal');
     const [selectedMapState, setSelectedMapState] = useState<iEstado>(mapStates['Distrito Federal']);
 
-    const [selectedStartDate, setSelectedStartDate] = useState<Date>(new Date(2000, 0, 1)); // Janeiro é o mês 0
-    const [selectedEndDate, setSelectedEndDate] = useState<Date>(new Date('2024-12-31'));
+    const [selectedStartPeriod, setSelectedStartPeriod] = useState<Date>(new Date(2000, 0, 1)); // Janeiro é o mês 0
+    const [selectedEndPeriod, setSelectedEndPeriod] = useState<Date>(new Date('2024-12-31'));
 
     const [selectedInterval, setSelectedInterval] = useState<string>('annual');
     const [annualSumData, setAnnualSumData] = useState<IStackedAreaChart[]>([]);
     const [selectedSumData, setSelectedSumData] = useState<IStackedAreaChart[]>([]);
+    const [selectedLabelData, setSelectedLabelData] = useState<IStackedAreaChart[]>([]);
     const [selectedSmaData, setSelectedSmaData] = useState<IStackedAreaChart[]>([]);
     const [selectedPercentualData, setSelectedPercentualData] = useState<IPercentualAreaChart[]>([]);
 
@@ -133,17 +134,17 @@ const DefaultIndicatorPage: FC = () => {
 
     const handleStartDateChange = (event: SelectChangeEvent<string>) => {
         const selectedValue = event.target.value as string;
-        const updatedStartDate = new Date(selectedStartDate);
+        const updatedStartDate = new Date(selectedStartPeriod);
         updatedStartDate.setFullYear(parseInt(selectedValue));
-        setSelectedStartDate(updatedStartDate); // Atualiza o estado da data inicial selecionada
+        setSelectedStartPeriod(updatedStartDate); // Atualiza o estado da data inicial selecionada
         console.log('[DefaultIndicatorPage] Data Inicial selecionada:', updatedStartDate);
     };
 
     const handleEndDateChange = (event: SelectChangeEvent<string>) => {
         const selectedValue = event.target.value as string;
-        const updatedEndDate = new Date(selectedEndDate);
+        const updatedEndDate = new Date(selectedEndPeriod);
         updatedEndDate.setFullYear(parseInt(selectedValue));
-        setSelectedEndDate(new Date(updatedEndDate)); // Atualiza o estado da data final selecionada
+        setSelectedEndPeriod(new Date(updatedEndDate)); // Atualiza o estado da data final selecionada
         console.log('[DefaultIndicatorPage] Data Final selecionada', selectedValue);
     };
 
@@ -190,8 +191,8 @@ const DefaultIndicatorPage: FC = () => {
     };
 
     useEffect(() => {
-        if (selectedStartDate && selectedEndDate){
-            buildUrl('sum', selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval).then((sumUrl) => {
+        if (selectedStartPeriod && selectedEndPeriod){
+            buildUrl('sum', selectedStartPeriod, selectedEndPeriod, selectedAnalysis, selectedInterval).then((sumUrl) => {
                 requestStackedData(sumUrl).then((stackedObjects) => {
                     console.log(`[DefaultIndicatorPage] useEffect url: ${sumUrl}`);
                     console.log(`[DefaultIndicatorPage] useEffect sum result: ${stackedObjects.length}`);
@@ -199,7 +200,7 @@ const DefaultIndicatorPage: FC = () => {
                     setSelectedSumData(stackedObjects);
                 });
             });
-            buildUrl('sma', selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval).then((smaUrl) => {
+            buildUrl('sma', selectedStartPeriod, selectedEndPeriod, selectedAnalysis, selectedInterval).then((smaUrl) => {
                 requestStackedData(smaUrl).then((stackedObjects) => {
                     console.log(`[DefaultIndicatorPage] useEffect url: ${smaUrl}`);
                     console.log(`[DefaultIndicatorPage] useEffect sma result: ${stackedObjects.length}`);
@@ -208,17 +209,17 @@ const DefaultIndicatorPage: FC = () => {
                 });
             });
         }
-    }, [selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval]);
+    }, [selectedStartPeriod, selectedEndPeriod, selectedAnalysis, selectedInterval]);
 
     useEffect(() => {
         alert(`[DefaultIndicatorPage] useEffect selectedLabel: ${selectedLabel}`);
-        if (selectedLabel && selectedStartDate && selectedEndDate) {
-            buildUrl('sum', selectedStartDate, selectedEndDate, selectedAnalysis, selectedInterval, selectedLabel).then((sumUrl) => {
+        if (selectedLabel && selectedStartPeriod && selectedEndPeriod) {
+            buildUrl('sum', selectedStartPeriod, selectedEndPeriod, selectedAnalysis, selectedInterval, selectedLabel).then((sumUrl) => {
                 requestStackedData(sumUrl).then((stackedObjects) => {
                     console.log(`[DefaultIndicatorPage] useEffect url: ${sumUrl}`);
                     console.log(`[DefaultIndicatorPage] useEffect sum result: ${stackedObjects.length}`);
                     console.log(`[DefaultIndicatorPage] useEffect sum sample: ${JSON.stringify(stackedObjects?.slice(0, 2), null, 2)}`);
-                    setAnnualSumData(stackedObjects);
+                    setSelectedLabelData(stackedObjects);
                 });
             });
         }
@@ -229,8 +230,8 @@ const DefaultIndicatorPage: FC = () => {
     }, [indicator]);
 
     useEffect(() => {
-        if (selectedStartDate && selectedEndDate) {
-            buildUrl('volume', selectedStartDate, selectedEndDate, selectedAnalysis, 'annual').then((sumUrl) => {
+        if (selectedStartPeriod && selectedEndPeriod) {
+            buildUrl('volume', selectedStartPeriod, selectedEndPeriod, selectedAnalysis, 'annual').then((sumUrl) => {
                 requestStackedData(sumUrl).then((stackedObjects) => {
                     console.log(`[DefaultIndicatorPage] useEffect url: ${sumUrl}`);
                     console.log(`[DefaultIndicatorPage] useEffect volume result: ${stackedObjects.length}`);
@@ -239,7 +240,7 @@ const DefaultIndicatorPage: FC = () => {
                 });
             });
         }
-    }, [selectedStartDate, selectedEndDate]);
+    }, [selectedStartPeriod, selectedEndPeriod]);
 
     useEffect(() => {
         // recupera os itens de menû para os estados e as indicadores
@@ -284,8 +285,8 @@ const DefaultIndicatorPage: FC = () => {
             <div>
 
             <ParamsBar
-                    _startDate={selectedStartDate}
-                    _endDate={selectedEndDate}
+                    _startDate={selectedStartPeriod}
+                    _endDate={selectedEndPeriod}
                     _state={selectedState}
                     _interval={selectedInterval}
                     _handleStateChange={handleStateChange}
@@ -314,11 +315,21 @@ const DefaultIndicatorPage: FC = () => {
                     {BarChartCard(
                                 150, 200,
                                 selectedChartDefaultBackgroundColor,
-                                selectedStartDate,
-                                selectedEndDate,
+                                selectedStartPeriod,
+                                selectedEndPeriod,
                                 selectedSumData,
                                 selectedChartDefaultPalette,
                                 handleLabelChange)}
+                </Box>
+                <Box sx={{ display: 'flex', '& > :not(style)': { m: 1 } }}>
+                    {selectedLabelData && selectedLabelData.length > 0 && (BarChartCard(
+                                150, 200,
+                                selectedChartDefaultBackgroundColor,
+                                selectedStartPeriod,
+                                selectedEndPeriod,
+                                selectedLabelData,
+                                selectedChartDefaultPalette,
+                                handleLabelChange))}
                 </Box>
             </Paper>
 

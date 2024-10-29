@@ -43,7 +43,7 @@ const DefaultIndicatorPage: FC = () => {
     const [availableSources, setAvailableSources] = useState<[]>([]);
 
     const [availableAnalysis, setAvailableAnalysis] = useState<[]>([]);
-    const [selectedAnalysis, setSelectedAnalysis] = useState<string>(indicator || 'NH3');
+    const [selectedAnalysis, setSelectedAnalysis] = useState<string>(indicator || 'emissao-de-amonia');
 
     const [labels, setLabels] = useState<Label[]>([]);
     const [selectedLabel, setSelectedLabel] = useState<string>('');

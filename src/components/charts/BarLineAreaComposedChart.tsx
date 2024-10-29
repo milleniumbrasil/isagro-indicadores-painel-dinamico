@@ -1,4 +1,4 @@
-// src/components/BarChart.tsx
+// src/components/charts/BarLineAreaComposedChart.tsx
 
 import { useEffect, useState } from 'react';
 import { AreaChart as RechatsStackedAreaChart, BarChart as RechartsBarChart, ComposedChart, Bar, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, Line } from 'recharts';
@@ -126,6 +126,28 @@ const BarLineAreaComposedChart: React.FC<BarLineAreaComposedChartProps> = (props
     }
 
     // Função para normalizar os dados
+    function normalizeTicks(_data: IStackedAreaChart[]): number[] {
+        let total = 0;
+
+        // Soma o total de valores
+        _data.forEach(({ period, entry }) => {
+            const [label, value] = entry;
+            total += value;
+        });
+
+        // Calcula o incremento
+        const increment = total / 4;
+        const result = [];
+
+        // Gera o array com os incrementos
+        for (let i = 1; i <= 4; i++) {
+            result.push(increment * i);
+        }
+
+        return result;
+    }
+
+    // Função para normalizar os dados
     function normalizeTendencyData(data: IStackedAreaChart[]): INormalizedData[] {
         // Chama a função de validação para verificar duplicatas
         validateData(data);
@@ -222,6 +244,8 @@ const BarLineAreaComposedChart: React.FC<BarLineAreaComposedChartProps> = (props
                 const normalizedData = normalizeData(data);
                 const attrNames = extractAttibutesNames(normalizedData);
                 setAttributeNames(attrNames);
+                const ticks = normalizeTicks(data);
+                setDynamicTicks(ticks);
                 if (props.tendencyData && props.tendencyData.length > 0) {
                     const tendencyData = Array.from(props.tendencyData);
                     const normalizedTendencyData = normalizeTendencyData(tendencyData);
@@ -247,9 +271,9 @@ const BarLineAreaComposedChart: React.FC<BarLineAreaComposedChartProps> = (props
         }
     }, [props.data, props.tendencyData, props.dataKey, props.valueLabel, props.width, props.height]);
 
-    useEffect(() => {
-        // console.log(`[BarLineAreaComposedChart] useEffect internalData: ${JSON.stringify(internalData.slice(0, 2), null, 2)}`);
-    }, [internalData]);
+    // useEffect(() => {
+    //     console.log(`[BarLineAreaComposedChart] useEffect internalData: ${JSON.stringify(internalData.slice(0, 2), null, 2)}`);
+    // }, [internalData]);
 
     return (
         <div style={{ width: '100%', height: internalHeight }}>

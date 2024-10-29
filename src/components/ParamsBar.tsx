@@ -1,35 +1,17 @@
-import { FC, SyntheticEvent } from 'react';
+// src/components/ParamsBar.tsx
+
+import { FC } from 'react';
 
 import {
     Box,
-    SwipeableDrawer,
     FormControl,
     MenuItem,
     Select,
     SelectChangeEvent,
-    Typography,
-    List,
-    ListItem,
-    ListItemAvatar,
-    Avatar,
-    ListItemText,
-    Accordion,
-    AccordionSummary,
-    AccordionDetails,
-    Divider,
+    Typography
 } from '@mui/material';
 
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import FormatColorFillIcon from '@mui/icons-material/FormatColorFill';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import ScienceIcon from '@mui/icons-material/Science';
-import PaletteIcon from '@mui/icons-material/Palette';
-import DateRangeIcon from '@mui/icons-material/DateRange';
-import MapIcon from '@mui/icons-material/Map';
-import LabelIcon from '@mui/icons-material/Label';
-
 import { estados as mapStates } from 'isagro-map';
-import { palettes, backgroundColors } from './colors';
 
 interface ParamsBarProps {
     _drawerOpen: boolean;
@@ -72,7 +54,6 @@ const ParamsBar: FC<ParamsBarProps> = ({
     _backgroundColor,
     _palette,
     _toggleDrawer,
-    // _handleChangeRangeDates,
     _handleStateChange,
     _handleAnalysisChange,
     _handleLabelChange,
@@ -112,6 +93,8 @@ const ParamsBar: FC<ParamsBarProps> = ({
                             </MenuItem>
                         ))}
                     </Select>
+                </FormControl>
+                <FormControl fullWidth sx={{ display: 'flex', gap: '10px', flexDirection: 'row', alignItems: 'center' }}>
                     <Select
                         id="period-end-select"
                         value={_endDate.getFullYear().toString()}
@@ -157,40 +140,6 @@ const ParamsBar: FC<ParamsBarProps> = ({
                     </Select>
                 </FormControl>
             </Box>
-
-            {/* Rótulo */}
-            {/* <Box sx={{ minWidth: '200px' }}>
-                <Typography variant="h6" sx={{ padding: '10px' }}>Rótulo</Typography>
-                <FormControl fullWidth>
-                    <Select id="label-select" value={_label} onChange={_handleLabelChange}>
-                        <MenuItem value="">
-                            <em>Não informado</em>
-                        </MenuItem>
-                        {_availableLabels.map((labelItem: string, index: number) => (
-                            <MenuItem id={`${index}-menu-item-label`} value={labelItem} key={index}>
-                                {labelItem}
-                            </MenuItem>
-                        ))}
-                    </Select>
-                </FormControl>
-            </Box> */}
-
-            {/* Fonte */}
-            {/* <Box sx={{ minWidth: '200px' }}>
-                <Typography variant="h6" sx={{ padding: '10px' }}>Fonte</Typography>
-                <FormControl fullWidth>
-                    <Select id="source-select" value={_source} onChange={_handleSourceChange}>
-                        <MenuItem value="">
-                            <em>Não informado</em>
-                        </MenuItem>
-                        {_availableSources.map((source: string) => (
-                            <MenuItem id={`${source}-menu-item-source`} value={source} key={source}>
-                                {source}
-                            </MenuItem>
-                        ))}
-                    </Select>
-                </FormControl>
-            </Box> */}
         </Box>
     );
 }

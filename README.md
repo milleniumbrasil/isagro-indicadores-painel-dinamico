@@ -11,7 +11,7 @@
 
 ## Visão Geral
 
-Este projeto é um painel dinâmico de indicadores agro-socioambientais desenvolvido para o projeto IS-Agro. O painel exibe dados interativos sobre diversas áreas como erosões, GEE, NPK, NH3, áreas orgânicas, pesticidas e poluições, relacionados ao território brasileiro. Os usuários podem explorar esses indicadores por diferentes estados e períodos de tempo, utilizando o mapa e os gráficos apresentados na interface.
+Este projeto é um painel dinâmico de indicadores agro-socioambientais desenvolvido para o projeto IS-Agro. O painel exibe dados interativos sobre diversas áreas como erosões, GEE, NPK, emissao-de-amonia, áreas orgânicas, pesticidas e poluições, relacionados ao território brasileiro. Os usuários podem explorar esses indicadores por diferentes estados e períodos de tempo, utilizando o mapa e os gráficos apresentados na interface.
 
 O painel foi desenvolvido em React e inclui funcionalidades como a seleção de parâmetros (indicadores, rótulos, cores e intervalos), exibição de gráficos dinâmicos e interação com o mapa do Brasil. Este painel tem como objetivo facilitar a análise de dados agro-socioambientais por meio de uma interface intuitiva e interativa.
 

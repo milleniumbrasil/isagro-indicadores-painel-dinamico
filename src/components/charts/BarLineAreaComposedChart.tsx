@@ -262,13 +262,8 @@ const BarLineAreaComposedChart: React.FC<BarLineAreaComposedChartProps> = (props
   }
 
     const handleBarClick = (_data: { [_x: string]: { _period: any; }; }, _index: string | number) => {
-        const dataKeyFound = findValueByKey(_data, 'dataKey');
         const periodFound = findValueByKey(_data, 'period');
 
-        if (props.onLabelSelect && dataKeyFound) {
-            props.onLabelSelect(dataKeyFound);
-            setInternalSelectedLabel(dataKeyFound);
-        }
         if (props.onPeriodSelect && periodFound) {
             props.onPeriodSelect(periodFound);
             setInternalSelectedPeriod(periodFound);
@@ -277,15 +272,10 @@ const BarLineAreaComposedChart: React.FC<BarLineAreaComposedChartProps> = (props
 
     function handleLegendClick(data: any, index: number): void {
         const dataKeyFound = findValueByKey(data, 'dataKey');
-        const periodFound = findValueByKey(data, 'period');
 
         if (props.onLabelSelect && dataKeyFound) {
             props.onLabelSelect(dataKeyFound);
             setInternalSelectedLabel(dataKeyFound);
-        }
-        if (props.onPeriodSelect && periodFound) {
-            props.onPeriodSelect(periodFound);
-            setInternalSelectedPeriod(periodFound);
         }
     }
 

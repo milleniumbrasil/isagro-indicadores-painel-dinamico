@@ -79,7 +79,7 @@ const ParamsBar: FC<ParamsBarProps> = ({
         <Box sx={{ display: 'flex', gap: '20px', flexWrap: 'wrap', margin: '20px' }}>
             {/* Período */}
             <Box sx={{ minWidth: '200px' }}>
-                <Typography variant="h6" sx={{ padding: '10px' }}>Período</Typography>
+                <Typography variant="h6" sx={{ padding: '10px' }}>Início</Typography>
                 <FormControl fullWidth sx={{ display: 'flex', gap: '10px', flexDirection: 'row', alignItems: 'center' }}>
                     <Select
                         id="period-start-select"
@@ -94,6 +94,9 @@ const ParamsBar: FC<ParamsBarProps> = ({
                         ))}
                     </Select>
                 </FormControl>
+            </Box>
+            <Box sx={{ minWidth: '200px' }}>
+                <Typography variant="h6" sx={{ padding: '10px' }}>Fim</Typography>
                 <FormControl fullWidth sx={{ display: 'flex', gap: '10px', flexDirection: 'row', alignItems: 'center' }}>
                     <Select
                         id="period-end-select"

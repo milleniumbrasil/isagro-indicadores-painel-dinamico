@@ -5,7 +5,6 @@ import { ComposedChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveCon
 import { whiteBackgroundColor, palettes } from '../colors';
 import { IStackedAreaChart } from './IStackedAreaChart';
 
-
 export interface INormalizedData {
     period: string;
     [label: string]: number | string;
@@ -15,6 +14,7 @@ interface BarLineAreaComposedChartProps {
     data: IStackedAreaChart[];
     tendencyData?: IStackedAreaChart[];
     onLabelSelect?: (newLabel: string) => void;
+    onPeriodSelect?: (newPeriod: string) => void;
     width?: number;
     height?: number;
 }
@@ -217,6 +217,7 @@ const BarLineAreaComposedChart: React.FC<BarLineAreaComposedChartProps> = (props
     };
 
     const [internalSelectedLabel, setInternalSelectedLabel] = useState<string|null>(null);
+    const [internalSelectedPeriod, setInternalSelectedPeriod] = useState<string|null>(null);
     const [internalData, setInternalData] = useState<INormalizedData[]>([]);
     const [internalTendencyData, setInternalTendencyData] = useState<INormalizedData[]>([]);
     const [internalWidth, setInternalWidth] = useState<number>(800);
@@ -234,14 +235,14 @@ const BarLineAreaComposedChart: React.FC<BarLineAreaComposedChartProps> = (props
 
   // Função recursiva com tipagem para buscar o valor do nome do atributo (_attr)
   function findValueByKey(_obj: any, _attr: string): string | null {
-    console.log(`[BarLineAreaComposedChart] findValueByKey: Iniciando busca pelo período associado ao token: ${_attr}`);
+    // console.log(`[BarLineAreaComposedChart] findValueByKey: Iniciando busca pelo período associado ao token: ${_attr}`);
     // Verifica se o objeto não é nulo e é de fato um objeto
     if (_obj && typeof _obj === 'object') {
-        console.log(`[BarLineAreaComposedChart] findValueByKey: Analisando objeto: ${JSON.stringify(_obj, null, 2)}`);
+        // console.log(`[BarLineAreaComposedChart] findValueByKey: Analisando objeto: ${JSON.stringify(_obj, null, 2)}`);
       // Se "_attr" está presente no nível atual, retorna o valor
       if (_attr in _obj) {
         const value = _obj[_attr];
-        console.log(`[BarLineAreaComposedChart] findValueByKey: Período encontrado na chave ${_attr}: ${value}`);
+        console.log(`[BarLineAreaComposedChart] findValueByKey: valor encontrado na chave ${_attr}: ${value}`);
         return value;
       }
 
@@ -260,24 +261,32 @@ const BarLineAreaComposedChart: React.FC<BarLineAreaComposedChartProps> = (props
     return null;
   }
 
-    const handleBarClick = (data: { [x: string]: { period: any; }; }, index: string | number) => {
-        const dataKeyFound = findValueByKey(data, 'dataKey');
-        if (dataKeyFound) {
-            const periodForLabel = findValueByKey(data, 'period');
-            console.log(`[BarLineAreaComposedChart] handleBarClick: Período associado ao rótulo ${dataKeyFound}: ${periodForLabel}`);
+    const handleBarClick = (_data: { [_x: string]: { _period: any; }; }, _index: string | number) => {
+        const dataKeyFound = findValueByKey(_data, 'dataKey');
+        const periodFound = findValueByKey(_data, 'period');
+
+        if (props.onLabelSelect && dataKeyFound) {
+            props.onLabelSelect(dataKeyFound);
+            setInternalSelectedLabel(dataKeyFound);
         }
-        if (props.onLabelSelect && dataKeyFound) props.onLabelSelect(dataKeyFound);
-        setInternalSelectedLabel(dataKeyFound);
+        if (props.onPeriodSelect && periodFound) {
+            props.onPeriodSelect(periodFound);
+            setInternalSelectedPeriod(periodFound);
+        }
     };
 
     function handleLegendClick(data: any, index: number): void {
         const dataKeyFound = findValueByKey(data, 'dataKey');
-        if (dataKeyFound) {
-            const periodForLabel = findValueByKey(data, 'period');
-            console.log(`[BarLineAreaComposedChart] handleLegendClick: Período associado ao rótulo ${dataKeyFound}: ${periodForLabel}`);
+        const periodFound = findValueByKey(data, 'period');
+
+        if (props.onLabelSelect && dataKeyFound) {
+            props.onLabelSelect(dataKeyFound);
+            setInternalSelectedLabel(dataKeyFound);
         }
-        if (props.onLabelSelect && dataKeyFound) props.onLabelSelect(dataKeyFound);
-        setInternalSelectedLabel(dataKeyFound);
+        if (props.onPeriodSelect && periodFound) {
+            props.onPeriodSelect(periodFound);
+            setInternalSelectedPeriod(periodFound);
+        }
     }
 
     useEffect(() => {

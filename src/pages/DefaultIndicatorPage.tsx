@@ -48,6 +48,7 @@ const DefaultIndicatorPage: FC = () => {
 
     const [labels, setLabels] = useState<Label[]>([]);
     const [selectedLabel, setSelectedLabel] = useState<string>('');
+    const [selectedYear, setSelectedYear] = useState<string>('');
     const [availableLabels, setAvailableLabels] = useState<[]>([]);
 
     const [selectedState, setSelectedState] = useState<string>('Distrito Federal');
@@ -112,6 +113,10 @@ const DefaultIndicatorPage: FC = () => {
         setSelectedLabel(newLabel ?? '');
     };
 
+    function handlePeriodChange(newPeriod: string): void {
+        setSelectedYear(newPeriod ?? '');
+    }
+
     const requestStackedData = async (url: string): Promise<IStackedAreaChart[]> => {
         console.log(`[DefaultIndicatorPage] requestStackedData ${url}`);
         return fetch(url)
@@ -172,8 +177,9 @@ const DefaultIndicatorPage: FC = () => {
     }, [selectedStartPeriod, selectedEndPeriod, selectedAnalysis, selectedInterval]);
 
     useEffect(() => {
-        if (selectedLabel && selectedStartPeriod && selectedEndPeriod) {
-            buildUrl('sum', selectedStartPeriod, selectedEndPeriod, selectedAnalysis, selectedInterval, selectedLabel).then((sumUrl) => {
+        if (selectedLabel && selectedYear) {
+            const year = new Date(Number(selectedYear), 0, 1);
+            buildUrl('sum', year, year, selectedAnalysis, selectedInterval, selectedLabel).then((sumUrl) => {
                 requestStackedData(sumUrl).then((stackedObjects) => {
                     console.log(`[DefaultIndicatorPage] useEffect url: ${sumUrl}`);
                     console.log(`[DefaultIndicatorPage] useEffect sum result: ${stackedObjects.length}`);
@@ -182,7 +188,7 @@ const DefaultIndicatorPage: FC = () => {
                 });
             });
         }
-    } , [selectedLabel]);
+    } , [selectedLabel, selectedYear]);
 
     useEffect(() => {
         if (indicator) setSelectedAnalysis(indicator);
@@ -274,7 +280,8 @@ const DefaultIndicatorPage: FC = () => {
                                 selectedEndPeriod,
                                 selectedSumData,
                                 selectedChartDefaultPalette,
-                                handleLabelChange)}
+                                handleLabelChange,
+                                handlePeriodChange)}
                 </Box>
                 <Box sx={{ display: 'flex', '& > :not(style)': { m: 1 } }}>
                     {selectedLabelData && selectedLabelData.length > 0 && (BarChartCard(
@@ -284,7 +291,8 @@ const DefaultIndicatorPage: FC = () => {
                                 selectedEndPeriod,
                                 selectedLabelData,
                                 selectedChartDefaultPalette,
-                                handleLabelChange))}
+                                handleLabelChange,
+                                handlePeriodChange))}
                 </Box>
             </Paper>
 
@@ -302,7 +310,8 @@ function BarChartCard(  _width: number,
                         _endDate: Date,
                         _data: IStackedAreaChart[],
                         _palette: string[],
-                        _onSelectedLabel: (newLabel: string) => void) {
+                        _onSelectedLabel: (newLabel: string) => void,
+                        _onSelectedPeriod: (newLabel: string) => void) {
     return (
         <>
             <Card variant="outlined" sx={{ alignItems: 'center', width: '100%', backgroundColor: _defaultBackgroundColor }} >
@@ -311,7 +320,8 @@ function BarChartCard(  _width: number,
                         width={_width}
                         height={_height}
                         data={_data}
-                        onLabelSelect={_onSelectedLabel}/>
+                        onLabelSelect={_onSelectedLabel}
+                        onPeriodSelect={_onSelectedPeriod}/>
                 </CardContent>
             </Card>
         </>

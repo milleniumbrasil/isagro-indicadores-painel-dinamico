@@ -21,12 +21,12 @@ export const discrepantColors = {
 		{ label: "Orquídea", value: "orchid", color: '#DA70D6' },
     ],
     medium: [
-		{ label: "Âmbar", value: "amber", color: '#FFBF00' },        // Tom mais claro e quente
-		{ label: "Verde Grama", value: "lawnGreen", color: '#3CB371' }, // Verde médio
-		{ label: "Azul Caribenho", value: "caribbeanBlue", color: '#1CA9C9' }, // Tom frio e suave
-		{ label: "Ametista", value: "amethyst", color: '#9966CC' },     // Roxo, mais intenso
-		{ label: "Rosa Indiano", value: "indianRed", color: '#CD5C5C' },   // Tom mais escuro e saturado
-    ],
+		{ label: "Vara de Ouro", value: "goldenrod", color: '#DAA520' },      // Tom mais claro
+		{ label: "Verde Grama", value: "lawnGreen", color: '#3CB371' },      // Verde médio
+		{ label: "Azul Caribenho", value: "caribbeanBlue", color: '#1CA9C9' }, // Azul suave
+		{ label: "Ametista", value: "amethyst", color: '#9966CC' },          // Roxo profundo
+		{ label: "Rosa Indiano", value: "indianRed", color: '#CD5C5C' }       // Tom mais escuro e saturado
+	],
     dark: [
 		{ label: "Verde Pinho", value: "pineGreen", color: '#2E8B57' },
 		{ label: "Vermelho Sangue", value: "bloodRed", color: '#660000' },

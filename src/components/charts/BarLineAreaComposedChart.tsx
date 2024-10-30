@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { ComposedChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, Line, LabelList, Label, Rectangle } from 'recharts';
 import { whiteBackgroundColor, palettes } from '../colors';
 import { IStackedAreaChart } from './IStackedAreaChart';
-import { Margin } from '@mui/icons-material';
 
 export interface INormalizedData {
     period: string;
@@ -231,12 +230,20 @@ const BarLineAreaComposedChart: React.FC<BarLineAreaComposedChartProps> = (props
     const [tendencyAttributeNames, setTendencyAttributeNames] = useState<string[]>([]);
     const [loading, setLoading] = useState(true);
     const [dynamicTicks, setDynamicTicks] = useState<number[]>([0]);
-    const [defaultPalette, setDefaultPalette] = useState<string[]>(
-        palettes.find(palette => palette.value === 'greenDark')?.colors.map(color => color.color) || []
-    );
-    const [internalTendencyPalette, setInternalTendencyPalette] = useState<string[]>(
-        palettes.find(palette => palette.value === 'redDark')?.colors.map(color => color.color) || []
-    );
+    const [defaultPalette, setDefaultPalette] = useState<string[]>([
+        '#008000',
+        '#006400',
+        '#556B2F',
+        '#6B8E23',
+        '#01796F',
+    ]);
+    const [internalTendencyPalette, setInternalTendencyPalette] = useState<string[]>([
+            '#FF0000',
+            '#8B0000',
+            '#A52A2A',
+            '#800000',
+            '#660000',
+        ]);
 
   // Função recursiva com tipagem para buscar o valor do nome do atributo (_attr)
   function findValueByKey(_obj: any, _attr: string): string | null {

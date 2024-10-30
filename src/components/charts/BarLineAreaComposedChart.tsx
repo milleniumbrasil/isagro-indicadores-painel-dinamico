@@ -19,6 +19,7 @@ interface BarLineAreaComposedChartProps {
     width?: number;
     height?: number;
     stacked?: boolean;
+    legend?: boolean;
 }
 
 export function Loading() {
@@ -340,8 +341,8 @@ const BarLineAreaComposedChart: React.FC<BarLineAreaComposedChartProps> = (props
                     <YAxis tickFormatter={tickFormatter}  >
                         {/* <Label value={`${internalSelectedLabel} ${internalSelectedPeriod}`} offset={0} position="top" style={{ margin: '15px' }} /> */}
                     </YAxis>
-                    <Legend formatter={legendFormatter}
-                            onClick={handleLegendClick} iconType={'triangle'} layout="vertical" verticalAlign="middle" align='left' />
+                    {!props.legend && <Legend formatter={legendFormatter}
+                            onClick={handleLegendClick} iconType={'triangle'} layout="vertical" verticalAlign="middle" align='left' />}
                     <Tooltip content={<CustomTooltip />} />
                     {attributeNames.map((_className, indexClass) => (
                         <Bar

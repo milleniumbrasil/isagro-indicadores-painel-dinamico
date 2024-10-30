@@ -292,6 +292,7 @@ const DefaultIndicatorPage: FC = () => {
 
                     {BarChartCard(
                                 730, 250,
+                                false,
                                 true,
                                 selectedChartDefaultBackgroundColor,
                                 selectedStartPeriod,
@@ -305,6 +306,7 @@ const DefaultIndicatorPage: FC = () => {
                     {selectedPeriodData && selectedPeriodData.length > 0 && (BarChartCard(
                                 150, 200,
                                 false,
+                                false,
                                 selectedChartDefaultBackgroundColor,
                                 selectedStartPeriod,
                                 selectedEndPeriod,
@@ -316,6 +318,7 @@ const DefaultIndicatorPage: FC = () => {
                 <Box sx={{ display: 'flex', '& > :not(style)': { m: 1 } }}>
                     {selectedLabelData && selectedLabelData.length > 0 && (BarChartCard(
                                 150, 200,
+                                false,
                                 false,
                                 selectedChartDefaultBackgroundColor,
                                 selectedStartPeriod,
@@ -337,6 +340,7 @@ export default DefaultIndicatorPage;
 function BarChartCard(  _width: number,
                         _height: number,
                         _stacked: boolean,
+                        _legend: boolean,
                         _defaultBackgroundColor: string,
                         _startDate: Date,
                         _endDate: Date,
@@ -350,6 +354,7 @@ function BarChartCard(  _width: number,
                 <CardContent>
                     <BarLineAreaComposedChart
                         stacked={_stacked}
+                        legend={_legend}
                         width={_width}
                         height={_height}
                         data={_data}

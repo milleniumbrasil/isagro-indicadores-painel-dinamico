@@ -9,6 +9,28 @@ export const redBackgroundColor    = 'rgba(255, 182, 193, 0.1)';   // Vermelho c
 export const brownBackgroundColor  = 'rgba(222, 184, 135, 0.1)'; // Marrom claro (próximo a "burlywood")
 export const whiteBackgroundColor  = 'rgba(255, 255, 255, 0.6)';  // Branco com baixa opacidade
 
+// Verde - Light, Medium, Dark AZUL, AMARELO, VERMELHO, VERDE
+export const discrepantColors = {
+    light: [
+        { label: "Verde Limão", value: "limeGreen", color: '#32CD32' },
+		{ label: "Coral", value: "coral", color: '#FF7F50' },
+		{ label: "Chicote de Mamão", value: "papayaWhip", color: '#FFEFD5' },
+		{ label: "Azul Céu Claro", value: "lightSkyBlue", color: '#87CEFA' },
+    ],
+    medium: [
+        { label: "Verde Grama", value: "lawnGreen", color: '#7CFC00' },
+		{ label: "Rosa Indiano", value: "indianRed", color: '#CD5C5C' },
+		{ label: "Amarelo Ouro", value: "goldenYellow", color: '#FFDF00' },
+		{ label: "Azul Caribenho", value: "caribbeanBlue", color: '#1CA9C9' }
+    ],
+    dark: [
+		{ label: "Verde Pinho", value: "pineGreen", color: '#01796F' },
+		{ label: "Vermelho Sangue", value: "bloodRed", color: '#660000' },
+		{ label: "Âmbar", value: "amber", color: '#FFBF00' },
+		{ label: "Azul Meia-Noite", value: "midnightBlue", color: '#191970' }
+    ],
+};
+
 // Verde - Light, Medium, Dark
 export const greenColors = {
     light: [
@@ -206,7 +228,10 @@ export const palettes = [
     { label: "Azul Escuro", value: "blueDark", colors: blueColors.dark },
     { label: "Verde Claro", value: "greenLight", colors: greenColors.light },
     { label: "Verde Médio", value: "greenMedium", colors: greenColors.medium },
-    { label: "Verde Escuro", value: "greenDark", colors: greenColors.dark }
+    { label: "Verde Escuro", value: "greenDark", colors: greenColors.dark },
+    { label: "Discrepantes Escuro", value: "discrepantLight", colors: discrepantColors.light },
+    { label: "Discrepantes Médio", value: "discrepantMedium", colors: discrepantColors.medium },
+    { label: "Discrepantes Escuro", value: "discrepantDark", colors: discrepantColors.dark },
 ];
 
 // Atualizando os fundos

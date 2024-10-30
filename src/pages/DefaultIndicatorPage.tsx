@@ -72,14 +72,28 @@ const DefaultIndicatorPage: FC = () => {
     const [selectedBbox, setSelectedBbox] = useState<string>(Constants.initialConfig.bbox);
     const [selectedCenter, setSelectedCenter] = useState<string>();
 
-    const [selectedPalette, setSelectedPalette] = useState<string>('discrepantMedium');
-    const [selectedBackgroundColor, setSelectedBackgroundColor] = useState<string>('brown');
+    const [selectedPalette, setSelectedPalette] = useState<string[]>([]);
 
     // Inicializar o palette com o verde claro, médio ou escuro
     const [selectedChartDefaultPalette, setSelectedChartDefaultPalette] = useState<string[]>(
         palettes.find((palette) => palette.value === 'discrepantMedium')?.colors.map((color) => color.color) || [],
     );
     const [selectedChartDefaultBackgroundColor, setSelectedChartDefaultBackgroundColor] = useState<string>(brownBackgroundColor);
+
+    function getPaletteColorsByColor(hexColor: string): string[] | null {
+        // Percorre cada paleta em palettes
+        for (const palette of palettes) {
+            // Verifica se o hexColor está em alguma cor da paleta
+            const foundColor = palette.colors.find(color => color.color.toLowerCase() === hexColor.toLowerCase());
+
+            // Retorna apenas o array de cores se encontrar a cor
+            if (foundColor) {
+                return palette.colors.map(color => color.color);
+            }
+        }
+        // Retorna null caso a cor não seja encontrada em nenhuma paleta
+        return null;
+    }
 
     const handleStateChange = (event: SelectChangeEvent) => {
         const stateValue = event.target.value as string;
@@ -119,7 +133,14 @@ const DefaultIndicatorPage: FC = () => {
     }
 
     function handleColorChange(newColor: string): void {
-        setSelectedColor(newColor ?? '');
+        if (newColor) {
+            setSelectedColor(newColor);
+            const paletteFound = getPaletteColorsByColor(newColor);
+            if (paletteFound) {
+                setSelectedPalette(paletteFound);
+            }
+        }
+
     }
 
     const requestStackedData = async (url: string): Promise<IStackedAreaChart[]> => {
@@ -312,7 +333,7 @@ const DefaultIndicatorPage: FC = () => {
                                 selectedStartPeriod,
                                 selectedEndPeriod,
                                 selectedPeriodData,
-                                selectedChartDefaultPalette,
+                                selectedPalette,
                                 handleLabelChange,
                                 handlePeriodChange))}
                 </Box>

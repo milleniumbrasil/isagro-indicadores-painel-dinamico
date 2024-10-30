@@ -60,6 +60,7 @@ const DefaultIndicatorPage: FC = () => {
     const [selectedInterval, setSelectedInterval] = useState<string>('annual');
     const [annualSumData, setAnnualSumData] = useState<IStackedAreaChart[]>([]);
     const [selectedSumData, setSelectedSumData] = useState<IStackedAreaChart[]>([]);
+    const [selectedPeriodData, setSelectedPeriodData] = useState<IStackedAreaChart[]>([]);
     const [selectedLabelData, setSelectedLabelData] = useState<IStackedAreaChart[]>([]);
     const [selectedSmaData, setSelectedSmaData] = useState<IStackedAreaChart[]>([]);
     const [selectedPercentualData, setSelectedPercentualData] = useState<IPercentualAreaChart[]>([]);
@@ -192,6 +193,21 @@ const DefaultIndicatorPage: FC = () => {
     } , [selectedLabel, selectedYear]);
 
     useEffect(() => {
+        if (selectedYear) {
+            const startOfYear = new Date(Number(selectedYear), 0, 1);
+            const endOfYear = new Date(Number(selectedYear), 11, 1);
+            buildUrl('sum', startOfYear, endOfYear, selectedAnalysis, selectedInterval).then((sumUrl) => {
+                requestStackedData(sumUrl).then((stackedObjects) => {
+                    console.log(`[DefaultIndicatorPage] useEffect url: ${sumUrl}`);
+                    console.log(`[DefaultIndicatorPage] useEffect sum result: ${stackedObjects.length}`);
+                    console.log(`[DefaultIndicatorPage] useEffect sum sample: ${JSON.stringify(stackedObjects?.slice(0, 2), null, 2)}`);
+                    setSelectedPeriodData(stackedObjects);
+                });
+            });
+        }
+    } , [selectedYear]);
+
+    useEffect(() => {
         if (indicator) setSelectedAnalysis(indicator);
     }, [indicator]);
 
@@ -275,7 +291,8 @@ const DefaultIndicatorPage: FC = () => {
                 <Box sx={{ display: 'flex', '& > :not(style)': { m: 1 } }}>
 
                     {BarChartCard(
-                                150, 200,
+                                730, 250,
+                                true,
                                 selectedChartDefaultBackgroundColor,
                                 selectedStartPeriod,
                                 selectedEndPeriod,
@@ -285,8 +302,21 @@ const DefaultIndicatorPage: FC = () => {
                                 handlePeriodChange)}
                 </Box>
                 <Box sx={{ display: 'flex', '& > :not(style)': { m: 1 } }}>
+                    {selectedPeriodData && selectedPeriodData.length > 0 && (BarChartCard(
+                                150, 200,
+                                false,
+                                selectedChartDefaultBackgroundColor,
+                                selectedStartPeriod,
+                                selectedEndPeriod,
+                                selectedPeriodData,
+                                selectedChartDefaultPalette,
+                                handleLabelChange,
+                                handlePeriodChange))}
+                </Box>
+                <Box sx={{ display: 'flex', '& > :not(style)': { m: 1 } }}>
                     {selectedLabelData && selectedLabelData.length > 0 && (BarChartCard(
                                 150, 200,
+                                false,
                                 selectedChartDefaultBackgroundColor,
                                 selectedStartPeriod,
                                 selectedEndPeriod,
@@ -306,6 +336,7 @@ export default DefaultIndicatorPage;
 
 function BarChartCard(  _width: number,
                         _height: number,
+                        _stacked: boolean,
                         _defaultBackgroundColor: string,
                         _startDate: Date,
                         _endDate: Date,
@@ -318,6 +349,7 @@ function BarChartCard(  _width: number,
             <Card variant="outlined" sx={{ alignItems: 'center', width: '100%', backgroundColor: _defaultBackgroundColor }} >
                 <CardContent>
                     <BarLineAreaComposedChart
+                        stacked={_stacked}
                         width={_width}
                         height={_height}
                         data={_data}

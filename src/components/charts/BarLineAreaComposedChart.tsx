@@ -1,9 +1,10 @@
 // src/components/charts/BarLineAreaComposedChart.tsx
 
 import { useEffect, useState } from 'react';
-import { ComposedChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, Line } from 'recharts';
+import { ComposedChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, Line, LabelList, Label, Rectangle } from 'recharts';
 import { whiteBackgroundColor, palettes } from '../colors';
 import { IStackedAreaChart } from './IStackedAreaChart';
+import { Margin } from '@mui/icons-material';
 
 export interface INormalizedData {
     period: string;
@@ -17,6 +18,7 @@ interface BarLineAreaComposedChartProps {
     onPeriodSelect?: (newPeriod: string) => void;
     width?: number;
     height?: number;
+    stacked?: boolean;
 }
 
 export function Loading() {
@@ -321,6 +323,7 @@ const BarLineAreaComposedChart: React.FC<BarLineAreaComposedChartProps> = (props
         <div style={{ width: '100%', height: internalHeight }}>
             <ResponsiveContainer>
                 <ComposedChart
+                    // layout="vertical"
                     width={internalWidth}
                     height={internalHeight}
                     data={internalData}
@@ -330,11 +333,13 @@ const BarLineAreaComposedChart: React.FC<BarLineAreaComposedChartProps> = (props
                         left: 20,
                         bottom: 10,
                     }}
-                    style={{ fontSize: 10, padding: '15px' }}
+                    style={{ fontSize: 11, padding: '15px' }}
                 >
                     <CartesianGrid strokeDasharray="4 4" />
                     <XAxis dataKey={'period'} />
-                    <YAxis tickFormatter={tickFormatter}  />
+                    <YAxis tickFormatter={tickFormatter}  >
+                        {/* <Label value={`${internalSelectedLabel} ${internalSelectedPeriod}`} offset={0} position="top" style={{ margin: '15px' }} /> */}
+                    </YAxis>
                     <Legend formatter={legendFormatter}
                             onClick={handleLegendClick} iconType={'triangle'} layout="vertical" verticalAlign="middle" align='left' />
                     <Tooltip content={<CustomTooltip />} />
@@ -342,12 +347,15 @@ const BarLineAreaComposedChart: React.FC<BarLineAreaComposedChartProps> = (props
                         <Bar
                             key={_className}
                             dataKey={_className}
-                            stackId="1"
+                            stackId={!props.stacked ? indexClass +1 : 1}
+                            activeBar={<Rectangle fill="#556B2F" stroke="#556B2F" />}
                             type="monotone"
                             onClick={handleBarClick}
                             stroke={defaultPalette[indexClass % defaultPalette.length]}
                             fill={defaultPalette[indexClass % defaultPalette.length]}
-                        />
+                        >
+                            {/* <LabelList dataKey={_className} position="top" /> */}
+                        </Bar>
                     ))}
                     {tendencyAttributeNames.map((_tendencyName, indexTendency) => (
                         <Line

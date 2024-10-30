@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { ComposedChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, Line, LabelList, Label, Rectangle } from 'recharts';
-import { whiteBackgroundColor, palettes } from '../colors';
 import { IStackedAreaChart } from './IStackedAreaChart';
 
 export interface INormalizedData {
@@ -54,7 +53,7 @@ const BarLineAreaComposedChart: React.FC<BarLineAreaComposedChartProps> = (props
             return (
                 <div
                     className="custom-tooltip"
-                    style={{ backgroundColor: whiteBackgroundColor, padding: '10px', borderRadius: '5px', fontFamily: 'Arial, sans-serif' }}
+                    style={{ backgroundColor: 'rgba(255, 255, 255, 0.6)', padding: '10px', borderRadius: '5px', fontFamily: 'Arial, sans-serif' }}
                 >
                     <p className="label">{`Período: ${label}`}</p>
                     {filteredPayload.map((item: any, index: number) => (

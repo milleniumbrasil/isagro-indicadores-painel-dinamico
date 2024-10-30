@@ -349,7 +349,7 @@ const BarLineAreaComposedChart: React.FC<BarLineAreaComposedChartProps> = (props
                             key={_className}
                             dataKey={_className}
                             stackId={!props.stacked ? indexClass +1 : 1}
-                            activeBar={<Rectangle fill="#556B2F" stroke="#556B2F" />}
+                            activeBar={<Rectangle fill="#A4DE6C" stroke="#F0FFF0" />}
                             type="monotone"
                             onClick={handleBarClick}
                             stroke={defaultPalette[indexClass % defaultPalette.length]}

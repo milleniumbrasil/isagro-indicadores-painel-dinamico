@@ -190,7 +190,7 @@ const DefaultIndicatorPage: FC = () => {
                 });
             });
         }
-    } , [selectedLabel, selectedYear]);
+    } , [selectedYear, selectedLabel]);
 
     useEffect(() => {
         if (selectedYear) {

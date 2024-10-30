@@ -15,6 +15,7 @@ interface BarLineAreaComposedChartProps {
     tendencyData?: IStackedAreaChart[];
     onLabelSelect?: (newLabel: string) => void;
     onPeriodSelect?: (newPeriod: string) => void;
+    oncolorSelect?: (newColor: string) => void;
     width?: number;
     height?: number;
     stacked?: boolean;
@@ -254,7 +255,7 @@ const BarLineAreaComposedChart: React.FC<BarLineAreaComposedChartProps> = (props
       // Se "_attr" está presente no nível atual, retorna o valor
       if (_attr in _obj) {
         const value = _obj[_attr];
-        console.log(`[BarLineAreaComposedChart] findValueByKey: valor encontrado na chave ${_attr}: ${value}`);
+        // console.log(`[BarLineAreaComposedChart] findValueByKey: valor encontrado na chave ${_attr}: ${value}`);
         return value;
       }
 
@@ -288,6 +289,11 @@ const BarLineAreaComposedChart: React.FC<BarLineAreaComposedChartProps> = (props
         if (props.onLabelSelect && dataKeyFound) {
             props.onLabelSelect(dataKeyFound);
             setInternalSelectedLabel(dataKeyFound);
+        }
+
+        if (props.oncolorSelect && dataKeyFound) {
+            const colorFound = findValueByKey(data, 'fill');
+            if (colorFound) props.oncolorSelect(colorFound);
         }
     }
 

@@ -49,6 +49,7 @@ const DefaultIndicatorPage: FC = () => {
     const [labels, setLabels] = useState<Label[]>([]);
     const [selectedLabel, setSelectedLabel] = useState<string>('');
     const [selectedYear, setSelectedYear] = useState<string>('');
+    const [selectedColor, setSelectedColor] = useState<string>('');
     const [availableLabels, setAvailableLabels] = useState<[]>([]);
 
     const [selectedState, setSelectedState] = useState<string>('Distrito Federal');
@@ -116,6 +117,10 @@ const DefaultIndicatorPage: FC = () => {
 
     function handlePeriodChange(newPeriod: string): void {
         setSelectedYear(newPeriod ?? '');
+    }
+
+    function handleColorChange(newColor: string): void {
+        setSelectedColor(newColor ?? '');
     }
 
     const requestStackedData = async (url: string): Promise<IStackedAreaChart[]> => {
@@ -295,7 +300,8 @@ const DefaultIndicatorPage: FC = () => {
                                 selectedSumData,
                                 selectedChartDefaultPalette,
                                 handleLabelChange,
-                                handlePeriodChange)}
+                                handlePeriodChange,
+                                handleColorChange)}
                 </Box>
                 <Box sx={{ display: 'flex', '& > :not(style)': { m: 1 } }}>
                     {selectedPeriodData && selectedPeriodData.length > 0 && (BarChartCard(
@@ -321,7 +327,7 @@ const DefaultIndicatorPage: FC = () => {
                                 selectedStartPeriod,
                                 selectedEndPeriod,
                                 selectedLabelData,
-                                selectedChartDefaultPalette,
+                                [selectedColor],
                                 handleLabelChange,
                                 handlePeriodChange))}
                 </Box>
@@ -345,7 +351,9 @@ function BarChartCard(  _width: number,
                         _data: IStackedAreaChart[],
                         _palette: string[],
                         _onSelectedLabel: (newLabel: string) => void,
-                        _onSelectedPeriod: (newLabel: string) => void) {
+                        _onSelectedPeriod: (newLabel: string) => void,
+                        _onSelectedColor?: (newColor: string) => void,
+                    ) {
     return (
         <>
             <Card variant="outlined" sx={{ alignItems: 'center', width: '100%', backgroundColor: _defaultBackgroundColor }} >
@@ -359,6 +367,7 @@ function BarChartCard(  _width: number,
                         data={_data}
                         onLabelSelect={_onSelectedLabel}
                         onPeriodSelect={_onSelectedPeriod}
+                        oncolorSelect={_onSelectedColor}
                         defaultPalette={_palette}/>
                 </CardContent>
             </Card>

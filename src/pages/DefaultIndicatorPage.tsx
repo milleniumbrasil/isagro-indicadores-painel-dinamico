@@ -189,7 +189,7 @@ const DefaultIndicatorPage: FC = () => {
         if (selectedLabel && selectedYear) {
             const startOfYear = new Date(Number(selectedYear), 0, 1);
             const endOfYear = new Date(Number(selectedYear), 11, 1);
-            buildUrl('sum', startOfYear, endOfYear, selectedAnalysis, selectedInterval, selectedLabel, selectedState).then((sumUrl) => {
+            buildUrl('sum', selectedStartPeriod, selectedEndPeriod, selectedAnalysis, selectedInterval, selectedLabel, selectedState).then((sumUrl) => {
                 requestStackedData(sumUrl).then((stackedObjects) => {
                     console.log(`[DefaultIndicatorPage] useEffect url: ${sumUrl}`);
                     console.log(`[DefaultIndicatorPage] useEffect sum result: ${stackedObjects.length}`);
@@ -286,8 +286,8 @@ const DefaultIndicatorPage: FC = () => {
 
                     {BarChartCard(
                                 730, 250,
-                                false,
                                 true,
+                                false,
                                 'horizontal',
                                 selectedChartDefaultBackgroundColor,
                                 selectedStartPeriod,
@@ -301,7 +301,7 @@ const DefaultIndicatorPage: FC = () => {
                     {selectedPeriodData && selectedPeriodData.length > 0 && (BarChartCard(
                                 150, 200,
                                 false,
-                                false,
+                                true,
                                 'horizontal',
                                 selectedChartDefaultBackgroundColor,
                                 selectedStartPeriod,

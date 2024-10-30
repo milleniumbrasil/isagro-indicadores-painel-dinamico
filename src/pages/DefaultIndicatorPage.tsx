@@ -14,7 +14,7 @@ import { iEstado, estados as mapStates, Map } from 'isagro-map';
 
 import { buildAnalysisUrl, buildLabelsUrl, buildSourceUrl, buildUrl } from './AnalysisHelper';
 
-import { brownBackgroundColor, palettes, backgroundColors, darkGrayBackgroundColor, deepDarkGrayBackgroundColor } from '../components/colors';
+import { brownBackgroundColor, palettes } from '../components/colors';
 
 import { Loader } from 'rsuite';
 
@@ -25,7 +25,6 @@ import Constants, { Label } from './AnalysisConstants';
 import BarLineAreaComposedChart from '../components/charts/BarLineAreaComposedChart';
 import ParamsBar from '../components/ParamsBar';
 import { useParams } from 'react-router-dom';
-import { on } from 'events';
 
 export function Loading() {
     return (

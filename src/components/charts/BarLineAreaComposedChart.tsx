@@ -20,6 +20,7 @@ interface BarLineAreaComposedChartProps {
     height?: number;
     stacked?: boolean;
     legend?: boolean;
+    layout?: 'horizontal' | 'vertical';
 }
 
 export function Loading() {
@@ -324,7 +325,7 @@ const BarLineAreaComposedChart: React.FC<BarLineAreaComposedChartProps> = (props
         <div style={{ width: '100%', height: internalHeight }}>
             <ResponsiveContainer>
                 <ComposedChart
-                    // layout="vertical"
+                    layout={props.layout || 'horizontal'}
                     width={internalWidth}
                     height={internalHeight}
                     data={internalData}
@@ -337,13 +338,19 @@ const BarLineAreaComposedChart: React.FC<BarLineAreaComposedChartProps> = (props
                     style={{ fontSize: 11, padding: '15px' }}
                 >
                     <CartesianGrid strokeDasharray="4 4" />
-                    <XAxis dataKey={'period'} />
-                    <YAxis tickFormatter={tickFormatter}  >
-                        {/* <Label value={`${internalSelectedLabel} ${internalSelectedPeriod}`} offset={0} position="top" style={{ margin: '15px' }} /> */}
-                    </YAxis>
-                    {!props.legend && <Legend formatter={legendFormatter}
-                            onClick={handleLegendClick} iconType={'triangle'} layout="vertical" verticalAlign="middle" align='left' />}
+                    {props.layout === 'horizontal' ? <XAxis dataKey="period" type="category"/>: <YAxis dataKey={'period'} type="category"/>}
+                    {props.layout === 'horizontal' ? <YAxis tickFormatter={tickFormatter}  />: <XAxis tickFormatter={tickFormatter}  />}
+
+                    {!props.legend &&
+                        <Legend formatter={legendFormatter}
+                            onClick={handleLegendClick}
+                            iconType={'triangle'}
+                            layout="vertical"
+                            verticalAlign="middle"
+                            align={props.layout === 'horizontal'? 'left': 'right'} />}
+
                     <Tooltip content={<CustomTooltip />} />
+
                     {attributeNames.map((_className, indexClass) => (
                         <Bar
                             key={_className}

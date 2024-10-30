@@ -288,6 +288,7 @@ const DefaultIndicatorPage: FC = () => {
                                 730, 250,
                                 false,
                                 true,
+                                'horizontal',
                                 selectedChartDefaultBackgroundColor,
                                 selectedStartPeriod,
                                 selectedEndPeriod,
@@ -301,6 +302,7 @@ const DefaultIndicatorPage: FC = () => {
                                 150, 200,
                                 false,
                                 false,
+                                'vertical',
                                 selectedChartDefaultBackgroundColor,
                                 selectedStartPeriod,
                                 selectedEndPeriod,
@@ -314,6 +316,7 @@ const DefaultIndicatorPage: FC = () => {
                                 150, 200,
                                 false,
                                 false,
+                                'vertical',
                                 selectedChartDefaultBackgroundColor,
                                 selectedStartPeriod,
                                 selectedEndPeriod,
@@ -335,6 +338,7 @@ function BarChartCard(  _width: number,
                         _height: number,
                         _stacked: boolean,
                         _legend: boolean,
+                        _layout: 'horizontal' | 'vertical',
                         _defaultBackgroundColor: string,
                         _startDate: Date,
                         _endDate: Date,
@@ -349,6 +353,7 @@ function BarChartCard(  _width: number,
                     <BarLineAreaComposedChart
                         stacked={_stacked}
                         legend={_legend}
+                        layout={_layout}
                         width={_width}
                         height={_height}
                         data={_data}

@@ -8,26 +8,31 @@ export const grayBackgroundColor   = 'rgba(245, 245, 245, 0.6)';   // Cinza clar
 export const redBackgroundColor    = 'rgba(255, 182, 193, 0.1)';   // Vermelho claro (próximo a "lightpink")
 export const brownBackgroundColor  = 'rgba(222, 184, 135, 0.1)'; // Marrom claro (próximo a "burlywood")
 export const whiteBackgroundColor  = 'rgba(255, 255, 255, 0.6)';  // Branco com baixa opacidade
+export const darkGrayBackgroundColor = 'rgba(105, 105, 105, 0.6)'; // Cinza escuro com baixa opacidade
+export const deepDarkGrayBackgroundColor = 'rgba(50, 50, 50, 0.6)'; // Cinza bem escuro com baixa opacidade
 
 // Verde - Light, Medium, Dark AZUL, AMARELO, VERMELHO, VERDE
 export const discrepantColors = {
     light: [
-        { label: "Verde Limão", value: "limeGreen", color: '#32CD32' },
+		{ label: "Verde Limão", value: "limeGreen", color: '#32CD32' },
 		{ label: "Coral", value: "coral", color: '#FF7F50' },
 		{ label: "Chicote de Mamão", value: "papayaWhip", color: '#FFEFD5' },
 		{ label: "Azul Céu Claro", value: "lightSkyBlue", color: '#87CEFA' },
+		{ label: "Orquídea", value: "orchid", color: '#DA70D6' },
     ],
     medium: [
-        { label: "Verde Grama", value: "lawnGreen", color: '#7CFC00' },
-		{ label: "Rosa Indiano", value: "indianRed", color: '#CD5C5C' },
-		{ label: "Amarelo Ouro", value: "goldenYellow", color: '#FFDF00' },
-		{ label: "Azul Caribenho", value: "caribbeanBlue", color: '#1CA9C9' }
+		{ label: "Âmbar", value: "amber", color: '#FFBF00' },        // Tom mais claro e quente
+		{ label: "Verde Grama", value: "lawnGreen", color: '#3CB371' }, // Verde médio
+		{ label: "Azul Caribenho", value: "caribbeanBlue", color: '#1CA9C9' }, // Tom frio e suave
+		{ label: "Ametista", value: "amethyst", color: '#9966CC' },     // Roxo, mais intenso
+		{ label: "Rosa Indiano", value: "indianRed", color: '#CD5C5C' },   // Tom mais escuro e saturado
     ],
     dark: [
-		{ label: "Verde Pinho", value: "pineGreen", color: '#01796F' },
+		{ label: "Verde Pinho", value: "pineGreen", color: '#2E8B57' },
 		{ label: "Vermelho Sangue", value: "bloodRed", color: '#660000' },
 		{ label: "Âmbar", value: "amber", color: '#FFBF00' },
-		{ label: "Azul Meia-Noite", value: "midnightBlue", color: '#191970' }
+		{ label: "Azul Meia-Noite", value: "midnightBlue", color: '#191970' },
+		{ label: "Violeta Escura", value: "darkViolet", color: '#9400D3' },
     ],
 };
 

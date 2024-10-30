@@ -21,6 +21,7 @@ interface BarLineAreaComposedChartProps {
     stacked?: boolean;
     legend?: boolean;
     layout?: 'horizontal' | 'vertical';
+    defaultPalette?: string[];
 }
 
 export function Loading() {
@@ -313,13 +314,14 @@ const BarLineAreaComposedChart: React.FC<BarLineAreaComposedChartProps> = (props
 
                 if (props.width) setInternalWidth(props.width);
                 if (props.height) setInternalHeight(props.height);
+                if (props.defaultPalette) setDefaultPalette(props.defaultPalette);
             }
         } catch (error) {
             console.error(error);
         } finally {
             setLoading(false);
         }
-    }, [props.data, props.tendencyData, props.width, props.height]);
+    }, [props.data, props.tendencyData, props.width, props.height, props.defaultPalette]);
 
     return (
         <div style={{ width: '100%', height: internalHeight }}>
@@ -356,7 +358,7 @@ const BarLineAreaComposedChart: React.FC<BarLineAreaComposedChartProps> = (props
                             key={_className}
                             dataKey={_className}
                             stackId={!props.stacked ? indexClass +1 : 1}
-                            activeBar={<Rectangle fill="#A4DE6C" stroke="#F0FFF0" />}
+                            activeBar={<Rectangle fill="#808080" stroke="#F0FFF0" />}
                             type="monotone"
                             onClick={handleBarClick}
                             stroke={defaultPalette[indexClass % defaultPalette.length]}

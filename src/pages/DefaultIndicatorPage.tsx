@@ -14,7 +14,7 @@ import { iEstado, estados as mapStates, Map } from 'isagro-map';
 
 import { buildAnalysisUrl, buildLabelsUrl, buildSourceUrl, buildUrl } from './AnalysisHelper';
 
-import { brownBackgroundColor, palettes, backgroundColors } from '../components/colors';
+import { brownBackgroundColor, palettes, backgroundColors, darkGrayBackgroundColor, deepDarkGrayBackgroundColor } from '../components/colors';
 
 import { Loader } from 'rsuite';
 
@@ -72,12 +72,12 @@ const DefaultIndicatorPage: FC = () => {
     const [selectedBbox, setSelectedBbox] = useState<string>(Constants.initialConfig.bbox);
     const [selectedCenter, setSelectedCenter] = useState<string>();
 
-    const [selectedPalette, setSelectedPalette] = useState<string>('greenDark');
+    const [selectedPalette, setSelectedPalette] = useState<string>('discrepantMedium');
     const [selectedBackgroundColor, setSelectedBackgroundColor] = useState<string>('brown');
 
     // Inicializar o palette com o verde claro, médio ou escuro
     const [selectedChartDefaultPalette, setSelectedChartDefaultPalette] = useState<string[]>(
-        palettes.find((palette) => palette.value === 'greenDark')?.colors.map((color) => color.color) || [],
+        palettes.find((palette) => palette.value === 'discrepantMedium')?.colors.map((color) => color.color) || [],
     );
     const [selectedChartDefaultBackgroundColor, setSelectedChartDefaultBackgroundColor] = useState<string>(brownBackgroundColor);
 
@@ -358,7 +358,8 @@ function BarChartCard(  _width: number,
                         height={_height}
                         data={_data}
                         onLabelSelect={_onSelectedLabel}
-                        onPeriodSelect={_onSelectedPeriod}/>
+                        onPeriodSelect={_onSelectedPeriod}
+                        defaultPalette={_palette}/>
                 </CardContent>
             </Card>
         </>

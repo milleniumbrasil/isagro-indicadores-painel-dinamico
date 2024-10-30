@@ -333,7 +333,7 @@ const DefaultIndicatorPage: FC = () => {
                                 selectedStartPeriod,
                                 selectedEndPeriod,
                                 selectedPeriodData,
-                                (selectedPalette && selectedPalette.length > 0 ? selectedPalette : grayColors.light.map(color => color.color)),
+                                (selectedPalette && selectedPalette.length > 0 ? selectedPalette : grayColors.medium.map(color => color.color)),
                                 handleLabelChange,
                                 handlePeriodChange))}
                 </Box>

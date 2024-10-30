@@ -55,7 +55,7 @@ const DefaultIndicatorPage: FC = () => {
     const [selectedMapState, setSelectedMapState] = useState<iEstado>(mapStates['Distrito Federal']);
 
     const [selectedStartPeriod, setSelectedStartPeriod] = useState<Date>(new Date(2000, 0, 1)); // Janeiro é o mês 0
-    const [selectedEndPeriod, setSelectedEndPeriod] = useState<Date>(new Date('2024-12-31'));
+    const [selectedEndPeriod, setSelectedEndPeriod] = useState<Date>(new Date(2024, 11, 31)); // Dezembro é o mês 11
 
     const [selectedInterval, setSelectedInterval] = useState<string>('annual');
     const [annualSumData, setAnnualSumData] = useState<IStackedAreaChart[]>([]);
@@ -158,7 +158,7 @@ const DefaultIndicatorPage: FC = () => {
 
     useEffect(() => {
         if (selectedStartPeriod && selectedEndPeriod){
-            buildUrl('sum', selectedStartPeriod, selectedEndPeriod, selectedAnalysis, selectedInterval).then((sumUrl) => {
+            buildUrl('sum', selectedStartPeriod, selectedEndPeriod, selectedAnalysis, selectedInterval, '', selectedState).then((sumUrl) => {
                 requestStackedData(sumUrl).then((stackedObjects) => {
                     console.log(`[DefaultIndicatorPage] useEffect url: ${sumUrl}`);
                     console.log(`[DefaultIndicatorPage] useEffect sum result: ${stackedObjects.length}`);
@@ -166,37 +166,14 @@ const DefaultIndicatorPage: FC = () => {
                     setSelectedSumData(stackedObjects);
                 });
             });
-            buildUrl('sma', selectedStartPeriod, selectedEndPeriod, selectedAnalysis, selectedInterval).then((smaUrl) => {
-                requestStackedData(smaUrl).then((stackedObjects) => {
-                    console.log(`[DefaultIndicatorPage] useEffect url: ${smaUrl}`);
-                    console.log(`[DefaultIndicatorPage] useEffect sma result: ${stackedObjects.length}`);
-                    console.log(`[DefaultIndicatorPage] useEffect sma sample: ${JSON.stringify(stackedObjects?.slice(0, 2), null, 2)}`);
-                    setSelectedSmaData(stackedObjects);
-                });
-            });
         }
-    }, [selectedStartPeriod, selectedEndPeriod, selectedAnalysis, selectedInterval]);
-
-    useEffect(() => {
-        if (selectedLabel && selectedYear) {
-            const startOfYear = new Date(Number(selectedYear), 0, 1);
-            const endOfYear = new Date(Number(selectedYear), 11, 1);
-            buildUrl('sum', startOfYear, endOfYear, selectedAnalysis, selectedInterval, selectedLabel).then((sumUrl) => {
-                requestStackedData(sumUrl).then((stackedObjects) => {
-                    console.log(`[DefaultIndicatorPage] useEffect url: ${sumUrl}`);
-                    console.log(`[DefaultIndicatorPage] useEffect sum result: ${stackedObjects.length}`);
-                    console.log(`[DefaultIndicatorPage] useEffect sum sample: ${JSON.stringify(stackedObjects?.slice(0, 2), null, 2)}`);
-                    setSelectedLabelData(stackedObjects);
-                });
-            });
-        }
-    } , [selectedYear, selectedLabel]);
+    }, [selectedStartPeriod, selectedEndPeriod, selectedAnalysis, selectedInterval, selectedState]);
 
     useEffect(() => {
         if (selectedYear) {
             const startOfYear = new Date(Number(selectedYear), 0, 1);
             const endOfYear = new Date(Number(selectedYear), 11, 1);
-            buildUrl('sum', startOfYear, endOfYear, selectedAnalysis, selectedInterval).then((sumUrl) => {
+            buildUrl('sum', startOfYear, endOfYear, selectedAnalysis, selectedInterval, '', selectedState).then((sumUrl) => {
                 requestStackedData(sumUrl).then((stackedObjects) => {
                     console.log(`[DefaultIndicatorPage] useEffect url: ${sumUrl}`);
                     console.log(`[DefaultIndicatorPage] useEffect sum result: ${stackedObjects.length}`);
@@ -205,7 +182,24 @@ const DefaultIndicatorPage: FC = () => {
                 });
             });
         }
-    } , [selectedYear]);
+        // Quando mudar apenas o ano/estado, atualizar os dados de período
+    } , [selectedYear, selectedState]);
+
+    useEffect(() => {
+        if (selectedLabel && selectedYear) {
+            const startOfYear = new Date(Number(selectedYear), 0, 1);
+            const endOfYear = new Date(Number(selectedYear), 11, 1);
+            buildUrl('sum', startOfYear, endOfYear, selectedAnalysis, selectedInterval, selectedLabel, selectedState).then((sumUrl) => {
+                requestStackedData(sumUrl).then((stackedObjects) => {
+                    console.log(`[DefaultIndicatorPage] useEffect url: ${sumUrl}`);
+                    console.log(`[DefaultIndicatorPage] useEffect sum result: ${stackedObjects.length}`);
+                    console.log(`[DefaultIndicatorPage] useEffect sum sample: ${JSON.stringify(stackedObjects?.slice(0, 2), null, 2)}`);
+                    setSelectedLabelData(stackedObjects);
+                });
+            });
+        }
+        // Quando mudar apenas o ano/rótulo/estado, atualizar os dados de rótulo
+    } , [selectedYear, selectedLabel, selectedState]);
 
     useEffect(() => {
         if (indicator) setSelectedAnalysis(indicator);

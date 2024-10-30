@@ -14,7 +14,7 @@ import { iEstado, estados as mapStates, Map } from 'isagro-map';
 
 import { buildAnalysisUrl, buildLabelsUrl, buildSourceUrl, buildUrl } from './AnalysisHelper';
 
-import { brownBackgroundColor, palettes } from '../components/colors';
+import { brownBackgroundColor, grayColors, palettes } from '../components/colors';
 
 import { Loader } from 'rsuite';
 
@@ -333,7 +333,7 @@ const DefaultIndicatorPage: FC = () => {
                                 selectedStartPeriod,
                                 selectedEndPeriod,
                                 selectedPeriodData,
-                                selectedPalette,
+                                (selectedPalette && selectedPalette.length > 0 ? selectedPalette : grayColors.light.map(color => color.color)),
                                 handleLabelChange,
                                 handlePeriodChange))}
                 </Box>

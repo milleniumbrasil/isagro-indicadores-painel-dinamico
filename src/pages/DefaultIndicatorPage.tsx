@@ -307,6 +307,15 @@ const DefaultIndicatorPage: FC = () => {
             </Paper> */}
 
             <Paper sx={{ width: '96%', alignItems: 'center', margin: '15px' }}>
+
+                <Box sx={{ display: 'flex', '& > :not(style)': { m: 1 } }}>
+                    {MapBox(selectedMapState,
+                            selectedWidth,
+                            selectedHeight,
+                            (zoom: number) => setSelectedZoom(zoom),
+                            (bbox: Array<number>) => setSelectedBbox(bbox.join(', ')),
+                            (center: Array<number>) => setSelectedCenter(center.join(', ')) )}
+                </Box>
                 <Box sx={{ display: 'flex', '& > :not(style)': { m: 1 } }}>
 
                     {BarChartCard(
@@ -417,3 +426,30 @@ function BarLineChartCard(  _width: number,
     );
 }
 
+function MapBox(    _mapState: iEstado,
+    _width: number,
+    _height: number,
+    _setSelectedZoom: (zoom: number) => void|undefined,
+    _setSelectedBbox: (b: Array<number>) => void|undefined,
+    _setSelectedCenter: (c: Array<number>) => void|undefined
+) {
+return (
+<Box sx={{ flexGrow: 1 }}>
+<Map
+    estado={_mapState}
+    width={_width}
+    height={_height}
+    coordinateOnClick={(coordinate: Array<number>) => alert(`Coordenada do clique: ${coordinate}`)}
+    onZoomChange={_setSelectedZoom}
+    onBboxChange={_setSelectedBbox}
+    onCenterChange={_setSelectedCenter}
+    version="1.3.0"
+    request="GetMap"
+    srs="EPSG:4326"
+    layers="CCAR:BCIM_Unidade_Federacao_A"
+    format="image/jpeg"
+    transparent={false}
+    bgcolor="0xFFFFFF" />
+</Box>
+);
+}

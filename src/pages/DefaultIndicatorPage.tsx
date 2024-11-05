@@ -182,8 +182,9 @@ const DefaultIndicatorPage: FC = () => {
     };
 
     useEffect(() => {
+        const state = selectedState == 'Nacional' ? undefined : selectedState;
         if (selectedStartPeriod && selectedEndPeriod){
-            buildUrl('sum', selectedStartPeriod, selectedEndPeriod, selectedAnalysis, selectedInterval, '', selectedState).then((sumUrl) => {
+            buildUrl('sum', selectedStartPeriod, selectedEndPeriod, selectedAnalysis, selectedInterval, '', state).then((sumUrl) => {
                 requestStackedData(sumUrl).then((stackedObjects) => {
                     console.log(`[DefaultIndicatorPage] useEffect url: ${sumUrl}`);
                     console.log(`[DefaultIndicatorPage] useEffect sum result: ${stackedObjects.length}`);
@@ -195,10 +196,11 @@ const DefaultIndicatorPage: FC = () => {
     }, [selectedStartPeriod, selectedEndPeriod, selectedAnalysis, selectedInterval, selectedState]);
 
     useEffect(() => {
+        const state = selectedState == 'Nacional' ? undefined : selectedState;
         if (selectedYear) {
             const startOfYear = new Date(Number(selectedYear), 0, 1);
             const endOfYear = new Date(Number(selectedYear), 11, 1);
-            buildUrl('sum', startOfYear, endOfYear, selectedAnalysis, selectedInterval, '', selectedState).then((sumUrl) => {
+            buildUrl('sum', startOfYear, endOfYear, selectedAnalysis, selectedInterval, '', state).then((sumUrl) => {
                 requestStackedData(sumUrl).then((stackedObjects) => {
                     console.log(`[DefaultIndicatorPage] useEffect url: ${sumUrl}`);
                     console.log(`[DefaultIndicatorPage] useEffect sum result: ${stackedObjects.length}`);
@@ -211,10 +213,11 @@ const DefaultIndicatorPage: FC = () => {
     } , [selectedYear, selectedState]);
 
     useEffect(() => {
+        const state = selectedState == 'Nacional' ? undefined : selectedState;
         if (selectedLabel && selectedYear) {
             const startOfYear = new Date(Number(selectedYear), 0, 1);
             const endOfYear = new Date(Number(selectedYear), 11, 1);
-            buildUrl('sum', selectedStartPeriod, selectedEndPeriod, selectedAnalysis, selectedInterval, selectedLabel, selectedState).then((sumUrl) => {
+            buildUrl('sum', selectedStartPeriod, selectedEndPeriod, selectedAnalysis, selectedInterval, selectedLabel, state).then((sumUrl) => {
                 requestStackedData(sumUrl).then((stackedObjects) => {
                     console.log(`[DefaultIndicatorPage] useEffect url: ${sumUrl}`);
                     console.log(`[DefaultIndicatorPage] useEffect sum result: ${stackedObjects.length}`);

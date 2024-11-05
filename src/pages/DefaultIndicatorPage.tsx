@@ -51,8 +51,8 @@ const DefaultIndicatorPage: FC = () => {
     const [selectedColor, setSelectedColor] = useState<string>('');
     const [availableLabels, setAvailableLabels] = useState<[]>([]);
 
-    const [selectedState, setSelectedState] = useState<string>('Distrito Federal');
-    const [selectedMapState, setSelectedMapState] = useState<iEstado>(mapStates['Distrito Federal']);
+    const [selectedState, setSelectedState] = useState<string>('Nacional');
+    const [selectedMapState, setSelectedMapState] = useState<iEstado>(mapStates['Nacional']);
 
     const [selectedStartPeriod, setSelectedStartPeriod] = useState<Date>(new Date(2000, 0, 1)); // Janeiro é o mês 0
     const [selectedEndPeriod, setSelectedEndPeriod] = useState<Date>(new Date(2024, 11, 31)); // Dezembro é o mês 11

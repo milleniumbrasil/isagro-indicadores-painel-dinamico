@@ -439,6 +439,7 @@ function MapBox(    _mapState: iEstado,
 return (
 <Box sx={{ flexGrow: 1 }}>
 <Map
+    url="http://localhost:8080/geoserver/isagro/wms"
     estado={_mapState}
     width={_width}
     height={_height}
@@ -449,9 +450,10 @@ return (
     version="1.3.0"
     request="GetMap"
     srs="EPSG:4326"
-    layers="CCAR:BCIM_Unidade_Federacao_A"
+    layers = 'isagro:balanco-de-k'
     format="image/jpeg"
     transparent={false}
+    styles='default'
     bgcolor="0xFFFFFF" />
 </Box>
 );

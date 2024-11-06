@@ -453,7 +453,7 @@ return (
     layers = 'isagro:balanco-de-k'
     format="image/jpeg"
     transparent={false}
-    styles='default'
+    styles=''
     bgcolor="0xFFFFFF" />
 </Box>
 );

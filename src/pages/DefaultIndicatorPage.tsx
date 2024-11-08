@@ -58,6 +58,7 @@ const DefaultIndicatorPage: FC = () => {
     const [selectedEndPeriod, setSelectedEndPeriod] = useState<Date>(new Date(2024, 11, 31)); // Dezembro é o mês 11
 
     const [selectedInterval, setSelectedInterval] = useState<string>('annual');
+    const [selectedLayers, setSelectedLayers] = useState<string>('isagro:balanco-de-k-2000');
     const [annualSumData, setAnnualSumData] = useState<IStackedAreaChart[]>([]);
     const [selectedSumData, setSelectedSumData] = useState<IStackedAreaChart[]>([]);
     const [selectedPeriodData, setSelectedPeriodData] = useState<IStackedAreaChart[]>([]);
@@ -254,8 +255,17 @@ const DefaultIndicatorPage: FC = () => {
     } , [selectedYear, selectedLabel, selectedState]);
 
     useEffect(() => {
-        if (indicator) setSelectedAnalysis(indicator);
+        if (indicator) {
+            setSelectedAnalysis(indicator);
+            setSelectedLayers(`isagro:${indicator}`);
+        }
     }, [indicator]);
+
+    useEffect(() => {
+        if (indicator) {
+            setSelectedLayers(`isagro:${indicator}-${selectedYear}`);
+        }
+    }, [selectedYear]);
 
     useEffect(() => {
         if (selectedStartPeriod && selectedEndPeriod) {
@@ -339,6 +349,7 @@ const DefaultIndicatorPage: FC = () => {
                     {MapBox(selectedMapState,
                             selectedWidth,
                             selectedHeight,
+                            selectedLayers,
                             (zoom: number) => setSelectedZoom(zoom),
                             (bbox: Array<number>) => setSelectedBbox(bbox.join(', ')),
                             (center: Array<number>) => setSelectedCenter(center.join(', ')),
@@ -435,6 +446,7 @@ function BarChartCard(  _width: number,
 function MapBox(    _mapState: iEstado,
     _width: number,
     _height: number,
+    _layers: string,
     _setSelectedZoom: (zoom: number) => void|undefined,
     _setSelectedBbox: (b: Array<number>) => void|undefined,
     _setSelectedCenter: (c: Array<number>) => void|undefined,
@@ -454,7 +466,7 @@ return (
     version="1.3.0"
     request="GetMap"
     srs="EPSG:4326"
-    layers = 'isagro:balanco-de-k'
+    layers = {_layers}
     format="image/jpeg"
     transparent={false}
     styles=''

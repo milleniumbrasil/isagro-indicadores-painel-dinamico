@@ -406,28 +406,6 @@ function BarChartCard(  _width: number,
         </>
     );
 }
-function BarLineChartCard(  _width: number,
-                        _height: number,
-                        _defaultBackgroundColor: string,
-                        _startDate: Date,
-                        _endDate: Date,
-                        _data: IStackedAreaChart[],
-                        _tendency: IStackedAreaChart[],
-                        _palette: string[]) {
-    return (
-        <>
-            <Card variant="outlined" sx={{ alignItems: 'center', width: '100%', backgroundColor: _defaultBackgroundColor }} >
-                <CardContent>
-                    <BarLineAreaComposedChart
-                        width={_width}
-                        height={_height}
-                        data={_data}
-                        tendencyData={_tendency}/>
-                </CardContent>
-            </Card>
-        </>
-    );
-}
 
 function MapBox(    _mapState: iEstado,
     _width: number,

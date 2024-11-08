@@ -58,7 +58,7 @@ const DefaultIndicatorPage: FC = () => {
     const [selectedEndPeriod, setSelectedEndPeriod] = useState<Date>(new Date(2024, 11, 31)); // Dezembro é o mês 11
 
     const [selectedInterval, setSelectedInterval] = useState<string>('annual');
-    const [selectedStyles, setSelectedStyles] = useState<string>('isagro:balanco-de-k-2000');
+    const [selectedStyles, setSelectedStyles] = useState<string>('balanco-de-k');
     const [annualSumData, setAnnualSumData] = useState<IStackedAreaChart[]>([]);
     const [selectedSumData, setSelectedSumData] = useState<IStackedAreaChart[]>([]);
     const [selectedPeriodData, setSelectedPeriodData] = useState<IStackedAreaChart[]>([]);
@@ -156,9 +156,11 @@ const DefaultIndicatorPage: FC = () => {
     function handleYearChange(_selectedYear: string): void {
         if (_selectedYear) {
             setSelectedYear(_selectedYear ?? '');
-            setSelectedStyles(`isagro:${indicator}-${selectedYear}`);
-            console.log(`Styles selecionada: isagro:${indicator}-${selectedYear}`);
-            alert(`Styles selecionada: isagro:${indicator}-${selectedYear}`);
+            if (indicator && selectedYear) {
+                setSelectedStyles(`${indicator}-${selectedYear}`);
+                console.log(`Styles selecionada: ${indicator}-${selectedYear}`);
+                alert(`Styles selecionada: ${indicator}-${selectedYear}`);
+            }
         }
     }
 
@@ -262,13 +264,13 @@ const DefaultIndicatorPage: FC = () => {
     useEffect(() => {
         if (indicator) {
             setSelectedAnalysis(indicator);
-            setSelectedStyles(`isagro:${indicator}`);
+            setSelectedStyles(`${indicator}`);
         }
     }, [indicator]);
 
     useEffect(() => {
-        if (indicator) {
-            setSelectedStyles(`isagro:${indicator}-${selectedYear}`);
+        if (indicator && selectedYear) {
+            setSelectedStyles(`${indicator}-${selectedYear}`);
         }
     }, [selectedYear]);
 

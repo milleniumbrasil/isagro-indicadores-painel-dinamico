@@ -328,21 +328,6 @@ const DefaultIndicatorPage: FC = () => {
                     _handleEndDateChange={handleEndDateChange}
                     _handleIntervalChange={handleIntervalChange} />
 
-            {/* <Paper sx={{ width: '96%', alignItems: 'center', margin: '15px' }}>
-                <Box sx={{ display: 'flex', '& > :not(style)': { m: 1 } }}>
-
-                    {BarLineChartCard(
-                                150, 200,
-                                selectedChartDefaultBackgroundColor,
-                                selectedStartDate,
-                                selectedEndDate,
-                                annualSumData,
-                                selectedSmaData,
-                                selectedChartDefaultPalette)
-                                }
-                </Box>
-            </Paper> */}
-
             <Paper sx={{ width: '96%', alignItems: 'center', margin: '15px' }}>
 
                 <Box sx={{ display: 'flex', '& > :not(style)': { m: 1 } }}>

@@ -157,6 +157,8 @@ const DefaultIndicatorPage: FC = () => {
         if (_selectedYear) {
             setSelectedYear(_selectedYear ?? '');
             setSelectedLayers(`isagro:${indicator}-${selectedYear}`);
+            console.log(`Layer selecionada: isagro:${indicator}-${selectedYear}`);
+            alert(`Layer selecionada: isagro:${indicator}-${selectedYear}`);
         }
     }
 

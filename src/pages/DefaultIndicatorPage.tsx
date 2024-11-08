@@ -58,7 +58,7 @@ const DefaultIndicatorPage: FC = () => {
     const [selectedEndPeriod, setSelectedEndPeriod] = useState<Date>(new Date(2024, 11, 31)); // Dezembro é o mês 11
 
     const [selectedInterval, setSelectedInterval] = useState<string>('annual');
-    const [selectedLayers, setSelectedLayers] = useState<string>('isagro:balanco-de-k-2000');
+    const [selectedStyles, setSelectedStyles] = useState<string>('isagro:balanco-de-k-2000');
     const [annualSumData, setAnnualSumData] = useState<IStackedAreaChart[]>([]);
     const [selectedSumData, setSelectedSumData] = useState<IStackedAreaChart[]>([]);
     const [selectedPeriodData, setSelectedPeriodData] = useState<IStackedAreaChart[]>([]);
@@ -156,9 +156,9 @@ const DefaultIndicatorPage: FC = () => {
     function handleYearChange(_selectedYear: string): void {
         if (_selectedYear) {
             setSelectedYear(_selectedYear ?? '');
-            setSelectedLayers(`isagro:${indicator}-${selectedYear}`);
-            console.log(`Layer selecionada: isagro:${indicator}-${selectedYear}`);
-            alert(`Layer selecionada: isagro:${indicator}-${selectedYear}`);
+            setSelectedStyles(`isagro:${indicator}-${selectedYear}`);
+            console.log(`Styles selecionada: isagro:${indicator}-${selectedYear}`);
+            alert(`Styles selecionada: isagro:${indicator}-${selectedYear}`);
         }
     }
 
@@ -262,13 +262,13 @@ const DefaultIndicatorPage: FC = () => {
     useEffect(() => {
         if (indicator) {
             setSelectedAnalysis(indicator);
-            setSelectedLayers(`isagro:${indicator}`);
+            setSelectedStyles(`isagro:${indicator}`);
         }
     }, [indicator]);
 
     useEffect(() => {
         if (indicator) {
-            setSelectedLayers(`isagro:${indicator}-${selectedYear}`);
+            setSelectedStyles(`isagro:${indicator}-${selectedYear}`);
         }
     }, [selectedYear]);
 
@@ -339,7 +339,7 @@ const DefaultIndicatorPage: FC = () => {
                     {MapBox(selectedMapState,
                             selectedWidth,
                             selectedHeight,
-                            selectedLayers,
+                            selectedStyles,
                             (zoom: number) => setSelectedZoom(zoom),
                             (bbox: Array<number>) => setSelectedBbox(bbox.join(', ')),
                             (center: Array<number>) => setSelectedCenter(center.join(', ')),
@@ -436,7 +436,7 @@ function BarChartCard(  _width: number,
 function MapBox(    _mapState: iEstado,
     _width: number,
     _height: number,
-    _layers: string,
+    _styles: string,
     _setSelectedZoom: (zoom: number) => void|undefined,
     _setSelectedBbox: (b: Array<number>) => void|undefined,
     _setSelectedCenter: (c: Array<number>) => void|undefined,
@@ -456,10 +456,10 @@ return (
     version="1.3.0"
     request="GetMap"
     srs="EPSG:4326"
-    layers = {_layers}
+    layers = 'default'
     format="image/jpeg"
     transparent={false}
-    styles=''
+    styles={_styles}
     bgcolor="0xFFFFFF" />
 </Box>
 );

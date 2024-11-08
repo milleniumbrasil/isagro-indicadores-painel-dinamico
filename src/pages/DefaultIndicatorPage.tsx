@@ -112,7 +112,7 @@ const DefaultIndicatorPage: FC = () => {
     const handleCoordinateClick = (coordinate: Array<number>) => {
         const estado = encontrarEstado([coordinate[0], coordinate[1]]);
         if (estado) {
-            alert(`A coordenada está no estado: ${estado}`);
+            console.log(`A coordenada está no estado: ${estado}`);
             setSelectedState(estado);
             setSelectedMapState(mapStates[estado]);
         } else {
@@ -153,8 +153,11 @@ const DefaultIndicatorPage: FC = () => {
         setSelectedLabel(newLabel ?? '');
     };
 
-    function handlePeriodChange(newPeriod: string): void {
-        setSelectedYear(newPeriod ?? '');
+    function handleYearChange(_selectedYear: string): void {
+        if (_selectedYear) {
+            setSelectedYear(_selectedYear ?? '');
+            setSelectedLayers(`isagro:${indicator}-${selectedYear}`);
+        }
     }
 
     function handleColorChange(newColor: string): void {
@@ -353,7 +356,7 @@ const DefaultIndicatorPage: FC = () => {
                                 selectedSumData,
                                 selectedChartDefaultPalette,
                                 handleLabelChange,
-                                handlePeriodChange,
+                                handleYearChange,
                                 handleColorChange)}
                 </Box>
                 <Box sx={{ display: 'flex', '& > :not(style)': { m: 1 } }}>
@@ -368,7 +371,7 @@ const DefaultIndicatorPage: FC = () => {
                                 selectedPeriodData,
                                 (selectedPalette && selectedPalette.length > 0 ? selectedPalette : grayColors.medium.map(color => color.color)),
                                 handleLabelChange,
-                                handlePeriodChange))}
+                                handleYearChange))}
                 </Box>
                 <Box sx={{ display: 'flex', '& > :not(style)': { m: 1 } }}>
                     {selectedLabelData && selectedLabelData.length > 0 && (BarChartCard(
@@ -382,7 +385,7 @@ const DefaultIndicatorPage: FC = () => {
                                 selectedLabelData,
                                 [selectedColor],
                                 handleLabelChange,
-                                handlePeriodChange))}
+                                handleYearChange))}
                 </Box>
             </Paper>
 

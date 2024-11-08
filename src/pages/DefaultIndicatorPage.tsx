@@ -95,6 +95,30 @@ const DefaultIndicatorPage: FC = () => {
         return null;
     }
 
+    const encontrarEstado = (coordinate: [number, number]): string | null => {
+        for (const [nome, estado] of Object.entries(mapStates)) {
+            const [minLng, minLat, maxLng, maxLat] = estado.bbox;
+            const [lng, lat] = coordinate;
+
+            // Verifica se a coordenada está dentro dos limites de cada estado
+            if (lng >= minLng && lng <= maxLng && lat >= minLat && lat <= maxLat) {
+                return nome;
+            }
+        }
+        return null;
+    };
+
+    const handleCoordinateClick = (coordinate: Array<number>) => {
+        const estado = encontrarEstado([coordinate[0], coordinate[1]]);
+        if (estado) {
+            alert(`A coordenada está no estado: ${estado}`);
+            setSelectedState(estado);
+            setSelectedMapState(mapStates[estado]);
+        } else {
+            alert('A coordenada não pertence a nenhum estado.');
+        }
+    };
+
     const handleStateChange = (event: SelectChangeEvent) => {
         const stateValue = event.target.value as string;
         setSelectedState(stateValue);
@@ -317,7 +341,8 @@ const DefaultIndicatorPage: FC = () => {
                             selectedHeight,
                             (zoom: number) => setSelectedZoom(zoom),
                             (bbox: Array<number>) => setSelectedBbox(bbox.join(', ')),
-                            (center: Array<number>) => setSelectedCenter(center.join(', ')) )}
+                            (center: Array<number>) => setSelectedCenter(center.join(', ')),
+                            (handleCoordinateClick))}
                 </Box>
                 <Box sx={{ display: 'flex', '& > :not(style)': { m: 1 } }}>
 
@@ -412,7 +437,8 @@ function MapBox(    _mapState: iEstado,
     _height: number,
     _setSelectedZoom: (zoom: number) => void|undefined,
     _setSelectedBbox: (b: Array<number>) => void|undefined,
-    _setSelectedCenter: (c: Array<number>) => void|undefined
+    _setSelectedCenter: (c: Array<number>) => void|undefined,
+    _handleCoordinateClick: (coordinate: Array<number>) => void|undefined
 ) {
 return (
 <Box sx={{ flexGrow: 1 }}>
@@ -421,7 +447,7 @@ return (
     estado={_mapState}
     width={_width}
     height={_height}
-    coordinateOnClick={(coordinate: Array<number>) => alert(`Coordenada do clique: ${coordinate}`)}
+    coordinateOnClick={_handleCoordinateClick}
     onZoomChange={_setSelectedZoom}
     onBboxChange={_setSelectedBbox}
     onCenterChange={_setSelectedCenter}

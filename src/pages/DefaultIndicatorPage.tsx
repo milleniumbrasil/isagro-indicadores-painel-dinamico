@@ -456,7 +456,7 @@ return (
     version="1.3.0"
     request="GetMap"
     srs="EPSG:4326"
-    layers = 'default'
+    layers = ''
     format="image/jpeg"
     transparent={false}
     styles={_styles}

@@ -37,28 +37,23 @@ export function Loading() {
 const DefaultIndicatorPage: FC = () => {
 
     const { indicator } = useParams<{ indicator: string }>();
-    const [drawerOpen, setDrawerOpen] = useState(false);
+    const [selectedAnalysis, setSelectedAnalysis] = useState<string>(indicator || 'emissao-de-amonia');
+    const [selectedYear, setSelectedYear] = useState<string>('2000');
+    const [selectedLayers, setSelectedLayers] = useState<string>(indicator ? `${indicator}-${selectedYear}` : 'emissao-de-amonia');
+    const [selectedState, setSelectedState] = useState<string>('Nacional');
+    const [selectedMapState, setSelectedMapState] = useState<iEstado>(mapStates['Nacional']);
+    const [selectedStartPeriod, setSelectedStartPeriod] = useState<Date>(new Date(2000, 0, 1)); // Janeiro é o mês 0
+    const [selectedEndPeriod, setSelectedEndPeriod] = useState<Date>(new Date(2024, 11, 31)); // Dezembro é o mês 11
+    const [selectedInterval, setSelectedInterval] = useState<string>('annual');
 
-    const [selectedSource, setSelectedSource] = useState<string>('');
     const [availableSources, setAvailableSources] = useState<[]>([]);
 
     const [availableAnalysis, setAvailableAnalysis] = useState<[]>([]);
 
     const [labels, setLabels] = useState<Label[]>([]);
     const [selectedLabel, setSelectedLabel] = useState<string>('');
-    const [selectedYear, setSelectedYear] = useState<string>('2000');
-    const [selectedAnalysis, setSelectedAnalysis] = useState<string>(indicator || 'emissao-de-amonia');
     const [selectedColor, setSelectedColor] = useState<string>('');
     const [availableLabels, setAvailableLabels] = useState<[]>([]);
-
-    const [selectedState, setSelectedState] = useState<string>('Nacional');
-    const [selectedMapState, setSelectedMapState] = useState<iEstado>(mapStates['Nacional']);
-
-    const [selectedStartPeriod, setSelectedStartPeriod] = useState<Date>(new Date(2000, 0, 1)); // Janeiro é o mês 0
-    const [selectedEndPeriod, setSelectedEndPeriod] = useState<Date>(new Date(2024, 11, 31)); // Dezembro é o mês 11
-
-    const [selectedInterval, setSelectedInterval] = useState<string>('annual');
-    const [selectedLayers, setSelectedLayers] = useState<string>(indicator ? `${indicator}-${selectedYear}` : 'emissao-de-amonia');
     const [annualSumData, setAnnualSumData] = useState<IStackedAreaChart[]>([]);
     const [selectedSumData, setSelectedSumData] = useState<IStackedAreaChart[]>([]);
     const [selectedPeriodData, setSelectedPeriodData] = useState<IStackedAreaChart[]>([]);

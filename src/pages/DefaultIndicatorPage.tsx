@@ -43,11 +43,11 @@ const DefaultIndicatorPage: FC = () => {
     const [availableSources, setAvailableSources] = useState<[]>([]);
 
     const [availableAnalysis, setAvailableAnalysis] = useState<[]>([]);
-    const [selectedAnalysis, setSelectedAnalysis] = useState<string>(indicator || 'emissao-de-amonia');
 
     const [labels, setLabels] = useState<Label[]>([]);
     const [selectedLabel, setSelectedLabel] = useState<string>('');
-    const [selectedYear, setSelectedYear] = useState<string>('');
+    const [selectedYear, setSelectedYear] = useState<string>('2000');
+    const [selectedAnalysis, setSelectedAnalysis] = useState<string>(indicator || 'emissao-de-amonia');
     const [selectedColor, setSelectedColor] = useState<string>('');
     const [availableLabels, setAvailableLabels] = useState<[]>([]);
 
@@ -58,7 +58,7 @@ const DefaultIndicatorPage: FC = () => {
     const [selectedEndPeriod, setSelectedEndPeriod] = useState<Date>(new Date(2024, 11, 31)); // Dezembro é o mês 11
 
     const [selectedInterval, setSelectedInterval] = useState<string>('annual');
-    const [selectedStyles, setSelectedStyles] = useState<string>('balanco-de-k');
+    const [selectedLayers, setSelectedLayers] = useState<string>(indicator ? `${indicator}-${selectedYear}` : 'emissao-de-amonia');
     const [annualSumData, setAnnualSumData] = useState<IStackedAreaChart[]>([]);
     const [selectedSumData, setSelectedSumData] = useState<IStackedAreaChart[]>([]);
     const [selectedPeriodData, setSelectedPeriodData] = useState<IStackedAreaChart[]>([]);
@@ -116,7 +116,7 @@ const DefaultIndicatorPage: FC = () => {
             setSelectedState(estado);
             setSelectedMapState(mapStates[estado]);
         } else {
-            alert('A coordenada não pertence a nenhum estado.');
+            //alert('A coordenada não pertence a nenhum estado.');
         }
     };
 
@@ -157,9 +157,9 @@ const DefaultIndicatorPage: FC = () => {
         if (_selectedYear) {
             setSelectedYear(_selectedYear ?? '');
             if (indicator && selectedYear) {
-                setSelectedStyles(`${indicator}-${selectedYear}`);
+                setSelectedLayers(`${indicator}-${selectedYear}`);
                 console.log(`Styles selecionada: ${indicator}-${selectedYear}`);
-                alert(`Styles selecionada: ${indicator}-${selectedYear}`);
+                //alert(`Styles selecionada: ${indicator}-${selectedYear}`);
             }
         }
     }
@@ -264,13 +264,13 @@ const DefaultIndicatorPage: FC = () => {
     useEffect(() => {
         if (indicator) {
             setSelectedAnalysis(indicator);
-            setSelectedStyles(`${indicator}`);
+            setSelectedLayers(`${indicator}`);
         }
     }, [indicator]);
 
     useEffect(() => {
         if (indicator && selectedYear) {
-            setSelectedStyles(`${indicator}-${selectedYear}`);
+            setSelectedLayers(`${indicator}-${selectedYear}`);
         }
     }, [selectedYear]);
 
@@ -341,7 +341,7 @@ const DefaultIndicatorPage: FC = () => {
                     {MapBox(selectedMapState,
                             selectedWidth,
                             selectedHeight,
-                            selectedStyles,
+                            selectedLayers,
                             (zoom: number) => setSelectedZoom(zoom),
                             (bbox: Array<number>) => setSelectedBbox(bbox.join(', ')),
                             (center: Array<number>) => setSelectedCenter(center.join(', ')),
@@ -438,7 +438,7 @@ function BarChartCard(  _width: number,
 function MapBox(    _mapState: iEstado,
     _width: number,
     _height: number,
-    _styles: string,
+    _layers: string,
     _setSelectedZoom: (zoom: number) => void|undefined,
     _setSelectedBbox: (b: Array<number>) => void|undefined,
     _setSelectedCenter: (c: Array<number>) => void|undefined,
@@ -458,10 +458,10 @@ return (
     version="1.3.0"
     request="GetMap"
     srs="EPSG:4326"
-    layers = ''
+    layers={_layers}
     format="image/jpeg"
     transparent={false}
-    styles={_styles}
+    styles=''
     bgcolor="0xFFFFFF" />
 </Box>
 );

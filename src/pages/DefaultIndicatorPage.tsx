@@ -43,7 +43,7 @@ const DefaultIndicatorPage: FC = () => {
     const [selectedAnalysis, setSelectedAnalysis] = useState<string>(indicator || 'emissao-de-amonia');
     const [selectedYear, setSelectedYear] = useState<string>('2000');
     const [selectedLayers, setSelectedLayers] = useState<string>(indicator ? `${indicator}` : 'emissao-de-amonia');
-    const [selectedStyles, setSelectedStyles] = useState<string>(indicator ? `${indicator}` : '');
+    const [selectedStyles, setSelectedStyles] = useState<string>('');
     const [selectedState, setSelectedState] = useState<string>('Nacional');
     const [selectedMapState, setSelectedMapState] = useState<iEstado>(mapStates['Nacional']);
     const [selectedStartPeriod, setSelectedStartPeriod] = useState<Date>(new Date(2000, 0, 1)); // Janeiro é o mês 0

@@ -16,7 +16,7 @@ const App: React.FC = () => {
             <Router>
                 <Routes>
                     <Route path="/" element={<Navigate to={`${basePath}${defaultIndicator}${defaultYear}`} replace />} />
-                    <Route path="/default/:indicator" element={<DefaultIndicatorPage />} />
+                    <Route path={`${basePath}/:indicator`} element={<DefaultIndicatorPage />} />
                 </Routes>
             </Router>
         </>

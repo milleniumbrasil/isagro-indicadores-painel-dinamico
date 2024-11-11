@@ -40,6 +40,7 @@ const DefaultIndicatorPage: FC = () => {
     const [selectedAnalysis, setSelectedAnalysis] = useState<string>(indicator || 'emissao-de-amonia');
     const [selectedYear, setSelectedYear] = useState<string>('2000');
     const [selectedLayers, setSelectedLayers] = useState<string>(indicator ? `${indicator}` : 'emissao-de-amonia');
+    const [selectedStyles, setSelectedStyles] = useState<string>(indicator ? `${indicator}` : '');
     const [selectedState, setSelectedState] = useState<string>('Nacional');
     const [selectedMapState, setSelectedMapState] = useState<iEstado>(mapStates['Nacional']);
     const [selectedStartPeriod, setSelectedStartPeriod] = useState<Date>(new Date(2000, 0, 1)); // Janeiro é o mês 0
@@ -260,12 +261,13 @@ const DefaultIndicatorPage: FC = () => {
         if (indicator) {
             setSelectedAnalysis(indicator);
             setSelectedLayers(`${indicator}`);
+            setSelectedStyles('');
         }
     }, [indicator]);
 
     useEffect(() => {
         if (indicator && selectedYear) {
-            setSelectedLayers(`${indicator}-${selectedYear}`);
+            setSelectedStyles(`${indicator}-${selectedYear}`);
         }
     }, [selectedYear]);
 
@@ -337,6 +339,7 @@ const DefaultIndicatorPage: FC = () => {
                             selectedWidth,
                             selectedHeight,
                             selectedLayers,
+                            selectedStyles,
                             (zoom: number) => setSelectedZoom(zoom),
                             (bbox: Array<number>) => setSelectedBbox(bbox.join(', ')),
                             (center: Array<number>) => setSelectedCenter(center.join(', ')),
@@ -434,6 +437,7 @@ function MapBox(    _mapState: iEstado,
     _width: number,
     _height: number,
     _layers: string,
+    _styles: string,
     _setSelectedZoom: (zoom: number) => void|undefined,
     _setSelectedBbox: (b: Array<number>) => void|undefined,
     _setSelectedCenter: (c: Array<number>) => void|undefined,
@@ -454,9 +458,9 @@ return (
     request="GetMap"
     srs="EPSG:4326"
     layers={_layers}
+    styles={_styles}
     format="image/jpeg"
     transparent={false}
-    styles=''
     bgcolor="0xFFFFFF" />
 </Box>
 );

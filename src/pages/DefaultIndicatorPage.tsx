@@ -36,6 +36,9 @@ export function Loading() {
 
 const DefaultIndicatorPage: FC = () => {
 
+
+    const geoServer = process.env.REACT_APP_GEOSERVER_URL || 'http://localhost:8080/geoserver/isagro/wms';
+
     const { indicator } = useParams<{ indicator: string }>();
     const [selectedAnalysis, setSelectedAnalysis] = useState<string>(indicator || 'emissao-de-amonia');
     const [selectedYear, setSelectedYear] = useState<string>('2000');
@@ -335,7 +338,8 @@ const DefaultIndicatorPage: FC = () => {
             <Paper sx={{ width: '96%', alignItems: 'center', margin: '15px' }}>
 
                 <Box sx={{ display: 'flex', '& > :not(style)': { m: 1 } }}>
-                    {MapBox(selectedMapState,
+                    {MapBox(geoServer,
+                            selectedMapState,
                             selectedWidth,
                             selectedHeight,
                             selectedLayers,
@@ -433,7 +437,9 @@ function BarChartCard(  _width: number,
     );
 }
 
-function MapBox(    _mapState: iEstado,
+function MapBox(
+    _geoServer: string,
+    _mapState: iEstado,
     _width: number,
     _height: number,
     _layers: string,
@@ -446,7 +452,7 @@ function MapBox(    _mapState: iEstado,
 return (
 <Box sx={{ flexGrow: 1 }}>
 <Map
-    url="http://localhost:8080/geoserver/isagro/wms"
+    url={_geoServer}
     estado={_mapState}
     width={_width}
     height={_height}

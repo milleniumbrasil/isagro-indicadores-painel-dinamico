@@ -318,6 +318,9 @@ const DefaultIndicatorPage: FC = () => {
                 setAvailableLabels(objects);
             });
         });
+
+        setSelectedLayers(`${selectedAnalysis}`);
+        setSelectedStyles('');
     }, [selectedAnalysis]);
 
     return (

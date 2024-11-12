@@ -467,6 +467,7 @@ function MapBox(
 return (
             <Box sx={{ flexGrow: 1 }}>
                 <Map
+                    key={Date.now()}
                     url={_geoServer}
                     estado={_mapState}
                     width={_width}

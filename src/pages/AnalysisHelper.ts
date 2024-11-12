@@ -4,13 +4,16 @@
 import Constants from "./AnalysisConstants";
 import { IAnalysisInfo } from "./IAnalysisInfo";
 
+export const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
+
 export const buildLabelsUrl = async (
     analysis?: string
 ): Promise<string> => {
+
     const encodedAnalysis = analysis ? encodeURIComponent(analysis) : null;
 
     // Base URL usando o caminho fornecido
-    let url = `/menu/labels`;
+    let url = `${apiBaseUrl}/menu/labels`;
 
     // Array para armazenar os parâmetros de consulta
     const queryParams = [];
@@ -40,7 +43,7 @@ export const buildParamsUrl = async (
     const encodedLabel = label ? encodeURIComponent(label) : null;
 
     // Base URL usando o caminho fornecido
-    let url = `/menu`;
+    let url = `${apiBaseUrl}/menu`;
 
     if (analysis) {
         url += `/analysis`;
@@ -77,7 +80,7 @@ export const buildParamsUrl = async (
 export const buildAnalysisUrl = async (): Promise<string> => {
 
     // Base URL usando o caminho fornecido
-    let url = `/menu/analysis`;
+    let url = `${apiBaseUrl}/menu/analysis`;
 
     return url;
 };
@@ -85,7 +88,7 @@ export const buildAnalysisUrl = async (): Promise<string> => {
 export const buildSourceUrl = async (): Promise<string> => {
 
     // Base URL usando o caminho fornecido
-    let url = `/menu/sources`;
+    let url = `${apiBaseUrl}/menu/sources`;
 
     return url;
 };
@@ -93,7 +96,7 @@ export const buildSourceUrl = async (): Promise<string> => {
 export const buildStateUrl = async (): Promise<string> => {
 
     // Base URL usando o caminho fornecido
-    let url = `/menu/states`;
+    let url = `${apiBaseUrl}/menu/states`;
 
     return url;
 };
@@ -101,7 +104,7 @@ export const buildStateUrl = async (): Promise<string> => {
 export const buildCityUrl = async (): Promise<string> => {
 
     // Base URL usando o caminho fornecido
-    let url = `/menu/cities`;
+    let url = `${apiBaseUrl}/menu/cities`;
 
     return url;
 };
@@ -109,7 +112,7 @@ export const buildCityUrl = async (): Promise<string> => {
 export const buildCountryUrl = async (): Promise<string> => {
 
     // Base URL usando o caminho fornecido
-    let url = `/menu/countries`;
+    let url = `${apiBaseUrl}/menu/countries`;
 
     return url;
 };
@@ -133,7 +136,7 @@ export const buildUrl = async (
     const encodedLabel = label ? encodeURIComponent(label) : null;
 
     // Base URL usando o caminho fornecido
-    let url = `/${path}/${interval}?analysis=${encodeURIComponent(analysis)}`;
+    let url = `${apiBaseUrl}/${path}/${interval}?analysis=${encodeURIComponent(analysis)}`;
 
     // Adiciona parâmetros opcionais se existirem
     if (encodedLabel) {

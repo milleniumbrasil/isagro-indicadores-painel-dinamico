@@ -154,11 +154,10 @@ const DefaultIndicatorPage: FC = () => {
 
     function handleYearChange(_selectedYear: string): void {
         if (_selectedYear) {
-            setSelectedYear(_selectedYear ?? '');
+            setSelectedYear(_selectedYear);
             if (indicator && selectedYear) {
-                setSelectedLayers(`${indicator}-${selectedYear}`);
-                console.log(`Styles selecionada: ${indicator}-${selectedYear}`);
-                //alert(`Styles selecionada: ${indicator}-${selectedYear}`);
+                setSelectedStyles(`${indicator}-${_selectedYear}`);
+                console.log(`Styles selecionada: ${indicator}-${_selectedYear}`);
             }
         }
     }
@@ -450,24 +449,24 @@ function MapBox(
     _handleCoordinateClick: (coordinate: Array<number>) => void|undefined
 ) {
 return (
-<Box sx={{ flexGrow: 1 }}>
-<Map
-    url={_geoServer}
-    estado={_mapState}
-    width={_width}
-    height={_height}
-    coordinateOnClick={_handleCoordinateClick}
-    onZoomChange={_setSelectedZoom}
-    onBboxChange={_setSelectedBbox}
-    onCenterChange={_setSelectedCenter}
-    version="1.3.0"
-    request="GetMap"
-    srs="EPSG:4326"
-    layers={_layers}
-    styles={_styles}
-    format="image/jpeg"
-    transparent={false}
-    bgcolor="0xFFFFFF" />
-</Box>
-);
+        <Box sx={{ flexGrow: 1 }}>
+            <Map
+                url={_geoServer}
+                estado={_mapState}
+                width={_width}
+                height={_height}
+                coordinateOnClick={_handleCoordinateClick}
+                onZoomChange={_setSelectedZoom}
+                onBboxChange={_setSelectedBbox}
+                onCenterChange={_setSelectedCenter}
+                version="1.3.0"
+                request="GetMap"
+                srs="EPSG:4326"
+                layers={_layers}
+                styles={_styles}
+                format="image/jpeg"
+                transparent={false}
+                bgcolor="0xFFFFFF" />
+        </Box>
+        );
 }

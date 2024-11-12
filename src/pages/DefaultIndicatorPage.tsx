@@ -37,7 +37,7 @@ export function Loading() {
 const DefaultIndicatorPage: FC = () => {
 
 
-    const geoServer = process.env.REACT_APP_GEOSERVER_URL || 'http://localhost:8080/geoserver/isagro/wms';
+    const geoServer = process.env.REACT_APP_GEOSERVER_URL || '/geoserver/isagro/wms';
 
     const { indicator } = useParams<{ indicator: string }>();
     const [selectedAnalysis, setSelectedAnalysis] = useState<string>(indicator || 'emissao-de-amonia');

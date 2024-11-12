@@ -10,7 +10,7 @@ export const buildLabelsUrl = async (
     const encodedAnalysis = analysis ? encodeURIComponent(analysis) : null;
 
     // Base URL usando o caminho fornecido
-    let url = `http://localhost:3001/menu/labels`;
+    let url = `/menu/labels`;
 
     // Array para armazenar os parâmetros de consulta
     const queryParams = [];
@@ -40,7 +40,7 @@ export const buildParamsUrl = async (
     const encodedLabel = label ? encodeURIComponent(label) : null;
 
     // Base URL usando o caminho fornecido
-    let url = `http://localhost:3001/menu`;
+    let url = `/menu`;
 
     if (analysis) {
         url += `/analysis`;
@@ -77,7 +77,7 @@ export const buildParamsUrl = async (
 export const buildAnalysisUrl = async (): Promise<string> => {
 
     // Base URL usando o caminho fornecido
-    let url = `http://localhost:3001/menu/analysis`;
+    let url = `/menu/analysis`;
 
     return url;
 };
@@ -85,7 +85,7 @@ export const buildAnalysisUrl = async (): Promise<string> => {
 export const buildSourceUrl = async (): Promise<string> => {
 
     // Base URL usando o caminho fornecido
-    let url = `http://localhost:3001/menu/sources`;
+    let url = `/menu/sources`;
 
     return url;
 };
@@ -93,7 +93,7 @@ export const buildSourceUrl = async (): Promise<string> => {
 export const buildStateUrl = async (): Promise<string> => {
 
     // Base URL usando o caminho fornecido
-    let url = `http://localhost:3001/menu/states`;
+    let url = `/menu/states`;
 
     return url;
 };
@@ -101,7 +101,7 @@ export const buildStateUrl = async (): Promise<string> => {
 export const buildCityUrl = async (): Promise<string> => {
 
     // Base URL usando o caminho fornecido
-    let url = `http://localhost:3001/menu/cities`;
+    let url = `/menu/cities`;
 
     return url;
 };
@@ -109,7 +109,7 @@ export const buildCityUrl = async (): Promise<string> => {
 export const buildCountryUrl = async (): Promise<string> => {
 
     // Base URL usando o caminho fornecido
-    let url = `http://localhost:3001/menu/countries`;
+    let url = `/menu/countries`;
 
     return url;
 };
@@ -133,7 +133,7 @@ export const buildUrl = async (
     const encodedLabel = label ? encodeURIComponent(label) : null;
 
     // Base URL usando o caminho fornecido
-    let url = `http://localhost:3001/${path}/${interval}?analysis=${encodeURIComponent(analysis)}`;
+    let url = `/${path}/${interval}?analysis=${encodeURIComponent(analysis)}`;
 
     // Adiciona parâmetros opcionais se existirem
     if (encodedLabel) {

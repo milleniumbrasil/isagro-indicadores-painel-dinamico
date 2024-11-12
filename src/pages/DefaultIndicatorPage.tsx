@@ -245,6 +245,12 @@ const DefaultIndicatorPage: FC = () => {
     useEffect(() => {
         const state = selectedState == 'Nacional' ? undefined : selectedState;
         if (selectedLabel && selectedYear) {
+
+            if (indicator && selectedYear) {
+                setSelectedStyles(`${indicator}-${selectedYear}`);
+                console.log(`Hook para styles selecionada: ${selectedStyles}`);
+            }
+
             const startOfYear = new Date(Number(selectedYear), 0, 1);
             const endOfYear = new Date(Number(selectedYear), 11, 1);
             buildUrl('sum', selectedStartPeriod, selectedEndPeriod, selectedAnalysis, selectedInterval, selectedLabel, state).then((sumUrl) => {

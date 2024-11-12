@@ -36,8 +36,7 @@ export function Loading() {
 
 const DefaultIndicatorPage: FC = () => {
 
-
-    const geoServer = process.env.REACT_APP_GEOSERVER_URL || '/geoserver/isagro/wms';
+    const geoServer = process.env.REACT_APP_GEOSERVER_URL || 'http://localhost:8080/geoserver/isagro/wms';
 
     const { indicator } = useParams<{ indicator: string }>();
     const [selectedAnalysis, setSelectedAnalysis] = useState<string>(indicator || 'emissao-de-amonia');
@@ -466,24 +465,24 @@ function MapBox(
     _handleCoordinateClick: (coordinate: Array<number>) => void|undefined
 ) {
 return (
-        <Box sx={{ flexGrow: 1 }}>
-            <Map
-                url={_geoServer}
-                estado={_mapState}
-                width={_width}
-                height={_height}
-                coordinateOnClick={_handleCoordinateClick}
-                onZoomChange={_setSelectedZoom}
-                onBboxChange={_setSelectedBbox}
-                onCenterChange={_setSelectedCenter}
-                version="1.3.0"
-                request="GetMap"
-                srs="EPSG:4326"
-                layers={_layers}
-                styles={_styles}
-                format="image/jpeg"
-                transparent={false}
-                bgcolor="0xFFFFFF" />
-        </Box>
+            <Box sx={{ flexGrow: 1 }}>
+                <Map
+                    url={_geoServer}
+                    estado={_mapState}
+                    width={_width}
+                    height={_height}
+                    coordinateOnClick={_handleCoordinateClick}
+                    onZoomChange={_setSelectedZoom}
+                    onBboxChange={_setSelectedBbox}
+                    onCenterChange={_setSelectedCenter}
+                    version="1.3.0"
+                    request="GetMap"
+                    srs="EPSG:4326"
+                    layers={_layers}
+                    styles={_styles}
+                    format="image/jpeg"
+                    transparent={false}
+                    bgcolor="0xFFFFFF" />
+            </Box>
         );
 }

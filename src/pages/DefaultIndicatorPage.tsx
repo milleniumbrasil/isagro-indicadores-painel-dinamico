@@ -138,6 +138,7 @@ const DefaultIndicatorPage: FC = () => {
         updatedStartDate.setFullYear(parseInt(selectedValue));
         setSelectedStartPeriod(updatedStartDate); // Atualiza o estado da data inicial selecionada
         console.log('[DefaultIndicatorPage] Data Inicial selecionada:', updatedStartDate);
+        setSelectedYear(updatedStartDate.getFullYear().toString());
     };
 
     const handleEndDateChange = (event: SelectChangeEvent<string>) => {
@@ -158,6 +159,11 @@ const DefaultIndicatorPage: FC = () => {
             if (indicator && selectedYear) {
                 setSelectedStyles(`${indicator}-${_selectedYear}`);
                 console.log(`Styles selecionada: ${indicator}-${_selectedYear}`);
+
+                const stateTaken = mapStates[selectedState];
+                setSelectedMapState(stateTaken);
+                setSelectedBbox(stateTaken.bbox.join(','));
+                setSelectedZoom(stateTaken.zoom);
             }
         }
     }
@@ -214,6 +220,7 @@ const DefaultIndicatorPage: FC = () => {
     useEffect(() => {
         const state = selectedState == 'Nacional' ? undefined : selectedState;
         if (selectedStartPeriod && selectedEndPeriod){
+            setSelectedStyles('');
             buildUrl('sum', selectedStartPeriod, selectedEndPeriod, selectedAnalysis, selectedInterval, '', state).then((sumUrl) => {
                 requestStackedData(sumUrl).then((stackedObjects) => {
                     console.log(`[DefaultIndicatorPage] useEffect url: ${sumUrl}`);
@@ -228,6 +235,7 @@ const DefaultIndicatorPage: FC = () => {
     useEffect(() => {
         const state = selectedState == 'Nacional' ? undefined : selectedState;
         if (selectedYear) {
+            setSelectedStyles(`${selectedAnalysis}-${selectedYear}`);
             const startOfYear = new Date(Number(selectedYear), 0, 1);
             const endOfYear = new Date(Number(selectedYear), 11, 1);
             buildUrl('sum', startOfYear, endOfYear, selectedAnalysis, selectedInterval, '', state).then((sumUrl) => {
